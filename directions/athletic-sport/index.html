@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dre Coleman — Performance Coach</title>
+<meta name="description" content="Dre Coleman, performance coach. I train people to do hard things on purpose. Coached 3 Olympians. 12 years. Book a coaching call.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#0a0a0a;
+  --surface:#141416;
+  --ink:#ffffff;
+  --ink-muted:#a3a3a8;
+  --ink-subtle:#6c6c72;
+  --accent:#c6ff00;
+  --accent-hover:#d6ff3d;
+  --accent-ink:#0a0a0a;
+  --hairline:#2a2a2e;
+  --section:140px;
+  --block:48px;
+  --tight:16px;
+  --display:'Anton',Impact,sans-serif;
+  --body:'Archivo',system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  background:var(--canvas);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:17px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+
+/* ---- photo toggle contract ---- */
+.u-fallback{display:none !important}
+body.no-photos .u-photo{display:none !important}
+body.no-photos .u-fallback{display:revert !important}
+body.no-photos .hero__fallback{display:flex !important}
+
+.atlas-photo-toggle{position:fixed;right:16px;bottom:16px;z-index:99999;display:flex;align-items:center;gap:8px;background:rgba(20,20,22,.88);color:#fff;border-radius:999px;padding:6px 6px 6px 14px;font:600 12px/1 -apple-system,system-ui,sans-serif;box-shadow:0 8px 28px -10px rgba(0,0,0,.55)}
+.atlas-photo-toggle button{appearance:none;border:0;cursor:pointer;font:inherit;color:#16161a;background:#fff;border-radius:999px;padding:6px 14px;min-width:46px}
+.atlas-photo-toggle button[aria-pressed="false"]{background:#3a3a42;color:#fff}
+
+/* ---- shared type ---- */
+.eyebrow{
+  font-family:var(--body);
+  font-weight:700;
+  font-size:12px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--accent);
+}
+.eyebrow--mute{color:var(--ink-subtle)}
+.display{
+  font-family:var(--display);
+  text-transform:uppercase;
+  font-weight:400;
+  letter-spacing:-1px;
+  line-height:.86;
+}
+.lead{color:var(--ink-muted);max-width:46ch}
+
+/* ---- volt button ---- */
+.btn{
+  display:inline-flex;align-items:center;gap:12px;
+  font-family:var(--display);text-transform:uppercase;letter-spacing:.5px;
+  font-size:20px;line-height:1;
+  background:var(--accent);color:var(--accent-ink);
+  padding:18px 28px;
+  clip-path:polygon(0 0,100% 0,100% 100%,14px 100%);
+  transition:background .15s ease,transform .15s ease;
+}
+.btn:hover{background:var(--accent-hover);transform:translateX(4px)}
+.btn:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.btn .arrow{font-size:.8em;transition:transform .15s ease}
+.btn:hover .arrow{transform:translateX(4px)}
+.btn--ghost{
+  background:transparent;color:var(--ink);
+  border:2px solid var(--hairline);
+  clip-path:polygon(0 0,100% 0,100% 100%,14px 100%);
+}
+.btn--ghost:hover{background:var(--surface);border-color:var(--accent);transform:none}
+a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+
+/* ---- volt diagonal stripe accent ---- */
+.stripe{
+  position:absolute;height:10px;background:var(--accent);
+  transform:skewX(-24deg);
+  pointer-events:none;
+}
+
+/* ============ HERO ============ */
+.hero{
+  position:relative;
+  min-height:100svh;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:24px 20px 48px;
+  overflow:hidden;
+  border-bottom:2px solid var(--accent);
+}
+.hero__media{position:absolute;inset:0;z-index:0}
+.hero__media img{
+  width:100%;height:100%;object-fit:cover;object-position:50% 30%;
+  filter:grayscale(.25) contrast(1.08) brightness(.82);
+}
+.hero__media::after{
+  content:"";position:absolute;inset:0;
+  background:
+    linear-gradient(180deg,rgba(10,10,10,.55) 0%,rgba(10,10,10,0) 28%,rgba(10,10,10,.2) 55%,rgba(10,10,10,.94) 100%),
+    linear-gradient(90deg,rgba(10,10,10,.7),rgba(10,10,10,0) 60%);
+}
+/* fallback poster (no photo) */
+.hero__fallback{
+  display:none;
+  position:absolute;inset:0;z-index:0;
+  background:
+    repeating-linear-gradient(115deg,#0a0a0a 0 42px,#101010 42px 84px);
+  align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.hero__fallback::before{
+  content:"";position:absolute;left:-10%;top:18%;width:120%;height:90px;
+  background:var(--accent);transform:skewY(-8deg);opacity:.92;
+}
+.hero__fallback::after{
+  content:"";position:absolute;left:-10%;bottom:24%;width:120%;height:18px;
+  background:var(--accent);transform:skewY(-8deg);
+}
+.hero__fallword{
+  font-family:var(--display);text-transform:uppercase;
+  font-size:clamp(120px,40vw,420px);line-height:.8;letter-spacing:-4px;
+  color:transparent;-webkit-text-stroke:2px rgba(255,255,255,.22);
+  text-stroke:2px rgba(255,255,255,.22);
+  position:relative;z-index:1;white-space:nowrap;transform:rotate(-4deg);
+}
+.hero__bar{
+  position:absolute;top:0;left:0;right:0;z-index:3;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:22px 20px;
+}
+.hero__bar .name{font-family:var(--display);text-transform:uppercase;font-size:20px;letter-spacing:1px}
+.hero__bar .tag{color:var(--ink-muted);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase}
+.hero__inner{position:relative;z-index:2;width:100%;max-width:1240px;margin:0 auto}
+.hero h1{
+  font-family:var(--display);text-transform:uppercase;font-weight:400;
+  letter-spacing:-1px;line-height:.86;
+  font-size:clamp(52px,12.5vw,150px);
+  max-width:14ch;
+  text-shadow:0 4px 40px rgba(0,0,0,.5);
+}
+.hero h1 .volt{color:var(--accent)}
+.hero__sub{
+  margin-top:22px;max-width:42ch;color:var(--ink-muted);
+  font-size:clamp(15px,2.2vw,19px);
+}
+.hero__cta{margin-top:32px;display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.scrollcue{margin-top:34px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--ink-subtle);display:flex;align-items:center;gap:10px}
+.scrollcue::before{content:"";width:34px;height:2px;background:var(--accent);display:inline-block}
+
+/* ============ generic section ============ */
+.section{max-width:1240px;margin:0 auto;padding:var(--section) 20px}
+.sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:var(--block)}
+.sec-head h2{
+  font-family:var(--display);text-transform:uppercase;font-weight:400;
+  letter-spacing:-1px;line-height:.9;font-size:clamp(34px,7vw,64px);
+}
+.sec-head .idx{font-family:var(--display);color:var(--accent);font-size:clamp(20px,4vw,34px)}
+
+/* ============ METRICS ============ */
+.metrics{background:var(--surface);border-top:2px solid var(--accent);border-bottom:2px solid var(--hairline)}
+.metrics-grid{
+  max-width:1240px;margin:0 auto;
+  display:grid;grid-template-columns:1fr;gap:0;
+}
+.metric{
+  position:relative;padding:40px 24px;
+  border-bottom:1px solid var(--hairline);
+}
+.metric:last-child{border-bottom:0}
+.metric .num{
+  font-family:var(--display);line-height:.85;letter-spacing:-1px;
+  font-size:clamp(64px,14vw,104px);
+}
+.metric .num em{font-style:normal;color:var(--accent)}
+.metric .lbl{margin-top:10px;font-size:12px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--ink-muted)}
+
+/* ============ PROGRAMS ============ */
+.programs-grid{display:grid;grid-template-columns:1fr;gap:18px}
+.prog{
+  position:relative;background:var(--surface);
+  border:1px solid var(--hairline);
+  padding:30px 26px 34px;
+  clip-path:polygon(0 0,100% 0,100% 100%,0 100%,0 26px);
+  transition:transform .18s ease,border-color .18s ease,background .18s ease;
+  overflow:hidden;
+}
+.prog::before{
+  content:"";position:absolute;left:-30px;top:-30px;width:80px;height:80px;
+  background:var(--accent);transform:rotate(45deg);
+  transition:transform .25s ease;
+}
+.prog:hover{transform:translateY(-4px);border-color:var(--accent)}
+.prog:hover::before{transform:rotate(45deg) translate(6px,6px)}
+.prog .pidx{font-family:var(--display);color:var(--accent);font-size:34px;line-height:1;letter-spacing:-1px;display:block}
+.prog h3{font-family:var(--display);text-transform:uppercase;font-weight:400;font-size:30px;line-height:.95;margin:14px 0 12px;letter-spacing:0}
+.prog p{color:var(--ink-muted);font-size:15px;max-width:34ch}
+.prog .meta{margin-top:18px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink-subtle)}
+
+/* ============ TESTIMONIALS ============ */
+.quotes{background:var(--surface);border-top:2px solid var(--hairline)}
+.quotes-grid{display:grid;grid-template-columns:1fr;gap:18px}
+.quote{
+  position:relative;background:var(--canvas);
+  border-left:6px solid var(--accent);
+  padding:30px 26px;
+}
+.quote blockquote{font-family:var(--display);text-transform:uppercase;font-weight:400;font-size:clamp(22px,4.5vw,30px);line-height:1.02;letter-spacing:-.5px}
+.quote blockquote .volt{color:var(--accent)}
+.quote .who{margin-top:20px;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-muted)}
+.quote .who b{color:var(--ink);display:block;font-size:14px;letter-spacing:1px}
+
+/* ============ CREDENTIALS (pills) ============ */
+.creds{display:flex;flex-wrap:wrap;gap:12px}
+.cred{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--surface);border:1px solid var(--hairline);
+  padding:12px 18px;
+  clip-path:polygon(0 0,100% 0,100% 100%,10px 100%);
+  font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-muted);
+}
+.cred .dot{width:8px;height:8px;background:var(--accent);flex:none;transform:skewX(-18deg)}
+.cred b{color:var(--ink);font-weight:700}
+
+/* ============ BELIEFS (numbered) ============ */
+.beliefs-grid{display:grid;grid-template-columns:1fr;gap:0;border-top:1px solid var(--hairline)}
+.belief{
+  display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start;
+  padding:30px 0;border-bottom:1px solid var(--hairline);
+}
+.belief .bnum{font-family:var(--display);color:var(--accent);font-size:clamp(38px,8vw,64px);line-height:.85;letter-spacing:-1px}
+.belief h3{font-family:var(--display);text-transform:uppercase;font-weight:400;font-size:clamp(22px,4vw,32px);line-height:.95;letter-spacing:0;margin-bottom:8px}
+.belief p{color:var(--ink-muted);font-size:15px;max-width:54ch}
+
+/* ============ SERVICES (list) ============ */
+.svc-list{border-top:2px solid var(--accent)}
+.svc{
+  position:relative;display:flex;flex-wrap:wrap;align-items:baseline;
+  gap:14px 24px;padding:26px 0;border-bottom:1px solid var(--hairline);
+  transition:padding-left .18s ease;
+}
+.svc:hover{padding-left:14px}
+.svc h3{font-family:var(--display);text-transform:uppercase;font-weight:400;font-size:clamp(24px,5vw,40px);line-height:.95;letter-spacing:0;flex:1 1 auto;min-width:0}
+.svc .price{font-family:var(--display);color:var(--accent);font-size:clamp(22px,4vw,34px);line-height:1;letter-spacing:-1px;white-space:nowrap}
+.svc .desc{flex:1 0 100%;color:var(--ink-muted);font-size:15px;max-width:60ch}
+
+/* ============ NOW (currently building) ============ */
+.now-grid{display:grid;grid-template-columns:1fr;gap:18px}
+.now{
+  background:var(--surface);border:1px solid var(--hairline);
+  border-left:6px solid var(--accent);
+  padding:26px 24px;
+}
+.now .tag{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:12px}
+.now p{color:var(--ink-muted);font-size:15px;max-width:46ch}
+.now p b{color:var(--ink);font-weight:700}
+.now .stamp{margin-top:18px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink-subtle)}
+
+/* ============ FAQ (accordion) ============ */
+.faq-list{border-top:1px solid var(--hairline)}
+.faq{border-bottom:1px solid var(--hairline)}
+.faq summary{
+  list-style:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;gap:18px;
+  padding:24px 0;
+  font-family:var(--display);text-transform:uppercase;font-weight:400;
+  font-size:clamp(20px,3.6vw,30px);line-height:1;letter-spacing:0;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary .sign{font-family:var(--display);color:var(--accent);font-size:1.1em;line-height:1;flex:none;transition:transform .2s ease}
+.faq[open] summary .sign{transform:rotate(45deg)}
+.faq summary:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.faq .ans{padding:0 0 26px;color:var(--ink-muted);font-size:15px;max-width:62ch}
+
+/* ============ CTA BAND ============ */
+.cta{
+  position:relative;background:var(--accent);color:var(--accent-ink);
+  overflow:hidden;
+  clip-path:polygon(0 40px,100% 0,100% 100%,0 100%);
+}
+.cta-inner{max-width:1240px;margin:0 auto;padding:120px 20px 96px}
+.cta h2{
+  font-family:var(--display);text-transform:uppercase;font-weight:400;
+  letter-spacing:-2px;line-height:.84;font-size:clamp(64px,18vw,200px);
+}
+.cta .lead{color:rgba(10,10,10,.78);max-width:42ch;margin-top:18px;font-weight:600}
+.cta__links{margin-top:40px;display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.cta .btn--dark{background:var(--accent-ink);color:var(--accent)}
+.cta .btn--dark:hover{background:#222}
+.cta .txtlink{font-family:var(--display);text-transform:uppercase;font-size:18px;letter-spacing:.5px;border-bottom:3px solid var(--accent-ink);padding-bottom:2px}
+.cta .txtlink:hover{opacity:.7}
+.cta .stripe{background:var(--accent-ink);opacity:.14}
+
+/* ============ FOOTER ============ */
+.foot{max-width:1240px;margin:0 auto;padding:40px 20px 96px;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center;color:var(--ink-subtle);font-size:12px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700}
+.foot .mark{font-family:var(--display);color:var(--ink);font-size:18px;letter-spacing:1px}
+
+/* ============ reveal animation ============ */
+.reveal{opacity:0;transform:translate(26px,30px) scale(.985)}
+.reveal.in{opacity:1;transform:none;transition:opacity .6s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+
+/* ============ responsive ============ */
+@media(min-width:560px){
+  .metrics-grid{grid-template-columns:1fr 1fr}
+  .metric{border-bottom:1px solid var(--hairline);border-right:1px solid var(--hairline)}
+  .metric:nth-child(2n){border-right:0}
+  .metric:nth-last-child(-n+2){border-bottom:0}
+  .quotes-grid{grid-template-columns:1fr 1fr}
+}
+@media(min-width:880px){
+  .hero{padding:24px 40px 64px}
+  .hero__bar{padding:26px 40px}
+  .section{padding:var(--section) 40px}
+  .programs-grid{grid-template-columns:1fr 1fr}
+  .metrics-grid{grid-template-columns:repeat(4,1fr)}
+  .metric{border-right:1px solid var(--hairline);border-bottom:0}
+  .metric:last-child{border-right:0}
+  .quotes-grid{grid-template-columns:repeat(3,1fr)}
+  .cta-inner{padding:150px 40px 120px}
+  .foot{padding:48px 40px 110px}
+}
+@media(min-width:1100px){
+  .programs-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .reveal,.reveal.in{opacity:1;transform:none;transition:none}
+  .btn,.prog,.prog::before,.svc,.faq summary .sign{transition:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<header class="hero" data-module="hero" data-variant="bold_statement">
+  <div class="hero__media u-photo">
+    <img src="portrait.webp" alt="Athlete sprinting at full speed down a city street">
+  </div>
+  <div class="hero__fallback u-fallback" aria-hidden="true">
+    <span class="hero__fallword">Train</span>
+  </div>
+
+  <div class="hero__bar">
+    <span class="name">Dre&nbsp;Coleman</span>
+    <span class="tag">Performance&nbsp;Coach</span>
+  </div>
+
+  <div class="hero__inner">
+    <p class="eyebrow reveal">Dre Coleman / Performance Coach</p>
+    <h1 class="reveal">I train people to do <span class="volt">hard things</span> on purpose.</h1>
+    <p class="hero__sub reveal">Athletes and teams who want to get measurably better. Twelve years on the floor, three Olympians, and a system that travels in your pocket.</p>
+    <div class="hero__cta reveal">
+      <a class="btn" href="#contact">Book a coaching call <span class="arrow">→</span></a>
+    </div>
+    <div class="scrollcue reveal">The numbers don't lie</div>
+  </div>
+</header>
+
+<!-- ============ METRICS ============ -->
+<section class="metrics" data-module="metrics" data-variant="big_numerals" aria-label="By the numbers">
+  <div class="metrics-grid">
+    <div class="metric reveal">
+      <div class="num"><em>3</em></div>
+      <div class="lbl">Olympians coached</div>
+    </div>
+    <div class="metric reveal">
+      <div class="num"><em>12</em></div>
+      <div class="lbl">Years coaching</div>
+    </div>
+    <div class="metric reveal">
+      <div class="num"><em>D1</em></div>
+      <div class="lbl">Ex strength &amp; conditioning</div>
+    </div>
+    <div class="metric reveal">
+      <div class="num"><em>50</em>K</div>
+      <div class="lbl">Athletes in the app</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROGRAMS ============ -->
+<section class="section" data-module="selected_work" data-variant="grid" id="work" aria-label="Programs">
+  <div class="sec-head">
+    <span class="idx reveal">01 /</span>
+    <h2 class="reveal">The Programs</h2>
+  </div>
+  <div class="programs-grid">
+    <article class="prog reveal">
+      <span class="pidx">01</span>
+      <h3>Off-Season Engine</h3>
+      <p>12-week base &amp; capacity build. We bank the aerobic and structural work now so you peak when it counts.</p>
+      <div class="meta">12 weeks · Base + capacity</div>
+    </article>
+    <article class="prog reveal">
+      <span class="pidx">02</span>
+      <h3>Game Speed</h3>
+      <p>Sprint mechanics and reactive power. Cleaner steps, faster first move, more force into the ground.</p>
+      <div class="meta">Sprint · Reactive power</div>
+    </article>
+    <article class="prog reveal">
+      <span class="pidx">03</span>
+      <h3>Return Strong</h3>
+      <p>Post-injury rebuild with load tracking. Progress you can see, dosed so you come back better than before.</p>
+      <div class="meta">Rehab · Load tracking</div>
+    </article>
+    <article class="prog reveal">
+      <span class="pidx">04</span>
+      <h3>Team Standard</h3>
+      <p>Squad-wide testing and accountability. One standard, every athlete measured, nobody coasting.</p>
+      <div class="meta">Teams · Testing</div>
+    </article>
+  </div>
+</section>
+
+<!-- ============ TESTIMONIALS ============ -->
+<section class="quotes" data-module="testimonials" data-variant="cards" aria-label="What athletes say">
+  <div class="section">
+    <div class="sec-head">
+      <span class="idx reveal">02 /</span>
+      <h2 class="reveal">The Receipts</h2>
+    </div>
+    <div class="quotes-grid">
+      <figure class="quote reveal">
+        <blockquote>"Dre built the <span class="volt">last 0.1</span> that put me in an Olympic final."</blockquote>
+        <figcaption class="who"><b>Maya Okafor</b>100m · Olympic finalist</figcaption>
+      </figure>
+      <figure class="quote reveal">
+        <blockquote>"He gave our whole squad <span class="volt">one standard</span>. No one hides anymore."</blockquote>
+        <figcaption class="who"><b>Tyrese Hahn</b>Team captain · D1 lacrosse</figcaption>
+      </figure>
+      <figure class="quote reveal">
+        <blockquote>"40 years old, first <span class="volt">sub-3 marathon</span>. He coached me there."</blockquote>
+        <figcaption class="who"><b>Priya Raman</b>Recreational athlete</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CREDENTIALS ============ -->
+<section class="section" data-module="credentials" data-variant="pills" aria-label="Credentials">
+  <div class="sec-head">
+    <span class="idx reveal">03 /</span>
+    <h2 class="reveal">The Résumé</h2>
+  </div>
+  <div class="creds">
+    <span class="cred reveal"><span class="dot"></span>CSCS · Cert. Strength &amp; Conditioning</span>
+    <span class="cred reveal"><span class="dot"></span>USATF Level 2 Sprints</span>
+    <span class="cred reveal"><span class="dot"></span>MS · Sport &amp; Exercise Science</span>
+    <span class="cred reveal"><span class="dot"></span>Ex-Head S&amp;C · <b>D1 Track</b></span>
+    <span class="cred reveal"><span class="dot"></span>FMS Level 1</span>
+    <span class="cred reveal"><span class="dot"></span>USOPC Consultant</span>
+  </div>
+</section>
+
+<!-- ============ BELIEFS ============ -->
+<section class="section" data-module="beliefs" data-variant="numbered" aria-label="How I coach">
+  <div class="sec-head">
+    <span class="idx reveal">04 /</span>
+    <h2 class="reveal">The Rules</h2>
+  </div>
+  <div class="beliefs-grid">
+    <div class="belief reveal">
+      <span class="bnum">01</span>
+      <div>
+        <h3>Measure or it didn't happen</h3>
+        <p>Every block has a number attached. We test, we log, we compare. Vibes don't make finals — repeatable output does.</p>
+      </div>
+    </div>
+    <div class="belief reveal">
+      <span class="bnum">02</span>
+      <div>
+        <h3>Hard, but never random</h3>
+        <p>The work is supposed to hurt. It is never supposed to be guesswork. Every hard day is dosed for a reason you can name.</p>
+      </div>
+    </div>
+    <div class="belief reveal">
+      <span class="bnum">03</span>
+      <div>
+        <h3>Recovery is training</h3>
+        <p>Sleep, fuel and de-load are part of the plan, not a reward for it. The athletes who last are the ones who back off on purpose.</p>
+      </div>
+    </div>
+    <div class="belief reveal">
+      <span class="bnum">04</span>
+      <div>
+        <h3>One standard for everyone</h3>
+        <p>Olympian or weekend warrior, the bar is honest. I'd rather tell you the truth about your numbers than sell you a comfortable lie.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVICES ============ -->
+<section class="quotes" data-module="services" data-variant="list" aria-label="Coaching options">
+  <div class="section">
+    <div class="sec-head">
+      <span class="idx reveal">05 /</span>
+      <h2 class="reveal">Work With Me</h2>
+    </div>
+    <div class="svc-list">
+      <div class="svc reveal">
+        <h3>1:1 Coaching</h3>
+        <span class="price">$420 / mo</span>
+        <p class="desc">Fully custom programming, weekly check-ins, and video form review. Limited to 12 athletes at a time so nobody gets a template.</p>
+      </div>
+      <div class="svc reveal">
+        <h3>Team Standard</h3>
+        <span class="price">From $2.4K</span>
+        <p class="desc">Squad-wide testing, a shared scoreboard, and on-site combine days. Built for programs that want every athlete held to one bar.</p>
+      </div>
+      <div class="svc reveal">
+        <h3>The App</h3>
+        <span class="price">$19 / mo</span>
+        <p class="desc">My core systems, self-serve. Off-season, speed and return-to-play tracks that travel in your pocket. Cancel any time.</p>
+      </div>
+      <div class="svc reveal">
+        <h3>Single Audit</h3>
+        <span class="price">$180</span>
+        <p class="desc">One 90-minute session: movement screen, sprint diagnostic, and a written plan you keep. No subscription, no upsell.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ NOW ============ -->
+<section class="section" data-module="currently_building" data-variant="now_block" aria-label="What I'm doing now">
+  <div class="sec-head">
+    <span class="idx reveal">06 /</span>
+    <h2 class="reveal">Right Now</h2>
+  </div>
+  <div class="now-grid">
+    <div class="now reveal">
+      <span class="tag">On the floor</span>
+      <p>Prepping <b>three sprinters</b> through their indoor block ahead of trials season. Heavy on reactive power, light on volume.</p>
+      <div class="stamp">Updated June 2026</div>
+    </div>
+    <div class="now reveal">
+      <span class="tag">Building</span>
+      <p>Shipping the <b>load-tracking rebuild</b> inside the app — the return-to-play dashboard athletes kept asking me for.</p>
+      <div class="stamp">In progress</div>
+    </div>
+    <div class="now reveal">
+      <span class="tag">Booking</span>
+      <p>Open to <b>two new 1:1 athletes</b> for the off-season cohort. Team audits booking out into the fall.</p>
+      <div class="stamp">2 spots left</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="quotes" data-module="faq" data-variant="accordion" aria-label="Common questions">
+  <div class="section">
+    <div class="sec-head">
+      <span class="idx reveal">07 /</span>
+      <h2 class="reveal">Straight Answers</h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq reveal">
+        <summary>Do I have to be an elite athlete?<span class="sign">+</span></summary>
+        <div class="ans">No. Half the people I coach have day jobs. The system is the same — pro or amateur, we measure where you are and build from there.</div>
+      </details>
+      <details class="faq reveal">
+        <summary>What gear do I need?<span class="sign">+</span></summary>
+        <div class="ans">For the app, a phone and access to a gym or open space. For 1:1 we'll scope your setup in the first call and program to what you actually have.</div>
+      </details>
+      <details class="faq reveal">
+        <summary>How fast will I see results?<span class="sign">+</span></summary>
+        <div class="ans">Speed and power markers move inside 4–6 weeks. Engine work takes a full block. I'll show you the numbers either way — no guessing.</div>
+      </details>
+      <details class="faq reveal">
+        <summary>Can I cancel?<span class="sign">+</span></summary>
+        <div class="ans">The app cancels any time, no questions. 1:1 runs month to month after the first block. I'd rather you stay because it works.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA BAND ============ -->
+<section class="cta" data-module="contact" data-variant="cta_band" id="contact" aria-label="Book Dre">
+  <span class="stripe" style="top:60px;left:-40px;width:280px"></span>
+  <span class="stripe" style="bottom:48px;right:-40px;width:340px;height:14px"></span>
+  <div class="cta-inner">
+    <p class="eyebrow" style="color:rgba(10,10,10,.65)">Ready when you are</p>
+    <h2 class="reveal">Let's go.</h2>
+    <p class="lead reveal">Tell me the hard thing you're training for. We'll build the plan that gets you there — for you, or your whole team.</p>
+    <div class="cta__links reveal">
+      <a class="btn btn--dark" href="mailto:dre@drecoleman.com?subject=Coaching%20call">Book a coaching call <span class="arrow">→</span></a>
+      <a class="txtlink" href="mailto:dre@drecoleman.com">dre@drecoleman.com</a>
+      <a class="txtlink" href="#work">Get the app</a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <span class="mark">Dre Coleman</span>
+  <span>Train hard things — on purpose</span>
+  <span>© 2026 Coleman Performance</span>
+</footer>
+
+<div class="atlas-photo-toggle" role="group" aria-label="示例照片 / Demo photos"><span>照片 Photos</span><button id="atlasPhotoBtn" type="button" aria-pressed="true">On</button></div>
+<script>(function(){var b=document.getElementById('atlasPhotoBtn');if(!b)return;function set(on){document.body.classList.toggle('no-photos',!on);b.setAttribute('aria-pressed',on?'true':'false');b.textContent=on?'On':'Off';}b.addEventListener('click',function(){set(document.body.classList.contains('no-photos'));});set(true);})();</script>
+
+<script>
+(function(){
+  var els=document.querySelectorAll('.reveal');
+  if(!('IntersectionObserver' in window)||window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    els.forEach(function(e){e.classList.add('in');});return;
+  }
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}
+    });
+  },{threshold:0.12,rootMargin:'0px 0px -8% 0px'});
+  els.forEach(function(e,i){e.style.transitionDelay=(Math.min(i%5,4)*55)+'ms';io.observe(e);});
+})();
+</script>
+</body>
+</html>

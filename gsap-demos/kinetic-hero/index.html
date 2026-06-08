@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>陈未央 — 动态字体设计 / Kinetic Type</title>
+<meta name="description" content="陈未央 Weiyang Chen — 动态字体与运动设计师。Variable type, kinetic identity, motion systems.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;900&family=Archivo+Black&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0b0b0c;
+    --paper:#f3f3ee;
+    --acid:#c6ff3a;
+    --acid-dim:#9bcc2a;
+    --muted:#8a8a82;
+    --line:rgba(243,243,238,.14);
+    --maxw:1320px;
+    --pad:clamp(20px,5vw,80px);
+    --grotesk:'Archivo','Archivo Black',system-ui,-apple-system,sans-serif;
+    --mono:'Space Mono',ui-monospace,monospace;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--ink);color:var(--paper);
+    font-family:var(--grotesk);
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+  }
+  body.is-loading{overflow:hidden}
+  img{max-width:100%;display:block}
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--acid);color:var(--ink)}
+  :focus-visible{outline:3px solid var(--acid);outline-offset:3px;border-radius:2px}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding-inline:var(--pad)}
+  .mono{font-family:var(--mono);letter-spacing:.04em}
+  .acid{color:var(--acid)}
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    position:fixed;inset:0 0 auto 0;z-index:40;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px var(--pad);
+    font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+    mix-blend-mode:difference;
+  }
+  .topbar .dot{width:9px;height:9px;border-radius:50%;background:var(--acid);display:inline-block;margin-right:8px;vertical-align:middle}
+  .topbar nav{display:flex;gap:22px}
+  @media(max-width:640px){.topbar nav a:nth-child(2){display:none}}
+
+  /* ---------- hero ---------- */
+  .hero{
+    min-height:100svh;display:flex;flex-direction:column;justify-content:center;
+    padding-block:140px 60px;position:relative;
+  }
+  .hero__eyebrow{
+    display:flex;gap:14px;align-items:center;flex-wrap:wrap;
+    font-family:var(--mono);font-size:13px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:clamp(18px,3vw,34px);
+  }
+  .hero__eyebrow .tag{border:1px solid var(--line);border-radius:100px;padding:5px 12px}
+  .hero__title{
+    margin:0;font-weight:900;line-height:.84;letter-spacing:-.03em;
+    font-size:clamp(58px,16.5vw,250px);text-transform:uppercase;
+  }
+  .hero__title .line{display:block;overflow:hidden}
+  .hero__title .line.indent{padding-left:clamp(20px,12vw,260px)}
+  .hero__title .stroke{
+    -webkit-text-stroke:clamp(1px,.35vw,4px) var(--paper);
+    color:transparent;
+  }
+  .hero__title .fill{color:var(--acid)}
+  .char{display:inline-block;will-change:transform}
+  .hero__foot{
+    margin-top:clamp(34px,6vw,72px);display:flex;justify-content:space-between;
+    align-items:flex-end;gap:24px;flex-wrap:wrap;
+    font-family:var(--mono);font-size:13px;color:var(--muted);letter-spacing:.04em;
+  }
+  .hero__foot p{margin:0;max-width:40ch;line-height:1.6}
+  .hero__scroll{display:flex;align-items:center;gap:10px;text-transform:uppercase;letter-spacing:.14em}
+  .hero__scroll .bar{width:46px;height:2px;background:var(--acid);transform-origin:left;display:inline-block}
+
+  .ticker{
+    position:absolute;left:0;right:0;bottom:0;border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);overflow:hidden;white-space:nowrap;
+    font-family:var(--mono);font-size:13px;letter-spacing:.18em;text-transform:uppercase;
+    padding:11px 0;color:var(--muted);
+  }
+  .ticker__track{display:inline-block;will-change:transform}
+  .ticker__track span{padding:0 28px}
+  .ticker__track span b{color:var(--acid);font-weight:400}
+
+  /* ---------- manifesto ---------- */
+  .manifesto{padding-block:clamp(120px,18vw,240px)}
+  .sec-label{
+    font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:clamp(28px,4vw,56px);display:flex;gap:14px;align-items:center;
+  }
+  .sec-label::before{content:"";width:34px;height:1px;background:var(--acid)}
+  .manifesto__body{
+    font-weight:700;line-height:1.08;letter-spacing:-.015em;
+    font-size:clamp(28px,5.4vw,76px);max-width:18ch;
+  }
+  .manifesto__body .reveal-line{display:block;overflow:hidden}
+  .manifesto__body .reveal-line > span{display:block;will-change:transform}
+  .manifesto__body em{font-style:normal;color:var(--acid)}
+
+  /* ---------- work ---------- */
+  .work{padding-block:clamp(40px,8vw,120px)}
+  .work__head{
+    display:flex;justify-content:space-between;align-items:baseline;
+    border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:8px;
+    font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+  }
+  .work__head h2{
+    margin:0;font-family:var(--grotesk);font-weight:900;font-size:clamp(34px,7vw,92px);
+    letter-spacing:-.03em;text-transform:uppercase;color:var(--paper);line-height:.9;
+  }
+  .work__count{align-self:flex-end}
+
+  .row{
+    position:relative;display:grid;grid-template-columns:64px 1fr auto;gap:clamp(14px,3vw,40px);
+    align-items:center;padding:clamp(22px,3.2vw,40px) 0;border-bottom:1px solid var(--line);
+    cursor:pointer;
+  }
+  .row__idx{font-family:var(--mono);font-size:13px;color:var(--muted)}
+  .row__title{
+    font-weight:900;letter-spacing:-.02em;text-transform:uppercase;line-height:.95;
+    font-size:clamp(26px,4.4vw,60px);transition:color .35s ease;
+  }
+  .row__title .sub{
+    display:block;font-family:var(--mono);font-weight:400;font-size:13px;letter-spacing:.06em;
+    text-transform:none;color:var(--muted);margin-top:10px;
+  }
+  .row__meta{
+    font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--muted);text-align:right;line-height:1.7;
+  }
+  .row:hover .row__title{color:var(--acid)}
+  /* hover image preview */
+  .row__peek{
+    position:absolute;top:50%;right:clamp(150px,22vw,340px);
+    width:clamp(180px,20vw,260px);aspect-ratio:4/5;
+    pointer-events:none;overflow:hidden;border-radius:3px;
+    opacity:0;z-index:5;
+  }
+  .row__peek img{width:100%;height:100%;object-fit:cover;filter:grayscale(.2) contrast(1.05)}
+  @media(max-width:880px){
+    .row{grid-template-columns:40px 1fr;}
+    .row__meta{grid-column:2;text-align:left}
+    .row__peek{display:none}
+  }
+
+  /* ---------- marquee strip ---------- */
+  .bigword{
+    padding-block:clamp(60px,12vw,160px);overflow:hidden;white-space:nowrap;
+  }
+  .bigword__track{
+    display:inline-block;font-weight:900;font-size:clamp(80px,22vw,340px);
+    letter-spacing:-.04em;text-transform:uppercase;line-height:.8;will-change:transform;
+  }
+  .bigword__track span{padding:0 .15em}
+  .bigword__track .o{-webkit-text-stroke:2px var(--acid);color:transparent}
+
+  /* ---------- footer ---------- */
+  .footer{padding-block:clamp(80px,12vw,180px) 60px;border-top:1px solid var(--line)}
+  .footer__cta{
+    font-weight:900;text-transform:uppercase;letter-spacing:-.03em;line-height:.86;
+    font-size:clamp(46px,13vw,200px);margin:0 0 clamp(40px,6vw,80px);
+  }
+  .footer__cta a{display:inline-block;will-change:transform}
+  .footer__cta .ul{position:relative}
+  .footer__cta .ul::after{
+    content:"";position:absolute;left:0;bottom:.06em;height:.06em;width:100%;
+    background:var(--acid);transform:scaleX(0);transform-origin:left;transition:transform .5s cubic-bezier(.7,0,.2,1)}
+  .footer__cta a:hover .ul::after,.footer__cta a:focus-visible .ul::after{transform:scaleX(1)}
+  .footer__grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:28px;
+    font-family:var(--mono);font-size:13px;color:var(--muted);letter-spacing:.04em;
+    border-top:1px solid var(--line);padding-top:34px;
+  }
+  .footer__grid h4{margin:0 0 12px;color:var(--paper);font-family:var(--mono);font-weight:700;
+    font-size:11px;letter-spacing:.16em;text-transform:uppercase}
+  .footer__grid a{display:block;padding:3px 0;transition:color .25s}
+  .footer__grid a:hover{color:var(--acid)}
+  .colophon{margin-top:48px;font-family:var(--mono);font-size:11px;color:var(--muted);
+    letter-spacing:.08em;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+
+  /* ---------- preloader ---------- */
+  .pre{
+    position:fixed;inset:0;z-index:80;background:var(--ink);
+    display:flex;align-items:center;justify-content:center;flex-direction:column;gap:22px;
+  }
+  .pre__num{font-family:var(--mono);font-size:clamp(60px,18vw,180px);font-weight:700;color:var(--acid);line-height:1}
+  .pre__bar{width:min(60vw,360px);height:2px;background:var(--line);overflow:hidden}
+  .pre__bar i{display:block;height:100%;width:100%;background:var(--acid);transform:scaleX(0);transform-origin:left}
+  .pre__label{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body class="is-loading">
+
+  <!-- preloader -->
+  <div class="pre" id="pre" aria-hidden="true">
+    <div class="pre__num"><span id="preNum">00</span><span class="acid">%</span></div>
+    <div class="pre__bar"><i id="preBar"></i></div>
+    <div class="pre__label">陈未央 · Kinetic Type System · Loading</div>
+  </div>
+
+  <header class="topbar">
+    <a href="#top"><span class="dot"></span>WEIYANG<span class="acid">.</span>STUDIO</a>
+    <nav>
+      <a href="#work">作品 / Work</a>
+      <a href="#contact">联系 / Contact</a>
+      <a href="#contact">CV ↗</a>
+    </nav>
+  </header>
+
+  <main id="top">
+
+    <!-- ============ HERO ============ -->
+    <section class="hero wrap" aria-label="首屏 标题">
+      <div class="hero__eyebrow">
+        <span class="tag">动态字体 / Kinetic Type</span>
+        <span class="tag">运动识别系统 / Motion Identity</span>
+        <span>上海 · Shanghai · GMT+8</span>
+      </div>
+
+      <h1 class="hero__title" id="heroTitle" aria-label="陈未央 — 让字体动起来 Type In Motion">
+        <span class="line"><span class="fill" data-split>TYPE</span></span>
+        <span class="line indent"><span class="stroke" data-split>IN</span></span>
+        <span class="line"><span data-split>MOTION</span></span>
+      </h1>
+
+      <div class="hero__foot">
+        <p>陈未央 Weiyang Chen — 动态字体与运动识别设计师。把可变字体、网格与时间轴
+          编排成会呼吸的视觉系统，为品牌写出第一秒就站得住的标题。</p>
+        <div class="hero__scroll mono" aria-hidden="true"><span class="bar" id="scrollBar"></span> Scroll</div>
+      </div>
+
+      <div class="ticker" aria-hidden="true">
+        <div class="ticker__track" id="ticker">
+          <span>可变字体 Variable Fonts <b>✦</b></span><span>动态标识 Kinetic Logos <b>✦</b></span><span>标题动效 Title Sequences <b>✦</b></span><span>排版系统 Type Systems <b>✦</b></span><span>运动设计 Motion Design <b>✦</b></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ MANIFESTO ============ -->
+    <section class="manifesto wrap" aria-label="设计宣言">
+      <p class="sec-label">宣言 / Manifesto — 01</p>
+      <h2 class="manifesto__body" id="manifesto">
+        字不是放在那儿被读的，<em>它是有时间的</em>。一个标题怎么落地、
+        以什么节奏停住、在哪一帧让人记住——那才是它真正说的话。
+        我做的是会动的排版：<em>从静态到动态</em>，从单字到系统。
+      </h2>
+    </section>
+
+    <!-- ============ WORK ============ -->
+    <section class="work wrap" id="work" aria-label="精选作品">
+      <div class="work__head">
+        <h2 data-fade>精选作品<br>Selected Work</h2>
+        <span class="work__count mono" data-fade>2021 — 2026 / 06 项目</span>
+      </div>
+
+      <ul style="list-style:none;margin:0;padding:0" id="workList">
+        <li class="row" data-row data-img="/assets/poster-joymonger.webp">
+          <span class="row__idx mono">01</span>
+          <span class="row__title">回声唱片 ECHO<span class="sub">可变字体识别系统 / Variable Identity — 独立厂牌</span></span>
+          <span class="row__meta">品牌字体<br>2026</span>
+          <span class="row__peek" data-peek><img src="/assets/poster-joymonger.webp" alt="回声唱片可变字体识别系统海报" loading="lazy"></span>
+        </li>
+        <li class="row" data-row data-img="/assets/editorial-fashion-mono.webp">
+          <span class="row__idx mono">02</span>
+          <span class="row__title">余白杂志 MARGIN<span class="sub">动态封面与栏目动效 / Kinetic Editorial</span></span>
+          <span class="row__meta">编排动效<br>2025</span>
+          <span class="row__peek" data-peek><img src="/assets/editorial-fashion-mono.webp" alt="余白杂志动态封面设计" loading="lazy"></span>
+        </li>
+        <li class="row" data-row data-img="/assets/poster-pipeline.webp">
+          <span class="row__idx mono">03</span>
+          <span class="row__title">流线管道 PIPELINE<span class="sub">数据可视化标题系统 / Title System</span></span>
+          <span class="row__meta">动态标题<br>2024</span>
+          <span class="row__peek" data-peek><img src="/assets/poster-pipeline.webp" alt="流线管道数据可视化标题系统" loading="lazy"></span>
+        </li>
+        <li class="row" data-row data-img="/assets/poster-we-the-people.webp">
+          <span class="row__idx mono">04</span>
+          <span class="row__title">众声 WE THE PEOPLE<span class="sub">公益展览动态主视觉 / Exhibition Identity</span></span>
+          <span class="row__meta">展览识别<br>2024</span>
+          <span class="row__peek" data-peek><img src="/assets/poster-we-the-people.webp" alt="众声公益展览动态主视觉" loading="lazy"></span>
+        </li>
+        <li class="row" data-row data-img="/assets/poster-bowie-king.webp">
+          <span class="row__idx mono">05</span>
+          <span class="row__title">星尘 STARDUST<span class="sub">演出片头与字幕动效 / Title Sequence</span></span>
+          <span class="row__meta">片头动效<br>2023</span>
+          <span class="row__peek" data-peek><img src="/assets/poster-bowie-king.webp" alt="星尘演出片头字幕动效" loading="lazy"></span>
+        </li>
+        <li class="row" data-row data-img="/assets/poster-deco-red-fan.webp">
+          <span class="row__idx mono">06</span>
+          <span class="row__title">朱栏 VERMILION<span class="sub">装饰字体复刻与动态化 / Type Revival</span></span>
+          <span class="row__meta">字体设计<br>2021</span>
+          <span class="row__peek" data-peek><img src="/assets/poster-deco-red-fan.webp" alt="朱栏装饰字体复刻动态化海报" loading="lazy"></span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ============ BIG MARQUEE ============ -->
+    <section class="bigword" aria-hidden="true">
+      <div class="bigword__track" id="bigword">
+        <span>LET<span class="o">T</span>ERS</span><span>MOVE</span><span>LET<span class="o">T</span>ERS</span><span>MOVE</span>
+      </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="footer wrap" id="contact" aria-label="联系方式">
+      <p class="sec-label">联系 / Contact — 03</p>
+      <h2 class="footer__cta" aria-label="一起让字动起来">
+        <a href="mailto:hi@weiyang.studio"><span class="ul" data-cta>LET'S</span><br><span class="ul" data-cta>MAKE</span> <span class="ul acid" data-cta>NOISE↗</span></a>
+      </h2>
+
+      <div class="footer__grid">
+        <div>
+          <h4>合作 / Inquiry</h4>
+          <a href="mailto:hi@weiyang.studio">hi@weiyang.studio</a>
+          <a href="tel:+862100000000">+86 21 0000 0000</a>
+        </div>
+        <div>
+          <h4>在线 / Elsewhere</h4>
+          <a href="#contact">Instagram ↗</a>
+          <a href="#contact">Behance ↗</a>
+          <a href="#contact">是否 / Are.na ↗</a>
+        </div>
+        <div>
+          <h4>服务 / Services</h4>
+          <span>可变字体 Variable Type</span>
+          <span>动态识别 Kinetic Identity</span>
+          <span>标题动效 Title Design</span>
+        </div>
+        <div>
+          <h4>工作室 / Studio</h4>
+          <span>上海 · 永康路</span>
+          <span>Shanghai, CN</span>
+          <span>接受远程合作</span>
+        </div>
+      </div>
+
+      <div class="colophon">
+        <span>© 2026 陈未央 Weiyang Chen Studio</span>
+        <span>Built with GSAP · SplitText · ScrollTrigger · CustomEase</span>
+      </div>
+    </footer>
+  </main>
+
+  <!-- ===== GSAP: core first, then plugins, then registerPlugin ===== -->
+  <script src="/vendor/gsap/gsap.min.js"></script>
+  <script src="/vendor/gsap/SplitText.min.js"></script>
+  <script src="/vendor/gsap/ScrollTrigger.min.js"></script>
+  <script src="/vendor/gsap/CustomEase.min.js"></script>
+  <script>
+  (function(){
+    if(!window.gsap){ document.body.classList.remove('is-loading'); var p=document.getElementById('pre'); if(p) p.style.display='none'; return; }
+    gsap.registerPlugin(SplitText, ScrollTrigger, CustomEase);
+
+    // signature ease used site-wide
+    CustomEase.create("kin", "M0,0 C0.16,1 0.3,1 1,1");          // smooth strong out
+    CustomEase.create("kinOut", "0.22,1,0.36,1");                 // expo-ish
+    gsap.defaults({ ease: "kin" });
+
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    /* ---------- preloader (always runs; minimal when reduced) ---------- */
+    function buildSplits(){
+      // split the three hero title words into chars, each in a masked line wrapper
+      const splits = [];
+      document.querySelectorAll('#heroTitle [data-split]').forEach((el)=>{
+        const s = new SplitText(el, { type:"chars", charsClass:"char" });
+        splits.push(...s.chars);
+      });
+      return splits;
+    }
+
+    function startSite(){
+      document.body.classList.remove('is-loading');
+      const pre = document.getElementById('pre');
+
+      const mm = gsap.matchMedia();
+
+      mm.add({
+        motion: "(prefers-reduced-motion: no-preference)",
+        reduced: "(prefers-reduced-motion: reduce)"
+      }, (ctx)=>{
+        const reduced = ctx.conditions.reduced;
+        const heroChars = buildSplits();
+        // initial states (so reduced just lands on final)
+        gsap.set('#heroTitle .char', { yPercent: 120, rotation: 8 });
+        gsap.set('#scrollBar', { scaleX: 0 });
+
+        if(reduced){
+          gsap.set('#heroTitle .char', { yPercent:0, rotation:0 });
+          gsap.set('#scrollBar', { scaleX:1 });
+          if(pre) pre.style.display='none';
+          // reveal manifesto + work + footer statically
+          gsap.set('.manifesto__body .reveal-line > span, [data-fade], [data-cta]', { clearProps:"all", autoAlpha:1, yPercent:0 });
+          return;
+        }
+
+        /* ---- INTRO TIMELINE ---- */
+        const intro = gsap.timeline();
+        if(pre){
+          intro.to(pre, { yPercent:-100, duration:.9, ease:"kinOut",
+            onComplete:()=>{ pre.style.display='none'; } });
+        }
+        // masked stagger rise of hero chars
+        intro.to('#heroTitle .char', {
+          yPercent:0, rotation:0, duration:1.1, ease:"kin",
+          stagger:{ each:.045, from:"start" }
+        }, pre ? "-=.45" : 0);
+        // scroll bar grows
+        intro.to('#scrollBar', { scaleX:1, duration:.6, ease:"kinOut" }, "-=.5");
+
+        /* ---- HERO CHAR HOVER WAVE ---- */
+        const title = document.getElementById('heroTitle');
+        const chars = gsap.utils.toArray('#heroTitle .char');
+        title.addEventListener('pointermove', (e)=>{
+          const mx = e.clientX;
+          chars.forEach((c)=>{
+            const r = c.getBoundingClientRect();
+            const d = Math.abs(mx - (r.left + r.width/2));
+            const lift = gsap.utils.clamp(0, 1, 1 - d/260);
+            gsap.to(c, { yPercent: -22*lift, duration:.5, ease:"power3.out", overwrite:"auto" });
+          });
+        });
+        title.addEventListener('pointerleave', ()=>{
+          gsap.to(chars, { yPercent:0, duration:.6, ease:"elastic.out(1,.5)", overwrite:"auto" });
+        });
+
+        /* ---- HERO TICKER (infinite) ---- */
+        const ticker = document.getElementById('ticker');
+        const tw = ticker.getBoundingClientRect().width;
+        // duplicate content so the loop is seamless
+        ticker.innerHTML += ticker.innerHTML;
+        gsap.to(ticker, { x: -tw, duration: 18, ease:"none", repeat:-1 });
+
+        /* ---- MANIFESTO line-by-line reveal (SplitText lines) ---- */
+        const mSplit = new SplitText('#manifesto', { type:"lines", linesClass:"reveal-line" });
+        // wrap each line's content for masked translate
+        mSplit.lines.forEach((ln)=>{
+          const inner = document.createElement('span');
+          while(ln.firstChild) inner.appendChild(ln.firstChild);
+          ln.appendChild(inner);
+        });
+        gsap.set('.manifesto__body .reveal-line > span', { yPercent:115 });
+        gsap.to('.manifesto__body .reveal-line > span', {
+          yPercent:0, duration:1, ease:"kin",
+          stagger:.12,
+          scrollTrigger:{ trigger:'#manifesto', start:"top 78%", end:"bottom 60%" }
+        });
+
+        /* ---- WORK section: head fade + rows stagger up ---- */
+        gsap.from('[data-fade]', {
+          yPercent:40, autoAlpha:0, duration:.9, stagger:.08,
+          scrollTrigger:{ trigger:'.work__head', start:"top 85%" }
+        });
+        gsap.from('[data-row]', {
+          yPercent:60, autoAlpha:0, duration:.8, ease:"kin",
+          stagger:.09,
+          scrollTrigger:{ trigger:'#workList', start:"top 80%", end:"bottom 70%" }
+        });
+
+        /* ---- WORK row hover image peek ---- */
+        gsap.utils.toArray('[data-row]').forEach((row)=>{
+          const peek = row.querySelector('[data-peek]');
+          if(!peek) return;
+          gsap.set(peek, { autoAlpha:0, scale:.9, yPercent:-50 });
+          let qY = gsap.quickTo(peek, "y", { duration:.5, ease:"power3.out" });
+          row.addEventListener('pointerenter', ()=> gsap.to(peek, { autoAlpha:1, scale:1, duration:.5, ease:"kinOut", overwrite:"auto" }));
+          row.addEventListener('pointerleave', ()=> gsap.to(peek, { autoAlpha:0, scale:.9, duration:.4, overwrite:"auto" }));
+          row.addEventListener('pointermove', (e)=>{
+            const r = row.getBoundingClientRect();
+            qY((e.clientY - r.top) - peek.offsetHeight/2 + (peek.offsetHeight*0));
+          });
+        });
+
+        /* ---- BIG MARQUEE: scroll-velocity-driven horizontal move ---- */
+        const big = document.getElementById('bigword');
+        gsap.to(big, {
+          xPercent:-50, ease:"none",
+          scrollTrigger:{
+            trigger:'.bigword', start:"top bottom", end:"bottom top", scrub:1
+          }
+        });
+
+        /* ---- FOOTER CTA: char-line masked rise ---- */
+        gsap.set('[data-cta]', { yPercent:110 });
+        gsap.to('[data-cta]', {
+          yPercent:0, duration:1, ease:"kin", stagger:.1,
+          scrollTrigger:{ trigger:'.footer__cta', start:"top 82%" }
+        });
+
+        /* ---- scroll progress: subtle hero scroll-bar shrink as you leave ---- */
+        gsap.to('#scrollBar', {
+          scaleX:0, ease:"none",
+          scrollTrigger:{ trigger:'.hero', start:"top top", end:"bottom top", scrub:true }
+        });
+
+        return ()=>{ try{ mSplit.revert(); }catch(e){} };
+      });
+    }
+
+    /* preloader counter -> startSite */
+    if(reduce){
+      startSite();
+    }else{
+      const num = document.getElementById('preNum');
+      const bar = document.getElementById('preBar');
+      const counter = { v:0 };
+      gsap.to(counter, {
+        v:100, duration:1.4, ease:"kinOut",
+        onUpdate:()=>{ const n=Math.round(counter.v); num.textContent=String(n).padStart(2,'0'); gsap.set(bar,{scaleX:n/100}); },
+        onComplete:startSite
+      });
+    }
+  })();
+  </script>
+</body>
+</html>

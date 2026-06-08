@@ -1,0 +1,9 @@
+{
+  "id": "pinned-story",
+  "name_cn": "钉住叙事 · 河流以北",
+  "name_en": "Pinned Scroll-Story",
+  "style": "极简瑞士编辑风：米白纸张底、黑墨、单点正红，强 12 栏网格、大留白与编号章节，衬线大标题配无衬线网格标签。",
+  "plugins": ["ScrollTrigger", "ScrollTrigger pin", "ScrollTrigger scrub", "ScrollTrigger onUpdate/onToggle 进度回调", "fake horizontal scroll", "Timeline", "gsap.matchMedia (响应式 + reduced-motion)", "gsap.utils.toArray"],
+  "focus": "用四个被钉住的章节，把 ScrollTrigger 的 pin + scrub + 滚动进度三件套讲清楚：滚动驱动交叉淡入、横向接触印样、逐字浮现自述、固定底图配滚动年表，外加全局进度条与章节标号。",
+  "prompt": "做一篇极简瑞士编辑风格的长卷纪实摄影专题，主题《河流以北》——一位虚构纪实摄影师久野政人沿北海道一条向北的河流十年三十一次往返的影像故事。配色：米白纸张 #f4f2ec 背景、近黑墨 #14110d 文字、单点正红 #d8362a 强调；衬线大标题（思源宋体类）配无衬线网格标签（Archivo 类），统一 12 栏网格、细发丝分隔线、大留白、编号章节。页面顶部一条固定的红色滚动进度条随全站滚动从左铺满；左下角一个超大编号数字 + 竖排标签随当前章节切换（序章/01渡口/02印样/03自述/04年表），右下角显示百分比。结构：满屏报头（衬线巨标题逐行从下滑入，副标题、网格元数据依次淡入）；第一章把整章钉住，随滚动让四张河岸黑白照交叉淡入缩放，旁边文案逐行揭示、底部进度点跟随；第二章钉住后做假横向滚动——一排接触印样卡片随纵向滚动横向走过视口（横向 tween 必须 ease:none、用 invalidateOnRefresh 重算宽度）；第三章深色反转背景，把一句自述逐字从 16% 透明度 scrub 到全亮、最后两字转红；第四章把一张人物底图钉住并轻微视差，右侧年表条目逐条从右侧位移淡入。所有滚动驱动用完整 start/end 与 pin、scrub:1，动画只走 transform/opacity。用 gsap.matchMedia 处理响应式与 prefers-reduced-motion：减少动效时直接渲染终态、关闭 pin/scrub 与逐字动画。360–1440 响应式、语义化、图片有 alt、可见 focus、文字高对比。不要任何站点导航或返回按钮。"
+}

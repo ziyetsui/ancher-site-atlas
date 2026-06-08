@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>art-deco — framed portrait specimen</title>
+<style>
+  /* Resolved literals from index.html:
+     --canvas:#0c1c17; --surface-raised:#15362b; --accent:#c8a253;
+     --hairline:rgba(200,162,83,0.28) */
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:#0c1c17;            /* direction page background (--canvas) */
+    min-height:100vh;
+    display:grid;
+    place-items:center;
+    padding:28px;
+  }
+
+  /* portrait-stage: positioning context + scaled-down width */
+  .portrait-stage{
+    position:relative;
+    width:270px;                   /* was min(330px,76vw) on the real page */
+    margin:0 auto;
+  }
+
+  /* faint conic sunburst halo behind the frame (.sunburst.portrait-sun) */
+  .portrait-sun{
+    position:absolute;
+    top:-70px;left:50%;
+    width:246px;height:246px;
+    transform:translateX(-50%);
+    border-radius:50%;
+    background:
+      repeating-conic-gradient(
+        from 0deg,
+        #c8a253 0deg 1.4deg,
+        transparent 1.4deg 9deg
+      );
+    -webkit-mask:radial-gradient(circle, transparent 18%, #000 19%, #000 49%, transparent 50%);
+            mask:radial-gradient(circle, transparent 18%, #000 19%, #000 49%, transparent 50%);
+    opacity:.6;
+    z-index:0;
+    pointer-events:none;
+  }
+
+  /* the framed photo (.portrait-frame) */
+  .portrait-frame{
+    position:relative;
+    z-index:1;
+    padding:14px;                  /* the mat */
+    background:#15362b;            /* --surface-raised */
+    border:1px solid #c8a253;     /* --accent */
+    box-shadow:
+      inset 0 0 0 6px #0c1c17,
+      inset 0 0 0 7px rgba(200,162,83,0.28),
+      0 0 0 7px #0c1c17,
+      0 0 0 8px rgba(200,162,83,0.28);
+  }
+  .portrait-frame img{
+    display:block;
+    width:100%;
+    aspect-ratio:3/4;
+    object-fit:cover;
+    object-position:center 30%;
+    filter:sepia(.18) saturate(.92) contrast(1.02);
+  }
+
+  /* stepped deco corner brackets */
+  .portrait-frame::before,
+  .portrait-frame::after{
+    content:"";
+    position:absolute;
+    width:26px;height:26px;
+    border:1px solid #c8a253;
+  }
+  .portrait-frame::before{top:-9px;left:-9px;border-right:0;border-bottom:0;}
+  .portrait-frame::after{bottom:-9px;right:-9px;border-left:0;border-top:0;}
+</style>
+</head>
+<body>
+  <div class="portrait-stage">
+    <div class="portrait-sun" aria-hidden="true"></div>
+    <div class="portrait-frame">
+      <img src="portrait.webp" alt="Framed art-deco portrait specimen" width="600" height="800" />
+    </div>
+  </div>
+</body>
+</html>

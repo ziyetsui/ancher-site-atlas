@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>currently_building · narrative · specimen sheet</title>
+<style>
+:root{--bg:#ffffff;--surface:#f6f6f4;--surface-2:#efefea;--ink:#191917;--muted:#6b6b67;--subtle:#9a9a94;--accent:#2f56ff;--accent-soft:#e9eefc;--hairline:#e7e7e2;--ink-line:#191917;--ok:#1f7a44;--radius:12px;--pad:24px}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:16px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+.mono{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace}
+
+/* ---------- sheet shell ---------- */
+.sheet{max-width:920px;margin:0 auto;padding:32px 20px 80px}
+
+.sheet__header{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px;
+  padding-bottom:18px;margin-bottom:36px;
+  border-bottom:1px solid var(--hairline);
+}
+.sheet__title{
+  font-size:20px;font-weight:600;letter-spacing:-0.01em;margin:0;
+  display:flex;align-items:baseline;gap:10px;
+}
+.sheet__title .mono{font-size:16px;font-weight:500;color:var(--ink)}
+.sheet__dot{color:var(--subtle);font-weight:400}
+.sheet__meta{
+  margin-left:auto;display:flex;align-items:center;gap:10px;
+  font-size:12.5px;color:var(--muted);
+}
+.sheet__chip{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:11.5px;letter-spacing:0.02em;
+  color:var(--muted);background:var(--surface);
+  border:1px solid var(--hairline);border-radius:999px;
+  padding:3px 10px;
+}
+
+/* ---------- per-variant block ---------- */
+.variant{margin-bottom:44px}
+.variant:last-child{margin-bottom:0}
+
+.variant__label{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 12px;
+  margin-bottom:12px;
+}
+.variant__id{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:13px;font-weight:600;color:var(--ink);
+  background:var(--accent-soft);
+  border-radius:6px;padding:2px 8px;
+}
+.variant__hint{font-size:13px;color:var(--muted)}
+.variant__num{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:11.5px;color:var(--subtle);margin-left:auto;
+}
+
+.stage{
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  background:var(--surface);
+  padding:var(--pad);
+}
+
+/* =========================================================
+   VARIANT 1 — now_block : "Now" 区块
+   ========================================================= */
+.nowcard{
+  background:var(--bg);
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  padding:22px 24px;
+  max-width:560px;
+}
+.nowcard__top{
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:18px;
+}
+.nowcard__badge{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;
+  color:var(--ok);
+}
+.nowcard__pulse{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--ok);position:relative;flex:none;
+}
+.nowcard__pulse::after{
+  content:"";position:absolute;inset:-4px;border-radius:50%;
+  border:1px solid var(--ok);opacity:0;
+  animation:pulse 2.4s ease-out infinite;
+}
+@keyframes pulse{
+  0%{transform:scale(.6);opacity:.7}
+  100%{transform:scale(1.6);opacity:0}
+}
+.nowcard__updated{
+  margin-left:auto;font-size:12px;color:var(--subtle);
+}
+.nowcard__lead{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:21px;line-height:1.4;letter-spacing:-0.01em;
+  margin:0 0 16px;color:var(--ink);
+}
+.nowcard__lead em{color:var(--accent);font-style:italic}
+.nowlist{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.nowlist li{
+  display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;
+}
+.nowlist__mark{
+  margin-top:7px;width:6px;height:6px;border-radius:1px;flex:none;
+  background:var(--accent);
+}
+.nowlist__mark--soft{background:var(--subtle)}
+.nowlist__body strong{font-weight:600;font-size:14.5px}
+.nowlist__body span{display:block;font-size:13.5px;color:var(--muted);margin-top:1px}
+.nowcard__foot{
+  display:flex;flex-wrap:wrap;align-items:center;gap:8px;
+  margin-top:20px;padding-top:16px;border-top:1px solid var(--hairline);
+}
+.nowtag{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:11.5px;color:var(--muted);
+  background:var(--surface);border:1px solid var(--hairline);
+  border-radius:6px;padding:3px 8px;
+}
+.nowtag--loc{margin-left:auto;color:var(--subtle);border-style:dashed}
+
+/* =========================================================
+   VARIANT 2 — inline : 行内一行
+   ========================================================= */
+.inline-demo{display:grid;gap:18px;max-width:640px}
+.inline-demo__ctx{
+  font-size:12px;color:var(--subtle);
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+.nowline{
+  display:inline-flex;flex-wrap:wrap;align-items:center;gap:9px;
+  font-size:15px;color:var(--ink);line-height:1.6;
+}
+.nowline__dot{
+  width:7px;height:7px;border-radius:50%;background:var(--ok);flex:none;
+  position:relative;
+}
+.nowline__dot::after{
+  content:"";position:absolute;inset:-3px;border-radius:50%;
+  border:1px solid var(--ok);opacity:0;animation:pulse 2.4s ease-out infinite;
+}
+.nowline__kicker{
+  font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--ok);
+}
+.nowline__sep{color:var(--hairline);user-select:none}
+.nowline strong{font-weight:600}
+.nowline__what{
+  color:var(--accent);text-decoration:none;
+  border-bottom:1px solid var(--accent-soft);
+  padding-bottom:1px;
+}
+.nowline__what:hover{border-bottom-color:var(--accent)}
+.nowline__time{font-size:13px;color:var(--subtle)}
+
+/* prose-embedded inline example */
+.inline-prose{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:16.5px;line-height:1.7;color:var(--ink);
+  max-width:560px;margin:0;
+}
+.inline-prose .nowpill{
+  font-family:system-ui,-apple-system,sans-serif;
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:13px;vertical-align:baseline;
+  background:var(--accent-soft);color:var(--accent);
+  border-radius:999px;padding:1px 9px;white-space:nowrap;
+}
+.inline-prose .nowpill__dot{
+  width:6px;height:6px;border-radius:50%;background:var(--accent);flex:none;
+}
+
+/* ---------- a11y ---------- */
+a:focus-visible,.nowline__what:focus-visible{
+  outline:2px solid var(--accent);outline-offset:2px;border-radius:3px;
+}
+.sr-only{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+}
+@media (max-width:480px){
+  .sheet{padding:24px 14px 64px}
+  .nowcard,.stage{padding:18px}
+  .nowcard__lead{font-size:19px}
+}
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header class="sheet__header">
+    <h1 class="sheet__title">
+      Currently building <span class="sheet__dot">/</span> 现在在做
+      <span class="mono">currently_building</span>
+    </h1>
+    <div class="sheet__meta">
+      <span class="sheet__chip">narrative</span>
+      <span class="sheet__chip">2 variants</span>
+    </div>
+  </header>
+
+  <!-- ===================== VARIANT 1 ===================== -->
+  <section class="variant" aria-labelledby="v1-id">
+    <div class="variant__label">
+      <span class="variant__id" id="v1-id">now_block</span>
+      <span class="variant__hint">“Now” 区块 — a standalone status panel of what you're working on right now</span>
+      <span class="variant__num">01 / 02</span>
+    </div>
+
+    <div class="stage">
+      <article class="nowcard" aria-labelledby="now-heading">
+        <div class="nowcard__top">
+          <span class="nowcard__badge">
+            <span class="nowcard__pulse" aria-hidden="true"></span>
+            Now
+          </span>
+          <time class="nowcard__updated" datetime="2026-05">Updated May 2026</time>
+        </div>
+
+        <p class="nowcard__lead" id="now-heading">
+          Building <em>Tide</em> — a calm habit tracker that turns daily
+          check-ins into a single, honest weekly tide chart.
+        </p>
+
+        <ul class="nowlist">
+          <li>
+            <span class="nowlist__mark" aria-hidden="true"></span>
+            <span class="nowlist__body">
+              <strong>Shipping the streak-free model</strong>
+              <span>Replacing punishing streaks with a forgiving “momentum” curve.</span>
+            </span>
+          </li>
+          <li>
+            <span class="nowlist__mark" aria-hidden="true"></span>
+            <span class="nowlist__body">
+              <strong>Closed beta with 40 testers</strong>
+              <span>Weekly feedback calls; iterating on the onboarding flow.</span>
+            </span>
+          </li>
+          <li>
+            <span class="nowlist__mark nowlist__mark--soft" aria-hidden="true"></span>
+            <span class="nowlist__body">
+              <strong>Reading on the side</strong>
+              <span>“The Timeless Way of Building” — Christopher Alexander.</span>
+            </span>
+          </li>
+        </ul>
+
+        <div class="nowcard__foot">
+          <span class="nowtag">product design</span>
+          <span class="nowtag">solo + 1 engineer</span>
+          <span class="nowtag nowtag--loc">📍 Lisbon, PT</span>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===================== VARIANT 2 ===================== -->
+  <section class="variant" aria-labelledby="v2-id">
+    <div class="variant__label">
+      <span class="variant__id" id="v2-id">inline</span>
+      <span class="variant__hint">行内一行 — one compact line, droppable into a header, bio, or paragraph</span>
+      <span class="variant__num">02 / 02</span>
+    </div>
+
+    <div class="stage">
+      <div class="inline-demo">
+
+        <p class="inline-demo__ctx">// standalone status line</p>
+        <p class="nowline">
+          <span class="nowline__dot" aria-hidden="true"></span>
+          <span class="nowline__kicker">Now</span>
+          <span class="nowline__sep" aria-hidden="true">·</span>
+          <span>Building <strong>Tide</strong>, a calm habit tracker —
+            <a class="nowline__what" href="#">closed beta</a></span>
+          <span class="nowline__sep" aria-hidden="true">·</span>
+          <span class="nowline__time">May 2026</span>
+        </p>
+
+        <p class="inline-demo__ctx">// embedded mid-sentence in a bio</p>
+        <p class="inline-prose">
+          Maya Chen is a product designer in Lisbon. Right now she's
+          <span class="nowpill"><span class="nowpill__dot" aria-hidden="true"></span>building&nbsp;Tide</span>,
+          a calm habit tracker in closed beta, and writing occasionally about
+          designing software that doesn't shout.
+        </p>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>

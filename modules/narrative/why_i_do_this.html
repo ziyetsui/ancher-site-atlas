@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>why_i_do_this · narrative · specimen</title>
+<style>
+:root{--bg:#ffffff;--surface:#f6f6f4;--surface-2:#efefea;--ink:#191917;--muted:#6b6b67;--subtle:#9a9a94;--accent:#2f56ff;--accent-soft:#e9eefc;--hairline:#e7e7e2;--ink-line:#191917;--ok:#1f7a44;--radius:12px;--pad:24px}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:16px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+.serif{font-family:Georgia,"Times New Roman",serif}
+.mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+
+a{color:var(--accent)}
+:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:3px;
+  border-radius:4px;
+}
+
+/* ---------- specimen scaffolding ---------- */
+.sheet{max-width:1200px;margin:0 auto;padding:32px 24px 80px}
+
+.sheet-header{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:8px 16px;
+  padding-bottom:18px;
+  border-bottom:1px solid var(--hairline);
+  margin-bottom:40px;
+}
+.sheet-header h1{
+  font-size:18px;
+  font-weight:600;
+  letter-spacing:.01em;
+  margin:0;
+}
+.sheet-header .dot{color:var(--subtle)}
+.sheet-header .meta{
+  font-size:13px;
+  color:var(--muted);
+}
+.sheet-header .count{
+  margin-left:auto;
+  font-size:12px;
+  color:var(--muted);
+  border:1px solid var(--hairline);
+  border-radius:999px;
+  padding:4px 12px;
+  background:var(--surface);
+}
+
+.variant{margin-bottom:48px}
+.variant-label{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:6px 12px;
+  margin-bottom:12px;
+}
+.variant-label .id{
+  font-size:13px;
+  color:var(--ink);
+  background:var(--surface-2);
+  border:1px solid var(--hairline);
+  border-radius:6px;
+  padding:2px 8px;
+}
+.variant-label .hint{
+  font-size:13px;
+  color:var(--muted);
+}
+
+.stage{
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  padding:clamp(20px,4vw,48px);
+  background:var(--surface);
+}
+
+/* photo slot helper */
+.photo-slot{
+  background:var(--surface-2);
+  border:1px solid var(--hairline);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  color:var(--subtle);
+  text-align:center;
+  flex:none;
+}
+.photo-slot .initials{
+  font-family:Georgia,serif;
+  font-size:22px;
+  font-weight:600;
+  color:var(--muted);
+  letter-spacing:.02em;
+}
+.photo-slot .tag{
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+/* =======================================================
+   VARIANT 1 — short paragraph
+   ======================================================= */
+.v-short{
+  display:grid;
+  grid-template-columns:96px 1fr;
+  gap:24px;
+  align-items:start;
+  max-width:760px;
+}
+.v-short .photo-slot{
+  width:96px;
+  height:96px;
+  border-radius:50%;
+}
+.v-short .eyebrow{
+  font-size:12px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin:0 0 10px;
+  font-weight:600;
+}
+.v-short p{
+  margin:0 0 14px;
+  font-size:17px;
+  line-height:1.62;
+  color:var(--ink);
+}
+.v-short p .lede{
+  font-family:Georgia,serif;
+  font-style:italic;
+}
+.v-short .sign{
+  display:flex;
+  align-items:baseline;
+  gap:10px;
+  margin-top:18px;
+  font-size:14px;
+  color:var(--muted);
+}
+.v-short .sign strong{
+  color:var(--ink);
+  font-weight:600;
+}
+.v-short .sign .rule{
+  flex:1;
+  height:1px;
+  background:var(--hairline);
+}
+
+@media (max-width:520px){
+  .v-short{grid-template-columns:1fr;gap:18px}
+  .v-short .photo-slot{width:72px;height:72px}
+}
+
+/* =======================================================
+   VARIANT 2 — manifesto, big type
+   ======================================================= */
+.v-manifesto{
+  --line:var(--ink-line);
+  max-width:920px;
+}
+.v-manifesto .kicker{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-size:12px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:clamp(20px,4vw,36px);
+}
+.v-manifesto .kicker::before{
+  content:"";
+  width:28px;
+  height:2px;
+  background:var(--accent);
+  display:inline-block;
+}
+.v-manifesto blockquote{
+  margin:0;
+  font-family:Georgia,serif;
+  font-weight:400;
+  font-size:clamp(28px,6.2vw,58px);
+  line-height:1.08;
+  letter-spacing:-0.015em;
+  color:var(--ink);
+}
+.v-manifesto blockquote .em{
+  font-style:italic;
+}
+.v-manifesto blockquote .mark{
+  position:relative;
+  white-space:nowrap;
+  background:linear-gradient(transparent 62%, var(--accent-soft) 62%);
+  padding:0 .04em;
+}
+.v-manifesto .credo{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px 8px;
+  margin-top:clamp(28px,5vw,44px);
+  padding-top:clamp(24px,4vw,32px);
+  border-top:1px solid var(--hairline);
+}
+.v-manifesto .credo li{
+  list-style:none;
+  font-size:13px;
+  color:var(--muted);
+  border:1px solid var(--hairline);
+  border-radius:999px;
+  padding:6px 14px;
+  background:var(--bg);
+}
+.v-manifesto .credo li .n{
+  color:var(--accent);
+  font-family:ui-monospace,Menlo,monospace;
+  font-size:11px;
+  margin-right:6px;
+}
+.v-manifesto .author{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-top:clamp(24px,4vw,32px);
+}
+.v-manifesto .author .photo-slot{
+  width:48px;height:48px;border-radius:10px;
+}
+.v-manifesto .author .who{font-size:14px}
+.v-manifesto .author .who b{font-weight:600;color:var(--ink);display:block}
+.v-manifesto .author .who span{color:var(--muted)}
+
+/* reduced motion respect (no entrance animations used, kept for safety) */
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms!important;transition-duration:.001ms!important}
+}
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header class="sheet-header">
+    <h1>why_i_do_this</h1>
+    <span class="dot" aria-hidden="true">·</span>
+    <span class="meta">narrative</span>
+    <span class="dot" aria-hidden="true">·</span>
+    <span class="meta">Why I do this / 为什么</span>
+    <span class="count">2 variants</span>
+  </header>
+
+  <!-- VARIANT 1 -->
+  <section class="variant" aria-labelledby="lbl-short">
+    <div class="variant-label">
+      <code class="id mono" id="lbl-short">short</code>
+      <span class="hint">短段落 — a tight, signed paragraph beside a portrait</span>
+    </div>
+    <div class="stage">
+      <article class="v-short">
+        <div class="photo-slot" role="img" aria-label="Photo slot — portrait of Maya Chen">
+          <span class="initials" aria-hidden="true">MC</span>
+          <span class="tag" aria-hidden="true">photo</span>
+        </div>
+        <div>
+          <p class="eyebrow">Why I do this</p>
+          <p><span class="lede">I build interfaces for the moments people don't want to think about.</span>
+             Booking a clinic appointment, splitting a bill, finding the right form at 11pm —
+             the small frictions that quietly tax a day.</p>
+          <p>I spent six years on healthcare and fintech products where a confusing screen
+             isn't an inconvenience; it's a missed dose or a late payment. That raised the bar
+             permanently. I'd rather ship one screen that works for everyone than ten that demo well.</p>
+          <div class="sign">
+            <strong>Maya Chen</strong>
+            <span>Product Designer · Toronto</span>
+            <span class="rule" aria-hidden="true"></span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- VARIANT 2 -->
+  <section class="variant" aria-labelledby="lbl-manifesto">
+    <div class="variant-label">
+      <code class="id mono" id="lbl-manifesto">manifesto</code>
+      <span class="hint">宣言式大字 — oversized editorial statement with a short credo</span>
+    </div>
+    <div class="stage">
+      <article class="v-manifesto">
+        <p class="kicker">为什么 — the short version</p>
+        <blockquote>
+          Good software should feel like
+          <span class="em">it was made by someone</span>
+          who has actually <span class="mark">stood in your shoes</span> at the worst possible moment.
+        </blockquote>
+        <ul class="credo">
+          <li><span class="n" aria-hidden="true">01</span>Clarity is a kindness, not a feature.</li>
+          <li><span class="n" aria-hidden="true">02</span>Design for the tired user, not the demo.</li>
+          <li><span class="n" aria-hidden="true">03</span>If it excludes one person, it isn't done.</li>
+        </ul>
+        <div class="author">
+          <div class="photo-slot" role="img" aria-label="Photo slot — portrait of Maya Chen">
+            <span class="initials" aria-hidden="true">MC</span>
+          </div>
+          <p class="who"><b>Maya Chen</b><span>Product Designer</span></p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>

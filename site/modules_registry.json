@@ -1,0 +1,45 @@
+{
+  "categories": [
+    { "id": "identity",    "name_cn": "身份",  "name_en": "Identity",    "blurb": "我是谁 — hero / 头像 / 定位 / 社交" },
+    { "id": "trust",       "name_cn": "信任",  "name_en": "Trust",       "blurb": "凭什么信你 — 经历 / 作品 / 露出 / 证言 / 数据 / 资历" },
+    { "id": "narrative",   "name_cn": "叙事",  "name_en": "Narrative",   "blurb": "你的故事 — story / 动机 / 信条 / 现在在做" },
+    { "id": "conversion",  "name_cn": "转化",  "name_en": "Conversion",  "blurb": "下一步 — 预约 / 雇我 / 订阅 / 联系 / 简历" },
+    { "id": "personality", "name_cn": "个性",  "name_en": "Personality", "blurb": "个人色彩 — Now / 在读 / 工具 / 照片墙 / 金句" }
+  ],
+  "modules": [
+    { "cat": "identity", "id": "nav", "name_cn": "Nav · 导航 / 顶栏", "variants": ["centered","split","minimal"] },
+    { "cat": "identity", "id": "hero", "name_cn": "Hero · 首屏", "variants": ["bold_statement","split_portrait","minimal_centered"] },
+    { "cat": "identity", "id": "avatar", "name_cn": "Avatar · 头像", "variants": ["round","square","initials_block"] },
+    { "cat": "identity", "id": "one_liner", "name_cn": "One-liner · 一句话定位", "variants": ["inline","eyebrow"] },
+    { "cat": "identity", "id": "social_links", "name_cn": "Social links · 社交链接", "variants": ["text_row","icon_row"] },
+
+    { "cat": "trust", "id": "experience", "name_cn": "Experience · 工作经历", "variants": ["timeline","compact_list"] },
+    { "cat": "trust", "id": "selected_work", "name_cn": "Selected work · 作品", "variants": ["grid","carousel","featured_case","list"] },
+    { "cat": "trust", "id": "logos_press", "name_cn": "Logos / Press · 露出", "variants": ["logo_row","mentioned_in"] },
+    { "cat": "trust", "id": "testimonials", "name_cn": "Testimonials · 证言", "variants": ["cards","quote_led"] },
+    { "cat": "trust", "id": "metrics", "name_cn": "Metrics · 数据成就", "variants": ["stat_row","big_numerals"] },
+    { "cat": "trust", "id": "credentials", "name_cn": "Credentials · 资历", "variants": ["pills","list"] },
+    { "cat": "trust", "id": "speaking", "name_cn": "Speaking · 演讲 / 播客", "variants": ["list","cards"] },
+
+    { "cat": "narrative", "id": "story", "name_cn": "Story · 个人故事", "variants": ["magazine_longform","timeline_cards","split_image_text","quote_led","scroll_chapter"] },
+    { "cat": "narrative", "id": "why_i_do_this", "name_cn": "Why I do this · 为什么", "variants": ["short","manifesto"] },
+    { "cat": "narrative", "id": "beliefs", "name_cn": "Beliefs · 信条", "variants": ["principles_list","numbered"] },
+    { "cat": "narrative", "id": "currently_building", "name_cn": "Currently building · 现在在做", "variants": ["now_block","inline"] },
+    { "cat": "narrative", "id": "writing", "name_cn": "Writing · 文章索引", "variants": ["list","cards","featured_plus_list"] },
+
+    { "cat": "conversion", "id": "book_a_call", "name_cn": "Book a call · 预约", "variants": ["inline","card"] },
+    { "cat": "conversion", "id": "hire_me", "name_cn": "Hire me · 雇我", "variants": ["cta_band","inline"] },
+    { "cat": "conversion", "id": "subscribe", "name_cn": "Subscribe · 订阅", "variants": ["inline_form","card"] },
+    { "cat": "conversion", "id": "contact_form", "name_cn": "Contact form · 联系表单", "variants": ["minimal","full"] },
+    { "cat": "conversion", "id": "download_resume", "name_cn": "Download resume · 下载简历", "variants": ["button"] },
+    { "cat": "conversion", "id": "services", "name_cn": "Services · 服务 / 报价", "variants": ["cards","pricing_tiers","list"] },
+    { "cat": "conversion", "id": "faq", "name_cn": "FAQ · 常见问题", "variants": ["accordion","two_column"] },
+    { "cat": "conversion", "id": "footer", "name_cn": "Footer · 页脚", "variants": ["minimal","columns","cta_band"] },
+
+    { "cat": "personality", "id": "now_page", "name_cn": "Now page · Now 页", "variants": ["list"] },
+    { "cat": "personality", "id": "reading_list", "name_cn": "Reading list · 在读", "variants": ["list","covers"] },
+    { "cat": "personality", "id": "tools", "name_cn": "Tools · 技术栈", "variants": ["stack_list","grid"] },
+    { "cat": "personality", "id": "photo_wall", "name_cn": "Photo wall · 照片墙", "variants": ["masonry","strip"] },
+    { "cat": "personality", "id": "selected_quotes", "name_cn": "Selected quotes · 金句", "variants": ["large_type"] }
+  ]
+}

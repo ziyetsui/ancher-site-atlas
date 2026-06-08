@@ -1,0 +1,9 @@
+{
+  "id": "sticky-product",
+  "name_cn": "产品钉住展示",
+  "name_en": "Sticky Product",
+  "style": "Apple 式高级制表页：克制、大量负空间、柔和金色渐变、衬线/无衬线精确混排的克制奢华质感。",
+  "plugins": ["ScrollTrigger", "pin", "scrub", "ScrollTrigger.create", "getVelocity", "matchMedia", "timeline scroll-scrub"],
+  "focus": "演示用 ScrollTrigger 把产品钉住，随滚动让规格标注线/标注点依次动入并连到产品，切换多帧图模拟旋转，规格卡做深度视差。",
+  "prompt": "做一个 Apple 式的高端机械腕表产品页，品牌 AETHER、型号 Méridien 零一，限量 250 枚。整体克制奢华：乳白底色（#f4f1ea）、香槟金强调色（#a98a4f）、衬线大标题（Cormorant Garamond 斜体）与无衬线小字（Inter）混排，大量负空间。顶栏品牌名用 mix-blend-difference 常驻，右侧一条极简滚动进度刻度。首屏 hero：大号衬线标题 Méridien / 零一逐行从下方滑入揭幕，副标题与三个数据（72h 动力储存、日差、表径）依次淡入上移。核心是一个被 ScrollTrigger 钉住（pin）的全屏展示舞台，时长约 320% 视口，scrub 跟随滚动：腕表主体从下方升起放大入场；随滚动进度，四条规格标注（表壳/珐琅表盘/自产机芯/蓝宝石表镜）的标注点先亮、引线 scaleX 从 0 画出连到产品、文字横移淡入依次出现；同时在关键步切换 2–3 张产品图（正面/侧面/机芯特写）的 opacity 并轻微缩放，模拟腕表转动换面；背景有一个巨大的半透明衬线水印词随滚动横向漂移，底部一条进度细线随 pin 进程铺满，左下角步骤序号与说明文字同步切换。接着是规格卡区：5 张不规则网格卡片（振频/宝石数/防水/动力储存/零件数）进入时上移淡入，并随页面滚动做不同速度的 yPercent 深度视差。然后是一条材质工艺无限横向 marquee（大明火珐琅/904L 精钢/蓝宝石…），用滚动速度 getVelocity 动态调整滚动方向与速度。再下是制表师分栏：人物图做 yPercent 视差缩放，右侧标题与参数列表逐项揭入。结尾预定区：衬线大标题随滚动 scrub 缩放淡入，价格与一颗深色胶囊 CTA。全部动效走 transform/opacity，ScrollTrigger 用完整 start/end；用 gsap.matchMedia 处理 prefers-reduced-motion，reduced 时直接渲染终态、关闭 pin/scrub 与无限循环。响应式 360–1440，语义化标签，图片有中文 alt，可见 focus 环。"
+}

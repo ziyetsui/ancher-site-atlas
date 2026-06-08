@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>查看示例页 · Atlas</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <style>
+    :root {
+      --bar: #16161a; --bar-line: #2c2c30; --ink: #f4f4f2; --muted: #9a9aa4;
+      --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      --mono: ui-monospace, "SF Mono", Menlo, monospace; --h: 52px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; background: var(--bar); font-family: var(--font); }
+    .toolbar {
+      height: var(--h); display: flex; align-items: center; gap: 10px;
+      padding: 0 14px; background: var(--bar); color: var(--ink);
+      border-bottom: 1px solid var(--bar-line); position: sticky; top: 0; z-index: 10;
+    }
+    .toolbar a, .toolbar button {
+      appearance: none; cursor: pointer; font: inherit; font-size: 13px; font-weight: 600;
+      color: var(--ink); background: transparent; border: 1px solid var(--bar-line);
+      border-radius: 8px; padding: 7px 11px; text-decoration: none; white-space: nowrap;
+      transition: background .15s, border-color .15s;
+    }
+    .toolbar a:hover, .toolbar button:hover { background: #23232a; border-color: #3a3a42; }
+    .toolbar .home { border-color: transparent; padding-left: 6px; }
+    .nav { display: flex; align-items: center; gap: 6px; }
+    .nav .arrow { width: 34px; text-align: center; padding: 7px 0; }
+    .nav .arrow[aria-disabled="true"] { opacity: .35; pointer-events: none; }
+    .title { display: flex; flex-direction: column; line-height: 1.15; min-width: 0; }
+    .title .cn { font-size: 14px; font-weight: 700; }
+    .title .en { font-size: 11px; color: var(--muted); font-family: var(--mono); }
+    .spacer { flex: 1; }
+    .right { display: flex; gap: 8px; }
+    .right .primary { background: var(--ink); color: var(--bar); border-color: var(--ink); }
+    .right .primary:hover { background: #fff; }
+    .right .primary.copied { background: #2ea05a; color: #fff; border-color: #2ea05a; }
+    .components[aria-pressed="true"] { background: #ff5a5a22; border-color: #ff5a5a; color: #ffb3b3; }
+    .stage { display: flex; height: calc(100% - var(--h)); }
+    .frameWrap { flex: 1; min-width: 0; height: 100%; background: #fff; }
+    iframe { width: 100%; height: 100%; border: 0; display: block; }
+    /* in-context component inspector panel */
+    .inspector { width: 330px; flex: none; background: #101014; border-left: 1px solid var(--bar-line);
+      overflow: auto; color: var(--ink); padding: 14px 14px 36px; }
+    .inspector[hidden] { display: none; }
+    .inspector h3 { font-size: 13px; margin: 2px 0 4px; font-weight: 700; }
+    .inspector .sub { font-size: 11px; color: var(--muted); margin: 0 0 14px; line-height: 1.5; }
+    .insp-item { display: block; width: 100%; text-align: left; background: #16161b; border: 1px solid var(--bar-line);
+      border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; cursor: pointer; color: var(--ink); font: inherit; }
+    .insp-item:hover { background: #1e1e25; border-color: #3a3a42; }
+    .insp-item .n { font-family: var(--mono); font-size: 11px; color: #ff8a8a; }
+    .insp-item .mod { font-family: var(--mono); font-size: 12.5px; font-weight: 700; margin: 2px 0; }
+    .insp-item .mod .var { color: var(--muted); font-weight: 400; }
+    .insp-item .why { font-size: 11px; color: var(--muted); line-height: 1.45; }
+    .insp-item .more { font-size: 10px; color: #8aa0ff; text-decoration: none; display: inline-block; margin-top: 6px; }
+    .insp-item .more:hover { text-decoration: underline; }
+    @media (max-width: 720px) {
+      .title .cn { font-size: 13px; } .en { display: none; }
+      .right .design, .right .raw { display: none; }
+      .inspector { position: fixed; right: 0; top: var(--h); bottom: 0; z-index: 30; box-shadow: -12px 0 30px rgba(0,0,0,.45); }
+    }
+    /* prompt viewer modal */
+    .modal { position: fixed; inset: 0; z-index: 200; display: flex; align-items: center; justify-content: center; padding: 24px; }
+    .modal[hidden] { display: none; }
+    .modal-backdrop { position: absolute; inset: 0; background: rgba(8,8,10,.66); }
+    .modal-card { position: relative; width: min(900px, 100%); max-height: 86vh; display: flex; flex-direction: column;
+      background: #101014; border: 1px solid var(--bar-line); border-radius: 14px; overflow: hidden;
+      box-shadow: 0 30px 80px -20px rgba(0,0,0,.7); }
+    .modal-head { display: flex; align-items: center; gap: 8px; padding: 11px 12px; border-bottom: 1px solid var(--bar-line); }
+    .modal-title { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+    .modal-spacer { flex: 1; }
+    .modal-head button, .modal-head a { appearance: none; cursor: pointer; font: inherit; font-size: 12px; font-weight: 600;
+      color: var(--ink); background: transparent; border: 1px solid var(--bar-line); border-radius: 8px; padding: 6px 10px; text-decoration: none; }
+    .modal-head button:hover, .modal-head a:hover { background: #23232a; }
+    .modal-copy.copied { background: #2ea05a; color: #fff; border-color: #2ea05a; }
+    .modal-x { border-color: transparent !important; font-size: 14px !important; padding: 6px 9px !important; }
+    .modal-body { margin: 0; padding: 18px 20px; overflow: auto; white-space: pre-wrap; word-break: break-word;
+      font: 13px/1.65 var(--mono); color: #e7e7ea; background: #0d0d10; }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <a class="home" href="index.html" title="返回图鉴">← 图鉴</a>
+    <div class="nav">
+      <a class="arrow prev" href="#" role="button" aria-label="上一个方向">◀</a>
+      <a class="arrow next" href="#" role="button" aria-label="下一个方向">▶</a>
+    </div>
+    <div class="title"><span class="cn" id="t-cn"></span><span class="en" id="t-en"></span></div>
+    <span class="spacer"></span>
+    <div class="right">
+      <button class="viewprompt" id="b-viewprompt" title="查看 Prompt 内容(不用复制)">查看 Prompt</button>
+      <button class="primary copy" id="b-copy">复制 Prompt</button>
+      <button class="components" id="b-components" aria-pressed="false" title="拆解这个页面的组件">组件</button>
+      <a class="design" id="b-design" target="_blank" rel="noopener">DESIGN.md</a>
+      <a class="raw" id="b-raw" target="_blank" rel="noopener">原始页 ↗</a>
+    </div>
+  </div>
+  <div class="stage">
+    <div class="frameWrap"><iframe id="frame" title="示例页"></iframe></div>
+    <aside class="inspector" id="inspector" hidden aria-label="本页组件拆解"></aside>
+  </div>
+
+  <div class="modal" id="prompt-modal" hidden>
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-label="Prompt 内容">
+      <div class="modal-head">
+        <span class="modal-title" id="pm-title">prompt.md</span>
+        <span class="modal-spacer"></span>
+        <button class="modal-copy" id="pm-copy">复制</button>
+        <a class="modal-open" id="pm-open" target="_blank" rel="noopener">新标签打开 ↗</a>
+        <button class="modal-x" id="pm-close" aria-label="关闭" data-close>✕</button>
+      </div>
+      <pre class="modal-body" id="pm-body" tabindex="0">加载中…</pre>
+    </div>
+  </div>
+
+  <script src="js/view.js"></script>
+</body>
+</html>

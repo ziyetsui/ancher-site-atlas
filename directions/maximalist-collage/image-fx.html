@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>maximalist-collage — photo specimen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+
+  body{
+    margin:0;
+    min-height:100vh;
+    display:grid;
+    place-items:center;
+    padding:28px;
+    font-family:'Space Grotesk',system-ui,sans-serif;
+    color:#16140f;
+    /* direction's page background (resolved from --ground + busy patterned ground) */
+    background-color:#f4ead5;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(22,20,15,.14) 1.4px, transparent 1.6px),
+      repeating-linear-gradient(0deg, rgba(22,20,15,.045) 0 1px, transparent 1px 34px),
+      repeating-linear-gradient(90deg, rgba(22,20,15,.045) 0 1px, transparent 1px 34px),
+      radial-gradient(120% 90% at 0% 0%, rgba(255,46,99,.10), transparent 55%),
+      radial-gradient(120% 90% at 100% 100%, rgba(27,59,255,.10), transparent 55%);
+    background-size:17px 17px, 34px 34px, 34px 34px, 100% 100%, 100% 100%;
+  }
+
+  /* stage holds the framed photo + its surrounding collage scraps & stickers */
+  .stage{position:relative;width:260px}
+
+  /* colored scrap peeking behind the photo card (--scrap-orange) */
+  .scrap-behind{
+    position:absolute;z-index:1;width:150px;height:150px;
+    background:#ff7a1a;border:2px solid #16140f;
+    transform:rotate(-9deg);top:18px;left:-22px;
+    box-shadow:3px 4px 0 rgba(22,20,15,.55);
+    clip-path:polygon(2% 4%,98% 0,100% 96%,40% 100%,0 92%);
+  }
+
+  /* the framed photo card — cream matting, ink border, hard offset shadow,
+     tilt, and ripped right edge (copied from .portrait-card) */
+  .portrait-card{
+    position:relative;z-index:3;background:#fff7e6;
+    border:2px solid #16140f;padding:9px 9px 12px;
+    box-shadow:8px 10px 0 rgba(22,20,15,.9);
+    transform:rotate(3deg);
+    clip-path:polygon(0 0,98% 1%,100% 6%,97% 12%,100% 19%,96% 26%,100% 33%,97% 41%,100% 49%,96% 57%,100% 65%,97% 73%,100% 81%,96% 89%,100% 96%,98% 100%,0 100%);
+  }
+  .portrait-card .u-photo{
+    width:100%;display:block;border:1.5px solid #16140f;
+    filter:contrast(1.05) saturate(1.08);
+  }
+  .portrait-cap{
+    font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;
+    letter-spacing:1.5px;text-transform:uppercase;margin-top:8px;color:#16140f;
+  }
+  .portrait-cap b{color:#ff2e63}
+
+  /* masking-tape strips holding the card down */
+  .tape{
+    position:absolute;width:74px;height:23px;background:rgba(214,196,140,0.72);
+    border-left:1px dashed rgba(22,20,15,.18);border-right:1px dashed rgba(22,20,15,.18);
+    box-shadow:0 1px 2px rgba(0,0,0,.12);
+    backdrop-filter:saturate(1.2);z-index:4;
+  }
+  .tape.tl{top:-11px;left:-11px;transform:rotate(-32deg)}
+  .tape.br{bottom:-11px;right:-8px;transform:rotate(-18deg)}
+
+  /* floating circular stickers around the photo */
+  .sticker{
+    position:absolute;z-index:5;
+    display:inline-flex;align-items:center;justify-content:center;text-align:center;
+    width:72px;height:72px;border-radius:50%;
+    color:#fff7e6;border:4px solid #ffffff;
+    box-shadow:3px 4px 0 rgba(22,20,15,.55);
+    font-family:'Archivo Black',sans-serif;text-transform:uppercase;
+    font-size:11px;line-height:1.05;letter-spacing:.5px;padding:6px;
+  }
+  .fs1{top:-30px;left:8px;transform:rotate(-12deg);
+    background:radial-gradient(circle at 38% 32%,#fff6,transparent 42%),#1b3bff}
+  .fs2{bottom:-26px;right:-14px;color:#16140f;
+    background:radial-gradient(circle at 38% 32%,#fff6,transparent 42%),#ffe14d}
+</style>
+</head>
+<body>
+  <div class="stage">
+    <span class="scrap-behind" aria-hidden="true"></span>
+
+    <div class="portrait-card">
+      <span class="tape tl" aria-hidden="true"></span>
+      <span class="tape br" aria-hidden="true"></span>
+      <img class="u-photo" src="portrait.webp" alt="framed portrait specimen" width="640" height="800" loading="eager">
+      <div class="portrait-cap"><b>WE THE PEOPLE</b> — riso poster · 2025</div>
+    </div>
+
+    <span class="sticker fs1" aria-hidden="true">New<br>zine</span>
+    <span class="sticker fs2" aria-hidden="true">Hand<br>made</span>
+  </div>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>模块图鉴 · Module Atlas</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <style>
+    :root{
+      --bg:#fcfcfa; --surface:#f4f4f1; --ink:#16161a; --muted:#5b5b66; --subtle:#8a8a96;
+      --line:#e7e7e2; --line-strong:#d4d4cc; --accent:#9a3412; --radius:14px; --maxw:1320px;
+      --font:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+      --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,monospace;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.55;-webkit-font-smoothing:antialiased}
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+    a{color:inherit}
+    .masthead{border-bottom:1px solid var(--line);padding:40px 0 0;background:
+      radial-gradient(900px 260px at 18% -10%,#f1e7d8 0%,transparent 72%),
+      linear-gradient(180deg,#fffdf8 0%,var(--bg) 100%)}
+    .back{display:inline-block;font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;margin-bottom:18px}
+    .back:hover{color:var(--ink)}
+    .masthead h1{font-size:clamp(26px,3.6vw,40px);letter-spacing:-1px;margin:0 0 12px;font-weight:700}
+    .masthead h1 .en{color:var(--subtle);font-weight:500}
+    .lede{max-width:760px;font-size:16px;color:var(--muted);margin:0 0 22px}
+    .lede a{color:var(--accent);font-weight:700;text-decoration-thickness:1px;text-underline-offset:3px}
+    .stats{display:flex;gap:26px;padding-bottom:26px}
+    .stat b{font-size:24px;font-weight:700;letter-spacing:-.5px}
+    .stat span{display:block;font-size:12px;color:var(--subtle);text-transform:uppercase;letter-spacing:.5px}
+    .catnav{display:flex;flex-wrap:wrap;gap:4px;border-top:1px solid var(--line);padding:6px 0}
+    .catnav a{font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;padding:10px 14px;border-radius:8px}
+    .catnav a:hover{background:#fff;color:var(--ink)}
+
+    .cat{padding:44px 0 8px;scroll-margin-top:12px}
+    .cat-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;border-bottom:1px solid var(--line-strong);padding-bottom:12px;margin-bottom:26px}
+    .cat-head h2{margin:0;font-size:22px;font-weight:700;letter-spacing:-.4px}
+    .cat-head .en{font-family:var(--mono);font-size:12px;color:var(--subtle)}
+    .cat-head .blurb{color:var(--muted);font-size:13px;margin-left:auto;text-align:right}
+
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:24px;padding-bottom:24px}
+    @media(max-width:720px){.grid{grid-template-columns:1fr}}
+    .card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .18s,transform .18s,border-color .18s}
+    .card:hover{box-shadow:0 12px 40px -16px rgba(0,0,0,.2);transform:translateY(-3px);border-color:var(--line-strong)}
+    .preview{position:relative;height:250px;overflow:hidden;background:var(--surface);border-bottom:1px solid var(--line)}
+    .preview iframe{width:1120px;height:760px;border:0;transform:scale(.323);transform-origin:top left;pointer-events:none;background:#fff}
+    .preview a.open{position:absolute;inset:0;z-index:2}
+    .preview::after{content:"查看全部 variant ↗";position:absolute;inset:0;display:grid;place-items:center;background:rgba(20,20,22,.5);color:#fff;font-weight:600;font-size:14px;opacity:0;transition:opacity .18s;z-index:1}
+    .preview:hover::after{opacity:1}
+    .body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:10px;flex:1}
+    .name{margin:0;font-size:16px;font-weight:700;letter-spacing:-.2px}
+    .name .path{font-family:var(--mono);font-size:11px;color:var(--subtle);font-weight:500}
+    .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto}
+    .chips span{font-family:var(--mono);font-size:11px;color:var(--muted);background:var(--surface);border:1px solid var(--line);padding:2px 8px;border-radius:6px}
+    .foot{border-top:1px solid var(--line);padding:22px 0;color:var(--subtle);font-size:13px;margin-top:30px}
+    @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+  </style>
+</head>
+<body>
+  <header class="masthead">
+    <div class="wrap">
+      <a class="back" href="index.html">← 设计方向图鉴 / Directions</a>
+      <h1>模块图鉴<span class="en"> · Module Atlas</span></h1>
+      <p class="lede">个人站的<strong>结构层</strong>构件。与设计方向正交：方向管视觉，模块管「放什么 section、什么顺序、哪个 variant」。一个个人站 = 1 个方向 × 若干模块。每张卡是一个模块的 <strong>variant 合集</strong>，点开看全部排布。<a href="skins-lab.html">去组件实验室看模块 × 方向换肤 →</a></p>
+      <div class="stats" id="stats"></div>
+      <nav class="catnav" id="catnav"></nav>
+    </div>
+  </header>
+  <main class="wrap" id="main"></main>
+  <footer class="foot"><div class="wrap">Ancher · Personal Site Module Atlas</div></footer>
+
+  <template id="card-tpl">
+    <article class="card">
+      <div class="preview">
+        <iframe loading="lazy" title=""></iframe>
+        <a class="open" target="_blank" rel="noopener" aria-label=""></a>
+      </div>
+      <div class="body">
+        <h3 class="name"></h3>
+        <div class="chips"></div>
+      </div>
+    </article>
+  </template>
+
+  <script src="js/modules.js"></script>
+</body>
+</html>

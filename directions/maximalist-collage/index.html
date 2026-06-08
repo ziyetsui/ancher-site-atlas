@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Juno Castellano — Loud work for people tired of quiet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ground:#f4ead5;
+    --scrap-cream:#fff7e6;
+    --scrap-pink:#ffd6e0;
+    --scrap-blue:#1b3bff;
+    --scrap-yellow:#ffe14d;
+    --scrap-lime:#b6ff3c;
+    --scrap-orange:#ff7a1a;
+    --ink:#16140f;
+    --ink-inverse:#fff7e6;
+    --accent:#ff2e63;
+    --accent-2:#1b3bff;
+    --tape:rgba(214,196,140,0.72);
+    --sticker-edge:#ffffff;
+    --shadow:6px 7px 0 rgba(22,20,15,.9);
+    --shadow-soft:3px 4px 0 rgba(22,20,15,.55);
+    --r-sm:1px;
+    --r-md:3px;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+
+  body{
+    font-family:'Space Grotesk',system-ui,sans-serif;
+    color:var(--ink);
+    background-color:var(--ground);
+    /* busy patterned ground: dots + grid + warm wash */
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(22,20,15,.14) 1.4px, transparent 1.6px),
+      repeating-linear-gradient(0deg, rgba(22,20,15,.045) 0 1px, transparent 1px 34px),
+      repeating-linear-gradient(90deg, rgba(22,20,15,.045) 0 1px, transparent 1px 34px),
+      radial-gradient(120% 90% at 0% 0%, rgba(255,46,99,.10), transparent 55%),
+      radial-gradient(120% 90% at 100% 100%, rgba(27,59,255,.10), transparent 55%);
+    background-size:17px 17px, 34px 34px, 34px 34px, 100% 100%, 100% 100%;
+    line-height:1.5;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{max-width:1160px;margin:0 auto;padding:0 18px}
+
+  a{color:inherit}
+  a:focus-visible,button:focus-visible{
+    outline:4px solid var(--accent-2);
+    outline-offset:3px;
+  }
+  img{max-width:100%;display:block}
+
+  /* ---------- shared collage atoms ---------- */
+  .scrap{
+    position:relative;
+    background:var(--scrap-cream);
+    box-shadow:var(--shadow);
+    padding:22px 22px 24px;
+    border:1.5px solid var(--ink);
+  }
+  /* torn bottom edge */
+  .scrap.torn::after{
+    content:"";position:absolute;left:-1.5px;right:-1.5px;bottom:-10px;height:14px;
+    background:inherit;border-left:1.5px solid var(--ink);border-right:1.5px solid var(--ink);
+    clip-path:polygon(0 0,4% 70%,9% 10%,15% 80%,21% 20%,27% 75%,34% 15%,40% 82%,47% 25%,53% 78%,60% 12%,66% 80%,73% 22%,79% 75%,86% 10%,92% 78%,97% 30%,100% 70%,100% 0);
+  }
+  .tape{
+    position:absolute;width:96px;height:30px;background:var(--tape);
+    border-left:1px dashed rgba(22,20,15,.18);border-right:1px dashed rgba(22,20,15,.18);
+    box-shadow:0 1px 2px rgba(0,0,0,.12);
+    backdrop-filter:saturate(1.2);
+  }
+  .tape.tl{top:-13px;left:-14px;transform:rotate(-32deg)}
+  .tape.tr{top:-13px;right:-14px;transform:rotate(28deg)}
+  .tape.bl{bottom:-13px;left:24px;transform:rotate(14deg)}
+  .tape.br{bottom:-13px;right:-10px;transform:rotate(-18deg)}
+
+  .sticker{
+    display:inline-flex;align-items:center;justify-content:center;text-align:center;
+    width:104px;height:104px;border-radius:50%;
+    background:radial-gradient(circle at 38% 32%, #fff5, transparent 42%), var(--accent);
+    color:var(--ink-inverse);border:4px solid var(--sticker-edge);
+    box-shadow:var(--shadow-soft);
+    font-family:'Archivo Black',sans-serif;text-transform:uppercase;
+    font-size:13px;line-height:1.05;letter-spacing:.5px;padding:8px;
+  }
+
+  .label{
+    font-family:'Space Grotesk',sans-serif;font-weight:700;
+    font-size:12px;letter-spacing:2px;text-transform:uppercase;
+  }
+
+  /* ---------- skip link ---------- */
+  .skip{position:absolute;left:-999px;top:0;z-index:100000;background:var(--ink);color:var(--ink-inverse);padding:10px 16px;font-weight:700}
+  .skip:focus{left:8px;top:8px}
+
+  /* ---------- top strip ---------- */
+  .topstrip{
+    background:var(--ink);color:var(--ink-inverse);
+    font-family:'Archivo Black',sans-serif;text-transform:uppercase;
+    letter-spacing:1px;font-size:13px;
+    padding:9px 0;overflow:hidden;white-space:nowrap;
+    border-bottom:3px solid var(--accent);
+  }
+  .topstrip span{display:inline-block;padding:0 14px;color:var(--scrap-yellow)}
+  .topstrip span:nth-child(even){color:var(--scrap-lime)}
+
+  /* ============ HERO ============ */
+  .hero{position:relative;padding:54px 0 92px}
+  .hero-grid{
+    display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:start;
+  }
+
+  .nameblock{position:relative;z-index:4}
+  .kicker{
+    display:inline-block;background:var(--scrap-blue);color:var(--ink-inverse);
+    font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:2px;
+    text-transform:uppercase;font-size:12px;padding:6px 12px;transform:rotate(-2.5deg);
+    box-shadow:var(--shadow-soft);border:1.5px solid var(--ink);
+  }
+  .name-h1{margin:14px 0 4px;line-height:.82}
+  .name-h1 .l1{
+    font-family:'Archivo Black',sans-serif;text-transform:uppercase;
+    font-size:clamp(54px,12vw,118px);letter-spacing:-3px;color:var(--ink);
+    display:block;
+    text-shadow:5px 5px 0 var(--scrap-pink), 9px 9px 0 var(--accent);
+  }
+  .name-h1 .l2{
+    font-family:'DM Serif Display',serif;font-style:italic;
+    font-size:clamp(44px,9vw,92px);letter-spacing:-1px;color:var(--accent-2);
+    display:inline-block;transform:rotate(-3deg) translateX(8px);margin-top:2px;
+  }
+  .role{
+    margin-top:18px;display:inline-block;background:var(--scrap-yellow);
+    border:1.5px solid var(--ink);padding:8px 14px;transform:rotate(1.5deg);
+    box-shadow:var(--shadow-soft);font-weight:700;letter-spacing:.5px;
+  }
+
+  .thesis{
+    margin:30px 0 0;max-width:560px;position:relative;z-index:3;
+    transform:rotate(-1.2deg);
+  }
+  .thesis .t-more{
+    font-family:'Archivo Black',sans-serif;text-transform:uppercase;
+    font-size:clamp(30px,7vw,58px);line-height:.92;letter-spacing:-1.5px;
+    background:var(--ink);color:var(--scrap-lime);display:inline;
+    box-decoration-break:clone;-webkit-box-decoration-break:clone;
+    padding:2px 8px;box-shadow:var(--shadow-soft);
+  }
+  .thesis .t-quiet{
+    font-family:'DM Serif Display',serif;font-style:italic;
+    font-size:clamp(22px,4.4vw,34px);line-height:1.05;color:var(--ink);
+    margin-top:14px;display:block;
+  }
+  .thesis .t-quiet b{color:var(--accent);font-style:normal;font-weight:400;
+    background:var(--scrap-pink);padding:0 6px;}
+
+  .cta-row{display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin-top:34px;position:relative;z-index:4}
+  .btn-sticker{
+    display:inline-block;font-family:'Archivo Black',sans-serif;text-transform:uppercase;
+    font-size:18px;letter-spacing:.5px;color:var(--ink-inverse);
+    background:var(--accent);border:2px solid var(--ink);
+    padding:14px 22px;text-decoration:none;transform:rotate(-1.5deg);
+    box-shadow:var(--shadow);transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .btn-sticker:hover{transform:rotate(-1.5deg) translate(-2px,-2px);box-shadow:9px 11px 0 rgba(22,20,15,.9)}
+  .btn-sticker.alt{background:var(--scrap-blue)}
+
+  .badge-open{
+    transform:rotate(11deg);width:118px;height:118px;font-size:14px;
+    background:radial-gradient(circle at 38% 32%, #fff6, transparent 42%), var(--scrap-lime);
+    color:var(--ink);
+  }
+
+  /* portrait centerpiece */
+  .portrait-stage{position:relative;min-height:420px}
+  .portrait-card{
+    position:relative;z-index:3;background:var(--scrap-cream);
+    border:2px solid var(--ink);padding:12px 12px 16px;
+    box-shadow:8px 10px 0 rgba(22,20,15,.9);
+    transform:rotate(3deg);
+    max-width:380px;margin-left:auto;
+    /* ripped right edge */
+    clip-path:polygon(0 0,98% 1%,100% 6%,97% 12%,100% 19%,96% 26%,100% 33%,97% 41%,100% 49%,96% 57%,100% 65%,97% 73%,100% 81%,96% 89%,100% 96%,98% 100%,0 100%);
+  }
+  .portrait-card .u-photo{width:100%;border:1.5px solid var(--ink);filter:contrast(1.05) saturate(1.08)}
+  .portrait-cap{
+    font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;
+    letter-spacing:1.5px;text-transform:uppercase;margin-top:10px;color:var(--ink)
+  }
+  .portrait-cap b{color:var(--accent)}
+  .scrap-behind{
+    position:absolute;z-index:1;width:230px;height:230px;
+    background:var(--scrap-orange);border:2px solid var(--ink);
+    transform:rotate(-9deg);top:30px;left:-6px;
+    box-shadow:var(--shadow-soft);
+    clip-path:polygon(2% 4%,98% 0,100% 96%,40% 100%,0 92%);
+  }
+  .scrap-behind.b2{background:var(--scrap-blue);top:170px;left:140px;width:150px;height:150px;transform:rotate(7deg);z-index:2}
+  .float-sticker{position:absolute;z-index:5}
+  .float-sticker.fs1{top:-26px;left:30px}
+  .float-sticker.fs2{bottom:-30px;right:6px}
+
+  /* photo-off fallback for portrait */
+  .u-fallback.portrait-fallback{
+    position:relative;z-index:3;max-width:380px;margin-left:auto;
+    background:repeating-linear-gradient(45deg,var(--accent) 0 16px,#e02455 16px 32px);
+    border:2px solid var(--ink);box-shadow:8px 10px 0 rgba(22,20,15,.9);
+    transform:rotate(3deg);min-height:360px;
+    padding:18px;color:var(--ink-inverse);
+    clip-path:polygon(0 0,98% 1%,100% 6%,97% 12%,100% 19%,96% 26%,100% 33%,97% 41%,100% 49%,96% 57%,100% 65%,97% 73%,100% 81%,96% 89%,100% 96%,98% 100%,0 100%);
+  }
+  body.no-photos .portrait-stage .u-fallback.portrait-fallback{display:flex !important;flex-direction:column;justify-content:flex-end}
+  .portrait-fallback .pf-name{
+    font-family:'Archivo Black',sans-serif;text-transform:uppercase;line-height:.86;
+    font-size:clamp(36px,8vw,62px);letter-spacing:-2px;
+    text-shadow:4px 4px 0 var(--ink);
+  }
+  .portrait-fallback .pf-tag{
+    margin-top:12px;display:inline-block;background:var(--scrap-yellow);color:var(--ink);
+    border:1.5px solid var(--ink);padding:6px 10px;font-weight:700;letter-spacing:1px;
+    text-transform:uppercase;font-size:12px;transform:rotate(-2deg)
+  }
+
+  /* ============ section headers ============ */
+  .sec{padding:84px 0}
+  .sec-head{position:relative;margin-bottom:46px;display:flex;align-items:baseline;gap:18px;flex-wrap:wrap}
+  .sec-head h2{
+    font-family:'Archivo Black',sans-serif;text-transform:uppercase;
+    font-size:clamp(34px,7vw,72px);letter-spacing:-2px;line-height:.9;
+    color:var(--ink);
+    text-shadow:4px 4px 0 var(--scrap-lime);
+  }
+  .sec-head .num{
+    font-family:'DM Serif Display',serif;font-style:italic;font-size:34px;
+    color:var(--accent);transform:rotate(-6deg);
+  }
+
+  /* ============ WORK masonry ============ */
+  .masonry{columns:3;column-gap:26px}
+  @media(max-width:900px){.masonry{columns:2}}
+  @media(max-width:560px){.masonry{columns:1}}
+  .work{
+    break-inside:avoid;margin:0 0 30px;display:inline-block;width:100%;
+    background:var(--scrap-cream);border:2px solid var(--ink);
+    padding:16px 16px 20px;box-shadow:var(--shadow);
+    transition:transform .14s ease, box-shadow .14s ease;
+    position:relative;
+  }
+  .work:nth-child(3n+1){transform:rotate(-2.2deg)}
+  .work:nth-child(3n+2){transform:rotate(1.6deg)}
+  .work:nth-child(3n+3){transform:rotate(-0.8deg)}
+  .work:hover{transform:rotate(0deg) translateY(-3px);box-shadow:9px 12px 0 rgba(22,20,15,.9);z-index:6}
+  .work .chip{
+    display:inline-block;font-weight:700;text-transform:uppercase;letter-spacing:1px;
+    font-size:11px;padding:4px 9px;border:1.5px solid var(--ink);margin-bottom:12px;
+    box-shadow:2px 2px 0 var(--ink);
+  }
+  .work.c-pink .chip{background:var(--scrap-pink)}
+  .work.c-blue .chip{background:var(--scrap-blue);color:var(--ink-inverse)}
+  .work.c-yellow .chip{background:var(--scrap-yellow)}
+  .work.c-lime .chip{background:var(--scrap-lime)}
+  .work.c-orange .chip{background:var(--scrap-orange)}
+  .work h3{
+    font-family:'Archivo Black',sans-serif;text-transform:uppercase;
+    font-size:26px;line-height:.96;letter-spacing:-.5px;color:var(--ink)
+  }
+  .work .swatch{
+    height:120px;margin:14px 0;border:1.5px solid var(--ink);
+    box-shadow:inset 0 0 0 6px rgba(255,247,230,.5);
+  }
+  .work.c-pink .swatch{background:repeating-linear-gradient(45deg,var(--scrap-pink) 0 12px,#ffbcce 12px 24px)}
+  .work.c-blue .swatch{background:radial-gradient(circle at 30% 30%,#5e73ff,transparent 40%),var(--scrap-blue)}
+  .work.c-yellow .swatch{background:repeating-linear-gradient(0deg,var(--scrap-yellow) 0 10px,#ffd21a 10px 20px)}
+  .work.c-lime .swatch{background:radial-gradient(circle at 70% 60%,#d8ff8a,transparent 45%),var(--scrap-lime)}
+  .work.c-orange .swatch{background:repeating-linear-gradient(-45deg,var(--scrap-orange) 0 14px,#e85e00 14px 28px)}
+  .work .meta{margin-top:10px;font-weight:700;font-size:13px;letter-spacing:.5px;color:var(--ink);opacity:.85}
+  .work p{margin-top:8px;font-size:15px;line-height:1.45}
+
+  /* ============ QUOTES ============ */
+  .quotes-sec{background:var(--ink);color:var(--ink-inverse);padding:96px 0;position:relative;border-top:4px solid var(--accent);border-bottom:4px solid var(--accent-2)}
+  .quotes-sec .sec-head h2{color:var(--scrap-yellow);text-shadow:4px 4px 0 var(--accent)}
+  .qwall{display:flex;flex-direction:column;gap:54px;max-width:980px}
+  .pull{position:relative;background:var(--scrap-cream);color:var(--ink);
+    border:2px solid #000;padding:30px 30px 34px;box-shadow:10px 12px 0 rgba(0,0,0,.6)}
+  .pull:nth-child(1){transform:rotate(-1.6deg);align-self:flex-start}
+  .pull:nth-child(2){transform:rotate(1.4deg);align-self:flex-end}
+  .pull:nth-child(3){transform:rotate(-0.8deg);align-self:flex-start}
+  .pull q{
+    font-family:'DM Serif Display',serif;font-style:italic;quotes:none;
+    font-size:clamp(26px,4.6vw,46px);line-height:1.02;display:block;
+  }
+  .pull q::before{content:"“";color:var(--accent);font-size:1.2em;line-height:0}
+  .pull .src{
+    margin-top:18px;font-family:'Archivo Black',sans-serif;text-transform:uppercase;
+    font-size:14px;letter-spacing:.5px;color:var(--accent-2)
+  }
+  .pull.big q{font-family:'Archivo Black',sans-serif;font-style:normal;text-transform:uppercase;font-size:clamp(30px,6.4vw,72px);line-height:.9;letter-spacing:-2px}
+  .pull.big q::before{content:""}
+
+  /* ============ METRICS (big numerals) ============ */
+  .metrics-sec .sec-head h2{text-shadow:4px 4px 0 var(--scrap-blue)}
+  .stat-wall{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+  @media(max-width:760px){.stat-wall{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:380px){.stat-wall{grid-template-columns:1fr}}
+  .stat{
+    position:relative;background:var(--scrap-cream);border:2px solid var(--ink);
+    padding:20px 18px 22px;box-shadow:var(--shadow);
+  }
+  .stat:nth-child(4n+1){transform:rotate(-2.4deg);background:var(--scrap-yellow)}
+  .stat:nth-child(4n+2){transform:rotate(1.8deg);background:var(--scrap-pink)}
+  .stat:nth-child(4n+3){transform:rotate(-1.2deg);background:var(--scrap-lime)}
+  .stat:nth-child(4n+4){transform:rotate(2.6deg);background:var(--scrap-cream)}
+  .stat .big{
+    font-family:'Archivo Black',sans-serif;font-size:clamp(44px,8vw,72px);
+    line-height:.84;letter-spacing:-3px;color:var(--ink);
+    text-shadow:3px 3px 0 var(--scrap-cream),5px 5px 0 var(--ink);
+  }
+  .stat .cap{
+    margin-top:14px;font-weight:700;text-transform:uppercase;letter-spacing:1px;
+    font-size:13px;line-height:1.25;color:var(--ink)
+  }
+
+  /* ============ BELIEFS (numbered manifesto) ============ */
+  .beliefs-sec{background:var(--scrap-blue);color:var(--ink-inverse);padding:96px 0;border-top:4px solid var(--scrap-yellow);border-bottom:4px solid var(--accent)}
+  .beliefs-sec .sec-head h2{color:var(--scrap-yellow);text-shadow:4px 4px 0 var(--ink)}
+  .beliefs-sec .sec-head .num{color:var(--scrap-lime)}
+  .creed{display:flex;flex-direction:column;gap:22px;max-width:960px}
+  .creed li{
+    list-style:none;position:relative;display:flex;gap:18px;align-items:flex-start;
+    background:var(--scrap-cream);color:var(--ink);border:2px solid var(--ink);
+    padding:18px 20px;box-shadow:var(--shadow-soft);
+  }
+  .creed li:nth-child(odd){transform:rotate(-1deg);align-self:flex-start}
+  .creed li:nth-child(even){transform:rotate(1.1deg);align-self:flex-end}
+  .creed .n{
+    flex:0 0 auto;font-family:'Archivo Black',sans-serif;font-size:34px;line-height:.9;
+    color:var(--ink-inverse);background:var(--accent);border:2px solid var(--ink);
+    padding:6px 12px;transform:rotate(-4deg);box-shadow:2px 2px 0 var(--ink)
+  }
+  .creed b{font-family:'Archivo Black',sans-serif;text-transform:uppercase;font-size:19px;letter-spacing:-.3px;display:block;margin-bottom:4px}
+  .creed p{font-size:15px;line-height:1.45}
+
+  /* ============ EXPERIENCE (timeline) ============ */
+  .exp-sec .sec-head h2{text-shadow:4px 4px 0 var(--scrap-orange)}
+  .timeline{position:relative;display:flex;flex-direction:column;gap:30px;max-width:880px}
+  .tl{
+    position:relative;background:var(--scrap-cream);border:2px solid var(--ink);
+    padding:18px 20px 20px 22px;box-shadow:var(--shadow);
+  }
+  .tl:nth-child(odd){transform:rotate(-1.2deg)}
+  .tl:nth-child(even){transform:rotate(1.4deg)}
+  .tl .yr{
+    display:inline-block;font-family:'Archivo Black',sans-serif;font-size:14px;
+    letter-spacing:.5px;background:var(--scrap-blue);color:var(--ink-inverse);
+    border:1.5px solid var(--ink);padding:4px 10px;box-shadow:2px 2px 0 var(--ink);
+    transform:rotate(-2deg);margin-bottom:10px
+  }
+  .tl h3{font-family:'Archivo Black',sans-serif;text-transform:uppercase;font-size:22px;line-height:1;letter-spacing:-.4px}
+  .tl .where{font-family:'DM Serif Display',serif;font-style:italic;font-size:18px;color:var(--accent);margin:4px 0 8px}
+  .tl p{font-size:15px;line-height:1.45}
+
+  /* ============ NOW (currently building) ============ */
+  .now-card{
+    position:relative;background:var(--scrap-lime);color:var(--ink);
+    border:3px solid var(--ink);padding:34px 30px 32px;box-shadow:var(--shadow);
+    transform:rotate(-1deg);max-width:780px;
+  }
+  .now-card .now-flag{
+    position:absolute;top:-18px;left:20px;font-family:'Archivo Black',sans-serif;
+    text-transform:uppercase;font-size:13px;letter-spacing:1px;color:var(--ink-inverse);
+    background:var(--accent);border:2px solid var(--ink);padding:6px 12px;
+    transform:rotate(-3deg);box-shadow:2px 2px 0 var(--ink)
+  }
+  .now-card ul{list-style:none;margin-top:10px;display:flex;flex-direction:column;gap:14px}
+  .now-card li{display:flex;gap:12px;align-items:flex-start;font-size:16px;line-height:1.4}
+  .now-card li::before{content:"→";font-family:'Archivo Black',sans-serif;color:var(--accent);font-size:20px;line-height:1.1}
+  .now-card li b{font-family:'Archivo Black',sans-serif;text-transform:uppercase;letter-spacing:-.2px}
+  .now-when{margin-top:18px;font-family:'DM Serif Display',serif;font-style:italic;font-size:18px}
+
+  /* ============ TOOLS (stack list) ============ */
+  .tools-sec .sec-head h2{text-shadow:4px 4px 0 var(--scrap-pink)}
+  .stack{display:flex;flex-wrap:wrap;gap:14px}
+  .tool{
+    display:inline-flex;flex-direction:column;background:var(--scrap-cream);
+    border:2px solid var(--ink);padding:12px 16px;box-shadow:var(--shadow-soft);
+    min-width:150px;
+  }
+  .tool:nth-child(5n+1){transform:rotate(-2deg);background:var(--scrap-yellow)}
+  .tool:nth-child(5n+2){transform:rotate(1.6deg);background:var(--scrap-pink)}
+  .tool:nth-child(5n+3){transform:rotate(-1deg);background:var(--scrap-lime)}
+  .tool:nth-child(5n+4){transform:rotate(2deg);background:var(--scrap-orange)}
+  .tool:nth-child(5n+5){transform:rotate(-1.6deg);background:var(--scrap-cream)}
+  .tool .tname{font-family:'Archivo Black',sans-serif;text-transform:uppercase;font-size:16px;letter-spacing:-.3px;line-height:1}
+  .tool .tuse{margin-top:5px;font-weight:700;font-size:11px;letter-spacing:1px;text-transform:uppercase;opacity:.78}
+
+  /* ============ CREDENTIALS (pills) ============ */
+  .creds-sec{background:var(--ink);color:var(--ink-inverse);padding:96px 0;border-top:4px solid var(--scrap-lime);border-bottom:4px solid var(--scrap-yellow)}
+  .creds-sec .sec-head h2{color:var(--scrap-lime);text-shadow:4px 4px 0 var(--accent-2)}
+  .pillwrap{display:flex;flex-wrap:wrap;gap:14px;max-width:1000px}
+  .pill{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:'Archivo Black',sans-serif;text-transform:uppercase;font-size:14px;
+    letter-spacing:.3px;color:var(--ink);background:var(--scrap-cream);
+    border:2px solid var(--ink);padding:10px 16px;box-shadow:3px 3px 0 var(--accent)
+  }
+  .pill:nth-child(odd){transform:rotate(-1.6deg)}
+  .pill:nth-child(even){transform:rotate(1.4deg);box-shadow:3px 3px 0 var(--scrap-blue)}
+  .pill .yr{font-family:'DM Serif Display',serif;font-style:italic;text-transform:none;color:var(--accent);font-size:16px}
+
+  /* ============ CONTACT ============ */
+  .contact{padding:96px 0 60px;position:relative}
+  .contact-card{
+    position:relative;background:var(--accent);color:var(--ink-inverse);
+    border:3px solid var(--ink);padding:48px 38px 44px;box-shadow:12px 14px 0 rgba(22,20,15,.9);
+    transform:rotate(-1deg);max-width:900px;margin:0 auto;
+    background-image:radial-gradient(circle at 1px 1px, rgba(255,255,255,.18) 1.3px, transparent 1.5px);
+    background-size:15px 15px;
+  }
+  .contact-card h2{
+    font-family:'Archivo Black',sans-serif;text-transform:uppercase;
+    font-size:clamp(38px,9vw,96px);line-height:.84;letter-spacing:-2px;
+    text-shadow:5px 5px 0 var(--ink);
+  }
+  .contact-card .lead{font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(20px,3.4vw,30px);margin:18px 0 28px;max-width:620px}
+  .links{display:flex;flex-wrap:wrap;gap:16px}
+  .links a{
+    text-decoration:none;font-family:'Archivo Black',sans-serif;text-transform:uppercase;
+    font-size:16px;background:var(--scrap-cream);color:var(--ink);
+    border:2px solid var(--ink);padding:12px 18px;box-shadow:4px 5px 0 var(--ink);
+    transition:transform .12s ease, box-shadow .12s ease;transform:rotate(-1.2deg)
+  }
+  .links a:nth-child(2){transform:rotate(1.4deg);background:var(--scrap-yellow)}
+  .links a:nth-child(3){transform:rotate(-0.6deg);background:var(--scrap-lime)}
+  .links a:hover{transform:translate(-2px,-2px) rotate(0deg);box-shadow:7px 8px 0 var(--ink)}
+  .signoff{
+    margin-top:36px;font-family:'DM Serif Display',serif;font-style:italic;
+    font-size:30px;color:var(--scrap-yellow);transform:rotate(-2deg);display:inline-block
+  }
+  .foot{text-align:center;margin-top:48px;font-weight:700;text-transform:uppercase;letter-spacing:2px;font-size:12px;opacity:.75}
+
+  /* ---------- reveal motion ---------- */
+  .reveal{opacity:0;transform:translateY(22px) rotate(var(--rot,0deg))}
+  .reveal.in{opacity:1;transform:translateY(0) rotate(var(--rot,0deg));transition:opacity .5s ease, transform .5s cubic-bezier(.2,.8,.25,1)}
+
+  @keyframes jig{0%,100%{transform:rotate(-1deg)}50%{transform:rotate(1deg)}}
+  .badge-open{animation:jig 3.4s ease-in-out infinite}
+
+  /* ---------- responsive ---------- */
+  @media(max-width:820px){
+    .hero-grid{grid-template-columns:1fr;gap:54px}
+    .portrait-card,.u-fallback.portrait-fallback{margin:0 auto;max-width:420px}
+    .scrap-behind{left:auto;right:10px}
+    .scrap-behind.b2{left:auto;right:140px}
+  }
+  @media(max-width:520px){
+    .topstrip{font-size:11px}
+    .name-h1 .l1{text-shadow:3px 3px 0 var(--scrap-pink),6px 6px 0 var(--accent)}
+    .cta-row{gap:12px}
+    .badge-open{width:96px;height:96px;font-size:12px}
+  }
+
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .reveal{opacity:1 !important;transform:none !important;transition:none !important}
+    .badge-open{animation:none}
+    .work,.btn-sticker,.links a{transition:none}
+  }
+
+  /* ---------- photo toggle contract ---------- */
+  .u-fallback{display:none !important}
+  body.no-photos .u-photo{display:none !important}
+  body.no-photos .u-fallback{display:revert !important}
+
+  .atlas-photo-toggle{position:fixed;right:16px;bottom:16px;z-index:99999;display:flex;align-items:center;gap:8px;background:rgba(20,20,22,.88);color:#fff;border-radius:999px;padding:6px 6px 6px 14px;font:600 12px/1 -apple-system,system-ui,sans-serif;box-shadow:0 8px 28px -10px rgba(0,0,0,.55)}
+  .atlas-photo-toggle button{appearance:none;border:0;cursor:pointer;font:inherit;color:#16161a;background:#fff;border-radius:999px;padding:6px 14px;min-width:46px}
+  .atlas-photo-toggle button[aria-pressed="false"]{background:#3a3a42;color:#fff}
+</style>
+</head>
+<body>
+<a class="skip" href="#work">Skip to work</a>
+
+<div class="topstrip" aria-hidden="true">
+  <span>MORE IS MORE</span><span>★</span><span>ZINES · POSTERS · COVER ART</span><span>✶</span><span>COLLABS OPEN</span><span>★</span><span>RISO SOLD OUT TWICE</span><span>✶</span><span>MORE IS MORE</span><span>★</span><span>ZINES · POSTERS · COVER ART</span><span>✶</span><span>COLLABS OPEN</span>
+</div>
+
+<header class="hero" data-module="hero" data-variant="collage_statement">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="kicker">Multidisciplinary artist · zine maker</span>
+      <h1 class="name-h1">
+        <span class="l1">Juno</span>
+        <span class="l2">Castellano</span>
+      </h1>
+      <span class="role">Loud work · made by hand · since the basement days</span>
+
+      <div class="thesis">
+        <span class="t-more">More is more.</span>
+        <span class="t-quiet">I make loud work for people who are <b>tired of quiet.</b></span>
+      </div>
+
+      <div class="cta-row">
+        <a class="btn-sticker" href="#work">See the work ↓</a>
+        <a class="btn-sticker alt" href="#contact">Let's collab →</a>
+        <span class="sticker badge-open" aria-hidden="true">Collabs<br>open<br>2026</span>
+      </div>
+    </div>
+
+    <div class="portrait-stage">
+      <span class="scrap-behind" aria-hidden="true"></span>
+      <span class="scrap-behind b2" aria-hidden="true"></span>
+
+      <div class="portrait-card">
+        <span class="tape tl" aria-hidden="true"></span>
+        <span class="tape br" aria-hidden="true"></span>
+        <img class="u-photo" src="portrait.webp" alt="Juno Castellano's poster artwork 'WE THE PEOPLE' — a loud, layered collage piece" width="640" height="800" loading="eager">
+        <div class="portrait-cap"><b>WE THE PEOPLE</b> — riso poster · 2025</div>
+      </div>
+
+      <div class="u-fallback portrait-fallback" role="img" aria-label="Juno Castellano — artist name plate (photo hidden)">
+        <span class="tape tl" aria-hidden="true"></span>
+        <div>
+          <div class="pf-name">Juno<br>makes<br>noise</div>
+          <span class="pf-tag">Artist · zine maker</span>
+        </div>
+      </div>
+
+      <span class="sticker float-sticker fs1" style="transform:rotate(-12deg);background:radial-gradient(circle at 38% 32%,#fff6,transparent 42%),var(--scrap-blue)" aria-hidden="true">New<br>zine</span>
+      <span class="sticker float-sticker fs2" style="background:radial-gradient(circle at 38% 32%,#fff6,transparent 42%),var(--scrap-yellow);color:var(--ink)" aria-hidden="true">Hand<br>made</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="sec" id="work" data-module="selected_work" data-variant="grid">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="num">01</span>
+        <h2>Selected work</h2>
+        <span class="label" style="margin-left:auto">Pick something. Take it home.</span>
+      </div>
+
+      <div class="masonry">
+        <article class="work c-pink reveal" style="--rot:-2.2deg">
+          <span class="chip">Zine · 32pp</span>
+          <h3>We The People</h3>
+          <div class="swatch" aria-hidden="true"></div>
+          <div class="meta">Riso, 2-color · 2025</div>
+          <p>A shouting, fold-out manifesto on protest and noise. Edition of 150, sold out in a weekend.</p>
+        </article>
+
+        <article class="work c-blue reveal" style="--rot:1.6deg">
+          <span class="chip">Cover art</span>
+          <h3>Loudmouth</h3>
+          <div class="swatch" aria-hidden="true"></div>
+          <div class="meta">Indie label LP sleeve · 2024</div>
+          <p>Full sleeve + insert collage for a debut record. Sticker pack went with the first pressing.</p>
+        </article>
+
+        <article class="work c-yellow reveal" style="--rot:-0.8deg">
+          <span class="chip">Gallery show</span>
+          <h3>Saint Trash</h3>
+          <div class="swatch" aria-hidden="true"></div>
+          <div class="meta">Solo · Greenpoint, NY · 2024</div>
+          <p>Wall-sized paste-ups built from a year of street flyers. Featured in a city-arts roundup.</p>
+        </article>
+
+        <article class="work c-orange reveal" style="--rot:1.2deg">
+          <span class="chip">Tour posters</span>
+          <h3>Make Noise Tour</h3>
+          <div class="swatch" aria-hidden="true"></div>
+          <div class="meta">9-city run · 2023</div>
+          <p>A poster a night, each one different, all torn from the same screaming alphabet.</p>
+        </article>
+
+        <article class="work c-lime reveal" style="--rot:-1.6deg">
+          <span class="chip">Zine · group</span>
+          <h3>Basement / Lisbon</h3>
+          <div class="swatch" aria-hidden="true"></div>
+          <div class="meta">Group show + zine · Lisbon · 2023</div>
+          <p>Co-made a 5-artist riso anthology, hung it in a basement, threw the launch the same night.</p>
+        </article>
+
+        <article class="work c-pink reveal" style="--rot:0.8deg">
+          <span class="chip">Merch</span>
+          <h3>Worn Loud</h3>
+          <div class="swatch" aria-hidden="true"></div>
+          <div class="meta">Tees + patches · 2025</div>
+          <p>Wearable collage for two indie labels. Patches sold out before the photos went up.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="quotes-sec" id="press" data-module="selected_quotes" data-variant="large_type">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="num">02</span>
+        <h2>What they yell</h2>
+      </div>
+      <div class="qwall">
+        <blockquote class="pull reveal" style="--rot:-1.6deg">
+          <q>Castellano makes you look twice, then keeps shouting after you've left the room.</q>
+          <div class="src">— City Arts Weekly</div>
+        </blockquote>
+        <blockquote class="pull big reveal" style="--rot:1.4deg">
+          <q>If quiet is a brand, I'm the opposite of a brand.</q>
+          <div class="src">— Juno, in her own words</div>
+        </blockquote>
+        <blockquote class="pull reveal" style="--rot:-0.8deg">
+          <q>The rare maker whose process — tear, tape, repeat — is the whole point.</q>
+          <div class="src">— Riso Heads zine</div>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec metrics-sec" id="numbers" data-module="metrics" data-variant="big_numerals">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="num">03</span>
+        <h2>By the numbers</h2>
+        <span class="label" style="margin-left:auto">Loud, but counted.</span>
+      </div>
+      <div class="stat-wall">
+        <div class="stat reveal" style="--rot:-2.4deg">
+          <div class="big">340+</div>
+          <div class="cap">Posters cut &amp; pasted by hand</div>
+        </div>
+        <div class="stat reveal" style="--rot:1.8deg">
+          <div class="big">11</div>
+          <div class="cap">Cities the Make Noise tour hit</div>
+        </div>
+        <div class="stat reveal" style="--rot:-1.2deg">
+          <div class="big">2×</div>
+          <div class="cap">Riso runs sold out in a weekend</div>
+        </div>
+        <div class="stat reveal" style="--rot:2.6deg">
+          <div class="big">9yr</div>
+          <div class="cap">Making mess since the basement days</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="beliefs-sec" id="creed" data-module="beliefs" data-variant="numbered">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="num">04</span>
+        <h2>House rules</h2>
+      </div>
+      <ol class="creed">
+        <li class="reveal" style="--rot:-1deg">
+          <span class="n" aria-hidden="true">1</span>
+          <div><b>More is more</b><p>White space is a choice and I keep choosing against it. If a corner is empty, paste something on it.</p></div>
+        </li>
+        <li class="reveal" style="--rot:1.1deg">
+          <span class="n" aria-hidden="true">2</span>
+          <div><b>Make it by hand</b><p>Tear, tape, repeat. The wobble and the shadow are the point — clean is somebody else's job.</p></div>
+        </li>
+        <li class="reveal" style="--rot:-1deg">
+          <span class="n" aria-hidden="true">3</span>
+          <div><b>Loud is a service</b><p>I don't soften the work to fit a brand book. If you wanted quiet you'd have called someone else.</p></div>
+        </li>
+        <li class="reveal" style="--rot:1.1deg">
+          <span class="n" aria-hidden="true">4</span>
+          <div><b>Print, then post</b><p>It exists on paper first. The internet gets the photo after the ink is dry and the edition's gone.</p></div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="sec exp-sec" id="path" data-module="experience" data-variant="timeline">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="num">05</span>
+        <h2>How I got loud</h2>
+      </div>
+      <div class="timeline">
+        <article class="tl reveal" style="--rot:-1.2deg">
+          <span class="yr">2017 — now</span>
+          <h3>Independent artist · zine maker</h3>
+          <div class="where">Castellano Studio — Brooklyn, NY</div>
+          <p>Self-published riso zines, cover art and paste-up posters for indie labels, venues and anyone tired of quiet.</p>
+        </article>
+        <article class="tl reveal" style="--rot:1.4deg">
+          <span class="yr">2020 — 2022</span>
+          <h3>Art director, contract</h3>
+          <div class="where">Loudmouth Records</div>
+          <p>Built the visual world for a small label — sleeves, inserts, sticker packs and tour merch, all hand-collaged.</p>
+        </article>
+        <article class="tl reveal" style="--rot:-1.2deg">
+          <span class="yr">2016 — 2017</span>
+          <h3>Print shop apprentice</h3>
+          <div class="where">Greenpoint Risograph Co-op</div>
+          <p>Learned the machines two colors at a time. Jammed a lot of paper. Fell hard for misregistration.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec now-sec" id="now" data-module="currently_building" data-variant="now_block">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="num">06</span>
+        <h2>Right now</h2>
+        <span class="label" style="margin-left:auto">Wet ink, not dry yet.</span>
+      </div>
+      <div class="now-card reveal" style="--rot:-1deg">
+        <span class="now-flag" aria-hidden="true">Now · 2026</span>
+        <ul>
+          <li><span><b>Saint Trash, vol. 2</b> — a fold-out riso zine on city flyers, edition of 200, printing this spring.</span></li>
+          <li><span><b>A 24-poster alphabet</b> — one screaming letter a day, taped up as I go.</span></li>
+          <li><span><b>Teaching collage</b> — a hands-on paste-up workshop at the Greenpoint co-op once a month.</span></li>
+        </ul>
+        <div class="now-when">Updated June 2026 — Brooklyn, between two glue sticks.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec tools-sec" id="kit" data-module="tools" data-variant="stack_list">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="num">07</span>
+        <h2>The kit</h2>
+        <span class="label" style="margin-left:auto">Mostly sticky.</span>
+      </div>
+      <div class="stack">
+        <div class="tool reveal" style="--rot:-2deg"><span class="tname">Risograph</span><span class="tuse">2-color printing</span></div>
+        <div class="tool reveal" style="--rot:1.6deg"><span class="tname">Scissors + glue</span><span class="tuse">Cut &amp; paste</span></div>
+        <div class="tool reveal" style="--rot:-1deg"><span class="tname">Masking tape</span><span class="tuse">Holds it all down</span></div>
+        <div class="tool reveal" style="--rot:2deg"><span class="tname">Photocopier</span><span class="tuse">Texture &amp; grain</span></div>
+        <div class="tool reveal" style="--rot:-1.6deg"><span class="tname">Found paper</span><span class="tuse">Flyers &amp; scraps</span></div>
+        <div class="tool reveal" style="--rot:-2deg"><span class="tname">Wide markers</span><span class="tuse">Ransom-note type</span></div>
+        <div class="tool reveal" style="--rot:1.6deg"><span class="tname">Scanner</span><span class="tuse">Digitize the mess</span></div>
+        <div class="tool reveal" style="--rot:-1deg"><span class="tname">Spray mount</span><span class="tuse">Big paste-ups</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="creds-sec" id="creds" data-module="credentials" data-variant="pills">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="num">08</span>
+        <h2>Stamps &amp; stickers</h2>
+      </div>
+      <div class="pillwrap">
+        <span class="pill">Saint Trash · solo show <span class="yr">'24</span></span>
+        <span class="pill">City Arts roundup pick <span class="yr">'24</span></span>
+        <span class="pill">Basement/Lisbon group show <span class="yr">'23</span></span>
+        <span class="pill">Riso Heads feature <span class="yr">'23</span></span>
+        <span class="pill">Make Noise tour, 11 cities <span class="yr">'23</span></span>
+        <span class="pill">BFA, Printmaking <span class="yr">'16</span></span>
+        <span class="pill">Greenpoint co-op resident <span class="yr">'16</span></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact" data-module="contact" data-variant="cta_band">
+    <div class="wrap">
+      <div class="contact-card">
+        <span class="tape tl" aria-hidden="true" style="background:var(--scrap-yellow);opacity:.85"></span>
+        <span class="tape tr" aria-hidden="true" style="background:var(--scrap-lime);opacity:.85"></span>
+        <h2>Let's make<br>noise</h2>
+        <p class="lead">Got a record, a show, a brand that needs to get loud? Bring me the project nobody else will touch.</p>
+        <div class="links">
+          <a href="mailto:hi@junocastellano.studio">hi@junocastellano.studio</a>
+          <a href="https://instagram.com/juno.makes.noise" rel="me noopener">@juno.makes.noise</a>
+          <a href="#work">Shop zines &amp; prints</a>
+        </div>
+        <span class="signoff">— more is more, always —</span>
+      </div>
+      <p class="foot">© 2026 Juno Castellano · Cut &amp; pasted by hand</p>
+    </div>
+  </section>
+</main>
+
+<div class="atlas-photo-toggle" role="group" aria-label="示例照片 / Demo photos"><span>照片 Photos</span><button id="atlasPhotoBtn" type="button" aria-pressed="true">On</button></div>
+<script>(function(){var b=document.getElementById('atlasPhotoBtn');if(!b)return;function set(on){document.body.classList.toggle('no-photos',!on);b.setAttribute('aria-pressed',on?'true':'false');b.textContent=on?'On':'Off';}b.addEventListener('click',function(){set(document.body.classList.contains('no-photos'));});set(true);})();</script>
+<script>
+  (function(){
+    var els=document.querySelectorAll('.reveal');
+    if(!('IntersectionObserver' in window)||window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      els.forEach(function(e){e.classList.add('in');});return;
+    }
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});
+    },{threshold:.14,rootMargin:'0px 0px -8% 0px'});
+    els.forEach(function(e){io.observe(e);});
+  })();
+</script>
+</body>
+</html>

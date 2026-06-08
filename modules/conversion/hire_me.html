@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>hire_me · conversion · specimen sheet</title>
+<style>
+:root{--bg:#ffffff;--surface:#f6f6f4;--surface-2:#efefea;--ink:#191917;--muted:#6b6b67;--subtle:#9a9a94;--accent:#2f56ff;--accent-soft:#e9eefc;--hairline:#e7e7e2;--ink-line:#191917;--ok:#1f7a44;--radius:12px;--pad:24px}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:15px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+.mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+
+/* ---------- specimen shell ---------- */
+.sheet{max-width:1100px;margin:0 auto;padding:40px 24px 96px}
+
+.sheet-head{
+  display:flex;align-items:baseline;flex-wrap:wrap;gap:8px 16px;
+  padding-bottom:18px;margin-bottom:36px;
+  border-bottom:1px solid var(--ink-line);
+}
+.sheet-head h1{
+  font-size:22px;font-weight:650;letter-spacing:-.01em;margin:0;
+}
+.sheet-head .sep{color:var(--subtle)}
+.sheet-head .cat{color:var(--muted);font-size:14px}
+.sheet-head .count{
+  margin-left:auto;font-size:12px;color:var(--muted);
+  background:var(--surface);border:1px solid var(--hairline);
+  padding:4px 10px;border-radius:999px;
+}
+
+.variant{margin-bottom:48px}
+.variant:last-child{margin-bottom:0}
+.label-row{
+  display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 12px;margin-bottom:12px;
+}
+.label-row .vid{
+  font-size:12.5px;color:var(--ink);
+  background:var(--surface-2);border:1px solid var(--hairline);
+  padding:3px 8px;border-radius:6px;
+}
+.label-row .hint{font-size:13px;color:var(--muted)}
+
+.stage{
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  background:var(--surface);
+  padding:var(--pad);
+}
+.stage--flush{padding:0;overflow:hidden}
+
+/* ---------- shared component primitives ---------- */
+.btn{
+  --bg:transparent;
+  font:inherit;font-size:14px;font-weight:550;line-height:1;
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 18px;border-radius:9px;border:1px solid transparent;
+  cursor:pointer;text-decoration:none;white-space:nowrap;
+  transition:transform .12s ease,background .15s ease,border-color .15s ease,box-shadow .15s ease;
+}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 1px 2px rgba(25,25,23,.16)}
+.btn-primary:hover{background:#2548e6}
+.btn-ghost{background:#fff;color:var(--ink);border-color:var(--hairline)}
+.btn-ghost:hover{border-color:var(--subtle);background:var(--surface)}
+.btn .ar{transition:transform .15s ease}
+.btn:hover .ar{transform:translateX(2px)}
+
+a,button{outline:none}
+:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:3px;
+  border-radius:8px;
+}
+
+/* avatar / photo slot */
+.photo-slot{
+  position:relative;flex:none;display:grid;place-items:center;
+  background:var(--surface-2);color:var(--muted);
+  font-weight:650;letter-spacing:.02em;
+  border:1px solid var(--hairline);overflow:hidden;
+}
+.photo-slot[data-tag]::after{
+  content:attr(data-tag);
+  position:absolute;left:4px;bottom:4px;
+  font-size:8px;line-height:1;letter-spacing:.04em;
+  font-family:ui-monospace,Menlo,monospace;text-transform:uppercase;
+  color:var(--subtle);background:rgba(255,255,255,.7);
+  padding:2px 3px;border-radius:3px;
+}
+
+/* status dot */
+.avail{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:13px;color:var(--muted);font-weight:500;
+}
+.avail .dot{
+  width:8px;height:8px;border-radius:50%;background:var(--ok);
+  box-shadow:0 0 0 3px rgba(31,122,68,.14);
+}
+
+/* =======================================================
+   VARIANT 1 — cta_band : full-width CTA band
+   ======================================================= */
+.cta-band{
+  position:relative;
+  display:grid;
+  grid-template-columns:1fr auto;
+  align-items:center;
+  gap:28px;
+  padding:32px 36px;
+  background:
+    radial-gradient(120% 160% at 85% -20%, var(--accent-soft) 0%, rgba(233,238,252,0) 60%),
+    #fff;
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  overflow:hidden;
+}
+.cta-band::before{
+  content:"";position:absolute;inset:0;
+  background-image:linear-gradient(var(--hairline) 1px,transparent 1px);
+  background-size:100% 28px;
+  opacity:.5;
+  mask-image:linear-gradient(90deg,transparent,#000 40%);
+  pointer-events:none;
+}
+.cta-band__body{position:relative;min-width:0}
+.cta-band__eyebrow{
+  font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--accent);margin:0 0 8px;
+}
+.cta-band__title{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(22px,3.4vw,30px);line-height:1.15;letter-spacing:-.01em;
+  font-weight:600;margin:0 0 8px;color:var(--ink);
+}
+.cta-band__title .zh{font-family:system-ui,-apple-system,sans-serif;font-weight:600}
+.cta-band__sub{margin:0;color:var(--muted);font-size:14.5px;max-width:46ch}
+.cta-band__meta{
+  display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:14px;align-items:center;
+}
+.cta-band__meta .pill{
+  font-size:12px;color:var(--muted);
+  background:var(--surface);border:1px solid var(--hairline);
+  padding:4px 10px;border-radius:999px;
+}
+.cta-band__actions{
+  position:relative;display:flex;flex-direction:column;gap:10px;align-items:stretch;
+  min-width:200px;
+}
+.cta-band__actions .btn{justify-content:center}
+.cta-band__assure{
+  font-size:12px;color:var(--subtle);text-align:center;margin:2px 0 0;
+}
+
+/* =======================================================
+   VARIANT 2 — inline : inline mention
+   ======================================================= */
+.inline-demo{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:17px;line-height:1.75;color:var(--ink);
+  max-width:62ch;
+}
+.inline-demo p{margin:0 0 1em}
+.inline-demo p:last-child{margin-bottom:0}
+
+.hire-inline{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:system-ui,-apple-system,sans-serif;
+  font-size:14px;
+  background:#fff;border:1px solid var(--hairline);
+  border-radius:999px;padding:5px 7px 5px 12px;
+  vertical-align:baseline;
+  box-shadow:0 1px 2px rgba(25,25,23,.05);
+  text-decoration:none;color:var(--ink);
+  transition:border-color .15s ease,box-shadow .15s ease;
+}
+.hire-inline:hover{border-color:var(--subtle);box-shadow:0 2px 8px rgba(25,25,23,.08)}
+.hire-inline .photo-slot{width:26px;height:26px;border-radius:50%;font-size:10px}
+.hire-inline .who{font-weight:600}
+.hire-inline .who small{display:block;font-weight:450;font-size:11px;color:var(--muted)}
+.hire-inline .go{
+  display:inline-flex;align-items:center;gap:5px;
+  font-weight:600;font-size:13px;color:var(--accent);
+  background:var(--accent-soft);border-radius:999px;padding:6px 12px;
+}
+.hire-inline:hover .go .ar{transform:translateX(2px)}
+.hire-inline .ar{transition:transform .15s ease}
+
+.inline-note{
+  margin-top:22px;padding-top:16px;border-top:1px dashed var(--hairline);
+  font-family:system-ui,sans-serif;font-size:13px;color:var(--muted);
+}
+.inline-note code{
+  font-family:ui-monospace,Menlo,monospace;font-size:12px;
+  background:var(--surface-2);padding:1px 5px;border-radius:4px;color:var(--ink);
+}
+
+/* ---------- responsive ---------- */
+@media (max-width:680px){
+  .cta-band{grid-template-columns:1fr;gap:22px;padding:26px 22px}
+  .cta-band::before{mask-image:linear-gradient(180deg,transparent,#000 70%)}
+  .cta-band__actions{min-width:0}
+  .inline-demo{font-size:16px}
+}
+@media (max-width:400px){
+  .sheet{padding:28px 16px 72px}
+  .hire-inline{flex-wrap:wrap}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.001ms!important;
+    transition-duration:.001ms!important;
+  }
+}
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header class="sheet-head">
+    <h1>hire_me</h1>
+    <span class="sep">·</span>
+    <span class="cat">conversion · Hire me / 雇我</span>
+    <span class="count mono">2 variants</span>
+  </header>
+
+  <!-- ===================== VARIANT 1 ===================== -->
+  <section class="variant" aria-labelledby="v1-label">
+    <div class="label-row">
+      <span class="vid mono" id="v1-label">cta_band</span>
+      <span class="hint">通栏 CTA 条 — full-bleed banner that closes the page with a single decisive ask.</span>
+    </div>
+
+    <div class="stage">
+      <aside class="cta-band" aria-labelledby="cta-band-title">
+        <div class="cta-band__body">
+          <p class="cta-band__eyebrow">Open to work · 接受新项目</p>
+          <h2 class="cta-band__title" id="cta-band-title">
+            Let’s build something worth shipping.<br>
+            <span class="zh">有好项目，欢迎雇我。</span>
+          </h2>
+          <p class="cta-band__sub">
+            I’m Maya Chen, a product designer taking on 1–2 new engagements for Q3 —
+            design systems, 0→1 product surfaces, and design-eng handoff.
+          </p>
+          <div class="cta-band__meta">
+            <span class="avail"><span class="dot" aria-hidden="true"></span>Available from Jul 2026</span>
+            <span class="pill">Remote · PST</span>
+            <span class="pill">Contract or full-time</span>
+          </div>
+        </div>
+
+        <div class="cta-band__actions">
+          <a class="btn btn-primary" href="mailto:maya@mayachen.design?subject=Project%20inquiry">
+            Start a project
+            <span class="ar" aria-hidden="true">→</span>
+          </a>
+          <a class="btn btn-ghost" href="#cv">Download CV (PDF)</a>
+          <p class="cta-band__assure">Replies within 1 business day.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ===================== VARIANT 2 ===================== -->
+  <section class="variant" aria-labelledby="v2-label">
+    <div class="label-row">
+      <span class="vid mono" id="v2-label">inline</span>
+      <span class="hint">行内 — a quiet hire-me chip woven into running prose, no layout interruption.</span>
+    </div>
+
+    <div class="stage">
+      <div class="inline-demo">
+        <p>
+          Over the last six years I’ve led design on payments dashboards, a clinical
+          scheduling tool, and a two-sided marketplace — usually as the first designer
+          in the room, translating fuzzy intent into shipped, accessible interfaces.
+        </p>
+        <p>
+          I’m wrapping up my current contract and have room for one more this summer. If
+          that lines up with what you’re building,
+          <a class="hire-inline" href="mailto:maya@mayachen.design?subject=Hire%20Maya">
+            <span class="photo-slot" data-tag="photo" aria-hidden="true">MC</span>
+            <span class="who">Hire Maya<small>product designer · 雇我</small></span>
+            <span class="go">Email me <span class="ar" aria-hidden="true">→</span></span>
+          </a>
+          and I’ll send back availability the same day.
+        </p>
+
+        <p class="inline-note">
+          Photo slot above is a neutral CSS placeholder (<code>data-tag="photo"</code>) — swap for a real headshot in production.
+        </p>
+      </div>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>

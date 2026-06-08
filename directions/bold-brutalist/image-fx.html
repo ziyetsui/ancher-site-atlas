@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>bold-brutalist — framed photo specimen</title>
+<style>
+  /* page background = direction's --canvas */
+  body{
+    margin:0;
+    background:#f4f1e8;
+    min-height:100vh;
+    display:grid;
+    place-items:center;
+    padding:28px;
+  }
+
+  /* wrapper around the photo: .hero__portrait */
+  .hero__portrait{
+    display:inline-block;
+    margin:0;
+    transform:rotate(1.6deg);
+  }
+
+  /* the framed photo: .u-photo
+     real page size clamp(150px,42vw,232px); scaled to ~232px so the
+     whole framed block (with hard shadow) fits a ~360x300 viewport */
+  .hero__portrait .u-photo{
+    display:block;
+    width:232px;
+    height:232px;
+    object-fit:cover;
+    border:3px solid #0a0a0a;              /* --bw solid --ink */
+    box-shadow:6px 6px 0 #0a0a0a;          /* --off --off 0 --shadow (hard brutalist shadow) */
+    border-radius:0;
+    /* high-contrast duotone to fit the flat palette */
+    filter:grayscale(1) contrast(1.18) brightness(1.02);
+  }
+</style>
+</head>
+<body>
+  <span class="hero__portrait">
+    <img class="u-photo" src="portrait.jpg" width="820" height="820"
+         alt="Portrait of Alex Mercer, graphic designer and art director">
+  </span>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Newsprint — Photo Specimen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+
+  body{
+    margin:0;
+    /* direction page background = --canvas with faint paper grain */
+    background:#f5f2ea;
+    background-image:radial-gradient(rgba(26,23,20,.018) 1px, transparent 1.4px);
+    background-size:4px 4px;
+    min-height:100vh;
+    display:grid;
+    place-items:center;
+    padding:28px;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* figure.cut — documentary cut inside the report column flow */
+  figure.cut{
+    width:280px;
+    max-width:100%;
+    margin:0;
+    border-top:2px solid #1a1714;     /* --rule */
+    border-bottom:1px solid #cdc4b3;  /* --hairline */
+    padding-top:10px;
+  }
+  figure.cut .u-photo{
+    display:block;
+    width:100%;
+    height:auto;
+    aspect-ratio:1200 / 800;
+    object-fit:cover;
+    filter:grayscale(1) contrast(1.06);
+    background:#efe9dd;               /* --surface */
+  }
+  figure.cut figcaption{
+    font-family:'Spectral', Georgia, 'Times New Roman', serif;
+    font-style:italic;
+    font-size:13px;
+    line-height:1.4;
+    color:#4d4740;                    /* --ink-muted */
+    padding:8px 0 2px;
+  }
+  figure.cut figcaption b{
+    font-style:normal;
+    font-weight:600;
+    color:#c0241f;                    /* --accent */
+    text-transform:uppercase;
+    letter-spacing:1px;
+    font-size:11px;
+  }
+</style>
+</head>
+<body>
+
+  <figure class="cut">
+    <img class="u-photo" src="portrait.webp" width="1200" height="800" alt="A documentary street photograph: figures crossing a wide, weathered avenue under flat winter light.">
+    <figcaption><b>From the file</b> — The work is mostly waiting: for a records office to answer, for a source to call back, for a second document to confirm the first.</figcaption>
+  </figure>
+
+</body>
+</html>

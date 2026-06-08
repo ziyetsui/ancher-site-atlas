@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AETHER Méridien 01 — 机械腕表 / 高级制表</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&family=Noto+Serif+SC:wght@300;400;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#16181b;
+    --bone:#f4f1ea;
+    --bone-2:#ebe6db;
+    --mist:#cfc8ba;
+    --gold:#a98a4f;
+    --gold-soft:#c9ab73;
+    --slate:#3b4148;
+    --steel:#7d8893;
+    --line:rgba(22,24,27,.14);
+    --glow:rgba(169,138,79,.5);
+    --shadow:0 30px 80px -30px rgba(22,24,27,.45);
+    --serif:"Cormorant Garamond","Noto Serif SC",Georgia,serif;
+    --serif-cn:"Noto Serif SC","Cormorant Garamond",serif;
+    --sans:"Inter",system-ui,-apple-system,"PingFang SC",sans-serif;
+    --pad:clamp(20px,5vw,84px);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bone);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-weight:300;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    line-height:1.6;
+  }
+  img{max-width:100%;display:block}
+  a{color:inherit}
+  :focus-visible{outline:2px solid var(--gold);outline-offset:4px;border-radius:2px}
+  .wrap{max-width:1440px;margin:0 auto;padding-inline:var(--pad)}
+  .eyebrow{
+    font-family:var(--sans);
+    font-size:.72rem;
+    font-weight:500;
+    letter-spacing:.32em;
+    text-transform:uppercase;
+    color:var(--gold);
+  }
+  .num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    position:fixed;top:0;left:0;right:0;z-index:60;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px var(--pad);
+    mix-blend-mode:difference;color:#fff;
+    pointer-events:none;
+  }
+  .topbar .brand{font-family:var(--serif);font-size:1.3rem;letter-spacing:.42em;font-weight:600}
+  .topbar .meta{font-size:.7rem;letter-spacing:.28em;text-transform:uppercase;opacity:.85}
+
+  /* ---------- progress rail ---------- */
+  .rail{
+    position:fixed;right:max(14px,2vw);top:50%;transform:translateY(-50%);
+    z-index:55;display:flex;flex-direction:column;gap:14px;align-items:center;
+    mix-blend-mode:difference;color:#fff;
+  }
+  .rail .tick{width:1px;height:26px;background:rgba(255,255,255,.4);transform-origin:top}
+  .rail .pct{font-size:.66rem;letter-spacing:.18em;font-variant-numeric:tabular-nums}
+  @media(max-width:680px){.rail{display:none}}
+
+  /* ---------- hero ---------- */
+  .hero{
+    min-height:100svh;display:flex;flex-direction:column;justify-content:center;
+    position:relative;padding-top:90px;
+  }
+  .hero-grid{
+    display:grid;grid-template-columns:1fr;gap:30px;align-items:center;
+  }
+  .hero h1{
+    font-family:var(--serif);
+    font-weight:500;
+    font-size:clamp(3rem,11vw,9.5rem);
+    line-height:.92;
+    letter-spacing:-.01em;
+  }
+  .hero h1 .line{display:block;overflow:hidden}
+  .hero h1 .ital{font-style:italic;color:var(--gold)}
+  .hero .sub{
+    max-width:46ch;margin-top:26px;font-size:clamp(1rem,1.4vw,1.18rem);
+    color:var(--slate);font-weight:300;
+  }
+  .hero .sub .cn{font-family:var(--serif-cn);font-weight:300}
+  .hero-foot{
+    display:flex;flex-wrap:wrap;gap:38px;margin-top:46px;
+  }
+  .stat{display:flex;flex-direction:column;gap:4px}
+  .stat .big{font-family:var(--serif);font-size:2rem;line-height:1;color:var(--ink)}
+  .stat .lab{font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--steel)}
+  .scroll-cue{
+    position:absolute;bottom:26px;left:var(--pad);
+    font-size:.66rem;letter-spacing:.3em;text-transform:uppercase;color:var(--steel);
+    display:flex;align-items:center;gap:12px;
+  }
+  .scroll-cue .bar{width:46px;height:1px;background:var(--mist);position:relative;overflow:hidden}
+  .scroll-cue .bar::after{content:"";position:absolute;inset:0;background:var(--gold);transform:translateX(-100%);animation:cue 2.2s ease-in-out infinite}
+  @keyframes cue{0%{transform:translateX(-100%)}55%{transform:translateX(0)}100%{transform:translateX(100%)}}
+
+  /* ---------- pinned stage ---------- */
+  .stage-section{position:relative}
+  .stage{
+    height:100svh;
+    display:grid;
+    grid-template-columns:1fr;
+    align-items:center;justify-items:center;
+    position:relative;overflow:hidden;
+  }
+  .stage-bg{
+    position:absolute;inset:0;z-index:0;
+    background:
+      radial-gradient(120% 90% at 50% 18%, #fcfaf5 0%, var(--bone) 42%, var(--bone-2) 100%);
+  }
+  .stage-bg .halo{
+    position:absolute;left:50%;top:46%;width:min(92vmin,720px);aspect-ratio:1;
+    transform:translate(-50%,-50%);
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(201,171,115,.34) 0%, rgba(201,171,115,0) 62%);
+    filter:blur(8px);
+  }
+  .stage-bg .word{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    font-family:var(--serif);font-style:italic;
+    font-size:clamp(8rem,34vw,30rem);line-height:1;
+    color:rgba(22,24,27,.045);white-space:nowrap;font-weight:500;
+    pointer-events:none;user-select:none;
+  }
+
+  /* the watch */
+  .watch-holder{position:relative;z-index:3;width:min(74vw,420px);will-change:transform}
+  .watch-frames{position:relative;aspect-ratio:3/4}
+  .watch-frames img{
+    position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+    border-radius:18px;box-shadow:var(--shadow);
+    filter:saturate(1.02) contrast(1.02);
+  }
+  .watch-frames .frame{opacity:0}
+  .watch-frames .frame.is-base{opacity:1}
+  .watch-holder .plate{
+    position:absolute;left:50%;bottom:-26px;transform:translateX(-50%);
+    width:62%;height:30px;border-radius:50%;
+    background:radial-gradient(closest-side, rgba(22,24,27,.22), rgba(22,24,27,0) 80%);
+    filter:blur(2px);z-index:1;
+  }
+
+  /* spec callouts */
+  .callout{
+    position:absolute;z-index:6;width:max-content;max-width:240px;
+    opacity:0;pointer-events:none;
+  }
+  .callout .dot{
+    width:9px;height:9px;border-radius:50%;background:var(--gold);
+    box-shadow:0 0 0 6px rgba(169,138,79,.16);position:absolute;
+  }
+  .callout .leader{
+    position:absolute;height:1px;background:linear-gradient(90deg,var(--gold),rgba(169,138,79,.2));
+    transform-origin:left center;transform:scaleX(0);
+  }
+  .callout .body{position:relative}
+  .callout .ttl{font-family:var(--serif);font-size:1.15rem;line-height:1.1;color:var(--ink)}
+  .callout .ttl .en{display:block;font-family:var(--sans);font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:5px;font-weight:500}
+  .callout .desc{font-size:.82rem;color:var(--slate);margin-top:6px;line-height:1.5}
+
+  /* place callouts around the watch on wide screens */
+  .c1{left:-9%;top:14%;text-align:right}
+  .c1 .dot{right:-30px;top:6px}
+  .c1 .leader{right:-26px;top:11px;width:26px;transform-origin:right center}
+  .c1 .body{padding-right:8px}
+  .c2{right:-12%;top:32%}
+  .c2 .dot{left:-30px;top:6px}
+  .c2 .leader{left:-26px;top:11px;width:26px}
+  .c2 .body{padding-left:8px}
+  .c3{left:-12%;bottom:20%;text-align:right}
+  .c3 .dot{right:-30px;top:6px}
+  .c3 .leader{right:-26px;top:11px;width:26px;transform-origin:right center}
+  .c3 .body{padding-right:8px}
+  .c4{right:-10%;bottom:8%}
+  .c4 .dot{left:-30px;top:6px}
+  .c4 .leader{left:-26px;top:11px;width:26px}
+  .c4 .body{padding-left:8px}
+
+  .stage-caption{
+    position:absolute;left:var(--pad);bottom:30px;z-index:7;max-width:30ch;
+  }
+  .stage-caption .step{font-variant-numeric:tabular-nums;font-family:var(--serif);font-size:2.4rem;color:var(--gold-soft);line-height:1}
+  .stage-caption .txt{font-size:.85rem;color:var(--slate);margin-top:4px;font-family:var(--serif-cn)}
+
+  /* spec progress bar bottom */
+  .stage-progress{
+    position:absolute;left:var(--pad);right:var(--pad);bottom:18px;z-index:7;
+    height:1px;background:var(--line);
+  }
+  .stage-progress i{display:block;height:100%;background:var(--gold);transform-origin:left;transform:scaleX(0)}
+
+  @media(max-width:880px){
+    .callout{max-width:150px}
+    .callout .desc{display:none}
+    .c1,.c3{left:1%}
+    .c2,.c4{right:1%}
+    .stage-caption{display:none}
+  }
+
+  /* ---------- parallax spec cards ---------- */
+  .specs{padding:clamp(90px,14vh,180px) 0;position:relative;background:var(--bone)}
+  .specs .head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:60px}
+  .specs h2{font-family:var(--serif);font-size:clamp(2.2rem,5vw,4rem);font-weight:500;line-height:1;max-width:14ch}
+  .specs h2 em{font-style:italic;color:var(--gold)}
+  .specs .head p{max-width:34ch;color:var(--slate);font-size:.95rem;font-family:var(--serif-cn);font-weight:300}
+  .card-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:22px}
+  .spec-card{
+    background:linear-gradient(180deg,#fbf9f4,#f0ece2);
+    border:1px solid var(--line);
+    border-radius:16px;padding:30px 28px;
+    grid-column:span 4;min-height:230px;
+    display:flex;flex-direction:column;justify-content:space-between;
+    will-change:transform;position:relative;overflow:hidden;
+  }
+  .spec-card::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 80% at 100% 0%, rgba(201,171,115,.12), transparent 55%);pointer-events:none}
+  .spec-card .k{font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);font-weight:500}
+  .spec-card .v{font-family:var(--serif);font-size:2.6rem;line-height:1;margin-top:auto}
+  .spec-card .v small{font-size:1rem;color:var(--steel)}
+  .spec-card .d{font-size:.82rem;color:var(--slate);margin-top:10px;font-family:var(--serif-cn)}
+  .spec-card.tall{grid-column:span 4;min-height:300px}
+  .spec-card.wide{grid-column:span 8}
+  @media(max-width:880px){
+    .card-grid{grid-template-columns:repeat(6,1fr)}
+    .spec-card,.spec-card.tall{grid-column:span 6}
+    .spec-card.wide{grid-column:span 6}
+  }
+  @media(max-width:560px){
+    .card-grid{grid-template-columns:1fr}
+    .spec-card,.spec-card.tall,.spec-card.wide{grid-column:1}
+  }
+
+  /* ---------- materials marquee ---------- */
+  .materials{padding:60px 0;border-block:1px solid var(--line);overflow:hidden;background:var(--bone-2)}
+  .mq{display:flex;gap:60px;white-space:nowrap;will-change:transform;width:max-content}
+  .mq span{font-family:var(--serif);font-style:italic;font-size:clamp(1.6rem,3.4vw,2.8rem);color:var(--slate);display:inline-flex;align-items:center;gap:60px}
+  .mq span::after{content:"·";color:var(--gold)}
+
+  /* ---------- detail split ---------- */
+  .detail{padding:clamp(90px,14vh,170px) 0;background:var(--bone)}
+  .detail .row{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,6vw,90px);align-items:center}
+  .detail .media{border-radius:16px;overflow:hidden;box-shadow:var(--shadow);aspect-ratio:4/5}
+  .detail .media img{width:100%;height:100%;object-fit:cover;will-change:transform;transform:scale(1.18)}
+  .detail h3{font-family:var(--serif);font-size:clamp(1.8rem,3.6vw,3rem);font-weight:500;line-height:1.05}
+  .detail h3 em{font-style:italic;color:var(--gold)}
+  .detail .lead{margin-top:18px;color:var(--slate);font-size:1rem;font-family:var(--serif-cn);font-weight:300;max-width:42ch}
+  .detail ul{list-style:none;margin-top:26px;display:grid;gap:1px;background:var(--line);border-block:1px solid var(--line)}
+  .detail li{background:var(--bone);display:flex;justify-content:space-between;gap:20px;padding:14px 2px;font-size:.9rem}
+  .detail li span:first-child{color:var(--steel);letter-spacing:.04em}
+  .detail li span:last-child{font-variant-numeric:tabular-nums;color:var(--ink)}
+  @media(max-width:780px){.detail .row{grid-template-columns:1fr}}
+
+  /* ---------- closing ---------- */
+  .closing{padding:clamp(110px,18vh,220px) 0;text-align:center;background:linear-gradient(180deg,var(--bone),var(--bone-2))}
+  .closing .eyebrow{display:inline-block;margin-bottom:24px}
+  .closing h2{font-family:var(--serif);font-weight:500;font-size:clamp(2.4rem,7vw,6rem);line-height:.98}
+  .closing h2 em{font-style:italic;color:var(--gold)}
+  .closing .price{margin-top:30px;font-family:var(--serif);font-size:1.6rem;color:var(--ink)}
+  .closing .price small{display:block;font-family:var(--sans);font-size:.68rem;letter-spacing:.24em;text-transform:uppercase;color:var(--steel);margin-top:8px}
+  .cta{
+    display:inline-flex;align-items:center;gap:14px;margin-top:40px;
+    padding:16px 34px;border-radius:100px;border:1px solid var(--ink);
+    background:var(--ink);color:var(--bone);
+    font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;font-weight:500;
+    text-decoration:none;transition:transform .4s ease,background .4s ease;
+  }
+  .cta:hover{transform:translateY(-3px)}
+  .cta .arr{display:inline-block;transition:transform .4s ease}
+  .cta:hover .arr{transform:translateX(5px)}
+  .colophon{padding:40px var(--pad);display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;border-top:1px solid var(--line);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--steel)}
+
+  /* reveal defaults handled by JS matchMedia */
+</style>
+</head>
+<body>
+<div class="topbar" aria-hidden="false">
+  <div class="brand">AETHER</div>
+  <div class="meta">Haute Horlogerie · Genève</div>
+</div>
+
+<div class="rail" aria-hidden="true">
+  <span class="pct num">00</span>
+  <span class="tick"></span>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow reveal-up">No.01 / 自动机械 · 限量 250 枚</p>
+      <h1 aria-label="Méridien 01">
+        <span class="line"><span class="w">Méridien</span></span>
+        <span class="line"><span class="w ital">零一</span></span>
+      </h1>
+      <p class="sub reveal-up"><span class="cn">为穿越子午线而生的计时之物。</span> A perpetual instrument engineered around a single idea — that time should be felt before it is read.</p>
+      <div class="hero-foot">
+        <div class="stat reveal-up"><span class="big num">72h</span><span class="lab">动力储存 Reserve</span></div>
+        <div class="stat reveal-up"><span class="big num">−4/+6s</span><span class="lab">日差 Accuracy</span></div>
+        <div class="stat reveal-up"><span class="big num">38.5</span><span class="lab">表径 mm</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-cue" aria-hidden="true"><span class="bar"></span> Scroll to explore</div>
+</header>
+
+<!-- PINNED STAGE -->
+<section class="stage-section" aria-label="产品规格展示">
+  <div class="stage">
+    <div class="stage-bg" aria-hidden="true">
+      <div class="halo"></div>
+      <div class="word" data-word>Méridien</div>
+    </div>
+
+    <div class="watch-holder">
+      <div class="watch-frames">
+        <img class="frame is-base" data-frame="0" src="/assets/editorial-fashion-mono.webp" alt="Méridien 01 腕表正面，乳白色表盘与抛光精钢表壳" />
+        <img class="frame" data-frame="1" src="/assets/portrait-asian-man-editorial.webp" alt="Méridien 01 腕表侧面，展示表冠与抛光倒角" />
+        <img class="frame" data-frame="2" src="/assets/bw-portrait-closeup.webp" alt="Méridien 01 腕表机芯特写，黑白影像" />
+      </div>
+      <div class="plate" aria-hidden="true"></div>
+
+      <!-- callouts -->
+      <div class="callout c1" data-callout aria-hidden="true">
+        <span class="dot"></span><span class="leader"></span>
+        <div class="body"><span class="ttl"><span class="en">Case · 表壳</span>904L 精钢一体壳</span><span class="desc">由整块 904L 不锈钢铣削成形，38 道手工抛磨工序，镜面与缎面交替。</span></div>
+      </div>
+      <div class="callout c2" data-callout aria-hidden="true">
+        <span class="dot"></span><span class="leader"></span>
+        <div class="body"><span class="ttl"><span class="en">Dial · 表盘</span>大明火珐琅</span><span class="desc">摄氏 820 度炉火烧制七层，乳白底色历经百年不褪。</span></div>
+      </div>
+      <div class="callout c3" data-callout aria-hidden="true">
+        <span class="dot"></span><span class="leader"></span>
+        <div class="body"><span class="ttl"><span class="en">Movement · 机芯</span>Cal. AE-2401 自产</span><span class="desc">28800 振频,自由摆轮游丝,72 小时双发条盒动力储存。</span></div>
+      </div>
+      <div class="callout c4" data-callout aria-hidden="true">
+        <span class="dot"></span><span class="leader"></span>
+        <div class="body"><span class="ttl"><span class="en">Crystal · 表镜</span>双层防眩蓝宝石</span><span class="desc">内外双面镀膜,弧面切削,透光率 99.7%。</span></div>
+      </div>
+    </div>
+
+    <div class="stage-caption" aria-hidden="true">
+      <div class="step num" data-step>01</div>
+      <div class="txt" data-step-txt>每一处细节,都为「被注视」而打磨。</div>
+    </div>
+    <div class="stage-progress" aria-hidden="true"><i data-stageprog></i></div>
+  </div>
+</section>
+
+<!-- PARALLAX SPEC CARDS -->
+<section class="specs" aria-label="技术规格">
+  <div class="wrap">
+    <div class="head">
+      <h2 class="reveal-up">机械的<em>诚实</em><br/>The honesty of mechanics</h2>
+      <p class="reveal-up">没有电池,没有妥协。每一秒都由 31 颗红宝石轴承与一根 0.07 毫米游丝共同写就。</p>
+    </div>
+    <div class="card-grid">
+      <article class="spec-card" data-card><span class="k">Frequency · 振频</span><div class="v num">28,800<small> vph</small></div><p class="d">每小时 28,800 次振动,4 赫兹,平稳扫秒。</p></article>
+      <article class="spec-card tall" data-card><span class="k">Jewels · 宝石</span><div class="v num">31</div><p class="d">红宝石轴承,降低摩擦,延长机芯寿命。</p></article>
+      <article class="spec-card" data-card><span class="k">Water · 防水</span><div class="v num">100<small> m</small></div><p class="d">旋入式表冠与背盖,适应日常潜水。</p></article>
+      <article class="spec-card wide" data-card><span class="k">Power Reserve · 动力储存</span><div class="v num">72<small> hours</small></div><p class="d">双发条盒并联,周末取下亦不停摆。满弦后可静置三日,星期一拿起即走时。</p></article>
+      <article class="spec-card" data-card><span class="k">Components · 零件</span><div class="v num">214</div><p class="d">每枚机芯由 214 个独立零件手工组装。</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- MATERIALS MARQUEE -->
+<section class="materials" aria-label="材质与工艺">
+  <div class="mq" data-marquee aria-hidden="true">
+    <span>大明火珐琅</span><span>904L 精钢</span><span>蓝宝石</span><span>自由摆轮</span><span>手工倒角</span><span>日内瓦波纹</span><span>蓝钢指针</span>
+    <span>大明火珐琅</span><span>904L 精钢</span><span>蓝宝石</span><span>自由摆轮</span><span>手工倒角</span><span>日内瓦波纹</span><span>蓝钢指针</span>
+  </div>
+</section>
+
+<!-- DETAIL SPLIT -->
+<section class="detail" aria-label="制表师">
+  <div class="wrap">
+    <div class="row">
+      <div class="media reveal-media"><img data-parallax-img src="/assets/portrait-1930s-blue-suit.webp" alt="制表师 Léon Aubert 在工作台前组装机芯" /></div>
+      <div>
+        <p class="eyebrow reveal-up">The Watchmaker · 制表师</p>
+        <h3 class="reveal-up">一双手,<em>四十年</em><br/>One pair of hands</h3>
+        <p class="lead reveal-up">主制表师 Léon Aubert 自十七岁起便守在同一张胡桃木工作台前。Méridien 零一的每一枚机芯,都由他亲手装配、调校、签名。我们一年只做 250 枚——因为一双手,一年只能做这么多。</p>
+        <ul>
+          <li class="reveal-up"><span>组装工时 Assembly</span><span class="num">26 小时 / 枚</span></li>
+          <li class="reveal-up"><span>调校位置 Positions</span><span class="num">6 方位</span></li>
+          <li class="reveal-up"><span>年产量 Annual</span><span class="num">250 枚</span></li>
+          <li class="reveal-up"><span>质保 Warranty</span><span class="num">终身 Lifetime</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section class="closing" aria-label="预定">
+  <div class="wrap">
+    <span class="eyebrow reveal-up">Reserve Your Méridien</span>
+    <h2 class="reveal-up">把时间<br/><em>戴在腕上</em></h2>
+    <div class="price reveal-up">¥ 168,000<small>含税 · 限量 250 / 全球</small></div>
+    <a class="cta reveal-up" href="#reserve" aria-label="预约私人鉴赏">预约私人鉴赏 <span class="arr" aria-hidden="true">→</span></a>
+  </div>
+  <div class="colophon">
+    <span>AETHER · Manufacture Genève</span>
+    <span>Méridien 01 — MMXXVI</span>
+    <span>Made by hand · Not by battery</span>
+  </div>
+</section>
+
+<script src="/vendor/gsap/gsap.min.js"></script>
+<script src="/vendor/gsap/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+  gsap.registerPlugin(ScrollTrigger);
+
+  const STEP_TXT = [
+    "每一处细节,都为「被注视」而打磨。",
+    "整壳由 904L 精钢铣削,镜面缎面交替。",
+    "炉火七层,珐琅乳白历经百年不褪。",
+    "自产机芯,自由摆轮,72 小时动力储存。",
+    "双层蓝宝石,弧面切削,几近无形。"
+  ];
+
+  const mm = gsap.matchMedia();
+
+  // ---------- MOTION (full) ----------
+  mm.add("(prefers-reduced-motion: no-preference)", () => {
+
+    // hero intro
+    const intro = gsap.timeline({ defaults:{ ease:"power3.out" } });
+    intro
+      .from(".hero h1 .w", { yPercent:115, duration:1.1, stagger:.12, ease:"power4.out" })
+      .from(".hero .eyebrow", { y:18, opacity:0, duration:.7 }, "-=.8")
+      .from(".hero .sub", { y:20, opacity:0, duration:.7 }, "-=.6")
+      .from(".hero .stat", { y:24, opacity:0, duration:.6, stagger:.1 }, "-=.5")
+      .from(".scroll-cue", { opacity:0, duration:.6 }, "-=.3");
+
+    // generic reveal-up
+    gsap.utils.toArray(".reveal-up").forEach(el=>{
+      gsap.from(el, {
+        y:30, opacity:0, duration:.9, ease:"power3.out",
+        scrollTrigger:{ trigger:el, start:"top 88%", end:"top 60%", toggleActions:"play none none reverse" }
+      });
+    });
+
+    // progress rail
+    const pctEl = document.querySelector(".rail .pct");
+    const tickEl = document.querySelector(".rail .tick");
+    ScrollTrigger.create({
+      start:0, end:"max",
+      onUpdate:(self)=>{
+        pctEl.textContent = String(Math.round(self.progress*100)).padStart(2,"0");
+        gsap.set(tickEl, { scaleY: 0.4 + self.progress*0.8 });
+      }
+    });
+
+    // ===== PINNED PRODUCT STAGE =====
+    const frames = gsap.utils.toArray(".watch-frames .frame");
+    const callouts = gsap.utils.toArray("[data-callout]");
+    const stepEl = document.querySelector("[data-step]");
+    const stepTxtEl = document.querySelector("[data-step-txt]");
+
+    gsap.set(callouts, { opacity:0 });
+
+    const stageTl = gsap.timeline({
+      defaults:{ ease:"power2.out" },
+      scrollTrigger:{
+        trigger:".stage-section",
+        start:"top top",
+        end:"+=320%",
+        pin:".stage",
+        scrub:1,
+        onUpdate:(self)=>{
+          const i = Math.min(STEP_TXT.length-1, Math.floor(self.progress*STEP_TXT.length));
+          stepEl.textContent = String(i+1).padStart(2,"0");
+          stepTxtEl.textContent = STEP_TXT[i];
+        }
+      }
+    });
+
+    // watch enters: rise + settle
+    stageTl.from(".watch-holder", { yPercent:14, scale:.9, opacity:0, duration:1.4, ease:"power3.out" });
+    stageTl.from("[data-word]", { scale:1.12, opacity:0, duration:1.4 }, "<");
+
+    // subtle continuous rotation of the watch across the whole pin (simulate turning)
+    stageTl.to(".watch-holder", { rotateY:0, duration:1 }, 0); // anchor
+
+    // step 1 -> callout 1 (case)
+    stageTl.to(callouts[0], { opacity:1, duration:.6 }, .9)
+           .from(callouts[0].querySelector(".leader"), { scaleX:0, duration:.6 }, "<")
+           .from(callouts[0].querySelector(".body"), { x:-14, opacity:0, duration:.6 }, "<");
+
+    // step 2 -> switch to side frame + callout 2 (dial)
+    stageTl.to(frames[0], { opacity:0, duration:.6 }, 2.0)
+           .to(frames[1], { opacity:1, duration:.6 }, "<")
+           .to(".watch-holder", { scale:1.05, duration:.8, ease:"power1.inOut" }, "<")
+           .to(callouts[1], { opacity:1, duration:.6 }, "<+.1")
+           .from(callouts[1].querySelector(".leader"), { scaleX:0, duration:.6 }, "<")
+           .from(callouts[1].querySelector(".body"), { x:14, opacity:0, duration:.6 }, "<");
+
+    // step 3 -> callout 3 (movement)
+    stageTl.to(callouts[2], { opacity:1, duration:.6 }, 3.0)
+           .from(callouts[2].querySelector(".leader"), { scaleX:0, duration:.6 }, "<")
+           .from(callouts[2].querySelector(".body"), { x:-14, opacity:0, duration:.6 }, "<");
+
+    // step 4 -> switch to macro frame + callout 4 (crystal)
+    stageTl.to(frames[1], { opacity:0, duration:.6 }, 4.0)
+           .to(frames[2], { opacity:1, duration:.6 }, "<")
+           .to(".watch-holder", { scale:1.12, duration:.9, ease:"power1.inOut" }, "<")
+           .to(callouts[3], { opacity:1, duration:.6 }, "<+.1")
+           .from(callouts[3].querySelector(".leader"), { scaleX:0, duration:.6 }, "<")
+           .from(callouts[3].querySelector(".body"), { x:14, opacity:0, duration:.6 }, "<");
+
+    // final settle: pull everything to a clean composition
+    stageTl.to(callouts, { opacity:.92, duration:.5 }, 5.0)
+           .to(".watch-holder", { scale:1, duration:1, ease:"power2.inOut" }, "<");
+
+    // stage progress bar (separate, drives the bottom rule across the pin)
+    gsap.to("[data-stageprog]", {
+      scaleX:1, ease:"none",
+      scrollTrigger:{ trigger:".stage-section", start:"top top", end:"+=320%", scrub:true }
+    });
+
+    // word drift behind watch
+    gsap.to("[data-word]", {
+      xPercent:-8, ease:"none",
+      scrollTrigger:{ trigger:".stage-section", start:"top top", end:"+=320%", scrub:true }
+    });
+
+    // ===== PARALLAX SPEC CARDS =====
+    gsap.utils.toArray("[data-card]").forEach((card, i)=>{
+      gsap.from(card, {
+        y:60, opacity:0, duration:1, ease:"power3.out",
+        scrollTrigger:{ trigger:card, start:"top 92%", end:"top 64%", toggleActions:"play none none reverse" }
+      });
+      // depth parallax: alternate cards drift at different speeds
+      gsap.to(card, {
+        yPercent: (i % 2 === 0) ? -10 : -22,
+        ease:"none",
+        scrollTrigger:{ trigger:".specs", start:"top bottom", end:"bottom top", scrub:true }
+      });
+    });
+
+    // ===== MATERIALS MARQUEE (scroll velocity nudges + base drift) =====
+    const mq = document.querySelector("[data-marquee]");
+    const loop = gsap.to(mq, { xPercent:-50, ease:"none", duration:24, repeat:-1 });
+    ScrollTrigger.create({
+      trigger:".materials", start:"top bottom", end:"bottom top",
+      onUpdate:(self)=>{
+        const v = gsap.utils.clamp(-3, 3, self.getVelocity()/300);
+        gsap.to(loop, { timeScale: 1 + Math.abs(v), duration:.4, overwrite:true });
+        loop.timeScale( v >= 0 ? Math.max(.5,1+Math.abs(v)) : -(Math.max(.5,1+Math.abs(v))) );
+      }
+    });
+
+    // ===== DETAIL parallax image =====
+    gsap.to("[data-parallax-img]", {
+      yPercent:12, ease:"none",
+      scrollTrigger:{ trigger:".detail", start:"top bottom", end:"bottom top", scrub:true }
+    });
+    gsap.from(".reveal-media", {
+      opacity:0, y:40, duration:1, ease:"power3.out",
+      scrollTrigger:{ trigger:".reveal-media", start:"top 86%", toggleActions:"play none none reverse" }
+    });
+
+    // ===== CLOSING headline scrub scale-in =====
+    gsap.from(".closing h2", {
+      scale:.92, opacity:0, ease:"none",
+      scrollTrigger:{ trigger:".closing", start:"top 80%", end:"top 40%", scrub:true }
+    });
+
+    return () => { /* matchMedia auto-reverts on cleanup */ };
+  });
+
+  // ---------- REDUCED MOTION (final states only) ----------
+  mm.add("(prefers-reduced-motion: reduce)", () => {
+    gsap.set([".hero h1 .w", ".hero .eyebrow", ".hero .sub", ".hero .stat", ".reveal-up", ".reveal-media", "[data-card]"],
+      { clearProps:"all", opacity:1, y:0, x:0, scale:1, yPercent:0, xPercent:0 });
+    gsap.set("[data-callout]", { opacity:.92 });
+    gsap.set(".watch-frames .frame", { opacity:0 });
+    gsap.set(".watch-frames .frame.is-base", { opacity:1 });
+    gsap.set("[data-stageprog]", { scaleX:1 });
+    document.querySelector("[data-step]").textContent = "01";
+    return () => {};
+  });
+
+  // refresh once images settle
+  window.addEventListener("load", () => ScrollTrigger.refresh());
+})();
+</script>
+</body>
+</html>

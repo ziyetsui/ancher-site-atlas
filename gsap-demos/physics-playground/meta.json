@@ -1,0 +1,9 @@
+{
+  "id": "physics-playground",
+  "name_cn": "物理游乐场",
+  "name_en": "Physics Playground",
+  "style": "玩具/黏土质感的明亮马卡龙互动自我介绍：圆润厚描边、硬投影、橡皮糖配色（樱粉/薄荷/柠檬/天蓝/葡萄），ZCOOL KuaiLe + Baloo 2 圆体排印，整体软弹、可戳可摔",
+  "plugins": ["Physics2DPlugin (velocity+angle+gravity 彩屑/表情爆发)", "Draggable (type:x,y, bounds, edgeResistance)", "InertiaPlugin (松手惯性抛掷落定 onThrowComplete)", "gsap.matchMedia (prefers-reduced-motion)", "gsap.context (cleanup)", "gsap.utils (random/clamp/toArray)", "elastic/bounce/back ease", "keyframes 挤压回弹"],
+  "focus": "演示 Physics2DPlugin 重力彩屑/表情爆发 + Draggable & InertiaPlugin 的可拖、被甩出后惯性落定与落地挤压，外加一个「摇一摇」按钮触发全屏粒子雨。",
+  "prompt": "做一个玩具/黏土质感、明亮马卡龙配色的互动自我介绍整页，主角是交互设计师「林咚咚」。视觉：奶油暖底加柔和径向光晕，所有卡片/按钮都圆润厚描边并带硬质投影（offset 实心阴影），配色用樱粉、薄荷、柠檬、天蓝、葡萄、珊瑚等橡皮糖色，标题用圆润手写体（如 ZCOOL KuaiLe）正文用圆体（如 Baloo 2），整体软弹、可戳、像一盒玩具。结构与动效：①英雄区，大标题「嗨，我是林咚咚」逐字以 bounce/elastic 从上方掉落弹定，右侧是一个会缓慢 morph 圆角并上下漂浮的有机 blob 头像（点击会挤压回弹并喷出表情彩屑），头像四周有几个黏土小图标沿圆周轨道公转；页面载入后中心喷一阵欢迎彩屑。②物理沙盒区，一个虚线圆角的 arena 里散布 5-6 个可拖的玩具方块/圆形（捏黏土、写动效、猫、饮料、抱石、头像），用 GSAP Draggable(type:'x,y', bounds, inertia:true) 可抓取，按下放大、拖动按方向倾斜，松手由 InertiaPlugin 惯性滑出并在 onThrowComplete 做挤压落地+小彩屑+计数器自增；支持键盘 Enter/空格弹跳。③数字区，几张数字卡进入视口时 bounce 弹入并 count-up 跳数、伴随小彩屑。④时间线区，弹珠路线把经历串成几站，进入视口 back.out 弹入。⑤摇一摇 finale：一个大圆体按钮，点击整屏从底部+两侧炮口用 Physics2DPlugin(velocity+angle+gravity) 喷出全屏重力彩屑雨，按钮自身抖动、emoji 放大。彩屑用 emoji 与实色方/圆混合，受重力下落后淡出移除。全程动画走 transform/opacity，用 gsap.matchMedia 处理 prefers-reduced-motion:reduce 时渲染终态、关闭无限循环与自动彩屑、拖拽去掉惯性。响应式 360–1440、语义化、img 有 alt、可见 focus，玩具可键盘聚焦操作。"
+}

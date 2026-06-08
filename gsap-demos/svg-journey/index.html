@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>蓝图工坊 · ATELIER MERIDIAN — 一支钢笔从草图到成品的旅程</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#061322;            /* 深藏青背景 */
+    --ink-2:#0a1b30;
+    --ink-3:#0e2440;
+    --paper:#e8f4f8;
+    --cyan:#46e0d8;           /* 主青色描边 */
+    --cyan-soft:#2a9e9a;
+    --cyan-dim:#163b48;
+    --amber:#f2b35e;          /* 节点点亮强调 */
+    --line:rgba(70,224,216,.22);
+    --grid:rgba(70,224,216,.06);
+    --label:rgba(180,224,230,.62);
+    --mono:"JetBrains Mono","Noto Sans SC",monospace;
+    --sans:"Space Grotesk","Noto Sans SC",system-ui,sans-serif;
+    --stroke-w:2;
+    --gut:clamp(20px,5vw,80px);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--paper);
+    font-family:var(--sans);
+    line-height:1.55;
+    overflow-x:hidden;
+    /* 蓝图网格底纹 */
+    background-image:
+      linear-gradient(var(--grid) 1px,transparent 1px),
+      linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:44px 44px;
+  }
+  img{max-width:100%;display:block}
+  a{color:var(--cyan)}
+  :focus-visible{outline:2px solid var(--amber);outline-offset:3px;border-radius:2px}
+
+  .wrap{max-width:1240px;margin:0 auto;padding-inline:var(--gut)}
+  .mono{font-family:var(--mono)}
+  .label{
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--label);
+  }
+  .tick{color:var(--cyan)}
+
+  /* ---------- 固定底栏：进度读数 ---------- */
+  .hud{
+    position:fixed;left:0;right:0;bottom:0;z-index:40;
+    display:flex;align-items:center;gap:14px;
+    padding:8px clamp(14px,4vw,40px);
+    font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;
+    color:var(--label);
+    background:linear-gradient(transparent,rgba(4,10,18,.86) 38%);
+    pointer-events:none;
+  }
+  .hud .bar{
+    flex:1;height:3px;background:var(--cyan-dim);border-radius:99px;overflow:hidden;
+  }
+  .hud .bar i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--cyan),var(--amber));}
+  .hud .pct{color:var(--cyan);min-width:3.4em;text-align:right}
+  .hud .where{color:var(--paper);opacity:.85}
+
+  /* ---------- HERO ---------- */
+  header.hero{
+    position:relative;min-height:100svh;
+    display:grid;grid-template-rows:auto 1fr auto;
+    padding-block:clamp(22px,5vh,52px);
+  }
+  .topbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+  .brand{display:flex;align-items:center;gap:12px;font-weight:700;letter-spacing:.04em}
+  .brand .seal{
+    width:34px;height:34px;border:1.5px solid var(--cyan);border-radius:50%;
+    display:grid;place-items:center;font-family:var(--mono);font-size:.8rem;color:var(--cyan);
+  }
+  .hero-mid{align-self:center;max-width:24ch}
+  .kicker{margin:0 0 18px}
+  .hero h1{
+    font-size:clamp(2.6rem,8vw,6.4rem);line-height:.96;margin:0;
+    font-weight:700;letter-spacing:-.02em;
+  }
+  .hero h1 .draw-word{color:var(--cyan)}
+  .hero-sub{
+    margin-top:22px;max-width:46ch;color:rgba(220,238,242,.78);font-size:clamp(1rem,1.6vw,1.18rem);
+  }
+  .hero-foot{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:18px}
+  .specs{display:flex;gap:clamp(18px,4vw,52px);flex-wrap:wrap}
+  .spec b{display:block;font-family:var(--mono);font-size:1.4rem;color:var(--cyan);font-weight:500}
+  .scrollcue{display:flex;align-items:center;gap:10px}
+  .scrollcue .dot{width:7px;height:7px;border-radius:50%;background:var(--amber)}
+
+  /* hero 角落里的等距笔身线稿 */
+  .hero-svg{position:absolute;inset:0;pointer-events:none;z-index:-1}
+
+  /* ---------- 旅程主干 ---------- */
+  .journey{position:relative;padding-block:clamp(40px,8vh,120px)}
+  /* 贯穿全页的 SVG 在固定层，路径由 DrawSVG 随滚动绘制 */
+  .spine{
+    position:absolute;top:0;left:0;width:100%;height:100%;
+    pointer-events:none;z-index:0;overflow:visible;
+  }
+  .spine path,.spine line{fill:none;stroke-linecap:round;stroke-linejoin:round}
+  #trunk{stroke:var(--cyan);stroke-width:var(--stroke-w);filter:drop-shadow(0 0 6px rgba(70,224,216,.45))}
+  #trunk-ghost{stroke:var(--line);stroke-width:var(--stroke-w);stroke-dasharray:2 7}
+  .branch{stroke:var(--cyan-soft);stroke-width:1.4}
+  /* 沿路径前进的探针 */
+  .probe{transform-box:fill-box;transform-origin:center}
+  .probe .core{fill:var(--amber)}
+  .probe .ring{fill:none;stroke:var(--amber);stroke-width:1.4;opacity:.7}
+
+  .steps{position:relative;z-index:2;display:flex;flex-direction:column;gap:clamp(80px,18vh,220px)}
+  .step{display:grid;gap:clamp(22px,4vw,56px);align-items:center}
+  .step.l{grid-template-columns:1fr;}
+  @media(min-width:860px){
+    .step{grid-template-columns:1fr 1fr}
+    .step.r .copy{order:2}
+  }
+  .node-card{
+    position:relative;
+    border:1px solid var(--line);background:linear-gradient(160deg,var(--ink-2),var(--ink));
+    border-radius:14px;padding:clamp(22px,3vw,38px);
+    backdrop-filter:blur(2px);
+  }
+  .node-card::before{
+    /* 角标 */
+    content:"";position:absolute;top:-1px;left:-1px;width:22px;height:22px;
+    border-top:2px solid var(--cyan);border-left:2px solid var(--cyan);border-top-left-radius:14px;
+    opacity:.7;
+  }
+  .node-no{
+    font-family:var(--mono);font-size:.74rem;letter-spacing:.2em;color:var(--cyan);
+    display:flex;align-items:center;gap:10px;margin-bottom:14px;
+  }
+  .node-no .badge{
+    width:30px;height:30px;border-radius:50%;display:grid;place-items:center;
+    border:1.5px solid var(--cyan-dim);color:var(--label);transition:.3s;
+  }
+  .step.lit .node-no .badge{border-color:var(--amber);color:var(--amber);box-shadow:0 0 18px rgba(242,179,94,.4)}
+  .node-card h2{font-size:clamp(1.5rem,3vw,2.3rem);margin:.1em 0 .4em;line-height:1.06;letter-spacing:-.01em}
+  .node-card p{margin:.6em 0;color:rgba(216,234,238,.8)}
+  .meta-row{
+    display:flex;gap:18px;flex-wrap:wrap;margin-top:18px;padding-top:16px;
+    border-top:1px dashed var(--line);
+  }
+  .meta-row div b{display:block;font-family:var(--mono);color:var(--cyan);font-size:.95rem}
+  .meta-row div span{font-size:.72rem;color:var(--label);letter-spacing:.08em}
+
+  /* 步骤的图像/线稿格 */
+  .plate{
+    position:relative;border:1px solid var(--line);border-radius:14px;overflow:hidden;
+    aspect-ratio:4/3;background:var(--ink-3);
+  }
+  .plate img{width:100%;height:100%;object-fit:cover;filter:saturate(.6) contrast(1.05) brightness(.85)}
+  .plate .scan{
+    position:absolute;inset:0;mix-blend-mode:screen;opacity:.5;
+    background:
+      repeating-linear-gradient(0deg,transparent 0 3px,rgba(70,224,216,.08) 3px 4px);
+    pointer-events:none;
+  }
+  .plate .corner-label{
+    position:absolute;left:12px;bottom:12px;
+    font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;color:var(--cyan);
+    background:rgba(6,19,34,.7);padding:4px 9px;border:1px solid var(--line);border-radius:5px;
+  }
+  /* 每个 plate 内的小线稿测量框 */
+  .plate svg.measure{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+  .plate svg.measure path,.plate svg.measure line,.plate svg.measure circle{
+    fill:none;stroke:var(--amber);stroke-width:1.2;opacity:.85
+  }
+
+  /* ---------- 数据带 ---------- */
+  .ticker{
+    overflow:hidden;border-block:1px solid var(--line);
+    padding-block:14px;margin-block:clamp(40px,8vh,90px);position:relative;z-index:2;
+  }
+  .ticker-track{display:flex;gap:42px;white-space:nowrap;width:max-content;
+    font-family:var(--mono);font-size:.82rem;letter-spacing:.14em;color:var(--label)}
+  .ticker-track b{color:var(--cyan)}
+
+  /* ---------- 终点 ---------- */
+  .finale{
+    position:relative;z-index:2;text-align:center;padding-block:clamp(70px,16vh,180px);
+  }
+  .finale .stamp{
+    display:inline-grid;place-items:center;width:120px;height:120px;border-radius:50%;
+    border:2px solid var(--cyan);margin-bottom:30px;position:relative;
+  }
+  .finale .stamp svg{width:84px;height:84px;overflow:visible}
+  .finale .stamp svg path{fill:none;stroke:var(--cyan);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+  .finale h2{font-size:clamp(2rem,6vw,4.2rem);margin:.1em 0;letter-spacing:-.02em;line-height:1}
+  .finale p{max-width:48ch;margin:18px auto;color:rgba(216,234,238,.8)}
+  .cta{
+    display:inline-flex;align-items:center;gap:12px;margin-top:24px;
+    font-family:var(--mono);letter-spacing:.14em;text-decoration:none;color:var(--ink);
+    background:var(--cyan);padding:14px 26px;border-radius:8px;font-weight:600;
+    transition:transform .25s ease,box-shadow .25s ease;
+  }
+  .cta:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(70,224,216,.3)}
+
+  footer{
+    border-top:1px solid var(--line);padding-block:34px;margin-top:40px;
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;color:var(--label);
+  }
+
+  /* reduced-motion 终态：揭示所有内容 */
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+  <!-- ===================== HUD 进度读数 ===================== -->
+  <div class="hud" aria-hidden="true">
+    <span class="mono">RUN&nbsp;//</span>
+    <span class="where" id="hud-where">SKETCH</span>
+    <div class="bar"><i id="hud-bar"></i></div>
+    <span class="pct" id="hud-pct">000%</span>
+  </div>
+
+  <!-- ===================== HERO ===================== -->
+  <header class="hero">
+    <!-- hero 背景线稿：一支钢笔的轮廓，DrawSVG 描绘 -->
+    <svg class="hero-svg" id="heroSvg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <g stroke="var(--cyan)" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.9">
+        <path class="hpen" d="M1040 150 L1300 410 M1300 410 L1100 610 L920 430 Z M1100 610 L1040 150" />
+        <path class="hpen" d="M1010 180 L990 200 L1130 340 L1150 320 Z" />
+        <line class="hpen" x1="940" y1="450" x2="700" y2="690" />
+        <circle class="hpen" cx="685" cy="705" r="14" />
+      </g>
+      <g stroke="var(--line)" stroke-width="1" fill="none">
+        <line class="hgrid" x1="120" y1="760" x2="1320" y2="760" />
+        <line class="hgrid" x1="120" y1="760" x2="120" y2="200" />
+      </g>
+    </svg>
+
+    <div class="wrap topbar">
+      <div class="brand">
+        <span class="seal mono">M</span>
+        <span>ATELIER&nbsp;MERIDIAN&nbsp;<span class="label">钢笔工坊</span></span>
+      </div>
+      <span class="label">档案 No. M-0427&nbsp;/&nbsp;比例 1:1</span>
+    </div>
+
+    <div class="wrap hero-mid">
+      <p class="kicker label">工作原理 · 从一根线到一支笔</p>
+      <h1>一支笔的<br><span class="draw-word">六道</span>工序</h1>
+      <p class="hero-sub">
+        子午线工坊的每一支墨水笔，都要走过这条贯穿手稿、车床、淬火与试写的路线。
+        向下滚动，跟随墨点沿着图纸上的轨迹，看它如何从草图被"画"成成品。
+      </p>
+    </div>
+
+    <div class="wrap hero-foot">
+      <div class="specs">
+        <div class="spec"><b>06</b><span class="label">工序节点</span></div>
+        <div class="spec"><b>11h</b><span class="label">单支工时</span></div>
+        <div class="spec"><b>1947</b><span class="label">始于</span></div>
+      </div>
+      <div class="scrollcue mono label"><span class="dot"></span>SCROLL&nbsp;沿线前行</div>
+    </div>
+  </header>
+
+  <!-- ===================== 旅程主干 ===================== -->
+  <main class="journey" id="journey">
+
+    <!-- 贯穿全页的脊柱路径 + 沿路径前进的探针。viewBox 高度在 JS 里按内容高度设定。 -->
+    <svg class="spine" id="spine" viewBox="0 0 1000 4000" preserveAspectRatio="none" aria-hidden="true">
+      <!-- 虚线幽灵轨（未绘制部分的提示） -->
+      <path id="trunk-ghost" d="
+        M 500 40
+        C 500 220, 210 300, 210 500
+        C 210 720, 800 760, 800 1010
+        C 800 1280, 200 1300, 200 1560
+        C 200 1820, 810 1850, 810 2110
+        C 810 2380, 200 2400, 200 2660
+        C 200 2920, 800 2950, 800 3210
+        C 800 3470, 500 3520, 500 3760
+        L 500 3960" />
+      <!-- 主干（被 DrawSVG 绘制） -->
+      <path id="trunk" d="
+        M 500 40
+        C 500 220, 210 300, 210 500
+        C 210 720, 800 760, 800 1010
+        C 800 1280, 200 1300, 200 1560
+        C 200 1820, 810 1850, 810 2110
+        C 810 2380, 200 2400, 200 2660
+        C 200 2920, 800 2950, 800 3210
+        C 800 3470, 500 3520, 500 3760
+        L 500 3960" />
+      <!-- 探针：沿 #trunk 前进的墨点 -->
+      <g class="probe" id="probe">
+        <circle class="ring" r="13" />
+        <circle class="ring" r="20" opacity="0.3" />
+        <circle class="core" r="5.5" />
+      </g>
+    </svg>
+
+    <div class="wrap">
+      <div class="steps">
+
+        <!-- STEP 01 -->
+        <section class="step l" data-step="0" data-where="01 · 草图 SKETCH">
+          <div class="copy">
+            <div class="node-card">
+              <div class="node-no"><span class="badge">01</span> 工序 · SKETCH</div>
+              <h2>一支笔从一张<br>方格纸上诞生</h2>
+              <p>制图师以 0.3mm 针管笔在硫酸纸上落下第一根中线。笔身的锥度、握位的弧、笔夹的悬臂——全部先以线稿确定，再交付车间。任何一支笔，最初都只是这张图上的几何。</p>
+              <div class="meta-row">
+                <div><b>0.3mm</b><span>制图笔径</span></div>
+                <div><b>1:1</b><span>等比手稿</span></div>
+                <div><b>~40min</b><span>定稿工时</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="plate">
+            <img src="/assets/illustration-lineart-animal.webp" alt="硫酸纸上的针管笔线稿草图，呈现笔身锥度与握位弧线" />
+            <div class="scan"></div>
+            <svg class="measure" viewBox="0 0 400 300" aria-hidden="true">
+              <line class="mline" x1="40" y1="250" x2="360" y2="250" />
+              <line class="mline" x1="40" y1="244" x2="40" y2="256" />
+              <line class="mline" x1="360" y1="244" x2="360" y2="256" />
+              <circle class="mline" cx="200" cy="120" r="44" />
+            </svg>
+            <span class="corner-label">FIG.01 — DRAFT</span>
+          </div>
+        </section>
+
+        <!-- STEP 02 -->
+        <section class="step r" data-step="1" data-where="02 · 选料 STOCK">
+          <div class="copy">
+            <div class="node-card">
+              <div class="node-no"><span class="badge">02</span> 工序 · MATERIAL</div>
+              <h2>选一段会随<br>时间变深的黄铜</h2>
+              <p>每支笔由一整根 12mm 实心黄铜棒车出。我们只选含锌量稳定的批次，因为它在手心里氧化的方式最可预期——五年后会沉淀成一层温润的、属于使用者自己的包浆。</p>
+              <div class="meta-row">
+                <div><b>Ø12mm</b><span>黄铜棒料</span></div>
+                <div><b>H62</b><span>合金牌号</span></div>
+                <div><b>1 根</b><span>整料成型</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="plate">
+            <img src="/assets/landscape-modern-villa.webp" alt="待加工的黄铜棒料与材料样本在工作台上排列" />
+            <div class="scan"></div>
+            <svg class="measure" viewBox="0 0 400 300" aria-hidden="true">
+              <line class="mline" x1="60" y1="60" x2="340" y2="60" />
+              <line class="mline" x1="60" y1="54" x2="60" y2="66" />
+              <line class="mline" x1="340" y1="54" x2="340" y2="66" />
+            </svg>
+            <span class="corner-label">FIG.02 — STOCK</span>
+          </div>
+        </section>
+
+        <!-- STEP 03 -->
+        <section class="step l" data-step="2" data-where="03 · 车削 TURN">
+          <div class="copy">
+            <div class="node-card">
+              <div class="node-no"><span class="badge">03</span> 工序 · LATHE</div>
+              <h2>车床把图纸上的<br>那条曲线削出来</h2>
+              <p>主轴以 2400 转旋转，硬质合金刀沿手稿的轮廓走刀。0.05mm 的进给量，让笔身那道几乎察觉不到的腰线被一刀刀逼近。铜屑卷落，图上的线第一次有了重量。</p>
+              <div class="meta-row">
+                <div><b>2400 rpm</b><span>主轴转速</span></div>
+                <div><b>0.05mm</b><span>单次进给</span></div>
+                <div><b>±0.01</b><span>公差</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="plate">
+            <img src="/assets/doc-soviet-street.webp" alt="车床车削黄铜笔身的车间场景，铜屑卷落" />
+            <div class="scan"></div>
+            <svg class="measure" viewBox="0 0 400 300" aria-hidden="true">
+              <path class="mline" d="M70 150 Q200 110 330 150" />
+              <line class="mline" x1="70" y1="150" x2="70" y2="200" />
+              <line class="mline" x1="330" y1="150" x2="330" y2="200" />
+            </svg>
+            <span class="corner-label">FIG.03 — TURN</span>
+          </div>
+        </section>
+
+        <!-- STEP 04 -->
+        <section class="step r" data-step="3" data-where="04 · 淬火 TEMPER">
+          <div class="copy">
+            <div class="node-card">
+              <div class="node-no"><span class="badge">04</span> 工序 · TEMPER</div>
+              <h2>给笔尖一次<br>820°C 的回火</h2>
+              <p>钢制笔舌在炉中烧到稻草金，再淬入油里定形。火候差十度，落笔的弹性就两样。这是整条线路上唯一靠老师傅眼睛判断颜色、而非靠仪表的一步。</p>
+              <div class="meta-row">
+                <div><b>820°C</b><span>回火温度</span></div>
+                <div><b>稻草金</b><span>判温色</span></div>
+                <div><b>油淬</b><span>定形方式</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="plate">
+            <img src="/assets/editorial-motel-car-night.webp" alt="炉火中回火的笔尖钢件，呈稻草金色泽" />
+            <div class="scan"></div>
+            <svg class="measure" viewBox="0 0 400 300" aria-hidden="true">
+              <circle class="mline" cx="200" cy="150" r="70" />
+              <line class="mline" x1="200" y1="80" x2="200" y2="220" />
+              <line class="mline" x1="130" y1="150" x2="270" y2="150" />
+            </svg>
+            <span class="corner-label">FIG.04 — TEMPER</span>
+          </div>
+        </section>
+
+        <!-- STEP 05 -->
+        <section class="step l" data-step="4" data-where="05 · 装配 ASSEMBLE">
+          <div class="copy">
+            <div class="node-card">
+              <div class="node-no"><span class="badge">05</span> 工序 · ASSEMBLE</div>
+              <h2>三十七个零件<br>归位于一条轴线</h2>
+              <p>笔身、握位、笔舌、上墨活塞、笔夹的悬臂弹簧……三十七个零件在装配台上对齐同一根中线——正是草图上落下的第一条线。每一处螺纹都手工旋紧到指定圈数。</p>
+              <div class="meta-row">
+                <div><b>37</b><span>零件数</span></div>
+                <div><b>手工</b><span>装配方式</span></div>
+                <div><b>1 轴</b><span>同心中线</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="plate">
+            <img src="/assets/illustration-origami-fox.webp" alt="装配台上对齐中线排列的笔身零件分解图" />
+            <div class="scan"></div>
+            <svg class="measure" viewBox="0 0 400 300" aria-hidden="true">
+              <line class="mline" x1="40" y1="150" x2="360" y2="150" />
+              <circle class="mline" cx="120" cy="150" r="10" />
+              <circle class="mline" cx="200" cy="150" r="10" />
+              <circle class="mline" cx="280" cy="150" r="10" />
+            </svg>
+            <span class="corner-label">FIG.05 — ASSEMBLE</span>
+          </div>
+        </section>
+
+        <!-- STEP 06 -->
+        <section class="step r" data-step="5" data-where="06 · 试写 PROOF">
+          <div class="copy">
+            <div class="node-card">
+              <div class="node-no"><span class="badge">06</span> 工序 · PROOF</div>
+              <h2>由一个人,把字<br>一笔笔写满一页</h2>
+              <p>出厂前，每支笔都要在标准纸上写满一整页——同一句话，反复书写，直到出墨均匀、起落顺畅。写下这页的人会在笔尾刻上自己的工号。线路至此闭合：从一条线开始，到一行字结束。</p>
+              <div class="meta-row">
+                <div><b>1 页</b><span>试写量</span></div>
+                <div><b>工号</b><span>笔尾刻字</span></div>
+                <div><b>100%</b><span>逐支验签</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="plate">
+            <img src="/assets/portrait-man-vintage.webp" alt="一位工匠在标准纸上逐行试写,检验出墨" />
+            <div class="scan"></div>
+            <svg class="measure" viewBox="0 0 400 300" aria-hidden="true">
+              <line class="mline" x1="60" y1="110" x2="340" y2="110" />
+              <line class="mline" x1="60" y1="150" x2="340" y2="150" />
+              <line class="mline" x1="60" y1="190" x2="300" y2="190" />
+            </svg>
+            <span class="corner-label">FIG.06 — PROOF</span>
+          </div>
+        </section>
+
+      </div><!-- /.steps -->
+    </div><!-- /.wrap -->
+
+    <!-- 数据带 -->
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track" id="ticker">
+        <span>BATCH <b>M-0427</b></span><span>YIELD <b>96.4%</b></span>
+        <span>TURN <b>2400rpm</b></span><span>TEMPER <b>820°C</b></span>
+        <span>PARTS <b>37</b></span><span>TOLERANCE <b>±0.01mm</b></span>
+        <span>BRASS <b>H62 / Ø12</b></span><span>PROOF <b>1 PAGE</b></span>
+        <span>SINCE <b>1947</b></span>
+        <span>BATCH <b>M-0427</b></span><span>YIELD <b>96.4%</b></span>
+        <span>TURN <b>2400rpm</b></span><span>TEMPER <b>820°C</b></span>
+        <span>PARTS <b>37</b></span><span>TOLERANCE <b>±0.01mm</b></span>
+        <span>BRASS <b>H62 / Ø12</b></span><span>PROOF <b>1 PAGE</b></span>
+        <span>SINCE <b>1947</b></span>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ===================== 终点 ===================== -->
+  <section class="finale">
+    <div class="wrap">
+      <div class="stamp" id="stamp">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <path id="checkpath" d="M22 52 L44 74 L80 28" />
+        </svg>
+      </div>
+      <p class="label">线路闭合 · ROUTE COMPLETE</p>
+      <h2>成品，<br>交付到手里</h2>
+      <p>从硫酸纸上的一根中线，到写满一页的那行字——你刚刚跟着墨点走完了一支笔的全部六道工序。这就是子午线工坊每天在做的事。</p>
+      <a class="cta" href="#journey">↺ 重走这趟线路</a>
+    </div>
+  </section>
+
+  <footer class="wrap">
+    <span>© 1947–2026 ATELIER MERIDIAN · 子午线钢笔工坊</span>
+    <span>DRAWN WITH GSAP · DrawSVG × MotionPath × ScrollTrigger</span>
+  </footer>
+
+  <!-- ===================== GSAP ===================== -->
+  <script src="/vendor/gsap/gsap.min.js"></script>
+  <script src="/vendor/gsap/ScrollTrigger.min.js"></script>
+  <script src="/vendor/gsap/DrawSVGPlugin.min.js"></script>
+  <script src="/vendor/gsap/MotionPathPlugin.min.js"></script>
+  <script>
+    gsap.registerPlugin(ScrollTrigger, DrawSVGPlugin, MotionPathPlugin);
+
+    const spine   = document.getElementById("spine");
+    const trunk   = document.getElementById("trunk");
+    const ghost   = document.getElementById("trunk-ghost");
+    const probe   = document.getElementById("probe");
+    const journey = document.getElementById("journey");
+    const steps   = gsap.utils.toArray(".step");
+
+    const hudBar   = document.getElementById("hud-bar");
+    const hudPct   = document.getElementById("hud-pct");
+    const hudWhere = document.getElementById("hud-where");
+
+    // 让 spine 的 viewBox 高度匹配 journey 的实际像素高度，
+    // 这样 SVG 坐标 ~ 像素，路径与各 step 大致对齐。
+    function sizeSpine(){
+      const h = journey.offsetHeight;
+      spine.setAttribute("viewBox", `0 0 1000 ${h}`);
+      spine.style.height = h + "px";
+    }
+    sizeSpine();
+
+    gsap.matchMedia().add({
+      reduced: "(prefers-reduced-motion: reduce)",
+      motion:  "(prefers-reduced-motion: no-preference)"
+    }, (ctx) => {
+      const { reduced } = ctx.conditions;
+
+      // ---------- 终态（reduced 或初始可见性兜底） ----------
+      if (reduced){
+        gsap.set(trunk, { drawSVG: "100%" });
+        gsap.set(probe, { autoAlpha: 0 });
+        gsap.set([".step .node-card", ".step .plate"], { autoAlpha: 1, x: 0, y: 0 });
+        steps.forEach(s => s.classList.add("lit"));
+        document.getElementById("checkpath").style.strokeDasharray = "none";
+        hudBar.style.width = "100%"; hudPct.textContent = "100%"; hudWhere.textContent = "PROOF";
+        return; // 不建立滚动驱动 / 无限循环
+      }
+
+      // ---------- HERO 线稿绘制 ----------
+      gsap.set([".hpen", ".hgrid"], { drawSVG: "0%" });
+      const heroTl = gsap.timeline({ defaults:{ ease:"power2.out" }});
+      heroTl
+        .to(".hgrid", { drawSVG:"100%", duration:.9, stagger:.12 })
+        .to(".hpen",  { drawSVG:"100%", duration:1.4, stagger:.18 }, "-=.5")
+        .from(".hero h1", { yPercent:18, autoAlpha:0, duration:1, ease:"power3.out" }, "-=1")
+        .from(".kicker, .hero-sub", { y:20, autoAlpha:0, duration:.7, stagger:.12 }, "-=.7")
+        .from(".spec, .scrollcue, .topbar > *", { y:16, autoAlpha:0, duration:.6, stagger:.08 }, "-=.5");
+
+      // ---------- 主干随滚动绘制（scrub） ----------
+      gsap.set(trunk, { drawSVG:"0%" });
+      gsap.set(probe, { autoAlpha:1 });
+
+      const draw = gsap.to(trunk, {
+        drawSVG:"100%",
+        ease:"none",
+        scrollTrigger:{
+          trigger: journey,
+          start:"top 72%",
+          end:"bottom 78%",
+          scrub: 0.6,
+          onUpdate(self){
+            const p = self.progress;
+            hudBar.style.width = (p*100).toFixed(1) + "%";
+            hudPct.textContent = String(Math.round(p*100)).padStart(3,"0") + "%";
+          }
+        }
+      });
+
+      // ---------- 探针沿同一路径前进（与绘制同步） ----------
+      gsap.to(probe, {
+        ease:"none",
+        motionPath:{
+          path: trunk,
+          align: trunk,
+          alignOrigin:[0.5,0.5],
+          autoRotate:false
+        },
+        scrollTrigger:{
+          trigger: journey,
+          start:"top 72%",
+          end:"bottom 78%",
+          scrub: 0.6
+        }
+      });
+      // 探针光环呼吸（持续，离屏时由 ScrollTrigger 控制其所在区段不更新；自身是局部循环，reduced 已排除）
+      gsap.to(".probe .ring", { scale:1.4, transformOrigin:"center", repeat:-1, yoyo:true, duration:1.1, ease:"sine.inOut" });
+
+      // ---------- 每个 step：入场 + 点亮节点 + 更新 HUD 文案 ----------
+      steps.forEach((step, i) => {
+        const card  = step.querySelector(".node-card");
+        const plate = step.querySelector(".plate");
+        const meas  = step.querySelectorAll(".measure .mline");
+        const fromX = step.classList.contains("r") ? 46 : -46;
+
+        gsap.set([card, plate], { autoAlpha:0 });
+        gsap.set(meas, { drawSVG:"0%" });
+
+        const tl = gsap.timeline({
+          scrollTrigger:{
+            trigger: step,
+            start:"top 74%",
+            end:"top 30%",
+            toggleActions:"play none none reverse",
+            onEnter:    () => { step.classList.add("lit"); hudWhere.textContent = step.dataset.where; },
+            onEnterBack:() => { step.classList.add("lit"); hudWhere.textContent = step.dataset.where; },
+            onLeaveBack:() => step.classList.remove("lit")
+          },
+          defaults:{ ease:"power3.out" }
+        });
+        // 用 fromTo 明确从隐藏(autoAlpha:0)补到显示(autoAlpha:1)。
+        // 之前用 .from(autoAlpha:0) 但元素已被 gsap.set 成 0，等于从 0 补到 0（当前值）+
+        // 末尾 .to(autoAlpha:1) 同时刻打架，导致 opacity 回到 1 却卡在 visibility:hidden，图永不显示。
+        tl.fromTo(card,  { x:fromX, autoAlpha:0 },        { x:0, autoAlpha:1, duration:.8 })
+          .fromTo(plate, { x:-fromX*0.6, y:24, autoAlpha:0 }, { x:0, y:0, autoAlpha:1, duration:.8 }, "-=.6")
+          .to(meas,  { drawSVG:"100%", duration:.7, stagger:.12 }, "-=.4");
+
+        // plate 视差（轻微）
+        gsap.fromTo(plate.querySelector("img"),
+          { yPercent:-6 }, { yPercent:6, ease:"none",
+            scrollTrigger:{ trigger:step, start:"top bottom", end:"bottom top", scrub:true }});
+      });
+
+      // ---------- 数据带横向滚动（持续，CSS-free，scrub 关联滚动） ----------
+      const track = document.getElementById("ticker");
+      gsap.to(track, {
+        xPercent:-50, ease:"none",
+        scrollTrigger:{ trigger:".ticker", start:"top bottom", end:"bottom top", scrub:1 }
+      });
+
+      // ---------- 终点对勾绘制 ----------
+      const check = document.getElementById("checkpath");
+      gsap.set(check, { drawSVG:"0%" });
+      gsap.timeline({ scrollTrigger:{ trigger:".finale", start:"top 70%", end:"top 40%", toggleActions:"play none none reverse" }})
+        .to(check, { drawSVG:"100%", duration:.7, ease:"power2.inOut" })
+        .from(".finale h2", { y:30, autoAlpha:0, duration:.7 }, "-=.3")
+        .from(".finale p, .cta", { y:20, autoAlpha:0, duration:.6, stagger:.12 }, "-=.4")
+        .to("#stamp", { boxShadow:"0 0 40px rgba(70,224,216,.45)", duration:.5 }, "<");
+
+      // 字体/图片加载后重算
+      window.addEventListener("load", () => { sizeSpine(); ScrollTrigger.refresh(); });
+      if (document.fonts && document.fonts.ready){
+        document.fonts.ready.then(() => { sizeSpine(); ScrollTrigger.refresh(); });
+      }
+    });
+
+    // 视口变化时重算 spine 高度（matchMedia 之外，确保始终生效）
+    let rt;
+    window.addEventListener("resize", () => {
+      clearTimeout(rt);
+      rt = setTimeout(() => { sizeSpine(); ScrollTrigger.refresh(); }, 180);
+    });
+  </script>
+</body>
+</html>

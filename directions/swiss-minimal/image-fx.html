@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>swiss-minimal — photo specimen</title>
+<style>
+  /* Faithful reproduction of the swiss-minimal hero portrait frame.
+     Values copied from index.html (.hero-portrait .u-photo), var() resolved to literals:
+       --canvas: #ffffff;  --hairline-strong: #0d0d0d. */
+  html, body { margin: 0; }
+  body {
+    background: #ffffff;            /* --canvas */
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 28px;
+    box-sizing: border-box;
+  }
+
+  /* the hero-portrait <figure> wrapper */
+  .hero-portrait {
+    margin: 0;
+  }
+
+  /* Swiss treatment: square, hard-edged, single hairline-strong border.
+     Real page sizes this at clamp(150px,15vw,190px); we pin to 190px so the
+     whole framed square fits comfortably in a ~360x300 viewport. */
+  .hero-portrait .u-photo {
+    display: block;
+    width: 190px;
+    height: 190px;
+    object-fit: cover;
+    border: 1px solid #0d0d0d;     /* --hairline-strong */
+    border-radius: 0;
+    box-shadow: none;
+  }
+</style>
+</head>
+<body>
+  <figure class="hero-portrait">
+    <img class="u-photo" src="portrait.jpg" alt="Portrait" width="190" height="190">
+  </figure>
+</body>
+</html>

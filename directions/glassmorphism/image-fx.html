@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>glassmorphism — photo specimen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  body{
+    margin:0;
+    background:#1c1033;            /* --backdrop: the page background color */
+    min-height:100vh;
+    display:grid;
+    place-items:center;
+    padding:28px;
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+  }
+
+  /* The framed "specimen": on this page the photo is FULL-BLEED behind a
+     frosted-glass card. We reproduce a representative crop of that treatment. */
+  .specimen{
+    position:relative;
+    width:290px;
+    height:240px;
+    border-radius:30px;            /* --r-lg */
+    overflow:hidden;
+    box-shadow:0 24px 60px -22px rgba(0,0,0,.7);
+  }
+
+  /* the photo as it appears: blurred, saturated, dimmed, scaled cover */
+  .specimen .u-photo{
+    position:absolute;
+    inset:-8%;
+    width:116%;
+    height:116%;
+    object-fit:cover;
+    filter:blur(34px) saturate(135%) brightness(0.82);
+    transform:scale(1.06);
+  }
+
+  /* darkening + tint overlay (backdrop-overlay) so glass stays legible */
+  .specimen .scrim{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background:
+      radial-gradient(120% 90% at 50% -10%, transparent 40%, rgba(16,8,33,0.55) 100%),
+      linear-gradient(180deg, rgba(20,11,40,0.30) 0%, rgba(20,11,40,0.62) 100%);
+  }
+
+  /* the frosted-glass card that sits OVER the photo (the .glass recipe) */
+  .glass-card{
+    position:absolute;
+    left:18px;
+    right:18px;
+    bottom:18px;
+    padding:16px 18px;
+    border-radius:20px;
+    background:rgba(255,255,255,0.10);                 /* --glass-fill */
+    -webkit-backdrop-filter:blur(22px) saturate(140%);
+    backdrop-filter:blur(22px) saturate(140%);
+    border:1px solid rgba(255,255,255,0.28);           /* --glass-border */
+    box-shadow:
+      0 20px 50px -20px rgba(0,0,0,.55),
+      inset 0 1px 0 rgba(255,255,255,0.55),            /* --glass-highlight */
+      inset 0 0 40px rgba(255,255,255,0.04);
+  }
+  .eyebrow{
+    font-size:9px;font-weight:600;letter-spacing:1.6px;
+    text-transform:uppercase;color:#f0abfc;            /* --accent-2 */
+    display:inline-flex;align-items:center;gap:7px;
+  }
+  .eyebrow::before{
+    content:"";width:16px;height:1px;background:#f0abfc;opacity:.7;
+  }
+  .title{
+    margin:8px 0 0;
+    font-size:17px;font-weight:800;line-height:1.08;letter-spacing:-0.6px;
+    color:#fff;
+  }
+  .title .glow{
+    background:linear-gradient(100deg,#f0abfc,#a78bfa 55%,#c4b5fd);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+</style>
+</head>
+<body>
+  <div class="specimen">
+    <img class="u-photo" src="portrait.webp"
+         alt="Soft blurred photographic backdrop in pink and violet tones, used as ambient color behind a frosted glass panel">
+    <div class="scrim"></div>
+    <div class="glass-card">
+      <span class="eyebrow">Kai Anders · AI Product Designer</span>
+      <p class="title">Tools that feel <span class="glow">calm</span>, not magic-tricky.</p>
+    </div>
+  </div>
+</body>
+</html>

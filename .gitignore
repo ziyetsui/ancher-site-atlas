@@ -1,0 +1,13 @@
+.DS_Store
+.omx/
+.playwright-mcp/
+__pycache__/
+*.pyc
+node_modules/
+.vercel/
+.claude/
+.vercel
+
+# locally-installed agent skills (e.g. GSAP skills) — install per-machine, not committed
+.agents/
+skills-lock.json

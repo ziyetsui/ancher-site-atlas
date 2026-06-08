@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ORBITA · 轨道天文台 — 沿轨运行的太空品牌</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;500;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#05030f;
+    --void-2:#0b0726;
+    --deep:#120a3a;
+    --nebula-a:#7a3cff;
+    --nebula-b:#ff4fd8;
+    --nebula-c:#36e3ff;
+    --star:#eaf0ff;
+    --dim:#9aa0c8;
+    --gold:#ffd479;
+    --glow-v:#9d6bff;
+    --line:rgba(157,107,255,.22);
+    --maxw:1280px;
+    --ease-soft:cubic-bezier(.22,1,.36,1);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:auto}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 800px at 75% -10%, rgba(122,60,255,.26), transparent 60%),
+      radial-gradient(900px 700px at 10% 20%, rgba(54,227,255,.12), transparent 55%),
+      radial-gradient(1000px 900px at 50% 120%, rgba(255,79,216,.18), transparent 60%),
+      linear-gradient(180deg, var(--void) 0%, var(--void-2) 45%, var(--deep) 100%);
+    color:var(--star);
+    font-family:"Space Grotesk","Sora",system-ui,sans-serif;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:"Sora",sans-serif;margin:0;line-height:1.04;letter-spacing:-.02em}
+  p{margin:0;color:var(--dim);line-height:1.7}
+  a{color:inherit}
+  img{display:block;max-width:100%}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;position:relative;z-index:2}
+  .eyebrow{
+    font-size:.74rem;letter-spacing:.42em;text-transform:uppercase;color:var(--nebula-c);
+    font-weight:500;display:inline-flex;align-items:center;gap:.7em;
+  }
+  .eyebrow::before{content:"";width:34px;height:1px;background:linear-gradient(90deg,transparent,var(--nebula-c))}
+  :focus-visible{outline:2px solid var(--nebula-c);outline-offset:4px;border-radius:6px}
+
+  /* ---------- fixed starfield canvas-ish dots ---------- */
+  #starfield{position:fixed;inset:0;z-index:0;pointer-events:none}
+  .star-dot{position:absolute;width:2px;height:2px;border-radius:50%;background:var(--star);opacity:.5}
+  .star-dot.big{width:3px;height:3px;box-shadow:0 0 8px 1px rgba(234,240,255,.7)}
+
+  /* progress comet */
+  #scroll-rail{position:fixed;top:0;left:0;height:3px;width:100%;z-index:50;pointer-events:none}
+  #scroll-fill{height:100%;width:0%;
+    background:linear-gradient(90deg,var(--nebula-c),var(--nebula-a),var(--nebula-b));
+    box-shadow:0 0 14px rgba(157,107,255,.9);transform-origin:left}
+
+  /* ---------- HERO / solar system ---------- */
+  .hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden}
+  .system{position:absolute;inset:0;z-index:1;pointer-events:none}
+  .system svg{position:absolute;inset:0;width:100%;height:100%}
+  .orbit-ring{fill:none;stroke:var(--line);stroke-width:1}
+  .orbit-ring.dash{stroke-dasharray:3 7;stroke:rgba(54,227,255,.25)}
+
+  .sun{
+    position:absolute;left:50%;top:50%;width:170px;height:170px;border-radius:50%;
+    transform:translate(-50%,-50%);
+    background:radial-gradient(circle at 38% 34%, #fff6d8, var(--gold) 38%, #ff7a2f 72%, #b83bff 100%);
+    box-shadow:0 0 60px 14px rgba(255,160,80,.55), 0 0 140px 40px rgba(157,107,255,.45);
+    z-index:1;will-change:transform;
+  }
+  .sun::after{content:"";position:absolute;inset:-22px;border-radius:50%;
+    border:1px solid rgba(255,212,121,.35);}
+
+  .planet{
+    position:absolute;left:50%;top:50%;border-radius:50%;
+    transform:translate(-50%,-50%);will-change:transform;z-index:2;
+    box-shadow:0 0 22px rgba(157,107,255,.55);overflow:hidden;
+    border:1px solid rgba(234,240,255,.18);
+  }
+  .planet img{width:100%;height:100%;object-fit:cover;filter:saturate(1.05) contrast(1.05)}
+  .planet .label{
+    position:absolute;left:50%;bottom:-22px;transform:translateX(-50%);
+    font-size:.6rem;letter-spacing:.18em;color:var(--dim);white-space:nowrap;text-transform:uppercase;
+  }
+  .p1{width:46px;height:46px}
+  .p2{width:64px;height:64px}
+  .p3{width:54px;height:54px}
+  .p4{width:80px;height:80px}
+  .moon{width:18px;height:18px;background:radial-gradient(circle at 35% 35%,#fff,#8fa);box-shadow:0 0 14px rgba(54,227,255,.8);}
+
+  /* the satellite that rides the figure-8 user path */
+  .satellite{position:absolute;left:0;top:0;width:40px;height:40px;z-index:5;will-change:transform}
+  .satellite svg{width:100%;height:100%;filter:drop-shadow(0 0 8px rgba(54,227,255,.9))}
+
+  .hero-copy{position:relative;z-index:6;max-width:620px;padding:120px 0}
+  .hero h1{
+    font-size:clamp(2.9rem,8.5vw,6.4rem);font-weight:800;margin:.5rem 0 1.4rem;
+    text-shadow:0 0 40px rgba(157,107,255,.4);
+  }
+  .hero h1 .grad{
+    background:linear-gradient(100deg,var(--nebula-c),var(--nebula-a) 50%,var(--nebula-b));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero .lede{font-size:clamp(1rem,1.7vw,1.22rem);max-width:36ch;color:#c4c9ee}
+  .hero-cta{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap}
+  .btn{
+    font-family:"Sora";font-weight:700;font-size:.92rem;letter-spacing:.02em;
+    padding:14px 26px;border-radius:999px;border:1px solid transparent;cursor:pointer;
+    text-decoration:none;display:inline-flex;align-items:center;gap:.6em;transition:transform .25s var(--ease-soft),box-shadow .25s;
+  }
+  .btn.primary{background:linear-gradient(100deg,var(--nebula-a),var(--nebula-b));color:#fff;
+    box-shadow:0 8px 30px rgba(157,107,255,.5)}
+  .btn.ghost{background:rgba(234,240,255,.04);border-color:var(--line);color:var(--star)}
+  .btn:hover{transform:translateY(-3px)}
+  .btn.primary:hover{box-shadow:0 12px 42px rgba(255,79,216,.55)}
+  .scroll-hint{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);z-index:6;
+    font-size:.66rem;letter-spacing:.34em;text-transform:uppercase;color:var(--dim);display:flex;flex-direction:column;align-items:center;gap:8px}
+  .scroll-hint .dot{width:5px;height:5px;border-radius:50%;background:var(--nebula-c);box-shadow:0 0 10px var(--nebula-c)}
+
+  /* ---------- generic section ---------- */
+  section{position:relative;padding:120px 0}
+  .sec-head{max-width:720px;margin-bottom:64px}
+  .sec-head h2{font-size:clamp(2rem,4.6vw,3.4rem);font-weight:800;margin:1.1rem 0 1.1rem}
+  .sec-head p{font-size:1.05rem;max-width:52ch}
+
+  /* ---------- stats orbit ---------- */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+  .stat{padding:30px 24px;border:1px solid var(--line);border-radius:20px;
+    background:linear-gradient(180deg,rgba(122,60,255,.08),rgba(11,7,38,.4));backdrop-filter:blur(4px)}
+  .stat .num{font-family:"Sora";font-weight:800;font-size:clamp(2.2rem,5vw,3.4rem);
+    background:linear-gradient(120deg,var(--nebula-c),var(--nebula-a));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .stat .cap{font-size:.84rem;letter-spacing:.06em;color:var(--dim);margin-top:10px}
+
+  /* ---------- track / pinned conveyor along a path ---------- */
+  .track-sec{overflow:hidden}
+  .track-stage{position:relative;height:520px;margin-top:40px;
+    border:1px solid var(--line);border-radius:28px;
+    background:radial-gradient(700px 380px at 20% 0%,rgba(54,227,255,.10),transparent 60%),
+              linear-gradient(180deg,rgba(11,7,38,.55),rgba(5,3,15,.6));overflow:hidden}
+  .track-stage svg.pathvis{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+  .track-path-stroke{fill:none;stroke:rgba(157,107,255,.5);stroke-width:2;stroke-dasharray:4 9}
+  .pod{position:absolute;left:0;top:0;width:150px;will-change:transform;z-index:3}
+  .pod .card{border:1px solid var(--line);border-radius:18px;overflow:hidden;
+    background:rgba(11,7,38,.7);box-shadow:0 14px 40px rgba(0,0,0,.5)}
+  .pod img{width:100%;height:96px;object-fit:cover}
+  .pod .t{padding:10px 12px}
+  .pod .t b{font-family:"Sora";font-size:.82rem;display:block}
+  .pod .t span{font-size:.66rem;color:var(--dim);letter-spacing:.1em}
+
+  /* ---------- product / capsule ---------- */
+  .capsule{display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:center}
+  .capsule-visual{position:relative;aspect-ratio:1/1;border-radius:28px;overflow:hidden;
+    border:1px solid var(--line);background:radial-gradient(circle at 50% 40%,rgba(122,60,255,.3),rgba(5,3,15,.9));}
+  .capsule-visual .core{position:absolute;left:50%;top:50%;width:46%;aspect-ratio:1;transform:translate(-50%,-50%);
+    border-radius:50%;overflow:hidden;box-shadow:0 0 50px rgba(157,107,255,.6);border:1px solid rgba(234,240,255,.25)}
+  .capsule-visual .core img{width:100%;height:100%;object-fit:cover}
+  .capsule-visual .ring-svg{position:absolute;inset:0;width:100%;height:100%}
+  .orbiter{position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;overflow:hidden;
+    border:1px solid rgba(54,227,255,.5);box-shadow:0 0 16px rgba(54,227,255,.7);will-change:transform}
+  .orbiter img{width:100%;height:100%;object-fit:cover}
+  .feat{list-style:none;padding:0;margin:28px 0 0}
+  .feat li{display:flex;gap:16px;padding:18px 0;border-top:1px solid var(--line)}
+  .feat li:last-child{border-bottom:1px solid var(--line)}
+  .feat .ic{flex:0 0 38px;height:38px;border-radius:11px;display:grid;place-items:center;
+    background:linear-gradient(135deg,rgba(54,227,255,.18),rgba(157,107,255,.18));border:1px solid var(--line)}
+  .feat .ic svg{width:20px;height:20px}
+  .feat b{font-family:"Sora";display:block;margin-bottom:4px;font-size:1rem;font-weight:700}
+  .feat span{font-size:.92rem;color:var(--dim)}
+
+  /* ---------- mission timeline along curve ---------- */
+  .mission{position:relative}
+  .mission-path-wrap{position:relative;margin-top:50px}
+  .mission-svg{width:100%;height:auto;overflow:visible}
+  .mission-line{fill:none;stroke:url(#mgrad);stroke-width:2.5;stroke-linecap:round}
+  .m-node{position:absolute;width:300px;max-width:62vw}
+  .m-node .yr{font-family:"Sora";font-weight:800;font-size:1.7rem;
+    background:linear-gradient(120deg,var(--nebula-b),var(--nebula-a));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .m-node h3{font-size:1.1rem;margin:6px 0 8px}
+  .m-node p{font-size:.9rem}
+  .m-comet{width:26px;height:26px;border-radius:50%;
+    background:radial-gradient(circle at 35% 35%,#fff,var(--nebula-c));box-shadow:0 0 22px var(--nebula-c);will-change:transform}
+
+  /* ---------- CTA ---------- */
+  .final{text-align:center;padding:160px 0 140px}
+  .final h2{font-size:clamp(2.4rem,6vw,4.6rem);font-weight:800}
+  .final .grad{background:linear-gradient(100deg,var(--nebula-c),var(--nebula-b));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .final p{max-width:44ch;margin:22px auto 36px;font-size:1.1rem}
+  .final-orbit{position:relative;width:min(440px,82vw);aspect-ratio:1;margin:0 auto 10px}
+  .final-orbit .planet-f{position:absolute;left:0;top:0;width:36px;height:36px;border-radius:50%;
+    background:linear-gradient(135deg,var(--nebula-c),var(--nebula-a));box-shadow:0 0 18px var(--nebula-a);will-change:transform}
+
+  footer{border-top:1px solid var(--line);padding:46px 0;color:var(--dim);font-size:.82rem}
+  .foot-grid{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:center}
+  .foot-logo{font-family:"Sora";font-weight:800;letter-spacing:.2em;color:var(--star);font-size:1rem}
+
+  @media (max-width:880px){
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .capsule{grid-template-columns:1fr;gap:34px}
+    .track-stage{height:440px}
+    section{padding:90px 0}
+  }
+  @media (max-width:480px){
+    .sun{width:120px;height:120px}
+    .p4{width:60px;height:60px}.p2{width:48px;height:48px}
+    .track-stage{height:400px}
+  }
+</style>
+</head>
+<body>
+
+<div id="scroll-rail"><div id="scroll-fill"></div></div>
+<div id="starfield" aria-hidden="true"></div>
+
+<!-- ============ HERO ============ -->
+<header class="hero" aria-label="ORBITA 首页">
+  <div class="system" aria-hidden="true">
+    <svg viewBox="0 0 1280 900" preserveAspectRatio="xMidYMid slice">
+      <circle class="orbit-ring" cx="640" cy="450" r="150"/>
+      <circle class="orbit-ring dash" cx="640" cy="450" r="240"/>
+      <circle class="orbit-ring" cx="640" cy="450" r="330"/>
+      <circle class="orbit-ring dash" cx="640" cy="450" r="430"/>
+      <!-- the user-followable figure-8 path -->
+      <path id="userPath" d="M640,450 C460,250 240,250 240,450 C240,650 460,650 640,450 C820,250 1040,250 1040,450 C1040,650 820,650 640,450 Z"
+            fill="none" stroke="rgba(54,227,255,.28)" stroke-width="1.5" stroke-dasharray="2 8"/>
+    </svg>
+
+    <div class="sun" id="sun"></div>
+
+    <!-- planets parented to center; positioned by GSAP motionPath -->
+    <div class="planet p1" id="planet1">
+      <img src="/assets/portrait-toddler-space-helmet.webp" alt="戴太空头盔的孩子">
+    </div>
+    <div class="planet p2" id="planet2">
+      <img src="/assets/illustration-aviator-girl.webp" alt="">
+    </div>
+    <div class="planet p3" id="planet3">
+      <img src="/assets/illustration-night-cloud-boy.webp" alt="">
+    </div>
+    <div class="planet p4" id="planet4">
+      <img src="/assets/landscape-vinyl-clouds.webp" alt="">
+      <div class="planet moon" id="moon"></div>
+    </div>
+
+    <!-- satellite riding the figure-8 -->
+    <div class="satellite" id="sat">
+      <svg viewBox="0 0 40 40"><g fill="none" stroke="#36e3ff" stroke-width="2">
+        <rect x="15" y="13" width="10" height="14" rx="2" fill="rgba(54,227,255,.15)"/>
+        <path d="M15,16 L5,12 M15,24 L5,28 M25,16 L35,12 M25,24 L35,28"/>
+        <circle cx="20" cy="20" r="2.2" fill="#36e3ff" stroke="none"/>
+      </g></svg>
+    </div>
+  </div>
+
+  <div class="wrap hero-copy">
+    <span class="eyebrow">ORBITA · 轨道天文台</span>
+    <h1>让你的<span class="grad">影像</span><br>沿着轨道<span class="grad">运行</span></h1>
+    <p class="lede">ORBITA 是一座私人轨道天文台与影像档案馆。我们把你一生的瞬间送上各自的轨道，让它们围绕同一颗心，永不坠落。</p>
+    <div class="hero-cta">
+      <a href="#capsule" class="btn primary">预约一次发射 ↗</a>
+      <a href="#mission" class="btn ghost">阅读飞行日志</a>
+    </div>
+  </div>
+
+  <div class="scroll-hint" aria-hidden="true"><span>向下进入轨道</span><span class="dot"></span></div>
+</header>
+
+<!-- ============ STATS ============ -->
+<section aria-label="数据指标">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">飞行参数 · Telemetry</span>
+      <h2>每一帧，都在精确的<br>开普勒轨道上</h2>
+      <p>自 2019 年第一次发射以来，ORBITA 已把超过百万段记忆送入稳定的环心轨道。下面是当前的实时遥测。</p>
+    </div>
+    <div class="stats">
+      <div class="stat" data-count="1.28" data-suffix="M"><div class="num">0</div><div class="cap">在轨记忆数 / Memories</div></div>
+      <div class="stat" data-count="27" data-suffix=""><div class="num">0</div><div class="cap">同步轨道平面 / Planes</div></div>
+      <div class="stat" data-count="99.97" data-suffix="%"><div class="num">0</div><div class="cap">在轨稳定率 / Uptime</div></div>
+      <div class="stat" data-count="412" data-suffix="K"><div class="num">0</div><div class="cap">日跟随访客 / Visitors</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TRACK / pinned conveyor ============ -->
+<section class="track-sec" id="track" aria-label="轨道传送带">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">货舱清单 · Cargo Manifest</span>
+      <h2>影像沿一条曲线<br>被依次送入太空</h2>
+      <p>滚动以驱动传送：每一颗记忆胶囊都被 MotionPath 牵引，沿同一条贝塞尔曲线滑入轨道，并自动对齐切线方向。</p>
+    </div>
+    <div class="track-stage" id="trackStage">
+      <svg class="pathvis" viewBox="0 0 1200 520" preserveAspectRatio="none">
+        <path class="track-path-stroke" id="trackPath" d="M-120,420 C150,420 250,120 520,120 C780,120 860,420 1320,300"/>
+      </svg>
+      <div class="pod" data-pod="0"><div class="card"><img src="/assets/illustration-anime-cloud-hill.webp" alt="云顶之丘插画"><div class="t"><b>云顶之丘</b><span>OBJ · 001</span></div></div></div>
+      <div class="pod" data-pod="1"><div class="card"><img src="/assets/illustration-seaside-tower-girl.webp" alt="海边灯塔少女插画"><div class="t"><b>灯塔守望</b><span>OBJ · 002</span></div></div></div>
+      <div class="pod" data-pod="2"><div class="card"><img src="/assets/illustration-travel-woman.webp" alt="旅行女子插画"><div class="t"><b>远行者</b><span>OBJ · 003</span></div></div></div>
+      <div class="pod" data-pod="3"><div class="card"><img src="/assets/illustration-orchard-apple-tree.webp" alt="果园苹果树插画"><div class="t"><b>果园之秋</b><span>OBJ · 004</span></div></div></div>
+      <div class="pod" data-pod="4"><div class="card"><img src="/assets/illustration-kitten-seaside.webp" alt="海边小猫插画"><div class="t"><b>潮汐同伴</b><span>OBJ · 005</span></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CAPSULE / product ============ -->
+<section id="capsule" aria-label="轨道胶囊产品">
+  <div class="wrap">
+    <div class="capsule">
+      <div class="capsule-visual" aria-hidden="true">
+        <svg class="ring-svg" viewBox="0 0 600 600">
+          <circle cx="300" cy="300" r="150" fill="none" stroke="rgba(157,107,255,.3)" stroke-width="1"/>
+          <ellipse cx="300" cy="300" rx="240" ry="120" fill="none" stroke="rgba(54,227,255,.28)" stroke-width="1" id="ellipsePath"/>
+          <ellipse cx="300" cy="300" rx="120" ry="240" fill="none" stroke="rgba(255,79,216,.25)" stroke-width="1" id="ellipsePath2"/>
+        </svg>
+        <div class="core"><img src="/assets/illustration-double-exposure-woman.webp" alt="双重曝光人像，象征记忆核心"></div>
+        <div class="orbiter" id="orb1"><img src="/assets/illustration-cat-glasses.webp" alt=""></div>
+        <div class="orbiter" id="orb2"><img src="/assets/illustration-origami-fox.webp" alt=""></div>
+        <div class="orbiter" id="orb3"><img src="/assets/illustration-popart-girl.webp" alt=""></div>
+      </div>
+      <div>
+        <span class="eyebrow">轨道胶囊 · The Capsule</span>
+        <h2 style="font-size:clamp(1.9rem,4vw,3rem);font-weight:800;margin:1rem 0">围绕你的核心<br>构建一座私人星系</h2>
+        <p>把核心人物放进中心，让朋友、作品、宠物与城市分别进入各自的轨道。它们以不同周期运转，却始终对齐同一个引力中心——你。</p>
+        <ul class="feat">
+          <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#36e3ff" stroke-width="2"><circle cx="12" cy="12" r="3"/><ellipse cx="12" cy="12" rx="10" ry="4.5"/></svg></span><div><b>自动切线对齐</b><span>每个轨道天体随路径切线自动旋转，朝向永远自然。</span></div></li>
+          <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#9d6bff" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0z"/><path d="M12 7v5l3 2"/></svg></span><div><b>永续公转</b><span>时间线循环往复，记忆持续运转，不需要任何手动维护。</span></div></li>
+          <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#ff4fd8" stroke-width="2"><path d="M4 12h16M12 4l8 8-8 8"/></svg></span><div><b>可跟随路径</b><span>访客可以握住光标，沿你设定的飞行航线穿越整座星系。</span></div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MISSION timeline along path ============ -->
+<section class="mission" id="mission" aria-label="任务时间线">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">飞行日志 · Flight Log</span>
+      <h2>一条蜿蜒的轨迹，<br>就是一段历程</h2>
+      <p>滚动时，一颗信标彗星会沿这条曲线行进，依次点亮每一个里程节点。</p>
+    </div>
+    <div class="mission-path-wrap" id="missionWrap">
+      <svg class="mission-svg" id="missionSvg" viewBox="0 0 1200 640" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <linearGradient id="mgrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#36e3ff"/><stop offset=".5" stop-color="#7a3cff"/><stop offset="1" stop-color="#ff4fd8"/>
+          </linearGradient>
+        </defs>
+        <path class="mission-line" id="missionLine"
+          d="M60,80 C320,80 320,300 600,300 C880,300 880,520 1140,560"/>
+      </svg>
+      <div class="m-comet" id="missionComet" aria-hidden="true"></div>
+      <div class="m-node" data-node="0" style="left:2%;top:2%"><div class="yr">2019</div><h3>第一次发射</h3><p>在一间废弃天文台里，我们把第一张底片送入轨道。</p></div>
+      <div class="m-node" data-node="1" style="left:38%;top:34%"><div class="yr">2021</div><h3>多平面同步</h3><p>引入 27 个轨道平面，让记忆按主题分层运转，互不干扰。</p></div>
+      <div class="m-node" data-node="2" style="left:55%;top:62%"><div class="yr">2023</div><h3>可跟随航线</h3><p>访客第一次可以亲手牵引航标，穿越他人的私人星系。</p></div>
+      <div class="m-node" data-node="3" style="right:2%;top:80%;left:auto;text-align:right"><div class="yr">2026</div><h3>永续公转</h3><p>轨道引擎升级为永不停歇的循环时间线——这就是你现在看到的。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL CTA ============ -->
+<section class="final" aria-label="行动召唤">
+  <div class="wrap">
+    <div class="final-orbit" aria-hidden="true">
+      <svg viewBox="0 0 440 440" style="position:absolute;inset:0;width:100%;height:100%">
+        <circle cx="220" cy="220" r="170" fill="none" stroke="rgba(157,107,255,.3)" stroke-width="1" id="finalRing"/>
+        <circle cx="220" cy="220" r="110" fill="none" stroke="rgba(54,227,255,.3)" stroke-width="1" stroke-dasharray="3 7" id="finalRing2"/>
+      </svg>
+      <div class="planet-f" id="fp1"></div>
+      <div class="planet-f" id="fp2" style="background:linear-gradient(135deg,var(--nebula-b),var(--gold))"></div>
+    </div>
+    <span class="eyebrow" style="justify-content:center">准备发射 · Ready for Launch</span>
+    <h2>把你的故事，<br><span class="grad">送上轨道</span></h2>
+    <p>一次发射，永久在轨。从今天起，让你最珍贵的瞬间围绕你公转，永不坠落。</p>
+    <a href="#" class="btn primary" style="font-size:1.05rem;padding:18px 38px">开始一次发射 ↗</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-grid">
+    <span class="foot-logo">ORBITA</span>
+    <span>轨道天文台与影像档案馆 · 北京 / 在轨</span>
+    <span>© 2026 ORBITA Observatory</span>
+  </div>
+</footer>
+
+<!-- GSAP core first, then plugins, then register -->
+<script src="/vendor/gsap/gsap.min.js"></script>
+<script src="/vendor/gsap/MotionPathPlugin.min.js"></script>
+<script src="/vendor/gsap/ScrollTrigger.min.js"></script>
+<script>
+gsap.registerPlugin(MotionPathPlugin, ScrollTrigger);
+
+/* ---------- starfield ---------- */
+(function(){
+  const sf = document.getElementById('starfield');
+  const n = window.innerWidth < 600 ? 70 : 140;
+  const frag = document.createDocumentFragment();
+  for(let i=0;i<n;i++){
+    const d = document.createElement('span');
+    d.className = 'star-dot' + (Math.random()>.82?' big':'');
+    d.style.left = Math.random()*100+'%';
+    d.style.top = Math.random()*100+'%';
+    d.style.opacity = (0.25+Math.random()*0.6).toFixed(2);
+    frag.appendChild(d);
+  }
+  sf.appendChild(frag);
+})();
+
+const mm = gsap.matchMedia();
+
+/* =========================================================
+   FULL MOTION (motion allowed)
+========================================================= */
+mm.add("(prefers-reduced-motion: no-preference)", () => {
+
+  /* twinkle starfield */
+  gsap.to('.star-dot', {opacity:0.15, duration:'random(1.2,3)', repeat:-1, yoyo:true,
+    ease:'sine.inOut', stagger:{each:0.02, from:'random'}});
+
+  /* sun pulse + slow spin glow */
+  gsap.to('#sun', {scale:1.06, duration:3.2, repeat:-1, yoyo:true, ease:'sine.inOut'});
+
+  /* ---------- HERO solar system: planets on orbits via MotionPath ---------- */
+  // build elliptical orbit path strings centered on the system (1280x900 viewBox -> but elements are % positioned;
+  // we drive them in px relative to .system center using circular paths).
+  const sys = document.querySelector('.system');
+  function orbitTL(el, rx, ry, dur, dir, rot){
+    // closed elliptical path around (0,0); MotionPath moves element transform from its translate(-50%,-50%) origin
+    const p = `M ${rx},0 A ${rx},${ry} 0 1,1 ${-rx},0 A ${rx},${ry} 0 1,1 ${rx},0 Z`;
+    return gsap.to(el, {
+      duration:dur, repeat:-1, ease:'none',
+      motionPath:{ path:p, autoRotate:rot, start:dir>0?0:1, end:dir>0?1:0 }
+    });
+  }
+  orbitTL('#planet1', 150, 150, 14, 1, false);
+  orbitTL('#planet2', 240, 230, 22, -1, false);
+  orbitTL('#planet3', 330, 320, 34, 1, false);
+  const p4tl = orbitTL('#planet4', 430, 410, 52, -1, false);
+  // moon orbits planet4 (its own local center)
+  gsap.to('#moon', {duration:5, repeat:-1, ease:'none',
+    motionPath:{ path:'M 50,0 A 50,50 0 1,1 -50,0 A 50,50 0 1,1 50,0 Z', autoRotate:false }});
+
+  /* satellite rides the figure-8 #userPath with autoRotate aligned to tangent */
+  gsap.set('#sat', {xPercent:-50, yPercent:-50});
+  gsap.to('#sat', {
+    duration:18, repeat:-1, ease:'none',
+    motionPath:{ path:'#userPath', align:'#userPath', alignOrigin:[0.5,0.5], autoRotate:true }
+  });
+
+  /* hero copy intro */
+  const heroIn = gsap.timeline({defaults:{ease:'power3.out'}});
+  heroIn.from('.hero .eyebrow', {y:24, opacity:0, duration:.7})
+        .from('.hero h1', {y:40, opacity:0, duration:.9}, '-=.4')
+        .from('.hero .lede', {y:24, opacity:0, duration:.7}, '-=.5')
+        .from('.hero-cta .btn', {y:22, opacity:0, duration:.6, stagger:.12}, '-=.4')
+        .from('.planet, .satellite', {scale:0, opacity:0, duration:.8, ease:'back.out(1.7)', stagger:.08}, '-=.9');
+
+  /* scroll progress comet fill */
+  gsap.to('#scroll-fill', {scaleX:1, ease:'none', transformOrigin:'left',
+    scrollTrigger:{trigger:document.body, start:'top top', end:'bottom bottom', scrub:.3,
+      onUpdate:self=>{document.getElementById('scroll-fill').style.width=(self.progress*100).toFixed(1)+'%';}}});
+
+  /* section heads reveal */
+  gsap.utils.toArray('.sec-head').forEach(h=>{
+    gsap.from(h.children, {y:30, opacity:0, duration:.7, stagger:.1, ease:'power3.out',
+      scrollTrigger:{trigger:h, start:'top 82%'}});
+  });
+
+  /* ---------- stats count up ---------- */
+  gsap.utils.toArray('.stat').forEach(st=>{
+    const target = parseFloat(st.dataset.count);
+    const suffix = st.dataset.suffix || '';
+    const numEl = st.querySelector('.num');
+    const dec = (target % 1 !== 0) ? 2 : 0;
+    const obj = {v:0};
+    ScrollTrigger.create({trigger:st, start:'top 85%', once:true, onEnter:()=>{
+      gsap.to(obj, {v:target, duration:1.6, ease:'power2.out',
+        onUpdate:()=>{ numEl.textContent = obj.v.toFixed(dec) + suffix; }});
+    }});
+    gsap.from(st, {y:34, opacity:0, duration:.7, ease:'power3.out',
+      scrollTrigger:{trigger:st, start:'top 88%'}, delay:0});
+  });
+
+  /* ---------- TRACK: pinned section, pods ride #trackPath driven by scroll ---------- */
+  const pods = gsap.utils.toArray('.pod');
+  const tStage = document.getElementById('trackStage');
+  // place pods on the path with offset progress; scrub drives them forward
+  const trackTL = gsap.timeline({
+    scrollTrigger:{ trigger:'#track', start:'top top', end:'+=1600',
+      pin:'#trackStage', scrub:1, anticipatePin:1 }
+  });
+  pods.forEach((pod,i)=>{
+    gsap.set(pod, {xPercent:-50, yPercent:-50});
+    trackTL.fromTo(pod,
+      { motionPath:{ path:'#trackPath', align:'#trackPath', alignOrigin:[0.5,0.5], autoRotate:false, start:0, end:0 } },
+      { motionPath:{ path:'#trackPath', align:'#trackPath', alignOrigin:[0.5,0.5], autoRotate:false, start:0, end:1 },
+        ease:'none', duration:1 },
+      i*0.14 );
+    trackTL.fromTo(pod, {opacity:0, scale:.6}, {opacity:1, scale:1, duration:.18}, i*0.14);
+  });
+
+  /* ---------- CAPSULE orbiters on the ellipses ---------- */
+  // MotionPath `align` only resolves <path> geometry — convert the <ellipse>/<circle>
+  // orbit rings to real paths first (keeps their stroke styling) so align doesn't throw.
+  MotionPathPlugin.convertToPath('#ellipsePath, #ellipsePath2, #finalRing, #finalRing2');
+  gsap.set(['#orb1','#orb2','#orb3'], {xPercent:-50, yPercent:-50});
+  // ellipse paths in the SVG coordinate space (600x600), centered 300,300 -> use relative path centered at 0
+  gsap.to('#orb1', {duration:9, repeat:-1, ease:'none',
+    motionPath:{ path:'#ellipsePath', align:'#ellipsePath', alignOrigin:[0.5,0.5], autoRotate:true }});
+  gsap.to('#orb2', {duration:13, repeat:-1, ease:'none',
+    motionPath:{ path:'#ellipsePath2', align:'#ellipsePath2', alignOrigin:[0.5,0.5], autoRotate:true }});
+  gsap.to('#orb3', {duration:7, repeat:-1, ease:'none', delay:-3,
+    motionPath:{ path:'#ellipsePath', align:'#ellipsePath', alignOrigin:[0.5,0.5], autoRotate:true }});
+  gsap.from('.capsule-visual', {scale:.85, opacity:0, duration:1, ease:'power3.out',
+    scrollTrigger:{trigger:'.capsule', start:'top 75%'}});
+  gsap.from('.feat li', {x:30, opacity:0, duration:.6, stagger:.12, ease:'power3.out',
+    scrollTrigger:{trigger:'.feat', start:'top 82%'}});
+
+  /* ---------- MISSION: comet rides #missionLine, scrub-driven; nodes light up ---------- */
+  gsap.set('#missionComet', {xPercent:-50, yPercent:-50});
+  gsap.to('#missionComet', {
+    ease:'none',
+    motionPath:{ path:'#missionLine', align:'#missionLine', alignOrigin:[0.5,0.5], autoRotate:false },
+    scrollTrigger:{ trigger:'#missionWrap', start:'top 70%', end:'bottom 75%', scrub:.8 }
+  });
+  // draw the mission line as you scroll
+  const ml = document.getElementById('missionLine');
+  const len = ml.getTotalLength();
+  gsap.set(ml, {strokeDasharray:len, strokeDashoffset:len});
+  gsap.to(ml, {strokeDashoffset:0, ease:'none',
+    scrollTrigger:{ trigger:'#missionWrap', start:'top 70%', end:'bottom 75%', scrub:.8 }});
+  gsap.utils.toArray('.m-node').forEach(node=>{
+    gsap.from(node, {y:36, opacity:0, duration:.7, ease:'power3.out',
+      scrollTrigger:{trigger:node, start:'top 85%'}});
+  });
+
+  /* ---------- FINAL orbit ---------- */
+  gsap.set(['#fp1','#fp2'], {xPercent:-50, yPercent:-50});
+  gsap.to('#fp1', {duration:8, repeat:-1, ease:'none',
+    motionPath:{ path:'#finalRing', align:'#finalRing', alignOrigin:[0.5,0.5], autoRotate:false }});
+  gsap.to('#fp2', {duration:5.5, repeat:-1, ease:'none', delay:-2,
+    motionPath:{ path:'#finalRing2', align:'#finalRing2', alignOrigin:[0.5,0.5], autoRotate:false }});
+  gsap.from('.final h2, .final p, .final .btn', {y:30, opacity:0, duration:.7, stagger:.12, ease:'power3.out',
+    scrollTrigger:{trigger:'.final', start:'top 75%'}});
+
+  return () => { /* matchMedia auto-reverts on cleanup */ };
+});
+
+/* =========================================================
+   REDUCED MOTION: render final state, no loops / no scrub
+========================================================= */
+mm.add("(prefers-reduced-motion: reduce)", () => {
+  // place planets statically along their orbits
+  const place = (id, rx, ry, ang)=>{
+    const el=document.querySelector(id); if(!el) return;
+    const a=ang*Math.PI/180;
+    gsap.set(el,{x:Math.cos(a)*rx, y:Math.sin(a)*ry});
+  };
+  place('#planet1',150,150,-30); place('#planet2',240,230,140);
+  place('#planet3',330,320,40); place('#planet4',430,410,210);
+  gsap.set('#sat',{xPercent:-50,yPercent:-50});
+  // finalize stat counters
+  gsap.utils.toArray('.stat').forEach(st=>{
+    const t=parseFloat(st.dataset.count), s=st.dataset.suffix||'';
+    st.querySelector('.num').textContent = t.toFixed(t%1?2:0)+s;
+  });
+  // reveal the mission line fully
+  const ml=document.getElementById('missionLine');
+  if(ml) gsap.set(ml,{strokeDasharray:'none',strokeDashoffset:0});
+  gsap.set('#scroll-fill',{width:'100%'});
+});
+</script>
+</body>
+</html>

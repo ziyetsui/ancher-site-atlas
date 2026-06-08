@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BLOOP. — 形变品牌创意工作室 / Morphing Brand Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#161222;
+    --paper:#fdf6e9;
+    --pink:#ff5d8f;
+    --tangerine:#ff8a3d;
+    --lemon:#ffd23f;
+    --mint:#2ec4a6;
+    --sky:#4d9de0;
+    --grape:#7b4bd6;
+    --shadow:#161222;
+    --r-blob:48% 52% 62% 38% / 43% 39% 61% 57%;
+    --maxw:1280px;
+    --space:clamp(72px,9vw,140px);
+    --font-display:"Fredoka",system-ui,sans-serif;
+    --font-body:"Space Grotesk",system-ui,sans-serif;
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--font-body);
+    font-size:clamp(16px,1.1vw,18px);
+    line-height:1.55;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:var(--font-display);line-height:1.02;margin:0;letter-spacing:-.01em}
+  a{color:inherit}
+  img{max-width:100%;display:block}
+
+  /* visible focus for accessibility */
+  a:focus-visible,button:focus-visible{
+    outline:3px solid var(--grape);
+    outline-offset:3px;
+    border-radius:6px;
+  }
+  .skip{
+    position:absolute;left:-9999px;top:0;background:var(--ink);color:var(--lemon);
+    padding:.6rem 1rem;border-radius:0 0 12px 0;z-index:99;font-weight:700;
+  }
+  .skip:focus{left:0}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(20px,5vw,56px)}
+  section{position:relative}
+
+  /* ===================== FIXED BACKDROP BLOB ===================== */
+  .backdrop{
+    position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+  }
+  .backdrop svg{position:absolute;width:min(120vw,1500px);height:auto;
+    top:-12%;left:50%;transform:translateX(-50%);opacity:.9}
+
+  .layer{position:relative;z-index:1}
+
+  /* ===================== TICKER / MARQUEE ===================== */
+  .ticker{
+    background:var(--ink);color:var(--lemon);
+    overflow:hidden;white-space:nowrap;border-top:3px solid var(--ink);
+    border-bottom:3px solid var(--ink);
+  }
+  .ticker__track{display:inline-flex;gap:2.5rem;padding:.7rem 0;
+    font-family:var(--font-display);font-weight:600;font-size:1.05rem;
+    letter-spacing:.04em;will-change:transform}
+  .ticker__track span{display:inline-flex;align-items:center;gap:2.5rem}
+  .ticker__track b{color:var(--pink);font-weight:700}
+
+  /* ===================== HERO ===================== */
+  .hero{padding:clamp(28px,5vw,56px) 0 var(--space)}
+  .nav{display:flex;align-items:center;justify-content:space-between;
+    gap:1rem;flex-wrap:wrap;margin-bottom:clamp(40px,8vw,96px)}
+  .brand{display:flex;align-items:center;gap:.7rem;font-family:var(--font-display);
+    font-weight:700;font-size:1.45rem;letter-spacing:-.02em}
+  .brand svg{width:40px;height:40px;flex:none}
+  .nav__links{display:flex;gap:clamp(1rem,2.5vw,2.2rem);flex-wrap:wrap;
+    font-weight:500;font-size:.98rem}
+  .nav__links a{text-decoration:none;position:relative;padding-bottom:2px}
+  .nav__links a::after{content:"";position:absolute;left:0;right:100%;bottom:-2px;
+    height:3px;background:var(--pink);transition:right .25s ease}
+  .nav__links a:hover::after,.nav__links a:focus-visible::after{right:0}
+  .nav__cta{background:var(--ink);color:var(--lemon);text-decoration:none;
+    font-family:var(--font-display);font-weight:600;padding:.55rem 1.15rem;
+    border-radius:40px;box-shadow:4px 4px 0 var(--pink);font-size:.95rem}
+
+  .hero__grid{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(28px,5vw,64px);
+    align-items:center}
+  .hero__title{font-size:clamp(3.4rem,11vw,8.4rem);font-weight:700;
+    letter-spacing:-.03em}
+  .hero__title .word{display:inline-block;will-change:transform}
+  .hero__title .pop{color:var(--pink)}
+  .hero__title .pop2{color:var(--mint)}
+  .hero__lead{max-width:34ch;font-size:clamp(1.05rem,1.5vw,1.25rem);
+    margin:clamp(18px,3vw,28px) 0 clamp(24px,3.5vw,36px);color:#3a3450}
+  .hero__actions{display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
+  .btn{font-family:var(--font-display);font-weight:600;font-size:1.05rem;
+    border:3px solid var(--ink);background:var(--lemon);color:var(--ink);
+    padding:.85rem 1.6rem;border-radius:44px;cursor:pointer;
+    box-shadow:5px 5px 0 var(--ink);text-decoration:none;display:inline-flex;
+    align-items:center;gap:.5rem;will-change:transform}
+  .btn--solid{background:var(--pink);color:var(--paper);box-shadow:5px 5px 0 var(--ink)}
+  .hero__note{font-size:.95rem;color:#6a6480;font-weight:500}
+
+  /* hero morph stage */
+  .stage{position:relative;aspect-ratio:1/1;display:flex;align-items:center;
+    justify-content:center}
+  .stage svg{width:100%;height:100%;overflow:visible}
+  .stage__shape{fill:var(--grape)}
+  .stage__badge{position:absolute;top:4%;right:2%;background:var(--lemon);
+    border:3px solid var(--ink);border-radius:50%;width:clamp(78px,11vw,108px);
+    height:clamp(78px,11vw,108px);display:grid;place-items:center;text-align:center;
+    font-family:var(--font-display);font-weight:700;font-size:.78rem;line-height:1.05;
+    box-shadow:4px 4px 0 var(--ink);will-change:transform}
+  .stage__chip{position:absolute;bottom:6%;left:-4%;background:var(--mint);
+    color:var(--ink);border:3px solid var(--ink);border-radius:18px;
+    padding:.45rem .9rem;font-family:var(--font-display);font-weight:600;
+    box-shadow:4px 4px 0 var(--ink);will-change:transform}
+
+  /* ===================== LOGOTYPE MORPH STRIP ===================== */
+  .glyphs{padding:var(--space) 0;text-align:center}
+  .kicker{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--font-display);
+    font-weight:600;text-transform:uppercase;letter-spacing:.12em;font-size:.85rem;
+    color:var(--grape);margin-bottom:1.1rem}
+  .kicker::before{content:"";width:10px;height:10px;border-radius:50%;
+    background:var(--pink);display:inline-block}
+  .glyphs h2{font-size:clamp(2.1rem,5vw,3.6rem);margin-bottom:.8rem}
+  .glyphs p{max-width:48ch;margin:0 auto clamp(40px,6vw,64px);color:#3a3450}
+  .glyph-stage{display:flex;justify-content:center;align-items:center;
+    min-height:clamp(180px,30vw,300px)}
+  .glyph-stage svg{width:clamp(220px,40vw,420px);height:auto;overflow:visible}
+  .glyph-path{fill:var(--tangerine)}
+  .glyph-dots{display:flex;gap:.6rem;justify-content:center;margin-top:2rem}
+  .glyph-dots button{width:14px;height:14px;border-radius:50%;border:2px solid var(--ink);
+    background:var(--paper);cursor:pointer;padding:0}
+  .glyph-dots button[aria-current="true"]{background:var(--ink)}
+
+  /* ===================== WORK GRID ===================== */
+  .work{padding:var(--space) 0}
+  .work__head{display:flex;justify-content:space-between;align-items:flex-end;
+    gap:1.5rem;flex-wrap:wrap;margin-bottom:clamp(36px,5vw,56px)}
+  .work__head h2{font-size:clamp(2.1rem,5.5vw,4rem)}
+  .work__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(18px,2.5vw,30px)}
+  .card{position:relative;border:3px solid var(--ink);border-radius:26px;overflow:hidden;
+    background:var(--paper);box-shadow:7px 7px 0 var(--ink);will-change:transform;
+    text-decoration:none;display:block}
+  .card__media{aspect-ratio:4/5;overflow:hidden;background:var(--lemon)}
+  .card__media img{width:100%;height:100%;object-fit:cover}
+  .card__body{padding:1rem 1.15rem 1.2rem;display:flex;flex-direction:column;gap:.25rem}
+  .card__tag{font-family:var(--font-display);font-weight:600;font-size:.8rem;
+    text-transform:uppercase;letter-spacing:.08em;color:var(--grape)}
+  .card__title{font-family:var(--font-display);font-weight:700;font-size:1.25rem}
+  .card:nth-child(1) .card__media{background:var(--pink)}
+  .card:nth-child(2) .card__media{background:var(--sky)}
+  .card:nth-child(3) .card__media{background:var(--mint)}
+  .card:nth-child(4) .card__media{background:var(--tangerine)}
+  .card:nth-child(5) .card__media{background:var(--grape)}
+  .card:nth-child(6) .card__media{background:var(--lemon)}
+
+  /* ===================== STATS ===================== */
+  .stats{padding:var(--space) 0}
+  .stats__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(16px,2.5vw,28px)}
+  .stat{border:3px solid var(--ink);border-radius:22px;padding:clamp(20px,3vw,32px);
+    background:var(--paper);box-shadow:6px 6px 0 var(--ink)}
+  .stat:nth-child(odd){background:var(--lemon)}
+  .stat__num{font-family:var(--font-display);font-weight:700;
+    font-size:clamp(2.6rem,6vw,4.2rem);line-height:1}
+  .stat__label{font-weight:500;color:#3a3450;margin-top:.4rem;font-size:.95rem}
+
+  /* ===================== PROCESS ===================== */
+  .process{padding:var(--space) 0}
+  .process h2{font-size:clamp(2.1rem,5.5vw,4rem);margin-bottom:clamp(36px,5vw,56px);
+    max-width:16ch}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,3vw,36px)}
+  .step{position:relative}
+  .step__icon{width:clamp(72px,9vw,100px);height:clamp(72px,9vw,100px);margin-bottom:1rem}
+  .step__icon svg{width:100%;height:100%;overflow:visible}
+  .step__icon path{fill:none;stroke:var(--ink);stroke-width:7;
+    stroke-linecap:round;stroke-linejoin:round}
+  .step h3{font-size:clamp(1.3rem,2.5vw,1.7rem);margin-bottom:.5rem}
+  .step__n{font-family:var(--font-display);font-weight:700;color:var(--pink);
+    font-size:1.1rem}
+  .step p{color:#3a3450;max-width:32ch}
+
+  /* ===================== CTA ===================== */
+  .cta{padding:var(--space) 0}
+  .cta__box{border:3px solid var(--ink);border-radius:36px;background:var(--ink);
+    color:var(--paper);padding:clamp(40px,7vw,88px) clamp(28px,5vw,72px);
+    text-align:center;position:relative;overflow:hidden}
+  .cta__box h2{font-size:clamp(2.4rem,7vw,5.4rem);color:var(--lemon)}
+  .cta__box h2 em{font-style:normal;color:var(--pink)}
+  .cta__box p{max-width:44ch;margin:1.2rem auto 2rem;color:#e9e3f7}
+  .cta__blob{position:absolute;z-index:0;opacity:.5;pointer-events:none}
+  .cta__blob--a{width:240px;top:-60px;left:-40px;fill:var(--grape)}
+  .cta__blob--b{width:200px;bottom:-70px;right:-30px;fill:var(--pink)}
+  .cta__inner{position:relative;z-index:1}
+
+  /* ===================== FOOTER ===================== */
+  footer{border-top:3px solid var(--ink);padding:clamp(36px,5vw,56px) 0;
+    background:var(--paper)}
+  .foot{display:flex;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;
+    align-items:center}
+  .foot__brand{font-family:var(--font-display);font-weight:700;font-size:1.6rem}
+  .foot__links{display:flex;gap:1.4rem;flex-wrap:wrap;font-weight:500}
+  .foot__links a{text-decoration:none}
+  .foot small{color:#6a6480}
+
+  /* ===================== RESPONSIVE ===================== */
+  @media (max-width:900px){
+    .hero__grid{grid-template-columns:1fr;gap:40px}
+    .stage{max-width:440px;margin:0 auto;width:100%}
+    .work__grid{grid-template-columns:repeat(2,1fr)}
+    .stats__grid{grid-template-columns:repeat(2,1fr)}
+    .steps{grid-template-columns:1fr;gap:36px}
+  }
+  @media (max-width:560px){
+    .work__grid{grid-template-columns:1fr}
+    .nav__links{display:none}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .ticker__track{animation:none}
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#work">跳到作品 / Skip to work</a>
+
+<!-- fixed flowing backdrop blob -->
+<div class="backdrop" aria-hidden="true">
+  <svg viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice">
+    <path id="bg-blob" fill="#ffe6c2" d="M650,470Q620,600,500,640Q380,680,270,620Q160,560,140,440Q120,320,200,230Q280,140,400,150Q520,160,600,250Q680,340,650,470Z"/>
+  </svg>
+</div>
+
+<div class="layer">
+
+<!-- TICKER -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker__track" id="ticker">
+    <span>形变品牌 <b>•</b> MORPHING IDENTITIES <b>•</b> 会动的标志 <b>•</b> KINETIC LOGOS <b>•</b> 包装 / 动效 / 网页 <b>•</b> BLOOP STUDIO <b>•</b> </span>
+    <span>形变品牌 <b>•</b> MORPHING IDENTITIES <b>•</b> 会动的标志 <b>•</b> KINETIC LOGOS <b>•</b> 包装 / 动效 / 网页 <b>•</b> BLOOP STUDIO <b>•</b> </span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="wrap">
+    <nav class="nav" aria-label="主导航">
+      <span class="brand">
+        <svg viewBox="0 0 48 48" aria-hidden="true">
+          <path id="brand-mark" fill="#ff5d8f" d="M24,4C12,4,4,12,4,24s8,20,20,20,20-8,20-20S36,4,24,4Z"/>
+          <circle cx="18" cy="22" r="3.4" fill="#161222"/>
+          <circle cx="30" cy="22" r="3.4" fill="#161222"/>
+        </svg>
+        BLOOP.
+      </span>
+      <div class="nav__links">
+        <a href="#glyphs">玩法 Approach</a>
+        <a href="#work">作品 Work</a>
+        <a href="#process">流程 Process</a>
+        <a href="#contact">联系 Contact</a>
+      </div>
+      <a class="nav__cta" href="#contact">开聊项目 →</a>
+    </nav>
+
+    <div class="hero__grid">
+      <div class="hero__copy">
+        <h1 class="hero__title">
+          <span class="word">让</span>
+          <span class="word pop">标志</span>
+          <span class="word">学会</span>
+          <span class="word pop2">变形</span><span class="word">。</span>
+        </h1>
+        <p class="hero__lead">
+          BLOOP 是一间专做「会动品牌」的创意工作室。我们把一套标志拆成可生长、可变形、
+          可呼吸的图形系统——一个形状能流成另一个形状，一个图标能弹成一句话。
+        </p>
+        <div class="hero__actions">
+          <a href="#work" class="btn btn--solid">看会动的案例</a>
+          <a href="#contact" class="btn">预约 15 分钟</a>
+          <span class="hero__note">2018 至今 · 服务 40+ 品牌</span>
+        </div>
+      </div>
+
+      <div class="stage" aria-hidden="true">
+        <svg viewBox="0 0 400 400">
+          <path class="stage__shape" id="hero-morph"
+            d="M200,40C290,40,360,110,360,200S290,360,200,360,40,290,40,200,110,40,200,40Z"/>
+        </svg>
+        <div class="stage__badge">SHAPE-<br>SHIFTING<br>★ 2018</div>
+        <div class="stage__chip">live morph ✦</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GLYPH MORPH STRIP -->
+<section class="glyphs" id="glyphs">
+  <div class="wrap">
+    <span class="kicker">A LOGO THAT MOVES</span>
+    <h2>一个标记,六种形态</h2>
+    <p>同一套品牌核心,在不同语境里morph成不同图形——爱心、星、水滴、对话气泡、闪电、花。
+       下方图形每两秒自动变形一次,也可以点圆点手动切换。</p>
+
+    <div class="glyph-stage">
+      <svg viewBox="0 0 240 240" role="img" aria-label="自动变形的品牌图形演示">
+        <path class="glyph-path" id="glyph-morph"
+          d="M120,40C170,40,200,80,200,120S170,200,120,200,40,160,40,120,70,40,120,40Z"/>
+      </svg>
+    </div>
+
+    <div class="glyph-dots" role="tablist" aria-label="选择品牌形态">
+      <button type="button" data-shape="0" aria-current="true" aria-label="圆形"></button>
+      <button type="button" data-shape="1" aria-label="爱心"></button>
+      <button type="button" data-shape="2" aria-label="星形"></button>
+      <button type="button" data-shape="3" aria-label="水滴"></button>
+      <button type="button" data-shape="4" aria-label="对话气泡"></button>
+      <button type="button" data-shape="5" aria-label="闪电"></button>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section class="work" id="work">
+  <div class="wrap">
+    <div class="work__head">
+      <h2>精选案例</h2>
+      <p style="max-width:30ch;color:#3a3450">从软糖品牌到独立播客,我们让识别系统真正动起来。</p>
+    </div>
+    <div class="work__grid">
+      <a class="card" href="#work">
+        <div class="card__media"><img src="/assets/illustration-popart-girl.webp" alt="波普风女孩插画——彩糖软糖品牌主视觉"></div>
+        <div class="card__body"><span class="card__tag">糖果 / 包装</span><span class="card__title">JELLO 软糖星球</span></div>
+      </a>
+      <a class="card" href="#work">
+        <div class="card__media"><img src="/assets/illustration-cat-glasses.webp" alt="戴眼镜的猫插画——独立播客吉祥物"></div>
+        <div class="card__body"><span class="card__tag">播客 / 动效</span><span class="card__title">夜聊电台 NightCat</span></div>
+      </a>
+      <a class="card" href="#work">
+        <div class="card__media"><img src="/assets/illustration-goose-skateboard.webp" alt="玩滑板的鹅插画——潮流滑板品牌"></div>
+        <div class="card__body"><span class="card__tag">街头 / 标志</span><span class="card__title">HONK 滑板厂牌</span></div>
+      </a>
+      <a class="card" href="#work">
+        <div class="card__media"><img src="/assets/illustration-bichon-pastel.webp" alt="粉彩比熊犬插画——宠物护理品牌"></div>
+        <div class="card__body"><span class="card__tag">宠物 / 识别</span><span class="card__title">Fluffy 宠物洗护</span></div>
+      </a>
+      <a class="card" href="#work">
+        <div class="card__media"><img src="/assets/illustration-origami-fox.webp" alt="折纸狐狸插画——折纸主题文具品牌"></div>
+        <div class="card__body"><span class="card__tag">文具 / 系统</span><span class="card__title">ORI 折纸文具</span></div>
+      </a>
+      <a class="card" href="#work">
+        <div class="card__media"><img src="/assets/illustration-lady-3d.webp" alt="3D 风格女性形象——美妆订阅盒品牌"></div>
+        <div class="card__body"><span class="card__tag">美妆 / 网页</span><span class="card__title">GLOW 订阅美妆</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats" aria-label="数据">
+  <div class="wrap">
+    <div class="stats__grid">
+      <div class="stat"><div class="stat__num" data-count="40">0</div><div class="stat__label">合作品牌</div></div>
+      <div class="stat"><div class="stat__num" data-count="128">0</div><div class="stat__label">动态标志交付</div></div>
+      <div class="stat"><div class="stat__num" data-count="17">0</div><div class="stat__label">设计奖项</div></div>
+      <div class="stat"><div class="stat__num" data-count="6">0</div><div class="stat__label">核心成员</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="wrap">
+    <span class="kicker">HOW WE WORK</span>
+    <h2>我们怎样让品牌活过来</h2>
+    <div class="steps">
+      <article class="step">
+        <div class="step__icon"><svg viewBox="0 0 100 100" aria-hidden="true">
+          <path d="M20,50 Q35,20 50,50 T80,50"/></svg></div>
+        <span class="step__n">01</span>
+        <h3>聆听 Listen</h3>
+        <p>先弄清你的品牌想说什么、对谁说。我们从语气和场景出发,而不是先画图。</p>
+      </article>
+      <article class="step">
+        <div class="step__icon"><svg viewBox="0 0 100 100" aria-hidden="true">
+          <path d="M30,30 L70,30 L70,70 L30,70 Z M30,30 L70,70 M70,30 L30,70"/></svg></div>
+        <span class="step__n">02</span>
+        <h3>造形 Shape</h3>
+        <p>把核心标记拆成可变形的「基础形」,确保任意两态之间都能顺滑morph。</p>
+      </article>
+      <article class="step">
+        <div class="step__icon"><svg viewBox="0 0 100 100" aria-hidden="true">
+          <path d="M50,20 L62,42 L86,46 L68,64 L72,88 L50,76 L28,88 L32,64 L14,46 L38,42 Z"/></svg></div>
+        <span class="step__n">03</span>
+        <h3>放飞 Launch</h3>
+        <p>交付一整套会动的识别系统:网页动效、社媒模板、动态规范文档,即插即用。</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="contact">
+  <div class="wrap">
+    <div class="cta__box">
+      <svg class="cta__blob cta__blob--a" viewBox="0 0 200 200" aria-hidden="true"><path d="M160,110Q150,160,100,170Q50,180,30,130Q10,80,50,45Q90,10,135,40Q170,60,160,110Z"/></svg>
+      <svg class="cta__blob cta__blob--b" viewBox="0 0 200 200" aria-hidden="true"><path d="M165,95Q170,150,115,170Q60,190,35,140Q10,90,45,50Q80,10,130,30Q160,40,165,95Z"/></svg>
+      <div class="cta__inner">
+        <h2>让你的品牌<br><em>动起来</em>吧</h2>
+        <p>无论你正在从零起步,还是想给老标志注入新生命——我们都想听听。15 分钟,免费,不画大饼。</p>
+        <a href="mailto:hi@bloop.studio" class="btn btn--solid" id="cta-btn">hi@bloop.studio ✦</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap foot">
+    <div>
+      <div class="foot__brand">BLOOP.</div>
+      <small>形变品牌创意工作室 · 上海 / 远程</small>
+    </div>
+    <div class="foot__links">
+      <a href="#work">作品</a>
+      <a href="#process">流程</a>
+      <a href="#contact">联系</a>
+      <a href="#top">回到顶部</a>
+    </div>
+    <small>© 2026 BLOOP Studio. 用 GSAP 让形状跳舞。</small>
+  </div>
+</footer>
+
+</div><!-- /.layer -->
+
+<!-- GSAP: core first, then plugins, then register -->
+<script src="/vendor/gsap/gsap.min.js"></script>
+<script src="/vendor/gsap/CustomEase.min.js"></script>
+<script src="/vendor/gsap/MorphSVGPlugin.min.js"></script>
+<script src="/vendor/gsap/CustomBounce.min.js"></script>
+<script src="/vendor/gsap/CustomWiggle.min.js"></script>
+<script src="/vendor/gsap/ScrollTrigger.min.js"></script>
+<script>
+  gsap.registerPlugin(CustomEase, MorphSVGPlugin, CustomBounce, CustomWiggle, ScrollTrigger);
+
+  // equal-feel shape library for the hero (closed organic shapes -> morph nicely)
+  const heroShapes = [
+    "M200,40C290,40,360,110,360,200S290,360,200,360,40,290,40,200,110,40,200,40Z",                       // circle
+    "M60,80C60,140,200,330,200,330S340,140,340,80C340,40,300,30,270,55C245,75,200,120,200,120S155,75,130,55C100,30,60,40,60,80Z", // heart
+    "M200,40L250,150L370,160L280,240L310,360L200,300L90,360L120,240L30,160L150,150Z",                     // star
+    "M200,40C200,40,330,200,330,260A130,130,0,1,1,70,260C70,200,200,40,200,40Z",                          // droplet
+    "M60,90C60,60,90,40,200,40S340,60,340,90L340,230C340,260,310,280,200,280L150,280L90,350L100,280C70,270,60,250,60,230Z" // speech bubble
+  ];
+
+  // glyph shapes (uniform-ish closed paths for the strip section)
+  const glyphShapes = [
+    "M120,40C170,40,200,80,200,120S170,200,120,200,40,160,40,120,70,40,120,40Z",                          // circle
+    "M40,75C40,110,120,210,120,210S200,110,200,75C200,48,178,38,158,55C140,70,120,95,120,95S100,70,82,55C62,38,40,48,40,75Z", // heart
+    "M120,30L148,98L222,104L165,150L184,222L120,182L56,222L75,150L18,104L92,98Z",                         // star
+    "M120,30C120,30,200,130,200,165A80,80,0,1,1,40,165C40,130,120,30,120,30Z",                            // droplet
+    "M45,70C45,50,62,40,120,40S195,50,195,70L195,150C195,170,178,180,120,180L95,180L55,220L62,180C50,175,45,165,45,150Z", // speech bubble
+    "M140,20L70,120L120,120L100,210L180,90L130,90Z"                                                       // lightning
+  ];
+
+  let mm = gsap.matchMedia();
+
+  mm.add(
+    { reduced: "(prefers-reduced-motion: reduce)", ok: "(prefers-reduced-motion: no-preference)" },
+    (ctx) => {
+      const reduced = ctx.conditions.reduced;
+
+      /* ---- MARQUEE TICKER (continuous, off in reduced) ---- */
+      if (!reduced) {
+        gsap.to("#ticker", {
+          xPercent: -50, duration: 18, ease: "none", repeat: -1
+        });
+      }
+
+      /* ---- HERO ENTRANCE: words bounce-land + props wiggle ---- */
+      CustomBounce.create("brandBounce", { strength: 0.62, squash: 2, squashID: "brandBounce-squash" });
+      CustomWiggle.create("badgeWiggle", { wiggles: 6, type: "easeOut" });
+
+      if (reduced) {
+        // render final state only
+        gsap.set(".hero__title .word, .stage__badge, .stage__chip", { opacity: 1, y: 0, scale: 1, rotation: 0 });
+      } else {
+        const heroIn = gsap.timeline({ defaults: { ease: "power3.out" } });
+        heroIn
+          .from(".hero__title .word", {
+            y: -180, opacity: 0, scaleY: 1.4, transformOrigin: "50% 100%",
+            ease: "brandBounce", duration: 1.15, stagger: 0.08
+          })
+          .from(".hero__lead, .hero__actions", { y: 24, opacity: 0, stagger: 0.12 }, "-=0.5")
+          .from(".stage__shape", { scale: 0, transformOrigin: "50% 50%", ease: "back.out(1.8)", duration: 0.9 }, "-=0.9")
+          .from(".stage__badge", { scale: 0, rotation: -40, ease: "back.out(2.2)", duration: 0.7 }, "-=0.4")
+          .from(".stage__chip", { x: -60, opacity: 0, ease: "back.out(2)", duration: 0.6 }, "-=0.4")
+          .to(".stage__badge", { rotation: 14, ease: "badgeWiggle", duration: 1.1 }, "+=0.1");
+      }
+
+      /* ---- HERO BLOB: perpetual morph between shapes ---- */
+      const heroMorphTl = gsap.timeline({ repeat: reduced ? 0 : -1, repeatDelay: 0.4 });
+      if (!reduced) {
+        heroShapes.forEach((shape, i) => {
+          const next = heroShapes[(i + 1) % heroShapes.length];
+          heroMorphTl.to("#hero-morph", {
+            morphSVG: { shape: next, type: "rotational" },
+            duration: 1.8, ease: "power1.inOut", delay: 1.1
+          });
+        });
+      }
+
+      /* ---- FIXED BACKDROP BLOB: slow continuous morph ---- */
+      const bgTargets = [
+        "M650,470Q620,600,500,640Q380,680,270,620Q160,560,140,440Q120,320,200,230Q280,140,400,150Q520,160,600,250Q680,340,650,470Z",
+        "M680,440Q640,580,510,650Q380,720,260,640Q140,560,150,420Q160,280,270,210Q380,140,490,200Q600,260,650,360Q700,440,680,440Z",
+        "M620,480Q640,620,490,660Q340,700,250,600Q160,500,160,380Q160,260,280,210Q400,160,510,230Q620,300,630,400Q640,480,620,480Z"
+      ];
+      if (!reduced) {
+        const bgTl = gsap.timeline({ repeat: -1, yoyo: true });
+        bgTargets.forEach((s) => bgTl.to("#bg-blob", { morphSVG: s, duration: 6, ease: "sine.inOut" }));
+      }
+
+      /* ---- LOGOTYPE: brand mark morphs into a wink on hover/auto ---- */
+      if (!reduced) {
+        gsap.to("#brand-mark", {
+          morphSVG: "M24,6C13.5,6,6,13.5,6,24c0,9,6,18,18,18s18-9,18-18C42,13.5,34.5,6,24,6Z",
+          duration: 2.4, ease: "sine.inOut", repeat: -1, yoyo: true
+        });
+      }
+
+      /* ---- GLYPH STRIP: auto-cycle morph + clickable dots ---- */
+      const dots = gsap.utils.toArray(".glyph-dots button");
+      let glyphIndex = 0, glyphTimer;
+      function setGlyph(i, manual) {
+        glyphIndex = i;
+        dots.forEach((d, di) => d.setAttribute("aria-current", di === i ? "true" : "false"));
+        gsap.to("#glyph-morph", {
+          morphSVG: { shape: glyphShapes[i], type: "rotational" },
+          duration: 0.9, ease: "power2.inOut"
+        });
+        if (manual && glyphTimer) { glyphTimer.restart(true); }
+      }
+      dots.forEach((d, i) => d.addEventListener("click", () => setGlyph(i, true)));
+      if (!reduced) {
+        glyphTimer = gsap.delayedCall(2.2, function cycle() {
+          setGlyph((glyphIndex + 1) % glyphShapes.length);
+          glyphTimer = gsap.delayedCall(2.2, cycle);
+        });
+        // only animate the glyph strip while it is in view
+        ScrollTrigger.create({
+          trigger: ".glyphs", start: "top 90%", end: "bottom 10%",
+          onLeave: () => glyphTimer && glyphTimer.pause(),
+          onEnterBack: () => glyphTimer && glyphTimer.restart(true),
+          onLeaveBack: () => glyphTimer && glyphTimer.pause(),
+          onEnter: () => glyphTimer && glyphTimer.restart(true)
+        });
+      } else {
+        gsap.set("#glyph-morph", { attr: { d: glyphShapes[0] } });
+      }
+
+      /* ---- WORK CARDS: scroll-reveal with bounce stagger ---- */
+      if (!reduced) {
+        gsap.from(".card", {
+          y: 90, opacity: 0, scale: 0.92, rotation: () => gsap.utils.random(-5, 5),
+          ease: "back.out(1.6)", duration: 0.8, stagger: 0.1,
+          scrollTrigger: { trigger: ".work__grid", start: "top 80%", end: "bottom 60%" }
+        });
+      } else {
+        gsap.set(".card", { opacity: 1, y: 0, scale: 1, rotation: 0 });
+      }
+
+      /* ---- STATS: count up on scroll ---- */
+      gsap.utils.toArray(".stat__num").forEach((el) => {
+        const end = +el.dataset.count;
+        if (reduced) { el.textContent = end; return; }
+        const obj = { v: 0 };
+        gsap.to(obj, {
+          v: end, duration: 1.6, ease: "power2.out",
+          snap: { v: 1 },
+          onUpdate: () => { el.textContent = Math.round(obj.v); },
+          scrollTrigger: { trigger: ".stats__grid", start: "top 82%" }
+        });
+      });
+
+      /* ---- PROCESS ICONS: draw-in via strokeDashoffset + pop ---- */
+      if (!reduced) {
+        gsap.from(".step", {
+          y: 50, opacity: 0, ease: "power3.out", duration: 0.7, stagger: 0.15,
+          scrollTrigger: { trigger: ".steps", start: "top 80%" }
+        });
+        gsap.utils.toArray(".step__icon path").forEach((p) => {
+          const len = p.getTotalLength();
+          gsap.fromTo(p,
+            { strokeDasharray: len, strokeDashoffset: len },
+            { strokeDashoffset: 0, duration: 1.2, ease: "power2.inOut",
+              scrollTrigger: { trigger: p, start: "top 85%" } });
+        });
+      } else {
+        gsap.set(".step", { opacity: 1, y: 0 });
+      }
+
+      /* ---- CTA BLOBS: wiggle float + button press wiggle ---- */
+      if (!reduced) {
+        CustomWiggle.create("ctaWiggle", { wiggles: 8, type: "anticipate" });
+        gsap.to(".cta__blob--a", { rotation: 360, transformOrigin: "50% 50%", duration: 22, ease: "none", repeat: -1 });
+        gsap.to(".cta__blob--b", { rotation: -360, transformOrigin: "50% 50%", duration: 26, ease: "none", repeat: -1 });
+        gsap.from(".cta__box", {
+          scale: 0.9, opacity: 0, ease: "back.out(1.5)", duration: 0.8,
+          scrollTrigger: { trigger: ".cta__box", start: "top 80%" }
+        });
+        const ctaBtn = document.getElementById("cta-btn");
+        ctaBtn.addEventListener("mouseenter", () => {
+          gsap.fromTo(ctaBtn, { rotation: 0 }, { rotation: 6, duration: 0.7, ease: "ctaWiggle" });
+        });
+      }
+
+      /* ---- BUTTON PRESS feedback (all .btn) ---- */
+      gsap.utils.toArray(".btn").forEach((b) => {
+        b.addEventListener("pointerdown", () => gsap.to(b, { scale: 0.92, duration: 0.12, ease: "power2.out" }));
+        b.addEventListener("pointerup", () => gsap.to(b, { scale: 1, duration: 0.4, ease: "elastic.out(1,0.4)" }));
+        b.addEventListener("pointerleave", () => gsap.to(b, { scale: 1, duration: 0.3 }));
+      });
+    }
+  );
+</script>
+</body>
+</html>

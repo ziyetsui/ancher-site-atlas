@@ -1,0 +1,9 @@
+{
+  "id": "flip-grid",
+  "name_cn": "布局过渡 · 方格製作所",
+  "name_en": "Flip Grid — Studio Portfolio",
+  "style": "干净卡片网格 + 大胆色块 + Archivo Black 无衬线，米黄纸张底纹与硬阴影边框的现代版画工作室感",
+  "plugins": ["Flip", "Flip.getState", "Flip.from", "Flip absolute/scale layout transition", "Flip shared-element expand", "gsap.matchMedia", "stagger / reveal", "infinite marquee"],
+  "focus": "演示 GSAP Flip 插件:点分类标签时作品网格用 Flip 平滑筛选重排,点卡片用共享元素 Flip 展开成全屏详情再收回,外加舒展/紧凑两种密度的 Flip 重流。",
+  "prompt": "做一个独立设计工作室「方格製作所 / STUDIO QUADRA」的作品集单页。视觉是现代版画/瑞士网格风:米黄纸张底色加细密圆点底纹,墨黑 2px 描边、硬质偏移阴影(card 用 6px 6px 0 实心黑阴影),配色为墨黑+米黄+荧光黄+番茄红+钴蓝+葡萄紫+陶土橘的高反差色块;标题用 Archivo Black 超粗无衬线大写,正文用思源黑体,标注用 Space Grotesk 等宽数字。顶部 sticky 导航条;Hero 是占满半屏的巨型大写标题(三行,逐行从遮罩里向上滑入),配一个脉动的红点 kick、工作室简介与三个数字统计,下面一条墨黑底的无限横向跑马灯(品牌识别/动态系统/字体定制等关键词)。主体是一个 12 列响应式作品网格,卡片有 4/6/8 列三种宽度,每张含封面图(/assets 里的 editorial/illustration/landscape 图)、彩色类别标签、年份、中英标题与一句简介。顶部第二条 sticky 工具栏放分类标签(全部/品牌识别/动态系统/空间展览/字体排版)与舒展/紧凑密度切换。核心动效全部用 GSAP Flip:点标签时先 Flip.getState 记录所有卡片几何,再对不匹配卡片设 display:none,然后 Flip.from 以 absolute+scale 平滑重排,进场卡片淡入放大、离场卡片淡出缩小并带轻微 stagger;密度切换时用 Flip 让卡片在不同列宽间重流;点任意卡片用共享元素 Flip 把它从网格原位平滑展开成居中的固定详情面板(带毛玻璃遮罩),落位后详情正文、参数表、色卡逐项 stagger 淡入,点关闭/遮罩/Esc 再用 Flip 收回原位。卡片悬停图片轻微放大、阴影加深。全程动画走 transform/opacity。用 gsap.matchMedia 处理 prefers-reduced-motion:reduced 时渲染终态、Flip 时长归零、关闭跑马灯与脉动循环。响应式 360–1440,键盘可展开卡片,焦点可见,图片有 alt。"
+}

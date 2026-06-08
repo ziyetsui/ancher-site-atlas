@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>nav · specimen sheet</title>
+<style>
+:root{--bg:#ffffff;--surface:#f6f6f4;--surface-2:#efefea;--ink:#191917;--muted:#6b6b67;--subtle:#9a9a94;--accent:#2f56ff;--accent-soft:#e9eefc;--hairline:#e7e7e2;--ink-line:#191917;--ok:#1f7a44;--radius:12px;--pad:24px}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:15px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+.mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace}
+.serif{font-family:Georgia,"Times New Roman",serif}
+
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+
+:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:2px;
+  border-radius:4px;
+}
+
+/* ---------- page shell ---------- */
+.sheet{max-width:1120px;margin:0 auto;padding:40px 28px 96px}
+
+.sheet-head{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:8px 16px;
+  padding-bottom:18px;
+  border-bottom:1px solid var(--hairline);
+  margin-bottom:44px;
+}
+.sheet-head h1{
+  font-size:20px;
+  font-weight:600;
+  letter-spacing:-.01em;
+  margin:0;
+}
+.sheet-head .dot{color:var(--subtle)}
+.sheet-head .meta{color:var(--muted);font-size:13.5px}
+.sheet-head .count{
+  margin-left:auto;
+  font-size:12px;
+  color:var(--muted);
+  background:var(--surface);
+  border:1px solid var(--hairline);
+  border-radius:999px;
+  padding:4px 12px;
+}
+
+/* ---------- variant block ---------- */
+.variant{margin-bottom:52px}
+.variant-label{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:6px 12px;
+  margin-bottom:14px;
+}
+.variant-label .id{
+  font-size:13px;
+  color:var(--ink);
+  background:var(--accent-soft);
+  border:1px solid #d6e0fb;
+  border-radius:6px;
+  padding:2px 8px;
+  font-weight:500;
+}
+.variant-label .hint{color:var(--muted);font-size:13px}
+
+.stage{
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  padding:var(--pad);
+  background:var(--surface);
+}
+
+/* ---------- shared nav atoms ---------- */
+/* Each variant renders an actual <nav> on a white "page bar" so the
+   navigation reads as a real site header against the neutral stage. */
+.bar{
+  background:var(--bg);
+  border:1px solid var(--hairline);
+  border-radius:10px;
+  padding:0 20px;
+}
+
+.wordmark{
+  font-weight:600;
+  font-size:16px;
+  letter-spacing:-.01em;
+  color:var(--ink);
+}
+.wordmark:hover{text-decoration:none}
+.wordmark .accent-dot{color:var(--accent)}
+
+.navlinks{
+  display:flex;
+  align-items:center;
+  gap:22px;
+  list-style:none;
+  margin:0;
+  padding:0;
+}
+.navlinks a{
+  color:var(--muted);
+  font-size:14px;
+  padding:4px 0;
+  transition:color .15s ease;
+}
+.navlinks a:hover{color:var(--ink);text-decoration:none}
+.navlinks a[aria-current="page"]{color:var(--ink);font-weight:600}
+
+.nav-cta{
+  font:inherit;
+  font-size:13.5px;
+  font-weight:600;
+  color:#fff;
+  background:var(--accent);
+  border:1px solid var(--accent);
+  border-radius:999px;
+  padding:8px 16px;
+  white-space:nowrap;
+  cursor:pointer;
+  transition:filter .15s ease,transform .05s ease;
+}
+.nav-cta:hover{filter:brightness(1.06);text-decoration:none}
+.nav-cta:active{transform:translateY(1px)}
+
+.avatar{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  object-fit:cover;
+  display:block;
+  border:1px solid var(--hairline);
+}
+
+/* monogram mark (minimal variant) */
+.monogram{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:34px;height:34px;
+  border:1.5px solid var(--ink);
+  border-radius:8px;
+  font-weight:700;
+  font-size:14px;
+  letter-spacing:.02em;
+  color:var(--ink);
+}
+.monogram:hover{text-decoration:none}
+
+/* availability dot */
+.availability{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  font-size:13px;
+  color:var(--muted);
+}
+.availability .dot-led{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--ok);
+  box-shadow:0 0 0 3px rgba(31,122,68,.16);
+  flex:none;
+}
+
+/* =========================================================
+   VARIANT 1 — centered
+   ========================================================= */
+.nav-centered{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:12px;
+  padding:22px 0;
+  text-align:center;
+}
+.nav-centered .wordmark{font-size:18px}
+.nav-centered .navlinks{flex-wrap:wrap;justify-content:center}
+
+/* =========================================================
+   VARIANT 2 — split
+   ========================================================= */
+.nav-split{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  padding:14px 0;
+}
+.nav-split .nav-center{
+  display:flex;
+  align-items:center;
+  gap:22px;
+}
+.nav-split .nav-right{
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+.nav-split .nav-right .navlinks{gap:18px}
+
+/* =========================================================
+   VARIANT 3 — minimal
+   ========================================================= */
+.nav-minimal{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:14px 0;
+}
+.nav-minimal .nav-right{
+  display:flex;
+  align-items:center;
+  gap:20px;
+}
+.nav-minimal .navlinks{gap:18px}
+
+@media (max-width:640px){
+  .nav-split{flex-wrap:wrap}
+  .nav-split .nav-center{order:3;flex-basis:100%;justify-content:flex-start;flex-wrap:wrap}
+}
+@media (max-width:520px){
+  .sheet{padding:28px 16px 72px}
+  .stage{padding:16px}
+  .sheet-head .count{margin-left:0}
+  .nav-minimal .nav-right{gap:14px}
+  .navlinks{gap:16px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header class="sheet-head">
+    <h1>nav</h1>
+    <span class="dot">·</span>
+    <span class="meta mono">category: identity</span>
+    <span class="dot">·</span>
+    <span class="meta">Site navigation / 导航</span>
+    <span class="count">3 variants</span>
+  </header>
+
+  <!-- ============ VARIANT 1: centered ============ -->
+  <section class="variant" aria-labelledby="v-centered">
+    <div class="variant-label">
+      <span class="id mono" id="v-centered">centered</span>
+      <span class="hint">居中字标 + 居中链接 — centered wordmark over a centered link row</span>
+    </div>
+    <div class="stage">
+      <div class="bar">
+        <nav class="nav-centered" aria-label="Primary (centered)">
+          <a class="wordmark" href="#home">Maya&nbsp;Chen<span class="accent-dot">.</span></a>
+          <ul class="navlinks" role="list">
+            <li><a href="#work" aria-current="page">Work</a></li>
+            <li><a href="#writing">Writing</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VARIANT 2: split ============ -->
+  <section class="variant" aria-labelledby="v-split">
+    <div class="variant-label">
+      <span class="id mono" id="v-split">split</span>
+      <span class="hint">左字标 / 右链接 + 头像 + CTA — wordmark left, links + avatar + CTA right</span>
+    </div>
+    <div class="stage">
+      <div class="bar">
+        <nav class="nav-split" aria-label="Primary (split)">
+          <a class="wordmark" href="#home">Maya&nbsp;Chen<span class="accent-dot">.</span></a>
+          <div class="nav-right">
+            <ul class="navlinks" role="list">
+              <li><a href="#work" aria-current="page">Work</a></li>
+              <li><a href="#writing">Writing</a></li>
+              <li><a href="#about">About</a></li>
+            </ul>
+            <img class="avatar" src="../../assets/portrait-asian-man-editorial.webp"
+                 alt="Maya Chen, profile photo" width="40" height="40" loading="lazy">
+            <a class="nav-cta" href="#contact">Let&rsquo;s talk</a>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VARIANT 3: minimal ============ -->
+  <section class="variant" aria-labelledby="v-minimal">
+    <div class="variant-label">
+      <span class="id mono" id="v-minimal">minimal</span>
+      <span class="hint">极简：字母标 + 2–3 链接 + 在岗状态点 — monogram + a few links + availability dot</span>
+    </div>
+    <div class="stage">
+      <div class="bar">
+        <nav class="nav-minimal" aria-label="Primary (minimal)">
+          <a class="monogram" href="#home" aria-label="Maya Chen — home">MC</a>
+          <div class="nav-right">
+            <ul class="navlinks" role="list">
+              <li><a href="#work" aria-current="page">Work</a></li>
+              <li><a href="#about">About</a></li>
+            </ul>
+            <span class="availability">
+              <span class="dot-led" aria-hidden="true"></span>
+              Available for work
+            </span>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>

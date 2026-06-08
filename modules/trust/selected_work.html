@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>selected_work · specimen sheet</title>
+<style>
+:root{--bg:#ffffff;--surface:#f6f6f4;--surface-2:#efefea;--ink:#191917;--muted:#6b6b67;--subtle:#9a9a94;--accent:#2f56ff;--accent-soft:#e9eefc;--hairline:#e7e7e2;--ink-line:#191917;--ok:#1f7a44;--radius:12px;--pad:24px}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:15px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+.mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace}
+.serif{font-family:Georgia,"Times New Roman",serif}
+
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+
+:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:2px;
+  border-radius:4px;
+}
+
+/* ---------- page shell ---------- */
+.sheet{max-width:1120px;margin:0 auto;padding:40px 28px 96px}
+
+.sheet-head{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:8px 16px;
+  padding-bottom:18px;
+  border-bottom:1px solid var(--hairline);
+  margin-bottom:44px;
+}
+.sheet-head h1{
+  font-size:20px;
+  font-weight:600;
+  letter-spacing:-.01em;
+  margin:0;
+}
+.sheet-head .dot{color:var(--subtle)}
+.sheet-head .meta{color:var(--muted);font-size:13.5px}
+.sheet-head .count{
+  margin-left:auto;
+  font-size:12px;
+  color:var(--muted);
+  background:var(--surface);
+  border:1px solid var(--hairline);
+  border-radius:999px;
+  padding:4px 12px;
+}
+
+/* ---------- variant block ---------- */
+.variant{margin-bottom:52px}
+.variant-label{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:6px 12px;
+  margin-bottom:14px;
+}
+.variant-label .id{
+  font-size:13px;
+  color:var(--ink);
+  background:var(--accent-soft);
+  border:1px solid #d6e0fb;
+  border-radius:6px;
+  padding:2px 8px;
+  font-weight:500;
+}
+.variant-label .hint{color:var(--muted);font-size:13px}
+
+.stage{
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  padding:var(--pad);
+  background:var(--surface);
+}
+
+/* ---------- shared atoms ---------- */
+.eyebrow{
+  font-size:11px;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  color:var(--subtle);
+  font-weight:600;
+}
+.tag{
+  display:inline-block;
+  font-size:11.5px;
+  color:var(--muted);
+  background:var(--bg);
+  border:1px solid var(--hairline);
+  border-radius:999px;
+  padding:2px 9px;
+  line-height:1.6;
+}
+.year{color:var(--subtle);font-variant-numeric:tabular-nums}
+
+/* photo slot placeholder */
+.photo{
+  position:relative;
+  background:var(--surface-2);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--subtle);
+  overflow:hidden;
+}
+.photo .initials{
+  font-family:Georgia,serif;
+  font-size:clamp(20px,5vw,34px);
+  letter-spacing:.04em;
+  color:#b6b6ae;
+}
+.photo .slot-tag{
+  position:absolute;
+  left:8px;bottom:8px;
+  font-size:9.5px;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:var(--subtle);
+  background:rgba(255,255,255,.72);
+  border:1px solid var(--hairline);
+  border-radius:5px;
+  padding:1px 6px;
+}
+.photo svg{width:30%;height:auto;max-width:64px;opacity:.5}
+.photo img,.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* =========================================================
+   VARIANT 1 — grid
+   ========================================================= */
+.work-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+  gap:18px;
+}
+.card{
+  display:flex;
+  flex-direction:column;
+  background:var(--bg);
+  border:1px solid var(--hairline);
+  border-radius:10px;
+  overflow:hidden;
+  transition:border-color .18s ease,transform .18s ease,box-shadow .18s ease;
+}
+.card:hover,.card:focus-within{
+  border-color:#cfcfc8;
+  transform:translateY(-2px);
+  box-shadow:0 8px 24px -16px rgba(25,25,23,.4);
+}
+.card .photo{aspect-ratio:16/10}
+.card-body{padding:16px 16px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
+.card-body h3{margin:0;font-size:15.5px;font-weight:600;letter-spacing:-.01em}
+.card-body h3 a{color:var(--ink)}
+.card-body h3 a::after{content:"";position:absolute;inset:0}
+.card-title-row{position:relative;display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.card-body p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.45}
+.card-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:4px}
+
+/* =========================================================
+   VARIANT 2 — carousel
+   ========================================================= */
+.carousel{position:relative}
+.carousel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:12px}
+.carousel-head .eyebrow{margin:0}
+.carousel-nav{display:flex;gap:8px}
+.cbtn{
+  width:36px;height:36px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--bg);
+  border:1px solid var(--hairline);
+  border-radius:999px;
+  color:var(--ink);
+  cursor:pointer;
+  transition:background .15s ease,border-color .15s ease;
+}
+.cbtn:hover:not(:disabled){background:var(--surface-2)}
+.cbtn:disabled{color:var(--subtle);cursor:not-allowed;opacity:.55}
+.cbtn svg{width:16px;height:16px}
+.carousel-track{
+  display:flex;
+  gap:16px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  scroll-behavior:smooth;
+  padding:4px 2px 16px;
+  scrollbar-width:thin;
+  scrollbar-color:#d0d0c9 transparent;
+}
+.carousel-track::-webkit-scrollbar{height:8px}
+.carousel-track::-webkit-scrollbar-thumb{background:#d0d0c9;border-radius:999px}
+.carousel-track::-webkit-scrollbar-track{background:transparent}
+.slide{
+  scroll-snap-align:start;
+  flex:0 0 clamp(240px,72%,300px);
+  background:var(--bg);
+  border:1px solid var(--hairline);
+  border-radius:10px;
+  overflow:hidden;
+  display:flex;flex-direction:column;
+}
+.slide .photo{aspect-ratio:3/2}
+.slide-body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px}
+.slide-body h3{margin:0;font-size:15px;font-weight:600}
+.slide-body .role{color:var(--muted);font-size:13px}
+.slide-body .metric{font-size:12.5px;color:var(--ink);margin-top:4px}
+.slide-body .metric b{color:var(--ok);font-variant-numeric:tabular-nums}
+
+/* =========================================================
+   VARIANT 3 — featured_case
+   ========================================================= */
+.featured{display:grid;grid-template-columns:1.35fr 1fr;gap:28px;align-items:start}
+.feat-media{position:relative}
+.feat-media .photo{aspect-ratio:4/3;border-radius:10px;border:1px solid var(--hairline)}
+.feat-badge{
+  position:absolute;top:12px;left:12px;
+  font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--accent);background:var(--accent-soft);
+  border:1px solid #d6e0fb;border-radius:6px;padding:3px 9px;font-weight:600;
+}
+.feat-body .eyebrow{margin-bottom:10px;display:block}
+.feat-body h3{
+  font-family:Georgia,serif;
+  font-size:clamp(22px,3.4vw,28px);
+  line-height:1.18;
+  margin:0 0 12px;
+  letter-spacing:-.01em;
+  font-weight:600;
+}
+.feat-body .lede{color:var(--muted);font-size:14.5px;margin:0 0 18px}
+.feat-stats{display:flex;gap:24px;flex-wrap:wrap;padding:16px 0;border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline);margin-bottom:18px}
+.feat-stats div{display:flex;flex-direction:column;gap:2px}
+.feat-stats .n{font-size:20px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.feat-stats .k{font-size:11.5px;color:var(--subtle);text-transform:uppercase;letter-spacing:.05em}
+.feat-link{display:inline-flex;align-items:center;gap:6px;font-weight:500;font-size:14px}
+.feat-link svg{width:14px;height:14px}
+
+.feat-secondary{margin-top:28px;border-top:1px solid var(--hairline);padding-top:18px}
+.feat-secondary .eyebrow{display:block;margin-bottom:12px}
+.feat-list{display:grid;gap:2px}
+.feat-item{
+  display:flex;align-items:center;gap:14px;
+  padding:10px 8px;border-radius:8px;
+  text-decoration:none;color:inherit;
+  transition:background .15s ease;
+}
+.feat-item:hover{background:var(--surface-2);text-decoration:none}
+.feat-item .thumb{flex:0 0 48px;height:48px;border-radius:7px}
+.feat-item .ft-text{flex:1;min-width:0}
+.feat-item .ft-text h4{margin:0;font-size:14.5px;font-weight:600}
+.feat-item .ft-text span{font-size:12.5px;color:var(--muted)}
+.feat-item .year{flex:0 0 auto;font-size:13px}
+
+/* =========================================================
+   VARIANT 4 — list (table)
+   ========================================================= */
+.work-table-wrap{overflow-x:auto}
+table.work-table{width:100%;border-collapse:collapse;font-size:14px;min-width:560px}
+.work-table caption{text-align:left;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--subtle);font-weight:600;padding-bottom:12px}
+.work-table thead th{
+  text-align:left;
+  font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--subtle);font-weight:600;
+  padding:0 16px 10px;
+  border-bottom:1px solid var(--hairline);
+}
+.work-table thead th.num,.work-table td.num{text-align:right;font-variant-numeric:tabular-nums}
+.work-table tbody tr{border-bottom:1px solid var(--hairline);transition:background .15s ease}
+.work-table tbody tr:last-child{border-bottom:0}
+.work-table tbody tr:hover{background:var(--surface-2)}
+.work-table td{padding:14px 16px;vertical-align:middle}
+.work-table .t-project{font-weight:600}
+.work-table .t-project a{color:var(--ink)}
+.work-table .t-project .sub{display:block;font-weight:400;font-size:12.5px;color:var(--muted);margin-top:1px}
+.work-table td.year{color:var(--subtle)}
+.work-table .arrow{color:var(--subtle);transition:transform .15s ease,color .15s ease;display:inline-block}
+.work-table tbody tr:hover .arrow{color:var(--accent);transform:translateX(2px)}
+
+@media (max-width:760px){
+  .featured{grid-template-columns:1fr}
+}
+@media (max-width:520px){
+  .sheet{padding:28px 16px 72px}
+  .stage{padding:16px}
+  .sheet-head .count{margin-left:0}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header class="sheet-head">
+    <h1>selected_work</h1>
+    <span class="dot">·</span>
+    <span class="meta mono">category: trust</span>
+    <span class="dot">·</span>
+    <span class="meta">Selected work / 作品</span>
+    <span class="count">4 variants</span>
+  </header>
+
+  <!-- ============ VARIANT 1: grid ============ -->
+  <section class="variant" aria-labelledby="v-grid">
+    <div class="variant-label">
+      <span class="id mono" id="v-grid">grid</span>
+      <span class="hint">卡片网格 — uniform card grid</span>
+    </div>
+    <div class="stage">
+      <ul class="work-grid" role="list">
+
+        <li class="card">
+          <div class="photo">
+            <img src="../../assets/editorial-fashion-mono.webp" alt="Ledger expense app — onboarding screens cover" loading="lazy">
+          </div>
+          <div class="card-body">
+            <div class="card-title-row">
+              <h3><a href="#ledger">Ledger — expense app</a></h3>
+              <span class="year">2025</span>
+            </div>
+            <p>End-to-end redesign of a personal finance app. Cut onboarding from 9 steps to 3.</p>
+            <div class="card-tags">
+              <span class="tag">Product design</span>
+              <span class="tag">iOS</span>
+            </div>
+          </div>
+        </li>
+
+        <li class="card">
+          <div class="photo">
+            <img src="../../assets/editorial-street-running.webp" alt="Atlas design system — component library cover" loading="lazy">
+          </div>
+          <div class="card-body">
+            <div class="card-title-row">
+              <h3><a href="#atlas">Atlas design system</a></h3>
+              <span class="year">2024</span>
+            </div>
+            <p>Built a 120-component library adopted by six product squads.</p>
+            <div class="card-tags">
+              <span class="tag">Design systems</span>
+              <span class="tag">Tokens</span>
+            </div>
+          </div>
+        </li>
+
+        <li class="card">
+          <div class="photo">
+            <img src="../../assets/poster-pipeline.webp" alt="Northwind analytics — logistics dashboard cover" loading="lazy">
+          </div>
+          <div class="card-body">
+            <div class="card-title-row">
+              <h3><a href="#northwind">Northwind analytics</a></h3>
+              <span class="year">2024</span>
+            </div>
+            <p>Dashboard for logistics ops teams tracking 40k daily shipments.</p>
+            <div class="card-tags">
+              <span class="tag">Data viz</span>
+              <span class="tag">Web</span>
+            </div>
+          </div>
+        </li>
+
+        <li class="card">
+          <div class="photo">
+            <img src="../../assets/editorial-bloom-flowers.webp" alt="Field Notes brand — stationery packaging cover" loading="lazy">
+          </div>
+          <div class="card-body">
+            <div class="card-title-row">
+              <h3><a href="#fieldnotes">Field Notes brand</a></h3>
+              <span class="year">2023</span>
+            </div>
+            <p>Identity and packaging for an independent stationery studio.</p>
+            <div class="card-tags">
+              <span class="tag">Branding</span>
+              <span class="tag">Print</span>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ VARIANT 2: carousel ============ -->
+  <section class="variant" aria-labelledby="v-carousel">
+    <div class="variant-label">
+      <span class="id mono" id="v-carousel">carousel</span>
+      <span class="hint">横向滚动条 — horizontal scroll, snap + arrows</span>
+    </div>
+    <div class="stage">
+      <div class="carousel" data-carousel>
+        <div class="carousel-head">
+          <p class="eyebrow">Recent shipments</p>
+          <div class="carousel-nav">
+            <button class="cbtn" type="button" data-dir="prev" aria-label="Scroll to previous projects">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <button class="cbtn" type="button" data-dir="next" aria-label="Scroll to next projects">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="carousel-track" data-track tabindex="0" role="region" aria-label="Selected work, horizontally scrollable">
+
+          <article class="slide">
+            <div class="photo">
+              <img src="../../assets/editorial-fashion-mono.webp" alt="Ledger expense app project image" loading="lazy">
+            </div>
+            <div class="slide-body">
+              <h3>Ledger — expense app</h3>
+              <span class="role">Lead product designer</span>
+              <span class="metric">Onboarding completion <b>+38%</b></span>
+            </div>
+          </article>
+
+          <article class="slide">
+            <div class="photo">
+              <img src="../../assets/landscape-lone-figure.webp" alt="Atlas design system project image" loading="lazy">
+            </div>
+            <div class="slide-body">
+              <h3>Atlas design system</h3>
+              <span class="role">Systems lead</span>
+              <span class="metric">Ship time <b>−45%</b></span>
+            </div>
+          </article>
+
+          <article class="slide">
+            <div class="photo">
+              <img src="../../assets/poster-pipeline.webp" alt="Northwind analytics project image" loading="lazy">
+            </div>
+            <div class="slide-body">
+              <h3>Northwind analytics</h3>
+              <span class="role">Product designer</span>
+              <span class="metric">Support tickets <b>−22%</b></span>
+            </div>
+          </article>
+
+          <article class="slide">
+            <div class="photo">
+              <img src="../../assets/editorial-bloom-flowers.webp" alt="Field Notes brand project image" loading="lazy">
+            </div>
+            <div class="slide-body">
+              <h3>Field Notes brand</h3>
+              <span class="role">Brand designer</span>
+              <span class="metric">Retail reorders <b>+61%</b></span>
+            </div>
+          </article>
+
+          <article class="slide">
+            <div class="photo">
+              <img src="../../assets/landscape-solitary-bw.webp" alt="Cairn trail maps project image" loading="lazy">
+            </div>
+            <div class="slide-body">
+              <h3>Cairn — trail maps</h3>
+              <span class="role">Product designer</span>
+              <span class="metric">Weekly active <b>+2.4×</b></span>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VARIANT 3: featured_case ============ -->
+  <section class="variant" aria-labelledby="v-featured">
+    <div class="variant-label">
+      <span class="id mono" id="v-featured">featured_case</span>
+      <span class="hint">单个精选案例 + 次要列表 — one hero case + a secondary list</span>
+    </div>
+    <div class="stage">
+      <div class="featured">
+        <div class="feat-media">
+          <div class="photo">
+            <img src="../../assets/illustration-travel-woman.webp" alt="Rebuilding Ledger — featured case study cover" loading="lazy">
+          </div>
+          <span class="feat-badge">Featured</span>
+        </div>
+
+        <div class="feat-body">
+          <span class="eyebrow">Case study · 2025</span>
+          <h3 class="serif">Rebuilding Ledger from the first tap</h3>
+          <p class="lede">A finance app where 6 in 10 users quit before their first transaction. We rethought onboarding, hierarchy, and trust signals end to end.</p>
+
+          <div class="feat-stats">
+            <div>
+              <span class="n">+38%</span>
+              <span class="k">Onboarding done</span>
+            </div>
+            <div>
+              <span class="n">3</span>
+              <span class="k">Steps, from 9</span>
+            </div>
+            <div>
+              <span class="n">4.8</span>
+              <span class="k">App Store</span>
+            </div>
+          </div>
+
+          <a class="feat-link" href="#ledger-case">
+            Read the case study
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="feat-secondary">
+        <span class="eyebrow">More selected work</span>
+        <div class="feat-list" role="list">
+
+          <a class="feat-item" href="#atlas" role="listitem">
+            <span class="photo thumb">
+              <img src="../../assets/illustration-popart-girl.webp" alt="Atlas design system thumbnail" loading="lazy">
+            </span>
+            <span class="ft-text">
+              <h4>Atlas design system</h4>
+              <span>120-component library across six squads</span>
+            </span>
+            <span class="year">2024</span>
+          </a>
+
+          <a class="feat-item" href="#northwind" role="listitem">
+            <span class="photo thumb">
+              <img src="../../assets/illustration-couple-reading.webp" alt="Northwind analytics thumbnail" loading="lazy">
+            </span>
+            <span class="ft-text">
+              <h4>Northwind analytics</h4>
+              <span>Logistics dashboard, 40k daily shipments</span>
+            </span>
+            <span class="year">2024</span>
+          </a>
+
+          <a class="feat-item" href="#fieldnotes" role="listitem">
+            <span class="photo thumb">
+              <img src="../../assets/illustration-aviator-girl.webp" alt="Field Notes brand thumbnail" loading="lazy">
+            </span>
+            <span class="ft-text">
+              <h4>Field Notes brand</h4>
+              <span>Identity and packaging for a stationery studio</span>
+            </span>
+            <span class="year">2023</span>
+          </a>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VARIANT 4: list (table) ============ -->
+  <section class="variant" aria-labelledby="v-list">
+    <div class="variant-label">
+      <span class="id mono" id="v-list">list</span>
+      <span class="hint">表格式列表 — dense, scannable index table</span>
+    </div>
+    <div class="stage">
+      <div class="work-table-wrap">
+        <table class="work-table">
+          <caption>Selected work, 2022–2025</caption>
+          <thead>
+            <tr>
+              <th scope="col">Project</th>
+              <th scope="col">Role</th>
+              <th scope="col">Discipline</th>
+              <th scope="col" class="num">Year</th>
+              <th scope="col"><span class="sr-only">Link</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="t-project"><a href="#ledger">Ledger — expense app<span class="sub">iOS finance, full redesign</span></a></td>
+              <td>Lead product designer</td>
+              <td>Product</td>
+              <td class="num year">2025</td>
+              <td class="num"><span class="arrow" aria-hidden="true">→</span></td>
+            </tr>
+            <tr>
+              <td class="t-project"><a href="#atlas">Atlas design system<span class="sub">120 components, 6 squads</span></a></td>
+              <td>Systems lead</td>
+              <td>Design systems</td>
+              <td class="num year">2024</td>
+              <td class="num"><span class="arrow" aria-hidden="true">→</span></td>
+            </tr>
+            <tr>
+              <td class="t-project"><a href="#northwind">Northwind analytics<span class="sub">Logistics ops dashboard</span></a></td>
+              <td>Product designer</td>
+              <td>Data viz</td>
+              <td class="num year">2024</td>
+              <td class="num"><span class="arrow" aria-hidden="true">→</span></td>
+            </tr>
+            <tr>
+              <td class="t-project"><a href="#fieldnotes">Field Notes brand<span class="sub">Identity & packaging</span></a></td>
+              <td>Brand designer</td>
+              <td>Branding</td>
+              <td class="num year">2023</td>
+              <td class="num"><span class="arrow" aria-hidden="true">→</span></td>
+            </tr>
+            <tr>
+              <td class="t-project"><a href="#cairn">Cairn — trail maps<span class="sub">Offline hiking companion</span></a></td>
+              <td>Product designer</td>
+              <td>Mobile</td>
+              <td class="num year">2022</td>
+              <td class="num"><span class="arrow" aria-hidden="true">→</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<style>
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+</style>
+
+<script>
+(function(){
+  document.querySelectorAll('[data-carousel]').forEach(function(root){
+    var track = root.querySelector('[data-track]');
+    var prev  = root.querySelector('[data-dir="prev"]');
+    var next  = root.querySelector('[data-dir="next"]');
+    if(!track) return;
+
+    function step(){
+      var first = track.querySelector('.slide');
+      var gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap || 16) || 16;
+      return first ? first.getBoundingClientRect().width + gap : track.clientWidth * 0.8;
+    }
+    function update(){
+      var max = track.scrollWidth - track.clientWidth - 1;
+      prev.disabled = track.scrollLeft <= 1;
+      next.disabled = track.scrollLeft >= max;
+    }
+    prev.addEventListener('click', function(){ track.scrollBy({left:-step(),behavior:'smooth'}); });
+    next.addEventListener('click', function(){ track.scrollBy({left: step(),behavior:'smooth'}); });
+    track.addEventListener('scroll', update, {passive:true});
+    window.addEventListener('resize', update);
+    update();
+  });
+})();
+</script>
+</body>
+</html>

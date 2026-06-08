@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>contact_form · conversion · specimen sheet</title>
+<style>
+:root{--bg:#ffffff;--surface:#f6f6f4;--surface-2:#efefea;--ink:#191917;--muted:#6b6b67;--subtle:#9a9a94;--accent:#2f56ff;--accent-soft:#e9eefc;--hairline:#e7e7e2;--ink-line:#191917;--ok:#1f7a44;--radius:12px;--pad:24px}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:16px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.serif{font-family:Georgia,"Times New Roman",serif}
+
+/* ---- specimen shell ---- */
+.sheet{max-width:920px;margin:0 auto;padding:40px 20px 96px}
+
+.sheet-head{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 14px;
+  padding-bottom:18px;margin-bottom:40px;
+  border-bottom:1px solid var(--ink-line);
+}
+.sheet-head h1{
+  font-size:20px;font-weight:650;letter-spacing:-.01em;margin:0;
+}
+.sheet-head .sep{color:var(--subtle)}
+.sheet-head .cat{color:var(--muted);font-size:14px}
+.sheet-head .count{
+  margin-left:auto;
+  font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);
+  background:var(--surface);border:1px solid var(--hairline);
+  padding:5px 10px;border-radius:999px;white-space:nowrap;
+}
+
+/* ---- per-variant block ---- */
+.variant{margin-top:44px}
+.variant:first-of-type{margin-top:0}
+.variant-label{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;
+  margin-bottom:12px;
+}
+.variant-label .id{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:12.5px;font-weight:600;color:var(--ink);
+  background:var(--surface-2);
+  border:1px solid var(--hairline);
+  padding:3px 8px;border-radius:6px;
+}
+.variant-label .hint{font-size:13.5px;color:var(--muted)}
+
+.stage{
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  background:var(--surface);
+  padding:clamp(20px,4vw,40px);
+}
+
+/* ---- form card living inside the stage ---- */
+.card{
+  background:var(--bg);
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  padding:var(--pad);
+  max-width:520px;
+  margin:0 auto;
+}
+.card.full{max-width:560px}
+
+.card-eyebrow{
+  font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--accent);font-weight:650;
+  margin:0 0 8px;
+}
+.card-title{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(22px,3.4vw,27px);
+  line-height:1.15;letter-spacing:-.01em;
+  margin:0 0 6px;font-weight:600;
+}
+.card-sub{margin:0 0 22px;color:var(--muted);font-size:14.5px;max-width:42ch}
+
+form{margin:0}
+.field{margin-bottom:16px}
+.field:last-of-type{margin-bottom:0}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:479px){.row{grid-template-columns:1fr}}
+
+label{
+  display:block;
+  font-size:13px;font-weight:560;
+  color:var(--ink);
+  margin-bottom:6px;
+}
+label .req{color:var(--accent);margin-left:2px}
+label .opt{color:var(--subtle);font-weight:400;font-size:12px;margin-left:4px}
+
+.control{
+  width:100%;
+  font:inherit;font-size:15px;
+  color:var(--ink);
+  background:var(--bg);
+  border:1px solid var(--hairline);
+  border-radius:8px;
+  padding:11px 13px;
+  transition:border-color .15s ease,box-shadow .15s ease,background .15s ease;
+}
+.control::placeholder{color:var(--subtle)}
+.control:hover{border-color:#d6d6cf}
+.control:focus{outline:none}
+.control:focus-visible{
+  outline:none;
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px var(--accent-soft);
+}
+textarea.control{resize:vertical;min-height:104px;line-height:1.55}
+select.control{
+  appearance:none;-webkit-appearance:none;cursor:pointer;
+  background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);
+  background-position:calc(100% - 18px) 52%,calc(100% - 13px) 52%;
+  background-size:5px 5px,5px 5px;
+  background-repeat:no-repeat;
+  padding-right:38px;
+}
+.help{font-size:12px;color:var(--subtle);margin:6px 0 0}
+
+.actions{
+  margin-top:22px;
+  display:flex;flex-wrap:wrap;align-items:center;gap:14px;
+}
+.btn{
+  font:inherit;font-size:15px;font-weight:600;
+  color:#fff;background:var(--accent);
+  border:1px solid var(--accent);
+  border-radius:8px;
+  padding:11px 22px;cursor:pointer;
+  transition:transform .12s ease,box-shadow .15s ease,background .15s ease;
+}
+.btn:hover{background:#244aee;box-shadow:0 4px 14px -4px rgba(47,86,255,.5)}
+.btn:active{transform:translateY(1px)}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+.assurance{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--muted)}
+.assurance svg{flex:none;color:var(--ok)}
+
+/* sender identity chip for the full variant */
+.sender{
+  display:flex;align-items:center;gap:12px;
+  padding:12px;margin-bottom:20px;
+  background:var(--surface);
+  border:1px solid var(--hairline);
+  border-radius:10px;
+}
+.avatar{
+  flex:none;width:42px;height:42px;border-radius:9px;
+  background:var(--surface-2);
+  border:1px solid var(--hairline);
+  display:grid;place-items:center;
+  font-size:14px;font-weight:650;color:var(--muted);
+  letter-spacing:.02em;
+}
+.sender-meta{min-width:0}
+.sender-meta b{display:block;font-size:13.5px;font-weight:600}
+.sender-meta span{font-size:12px;color:var(--muted)}
+.slot-tag{
+  margin-left:auto;font-size:10px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--subtle);white-space:nowrap;
+}
+
+.fineprint{
+  margin:18px 0 0;font-size:12px;color:var(--subtle);line-height:1.5;
+}
+.fineprint a{color:var(--muted);text-decoration:underline;text-underline-offset:2px}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header class="sheet-head">
+    <h1>contact_form<span class="serif" style="font-weight:400;color:var(--muted)"> / 联系表单</span></h1>
+    <span class="sep">·</span>
+    <span class="cat">conversion</span>
+    <span class="count">2 variants</span>
+  </header>
+
+  <!-- ====================== VARIANT 1: minimal ====================== -->
+  <section class="variant" aria-labelledby="v-minimal">
+    <div class="variant-label">
+      <span class="id" id="v-minimal">minimal</span>
+      <span class="hint">极简：邮箱 + 消息</span>
+    </div>
+    <div class="stage">
+      <div class="card">
+        <p class="card-eyebrow">Get in touch</p>
+        <h2 class="card-title serif">Let's work together</h2>
+        <p class="card-sub">Drop a line and I'll reply within two business days. No forms-within-forms.</p>
+
+        <form action="#" method="post" novalidate aria-label="Minimal contact form">
+          <div class="field">
+            <label for="m-email">Email <span class="req" aria-hidden="true">*</span></label>
+            <input class="control" type="email" id="m-email" name="email"
+                   placeholder="you@studio.com" autocomplete="email" required
+                   aria-required="true">
+          </div>
+          <div class="field">
+            <label for="m-message">Message <span class="req" aria-hidden="true">*</span></label>
+            <textarea class="control" id="m-message" name="message" rows="4"
+                      placeholder="A sentence or two about the project, timeline, and budget range."
+                      required aria-required="true"></textarea>
+          </div>
+          <div class="actions">
+            <button class="btn" type="submit">Send message</button>
+            <span class="assurance">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              Usually replies in 48h
+            </span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== VARIANT 2: full ====================== -->
+  <section class="variant" aria-labelledby="v-full">
+    <div class="variant-label">
+      <span class="id" id="v-full">full</span>
+      <span class="hint">完整：姓名 / 邮箱 / 主题 / 消息</span>
+    </div>
+    <div class="stage">
+      <div class="card full">
+        <p class="card-eyebrow">Start a project</p>
+        <h2 class="card-title serif">Tell me about your idea</h2>
+        <p class="card-sub">The more context you share, the sharper my first reply will be.</p>
+
+        <div class="sender">
+          <span class="avatar" aria-hidden="true">MC</span>
+          <span class="sender-meta">
+            <b>Maya Chen</b>
+            <span>Product designer · San Francisco</span>
+          </span>
+          <span class="slot-tag" aria-label="Avatar photo slot placeholder">photo slot</span>
+        </div>
+
+        <form action="#" method="post" novalidate aria-label="Full contact form">
+          <div class="row">
+            <div class="field">
+              <label for="f-name">Name <span class="req" aria-hidden="true">*</span></label>
+              <input class="control" type="text" id="f-name" name="name"
+                     placeholder="Jordan Ellis" autocomplete="name" required aria-required="true">
+            </div>
+            <div class="field">
+              <label for="f-email">Email <span class="req" aria-hidden="true">*</span></label>
+              <input class="control" type="email" id="f-email" name="email"
+                     placeholder="jordan@northwind.co" autocomplete="email" required aria-required="true">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="f-subject">Subject</label>
+            <select class="control" id="f-subject" name="subject">
+              <option value="" disabled selected>Choose a topic…</option>
+              <option>New product design engagement</option>
+              <option>Design system / audit</option>
+              <option>Speaking or workshop</option>
+              <option>Something else</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="f-message">Message <span class="req" aria-hidden="true">*</span></label>
+            <textarea class="control" id="f-message" name="message" rows="5"
+                      placeholder="We're a 12-person fintech rebuilding onboarding and want a designer for ~3 months starting in August. Goal: cut drop-off on the KYC step."
+                      required aria-required="true"></textarea>
+            <p class="help">Plain text is fine — no need to polish it.</p>
+          </div>
+
+          <div class="actions">
+            <button class="btn" type="submit">Send inquiry</button>
+            <span class="assurance">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 8.5 8 11 4.6-2.5 8-6 8-11V5l-8-3Z"/></svg>
+              Kept private — never shared
+            </span>
+          </div>
+
+          <p class="fineprint">
+            By sending, you agree to be contacted about your inquiry. See the
+            <a href="#privacy">privacy note</a>.
+          </p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>

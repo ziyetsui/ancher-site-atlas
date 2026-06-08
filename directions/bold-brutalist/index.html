@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alex Mercer — Graphic Designer &amp; Art Director</title>
+<meta name="description" content="Alex Mercer makes brands that decide to be heard. Identity &amp; art direction for music, fashion and indie tech. 10 years, 40+ brands, D&amp;AD 2024.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* colors */
+    --canvas:#f4f1e8;
+    --surface:#ffffff;
+    --ink:#0a0a0a;
+    --ink-muted:#3d3d3d;
+    --acid:#e9ff3d;
+    --blue:#2b4cff;
+    --pink:#ff5da2;
+    --border:#0a0a0a;
+    --shadow:#0a0a0a;
+    /* structure */
+    --bw:3px;                 /* border width */
+    --off:6px;                /* hard shadow offset */
+    /* fonts */
+    --display:'Archivo', 'Arial Black', sans-serif;
+    --body:'Space Grotesk', system-ui, sans-serif;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+
+  html{-webkit-text-size-adjust:100%}
+
+  body{
+    background:var(--canvas);
+    color:var(--ink);
+    font-family:var(--body);
+    font-size:18px;
+    line-height:1.5;
+    font-weight:400;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- shared atoms ---------- */
+  .label{
+    font-family:var(--body);
+    font-size:13px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.14em;
+    line-height:1;
+  }
+
+  .display-xl{
+    font-family:var(--display);
+    font-weight:800;
+    text-transform:uppercase;
+    /* never overflows at 360px; bleeds toward edges on wide screens */
+    font-size:clamp(2.6rem, 12.2vw, 104px);
+    line-height:.92;
+    letter-spacing:-3px;
+  }
+
+  .display-md{
+    font-family:var(--display);
+    font-weight:800;
+    text-transform:uppercase;
+    font-size:clamp(1.6rem, 5.2vw, 40px);
+    line-height:.96;
+    letter-spacing:-1px;
+  }
+
+  a{color:inherit}
+
+  .block{
+    border:var(--bw) solid var(--border);
+    box-shadow:var(--off) var(--off) 0 var(--shadow);
+    background:var(--surface);
+  }
+
+  /* visible focus everywhere */
+  a:focus-visible,
+  button:focus-visible{
+    outline:4px solid var(--blue);
+    outline-offset:3px;
+  }
+  .on-blue a:focus-visible,
+  .on-blue button:focus-visible{outline-color:var(--acid)}
+
+  .wrap{
+    width:100%;
+    max-width:1280px;
+    margin:0 auto;
+    padding:0 clamp(16px,4vw,40px);
+  }
+
+  /* ===================================================== */
+  /* TOP BAR                                                */
+  /* ===================================================== */
+  .topbar{
+    border-bottom:var(--bw) solid var(--border);
+    background:var(--canvas);
+    position:sticky;
+    top:0;
+    z-index:50;
+  }
+  .topbar__inner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    padding:14px clamp(16px,4vw,40px);
+  }
+  .brandmark{
+    font-family:var(--display);
+    font-weight:800;
+    text-transform:uppercase;
+    font-size:20px;
+    letter-spacing:-.5px;
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    text-decoration:none;
+  }
+  .brandmark .dot{
+    width:16px;height:16px;
+    background:var(--pink);
+    border:var(--bw) solid var(--ink);
+    display:inline-block;
+  }
+  .topnav{display:flex;gap:6px;align-items:center}
+  .topnav a{
+    text-decoration:none;
+    padding:8px 12px;
+    border:var(--bw) solid transparent;
+  }
+  .topnav a.label:hover{
+    background:var(--acid);
+    border-color:var(--ink);
+  }
+  .topnav .nav-hide{display:none}
+  @media(min-width:760px){.topnav .nav-hide{display:inline-block}}
+
+  /* ===================================================== */
+  /* HERO                                                   */
+  /* ===================================================== */
+  .hero{
+    padding:clamp(40px,7vw,84px) 0 0;
+    position:relative;
+  }
+  .hero__eyebrow{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:10px 14px;
+    margin-bottom:clamp(22px,4vw,40px);
+  }
+  .tag{
+    border:var(--bw) solid var(--ink);
+    padding:7px 12px;
+    background:var(--surface);
+  }
+  .tag--acid{background:var(--acid)}
+  .tag--blue{background:var(--blue);color:#fff}
+
+  .hero__headline{
+    position:relative;
+    margin-bottom:clamp(28px,5vw,52px);
+  }
+  .hero__headline h1{margin:0}
+  /* the name dropped into a colored block */
+  .name-block{
+    display:inline-block;
+    background:var(--pink);
+    color:var(--ink);
+    border:var(--bw) solid var(--ink);
+    box-shadow:var(--off) var(--off) 0 var(--shadow);
+    padding:2px 14px 6px;
+    transform:rotate(-1.4deg);
+    margin:6px 0;
+  }
+  .hl-blue{color:var(--blue)}
+  .hl-strike{
+    position:relative;
+    white-space:nowrap;
+  }
+  .hl-strike::after{
+    content:"";
+    position:absolute;
+    left:-2%;right:-2%;
+    top:54%;
+    height:.13em;
+    background:var(--acid);
+    transform:rotate(-1.5deg);
+    z-index:-1;
+  }
+
+  .hero__row{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:clamp(20px,3vw,32px);
+    align-items:start;
+    margin-bottom:clamp(34px,5vw,56px);
+  }
+  @media(min-width:820px){
+    .hero__row{grid-template-columns:1.1fr .9fr}
+  }
+  .hero__lede{
+    font-size:clamp(1.05rem,2.4vw,1.35rem);
+    line-height:1.45;
+    max-width:30ch;
+    font-weight:500;
+  }
+  .hero__lede strong{font-weight:700}
+
+  .hero__cta-wrap{
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+    align-items:center;
+  }
+  .btn{
+    font-family:var(--body);
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    font-size:clamp(15px,2.2vw,18px);
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    gap:.6em;
+    padding:16px 22px;
+    border:var(--bw) solid var(--ink);
+    box-shadow:var(--off) var(--off) 0 var(--shadow);
+    background:var(--blue);
+    color:#fff;
+    cursor:pointer;
+    transition:transform .08s ease, box-shadow .08s ease, background .12s;
+    white-space:nowrap;
+  }
+  .btn:hover{
+    transform:translate(var(--off),var(--off));
+    box-shadow:0 0 0 var(--shadow);
+    background:#1c38d6;
+  }
+  .btn--acid{background:var(--acid);color:var(--ink)}
+  .btn--acid:hover{background:#d8ee23}
+  .btn--ghost{background:var(--surface);color:var(--ink)}
+  .btn--ghost:hover{background:var(--acid)}
+
+  /* ---------- marquee ---------- */
+  .marquee{
+    border-top:var(--bw) solid var(--ink);
+    border-bottom:var(--bw) solid var(--ink);
+    background:var(--ink);
+    color:var(--canvas);
+    overflow:hidden;
+    white-space:nowrap;
+    position:relative;
+  }
+  .marquee__track{
+    display:inline-flex;
+    align-items:center;
+    will-change:transform;
+    animation:scroll-x 26s linear infinite;
+  }
+  .marquee:hover .marquee__track{animation-play-state:paused}
+  .marquee__item{
+    font-family:var(--display);
+    font-weight:800;
+    text-transform:uppercase;
+    font-size:clamp(15px,2.4vw,22px);
+    letter-spacing:.02em;
+    padding:13px 0;
+    display:inline-flex;
+    align-items:center;
+  }
+  .marquee__item::after{
+    content:"";
+    width:11px;height:11px;
+    background:var(--acid);
+    margin:0 clamp(20px,4vw,40px);
+    transform:rotate(45deg);
+    display:inline-block;
+  }
+  @keyframes scroll-x{
+    from{transform:translateX(0)}
+    to{transform:translateX(-50%)}
+  }
+
+  /* ===================================================== */
+  /* SECTION HEADERS                                        */
+  /* ===================================================== */
+  section{position:relative}
+  .sec-head{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:20px;
+    flex-wrap:wrap;
+    padding:clamp(48px,7vw,88px) 0 clamp(22px,3vw,34px);
+  }
+  .sec-head__num{
+    font-family:var(--display);
+    font-weight:800;
+    font-size:clamp(2rem,5vw,40px);
+    color:var(--blue);
+    letter-spacing:-1px;
+  }
+  .sec-head__meta{max-width:34ch;color:var(--ink-muted);font-weight:500}
+
+  /* ===================================================== */
+  /* SELECTED WORK                                          */
+  /* ===================================================== */
+  .work-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:clamp(26px,4vw,40px) clamp(22px,3vw,32px);
+    padding-bottom:clamp(20px,3vw,40px);
+  }
+  @media(min-width:640px){.work-grid{grid-template-columns:1fr 1fr}}
+  @media(min-width:1040px){.work-grid{grid-template-columns:repeat(3,1fr)}}
+
+  .work{
+    border:var(--bw) solid var(--ink);
+    box-shadow:var(--off) var(--off) 0 var(--shadow);
+    background:var(--surface);
+    display:flex;
+    flex-direction:column;
+    text-decoration:none;
+    color:var(--ink);
+    transition:transform .1s ease, box-shadow .1s ease;
+  }
+  .work:hover,.work:focus-visible{
+    transform:translate(-3px,-3px);
+    box-shadow:calc(var(--off) + 3px) calc(var(--off) + 3px) 0 var(--shadow);
+  }
+  /* offset the tiles a little off-grid */
+  @media(min-width:640px){
+    .work:nth-child(2){margin-top:26px}
+    .work:nth-child(4){margin-top:26px}
+    .work:nth-child(6){margin-top:26px}
+  }
+  @media(min-width:1040px){
+    .work:nth-child(2){margin-top:34px}
+    .work:nth-child(3){margin-top:0}
+    .work:nth-child(4){margin-top:0}
+    .work:nth-child(5){margin-top:34px}
+    .work:nth-child(6){margin-top:0}
+  }
+
+  .work__thumb{
+    aspect-ratio:4/3;
+    border-bottom:var(--bw) solid var(--ink);
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    align-items:flex-end;
+    padding:16px;
+  }
+  .work__thumb .glyph{
+    font-family:var(--display);
+    font-weight:800;
+    text-transform:uppercase;
+    font-size:clamp(3rem,10vw,5.4rem);
+    line-height:.8;
+    letter-spacing:-3px;
+    mix-blend-mode:multiply;
+  }
+  /* thumb variants — flat saturated color blocks, no images */
+  .t-acid{background:var(--acid)}
+  .t-acid .glyph{color:var(--ink)}
+  .t-blue{background:var(--blue)}
+  .t-blue .glyph{color:var(--acid);mix-blend-mode:normal}
+  .t-pink{background:var(--pink)}
+  .t-pink .glyph{color:var(--ink)}
+  .t-ink{background:var(--ink)}
+  .t-ink .glyph{color:var(--pink);mix-blend-mode:normal}
+  .t-paper{background:var(--canvas)}
+  .t-paper .glyph{color:var(--blue)}
+  /* decorative overlap shape on each thumb */
+  .work__thumb::before{
+    content:"";
+    position:absolute;
+    top:-30px;right:-30px;
+    width:96px;height:96px;
+    border:var(--bw) solid var(--ink);
+    background:var(--surface);
+    transform:rotate(45deg);
+  }
+  .t-blue::before,.t-ink::before{background:var(--acid)}
+  .t-acid::before{background:var(--pink)}
+  .t-pink::before{background:var(--blue)}
+
+  .work__body{padding:16px clamp(16px,2vw,20px) 20px}
+  .work__name{
+    font-family:var(--display);
+    font-weight:800;
+    text-transform:uppercase;
+    font-size:clamp(1.25rem,2.6vw,1.55rem);
+    line-height:.98;
+    letter-spacing:-.5px;
+    margin-bottom:6px;
+  }
+  .work__brand{color:var(--ink-muted);font-weight:500;margin-bottom:14px}
+  .work__meta{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .chip{
+    border:var(--bw) solid var(--ink);
+    padding:5px 9px;
+    background:var(--canvas);
+  }
+  .chip--year{background:var(--acid)}
+  .work__go{
+    margin-left:auto;
+    font-family:var(--display);
+    font-weight:800;
+    font-size:20px;
+  }
+
+  /* ===================================================== */
+  /* METRICS                                                */
+  /* ===================================================== */
+  .metrics{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:clamp(20px,3vw,28px);
+    padding-bottom:clamp(20px,3vw,40px);
+  }
+  @media(min-width:560px){.metrics{grid-template-columns:1fr 1fr}}
+  @media(min-width:980px){.metrics{grid-template-columns:repeat(4,1fr)}}
+
+  .metric{
+    border:var(--bw) solid var(--ink);
+    box-shadow:var(--off) var(--off) 0 var(--shadow);
+    padding:clamp(20px,3vw,26px);
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    min-height:172px;
+  }
+  .metric--acid{background:var(--acid)}
+  .metric--blue{background:var(--blue);color:#fff}
+  .metric--pink{background:var(--pink)}
+  .metric--paper{background:var(--surface)}
+  .metric__num{
+    font-family:var(--display);
+    font-weight:800;
+    font-size:clamp(3rem,8vw,5rem);
+    line-height:.82;
+    letter-spacing:-3px;
+  }
+  .metric__label{margin-top:18px;font-weight:700;line-height:1.25}
+  .metric--blue .metric__label{color:#fff}
+
+  /* ===================================================== */
+  /* STORY / QUOTE                                          */
+  /* ===================================================== */
+  .story{
+    padding:clamp(24px,4vw,40px) 0 0;
+  }
+  .story__card{
+    background:var(--ink);
+    color:var(--canvas);
+    border:var(--bw) solid var(--ink);
+    box-shadow:var(--off) var(--off) 0 var(--pink);
+    padding:clamp(28px,6vw,72px) clamp(22px,5vw,64px);
+  }
+  .story__kicker{color:var(--acid);margin-bottom:clamp(20px,3vw,30px)}
+  .story__quote{
+    font-family:var(--display);
+    font-weight:800;
+    text-transform:uppercase;
+    font-size:clamp(1.7rem,5.4vw,52px);
+    line-height:.98;
+    letter-spacing:-1.5px;
+  }
+  .story__quote em{
+    font-style:normal;
+    color:var(--acid);
+  }
+  .story__quote .u{
+    color:var(--pink);
+  }
+  .story__sign{
+    margin-top:clamp(24px,4vw,40px);
+    display:flex;
+    align-items:center;
+    gap:14px;
+    flex-wrap:wrap;
+    color:#cfcfcf;
+    font-weight:500;
+  }
+  .story__sign .av{
+    width:48px;height:48px;
+    flex:none;
+    border:var(--bw) solid var(--acid);
+    background:var(--blue);
+    display:grid;
+    place-items:center;
+    font-family:var(--display);
+    font-weight:800;
+    color:var(--acid);
+    font-size:18px;
+  }
+
+  /* ===================================================== */
+  /* CONTACT                                                */
+  /* ===================================================== */
+  .contact{padding-bottom:clamp(40px,6vw,80px)}
+  .contact__big{
+    background:var(--acid);
+    border:var(--bw) solid var(--ink);
+    box-shadow:var(--off) var(--off) 0 var(--shadow);
+    padding:clamp(28px,5vw,56px) clamp(22px,5vw,56px);
+  }
+  .contact__big h2{
+    font-family:var(--display);
+    font-weight:800;
+    text-transform:uppercase;
+    font-size:clamp(2.6rem,13vw,116px);
+    line-height:.86;
+    letter-spacing:-3px;
+    margin-bottom:clamp(22px,4vw,38px);
+  }
+  .contact__big h2 .o{color:var(--pink)}
+  .contact__row{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:14px 18px;
+  }
+  @media(min-width:720px){.contact__row{grid-template-columns:1.4fr 1fr}}
+  .contact__mail{
+    background:var(--ink);
+    color:var(--acid);
+    border:var(--bw) solid var(--ink);
+    box-shadow:var(--off) var(--off) 0 var(--surface);
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    padding:18px 22px;
+    font-family:var(--display);
+    font-weight:800;
+    text-transform:uppercase;
+    font-size:clamp(1rem,3vw,1.5rem);
+    letter-spacing:-.5px;
+    word-break:break-all;
+    transition:transform .08s,box-shadow .08s;
+  }
+  .contact__mail:hover{
+    transform:translate(3px,3px);
+    box-shadow:3px 3px 0 var(--surface);
+  }
+  .contact__socials{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+  }
+  .soc{
+    border:var(--bw) solid var(--ink);
+    background:var(--surface);
+    text-decoration:none;
+    padding:18px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    min-height:84px;
+    transition:transform .08s,background .12s;
+  }
+  .soc:hover{transform:translate(3px,3px)}
+  .soc--ig:hover{background:var(--pink)}
+  .soc--be:hover{background:var(--blue);color:#fff}
+  .soc__top{display:flex;align-items:center;justify-content:space-between}
+  .soc__h{
+    font-family:var(--display);
+    font-weight:800;
+    text-transform:uppercase;
+    font-size:1.05rem;
+  }
+
+  /* ===================================================== */
+  /* FOOTER                                                 */
+  /* ===================================================== */
+  footer{
+    border-top:var(--bw) solid var(--ink);
+    background:var(--canvas);
+  }
+  .foot__inner{
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px 20px;
+    align-items:center;
+    justify-content:space-between;
+    padding:22px clamp(16px,4vw,40px);
+    color:var(--ink-muted);
+  }
+  .foot__inner .label{color:var(--ink)}
+
+  /* ===================================================== */
+  /* PRINCIPLES (beliefs / numbered)                        */
+  /* ===================================================== */
+  .principles{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:clamp(20px,3vw,28px);
+    padding-bottom:clamp(20px,3vw,40px);
+  }
+  @media(min-width:680px){.principles{grid-template-columns:1fr 1fr}}
+  @media(min-width:1040px){.principles{grid-template-columns:repeat(3,1fr)}}
+  .principle{
+    border:var(--bw) solid var(--ink);
+    box-shadow:var(--off) var(--off) 0 var(--shadow);
+    background:var(--surface);
+    padding:clamp(20px,3vw,26px);
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+  .principle__no{
+    font-family:var(--display);
+    font-weight:800;
+    font-size:clamp(2.4rem,6vw,3.4rem);
+    line-height:.82;
+    letter-spacing:-2px;
+    color:var(--blue);
+  }
+  .principle:nth-child(2) .principle__no{color:var(--pink)}
+  .principle:nth-child(3) .principle__no{color:var(--ink)}
+  .principle:nth-child(4) .principle__no{color:var(--pink)}
+  .principle:nth-child(5) .principle__no{color:var(--ink)}
+  .principle:nth-child(6) .principle__no{color:var(--blue)}
+  .principle__h{
+    font-family:var(--display);
+    font-weight:800;
+    text-transform:uppercase;
+    font-size:clamp(1.15rem,2.5vw,1.4rem);
+    line-height:1;
+    letter-spacing:-.5px;
+  }
+  .principle__p{color:var(--ink-muted);font-weight:500;line-height:1.45}
+
+  /* ===================================================== */
+  /* TESTIMONIALS (cards)                                   */
+  /* ===================================================== */
+  .quotes{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:clamp(22px,3vw,32px);
+    padding-bottom:clamp(20px,3vw,40px);
+  }
+  @media(min-width:760px){.quotes{grid-template-columns:1fr 1fr}}
+  .qcard{
+    border:var(--bw) solid var(--ink);
+    box-shadow:var(--off) var(--off) 0 var(--shadow);
+    background:var(--surface);
+    padding:clamp(22px,3vw,32px);
+    display:flex;
+    flex-direction:column;
+    gap:clamp(18px,3vw,26px);
+  }
+  .qcard--acid{background:var(--acid)}
+  .qcard--blue{background:var(--blue);color:#fff}
+  .qcard__mark{
+    font-family:var(--display);
+    font-weight:800;
+    font-size:clamp(3rem,7vw,4.4rem);
+    line-height:.6;
+    height:.5em;
+    letter-spacing:-2px;
+  }
+  .qcard--blue .qcard__mark{color:var(--acid)}
+  .qcard__text{
+    font-size:clamp(1.1rem,2.4vw,1.4rem);
+    line-height:1.35;
+    font-weight:500;
+  }
+  .qcard__by{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-top:auto;
+  }
+  .qcard__av{
+    width:46px;height:46px;flex:none;
+    border:var(--bw) solid var(--ink);
+    background:var(--pink);
+    display:grid;place-items:center;
+    font-family:var(--display);
+    font-weight:800;
+    font-size:16px;
+    color:var(--ink);
+  }
+  .qcard--blue .qcard__av{border-color:var(--acid);background:var(--ink);color:var(--acid)}
+  .qcard__name{font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:1rem;line-height:1.05;letter-spacing:-.3px}
+  .qcard__role{font-weight:500;font-size:14px;color:var(--ink-muted)}
+  .qcard--blue .qcard__role{color:#d8dcff}
+
+  /* ===================================================== */
+  /* SELECTED QUOTE (large_type band)                       */
+  /* ===================================================== */
+  .bigquote{
+    border:var(--bw) solid var(--ink);
+    box-shadow:var(--off) var(--off) 0 var(--shadow);
+    background:var(--pink);
+    padding:clamp(28px,6vw,72px) clamp(22px,5vw,64px);
+    margin-bottom:clamp(20px,3vw,40px);
+  }
+  .bigquote p{
+    font-family:var(--display);
+    font-weight:800;
+    text-transform:uppercase;
+    font-size:clamp(1.7rem,6vw,58px);
+    line-height:.96;
+    letter-spacing:-2px;
+  }
+  .bigquote .b{color:var(--blue)}
+  .bigquote .a{
+    background:var(--ink);
+    color:var(--acid);
+    padding:0 .12em;
+  }
+
+  /* ===================================================== */
+  /* SERVICES (list)                                        */
+  /* ===================================================== */
+  .svc-list{
+    border:var(--bw) solid var(--ink);
+    box-shadow:var(--off) var(--off) 0 var(--shadow);
+    background:var(--surface);
+    margin-bottom:clamp(20px,3vw,40px);
+  }
+  .svc{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:8px 20px;
+    padding:clamp(20px,3vw,28px) clamp(20px,3vw,30px);
+    border-bottom:var(--bw) solid var(--ink);
+  }
+  .svc:last-child{border-bottom:0}
+  @media(min-width:760px){
+    .svc{grid-template-columns:auto 1fr auto;align-items:baseline}
+  }
+  .svc__no{
+    font-family:var(--display);
+    font-weight:800;
+    font-size:clamp(1.4rem,3vw,1.9rem);
+    letter-spacing:-1px;
+    color:var(--blue);
+  }
+  .svc__h{
+    font-family:var(--display);
+    font-weight:800;
+    text-transform:uppercase;
+    font-size:clamp(1.25rem,2.8vw,1.7rem);
+    line-height:1;
+    letter-spacing:-.5px;
+  }
+  .svc__d{color:var(--ink-muted);font-weight:500;margin-top:8px;line-height:1.4}
+  .svc__price{
+    align-self:start;
+    font-family:var(--body);
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    font-size:13px;
+    border:var(--bw) solid var(--ink);
+    background:var(--acid);
+    padding:8px 12px;
+    white-space:nowrap;
+  }
+
+  /* ===================================================== */
+  /* CREDENTIALS (pills)                                    */
+  /* ===================================================== */
+  .creds{
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+    padding-bottom:clamp(20px,3vw,40px);
+  }
+  .cred{
+    border:var(--bw) solid var(--ink);
+    box-shadow:var(--off) var(--off) 0 var(--shadow);
+    background:var(--surface);
+    padding:14px 18px;
+    display:inline-flex;
+    align-items:baseline;
+    gap:10px;
+    transition:transform .08s,box-shadow .08s;
+  }
+  .cred:nth-child(3n+1){background:var(--acid)}
+  .cred:nth-child(3n+2){background:var(--surface)}
+  .cred:nth-child(3n){background:var(--pink)}
+  .cred__yr{
+    font-family:var(--display);
+    font-weight:800;
+    font-size:1.1rem;
+    letter-spacing:-.5px;
+    color:var(--blue);
+  }
+  .cred__t{font-weight:700;font-size:15px;line-height:1.2}
+
+  /* ===================================================== */
+  /* FAQ (accordion)                                        */
+  /* ===================================================== */
+  .faq{
+    border:var(--bw) solid var(--ink);
+    box-shadow:var(--off) var(--off) 0 var(--shadow);
+    background:var(--surface);
+    margin-bottom:clamp(20px,3vw,40px);
+  }
+  .faq details{border-bottom:var(--bw) solid var(--ink)}
+  .faq details:last-child{border-bottom:0}
+  .faq summary{
+    list-style:none;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    padding:clamp(18px,2.6vw,24px) clamp(20px,3vw,30px);
+    font-family:var(--display);
+    font-weight:800;
+    text-transform:uppercase;
+    font-size:clamp(1.05rem,2.4vw,1.4rem);
+    line-height:1.05;
+    letter-spacing:-.5px;
+  }
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary:hover{background:var(--acid)}
+  .faq summary .sign{
+    font-family:var(--display);
+    font-weight:800;
+    flex:none;
+    width:34px;height:34px;
+    border:var(--bw) solid var(--ink);
+    background:var(--blue);
+    color:#fff;
+    display:grid;place-items:center;
+    font-size:22px;
+    line-height:1;
+  }
+  .faq details[open] summary .sign{background:var(--pink);color:var(--ink)}
+  .faq details[open] summary .sign::after{content:"–"}
+  .faq summary .sign::after{content:"+"}
+  .faq__a{
+    padding:0 clamp(20px,3vw,30px) clamp(20px,2.6vw,26px);
+    color:var(--ink-muted);
+    font-weight:500;
+    line-height:1.5;
+    max-width:62ch;
+  }
+
+  /* ---------- entrance reveal (page-load stagger) ---------- */
+  .reveal{opacity:0;transform:translateY(18px)}
+  .reveal.in{
+    opacity:1;transform:none;
+    transition:opacity .55s ease, transform .55s cubic-bezier(.2,.7,.2,1);
+  }
+
+  /* ---------- reduced motion ---------- */
+  @media(prefers-reduced-motion:reduce){
+    .marquee__track{animation:none !important;transform:none !important}
+    .reveal{opacity:1 !important;transform:none !important;transition:none !important}
+    *{scroll-behavior:auto !important}
+    .btn,.work,.contact__mail,.soc,.cred{transition:none !important}
+  }
+
+  html{scroll-behavior:smooth}
+
+  /* ---------- hero portrait (user photo) ---------- */
+  .hero__portrait{
+    display:inline-block;
+    margin:6px 0;
+    transform:rotate(1.6deg);
+  }
+  .hero__portrait .u-photo{
+    display:block;
+    width:clamp(150px,42vw,232px);
+    height:clamp(150px,42vw,232px);
+    object-fit:cover;
+    border:var(--bw) solid var(--ink);
+    box-shadow:var(--off) var(--off) 0 var(--shadow);
+    border-radius:0;
+    /* high-contrast duotone to fit the flat palette */
+    filter:grayscale(1) contrast(1.18) brightness(1.02);
+  }
+
+  /* ---------- demo photo toggle ---------- */
+  .atlas-photo-toggle{position:fixed;right:16px;bottom:16px;z-index:99999;display:flex;align-items:center;gap:8px;background:rgba(20,20,22,.88);color:#fff;border-radius:999px;padding:6px 6px 6px 14px;font:600 12px/1 -apple-system,system-ui,sans-serif;box-shadow:0 8px 28px -10px rgba(0,0,0,.55)}
+  .atlas-photo-toggle button{appearance:none;border:0;cursor:pointer;font:inherit;color:#16161a;background:#fff;border-radius:999px;padding:6px 14px;min-width:46px}
+  .atlas-photo-toggle button[aria-pressed="false"]{background:#3a3a42;color:#fff}
+  .u-fallback{display:none !important}
+  body.no-photos .u-photo{display:none !important}
+  body.no-photos .u-fallback{display:revert !important}
+  body.no-photos .name-block.u-fallback{display:inline-block !important}
+
+  .skip{
+    position:absolute;left:-999px;top:0;
+    background:var(--ink);color:var(--acid);
+    padding:10px 16px;z-index:100;
+    font-weight:700;text-decoration:none;
+  }
+  .skip:focus{left:8px;top:8px}
+</style>
+</head>
+<body>
+<a class="skip label" href="#work">Skip to work</a>
+
+<!-- ===================== TOP BAR ===================== -->
+<header class="topbar">
+  <div class="topbar__inner">
+    <a class="brandmark" href="#top" aria-label="Alex Mercer — home">
+      <span class="dot" aria-hidden="true"></span>AM&nbsp;STUDIO
+    </a>
+    <nav class="topnav" aria-label="Primary">
+      <a class="label nav-hide" href="#work">Work</a>
+      <a class="label nav-hide" href="#proof">Proof</a>
+      <a class="label nav-hide" href="#method">Method</a>
+      <a class="label nav-hide" href="#words">Words</a>
+      <a class="label nav-hide" href="#services">Services</a>
+      <a class="label nav-hide" href="#faq">FAQ</a>
+      <a class="label" href="#contact">Contact ↗</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ===================== HERO ===================== -->
+<section class="hero" id="hero" data-module="hero" data-variant="bold_statement" aria-labelledby="hero-h">
+  <div class="wrap">
+    <div class="hero__eyebrow reveal">
+      <span class="tag tag--acid label">Graphic Designer</span>
+      <span class="tag tag--blue label">Art Director</span>
+      <span class="tag label">London · Worldwide</span>
+    </div>
+
+    <div class="hero__headline reveal">
+      <h1 id="hero-h" class="display-xl">
+        Most brands<br>
+        <span class="hl-strike">whisper.</span><br>
+        I make the ones<br>
+        that decide to be<br>
+        <span class="hl-blue">heard.</span>
+      </h1>
+      <span class="hero__portrait">
+        <img class="u-photo" src="portrait.jpg" width="820" height="820"
+             alt="Portrait of Alex Mercer, graphic designer and art director">
+      </span>
+      <span class="name-block display-md u-fallback">Alex&nbsp;Mercer</span>
+    </div>
+
+    <div class="hero__row">
+      <p class="hero__lede reveal">
+        Identity &amp; art direction with a loud point of view —
+        <strong>10 years</strong>, <strong>40+ brands</strong> built across
+        music, fashion and indie tech. If you want to be remembered, start here.
+      </p>
+      <div class="hero__cta-wrap reveal">
+        <a class="btn" href="#contact">Start a project ↗</a>
+        <a class="btn btn--ghost" href="#work">See the work</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- marquee strip of client / context names -->
+  <div class="marquee reveal" aria-hidden="true">
+    <div class="marquee__track">
+      <span class="marquee__item">D&amp;AD Wood Pencil ’24</span>
+      <span class="marquee__item">It’s Nice That</span>
+      <span class="marquee__item">Brand New</span>
+      <span class="marquee__item">Music</span>
+      <span class="marquee__item">Fashion</span>
+      <span class="marquee__item">Indie Tech</span>
+      <span class="marquee__item">Festival Identities</span>
+      <span class="marquee__item">Type-Led Branding</span>
+      <!-- duplicate set for seamless loop -->
+      <span class="marquee__item">D&amp;AD Wood Pencil ’24</span>
+      <span class="marquee__item">It’s Nice That</span>
+      <span class="marquee__item">Brand New</span>
+      <span class="marquee__item">Music</span>
+      <span class="marquee__item">Fashion</span>
+      <span class="marquee__item">Indie Tech</span>
+      <span class="marquee__item">Festival Identities</span>
+      <span class="marquee__item">Type-Led Branding</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SELECTED WORK ===================== -->
+<section id="work" data-module="selected_work" data-variant="grid" aria-labelledby="work-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="sec-head__num">01</span>
+        <h2 id="work-h" class="display-md">Selected Work</h2>
+      </div>
+      <p class="sec-head__meta label" style="letter-spacing:.06em">
+        Identities &amp; art direction · 2021—2024
+      </p>
+    </div>
+
+    <div class="work-grid">
+
+      <a class="work" href="#contact">
+        <div class="work__thumb t-acid"><span class="glyph" aria-hidden="true">DB</span></div>
+        <div class="work__body">
+          <h3 class="work__name">Decibel Festival</h3>
+          <p class="work__brand">Independent music festival · full identity</p>
+          <div class="work__meta">
+            <span class="chip chip--year label">2024</span>
+            <span class="chip label">Brand ID</span>
+            <span class="work__go" aria-hidden="true">↗</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="work" href="#contact">
+        <div class="work__thumb t-blue"><span class="glyph" aria-hidden="true">VX</span></div>
+        <div class="work__body">
+          <h3 class="work__name">Vellum &amp; Co.</h3>
+          <p class="work__brand">Fashion label · art direction</p>
+          <div class="work__meta">
+            <span class="chip chip--year label">2023</span>
+            <span class="chip label">Art Direction</span>
+            <span class="work__go" aria-hidden="true">↗</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="work" href="#contact">
+        <div class="work__thumb t-pink"><span class="glyph" aria-hidden="true">OR</span></div>
+        <div class="work__body">
+          <h3 class="work__name">Orbit OS</h3>
+          <p class="work__brand">Indie tech · product &amp; brand</p>
+          <div class="work__meta">
+            <span class="chip chip--year label">2023</span>
+            <span class="chip label">Identity</span>
+            <span class="work__go" aria-hidden="true">↗</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="work" href="#contact">
+        <div class="work__thumb t-ink"><span class="glyph" aria-hidden="true">NS</span></div>
+        <div class="work__body">
+          <h3 class="work__name">Noise Records</h3>
+          <p class="work__brand">Record label · sleeve &amp; type system</p>
+          <div class="work__meta">
+            <span class="chip chip--year label">2022</span>
+            <span class="chip label">Type System</span>
+            <span class="work__go" aria-hidden="true">↗</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="work" href="#contact">
+        <div class="work__thumb t-paper"><span class="glyph" aria-hidden="true">HM</span></div>
+        <div class="work__body">
+          <h3 class="work__name">Halftone Mag</h3>
+          <p class="work__brand">Indie print mag · editorial direction</p>
+          <div class="work__meta">
+            <span class="chip chip--year label">2022</span>
+            <span class="chip label">Editorial</span>
+            <span class="work__go" aria-hidden="true">↗</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="work" href="#contact">
+        <div class="work__thumb t-blue"><span class="glyph" aria-hidden="true">FW</span></div>
+        <div class="work__body">
+          <h3 class="work__name">Fuzz &amp; Wire</h3>
+          <p class="work__brand">Streetwear drop · campaign &amp; logo</p>
+          <div class="work__meta">
+            <span class="chip chip--year label">2021</span>
+            <span class="chip label">Campaign</span>
+            <span class="work__go" aria-hidden="true">↗</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===================== METRICS / PRESS ===================== -->
+<section id="proof" data-module="metrics" data-variant="big_numerals" aria-labelledby="proof-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="sec-head__num">02</span>
+        <h2 id="proof-h" class="display-md">Receipts</h2>
+      </div>
+      <p class="sec-head__meta">
+        Ten years in brand &amp; art direction. The numbers, and where the work shows up.
+      </p>
+    </div>
+
+    <div class="metrics">
+      <div class="metric metric--acid reveal">
+        <span class="metric__num">40+</span>
+        <span class="metric__label">Brand identities shipped</span>
+      </div>
+      <div class="metric metric--blue reveal">
+        <span class="metric__num">10</span>
+        <span class="metric__label">Years in brand &amp; art direction</span>
+      </div>
+      <div class="metric metric--pink reveal">
+        <span class="metric__num">’24</span>
+        <span class="metric__label">D&amp;AD Wood Pencil — festival identity</span>
+      </div>
+      <div class="metric metric--paper reveal">
+        <span class="metric__num">2×</span>
+        <span class="metric__label">Featured: It’s Nice That &amp; Brand New</span>
+      </div>
+    </div>
+
+    <p class="label" style="margin-top:clamp(18px,3vw,26px);color:var(--ink-muted);letter-spacing:.1em">
+      Ex-Art Director · London studio — now independent.
+    </p>
+  </div>
+</section>
+
+<!-- ===================== STORY / QUOTE ===================== -->
+<section id="method" class="story" data-module="story" data-variant="quote_led" aria-labelledby="method-h">
+  <div class="wrap">
+    <div class="story__card reveal">
+      <p class="story__kicker label">03 — How I work</p>
+      <blockquote id="method-h" class="story__quote">
+        I don’t do <em>quiet</em>. I find the one true thing a brand
+        won’t shut up about — then build a <span class="u">system loud enough</span>
+        to say it everywhere, on every surface, without flinching.
+      </blockquote>
+      <div class="story__sign">
+        <span class="av" aria-hidden="true">AM</span>
+        <span><strong style="color:#fff">Alex Mercer</strong> — graphic designer &amp; art director, working with music, fashion &amp; indie tech.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PRINCIPLES (beliefs) ===================== -->
+<section id="principles" data-module="beliefs" data-variant="numbered" aria-labelledby="principles-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="sec-head__num">04</span>
+        <h2 id="principles-h" class="display-md">House Rules</h2>
+      </div>
+      <p class="sec-head__meta">
+        Six things I won’t compromise on — the spine under every identity I ship.
+      </p>
+    </div>
+
+    <div class="principles">
+      <div class="principle reveal">
+        <span class="principle__no">01</span>
+        <h3 class="principle__h">Pick a fight</h3>
+        <p class="principle__p">A brand that’s for everyone is for no one. We choose what it stands against before we draw a thing.</p>
+      </div>
+      <div class="principle reveal">
+        <span class="principle__no">02</span>
+        <h3 class="principle__h">Type does the talking</h3>
+        <p class="principle__p">Before logos, before color — the letterforms. Get the voice right and the rest falls into place.</p>
+      </div>
+      <div class="principle reveal">
+        <span class="principle__no">03</span>
+        <h3 class="principle__h">One system, every surface</h3>
+        <p class="principle__p">Poster, app, hoodie, invoice. If the rules only work on the hero shot, they don’t work.</p>
+      </div>
+      <div class="principle reveal">
+        <span class="principle__no">04</span>
+        <h3 class="principle__h">Contrast over comfort</h3>
+        <p class="principle__p">Safe is forgettable. I’d rather push the dial too far and pull back than ship something beige.</p>
+      </div>
+      <div class="principle reveal">
+        <span class="principle__no">05</span>
+        <h3 class="principle__h">Ship it loud</h3>
+        <p class="principle__p">Work that hides in a folder isn’t finished. We build for the real world, in public.</p>
+      </div>
+      <div class="principle reveal">
+        <span class="principle__no">06</span>
+        <h3 class="principle__h">No mood-board mush</h3>
+        <p class="principle__p">Decisions, not references. Every choice has a reason you can say out loud in one sentence.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TESTIMONIALS ===================== -->
+<section id="words" data-module="testimonials" data-variant="cards" aria-labelledby="words-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="sec-head__num">05</span>
+        <h2 id="words-h" class="display-md">Word On The Street</h2>
+      </div>
+      <p class="sec-head__meta">
+        What founders and label heads say after the dust settles.
+      </p>
+    </div>
+
+    <div class="quotes">
+      <figure class="qcard qcard--acid reveal">
+        <span class="qcard__mark" aria-hidden="true">“</span>
+        <blockquote class="qcard__text">Alex didn’t design us a logo, he gave us a backbone. We finally sound as loud as we actually are.</blockquote>
+        <figcaption class="qcard__by">
+          <span class="qcard__av" aria-hidden="true">JL</span>
+          <span>
+            <span class="qcard__name">Jules Tan</span><br>
+            <span class="qcard__role">Founder, Decibel Festival</span>
+          </span>
+        </figcaption>
+      </figure>
+
+      <figure class="qcard qcard--blue reveal">
+        <span class="qcard__mark" aria-hidden="true">“</span>
+        <blockquote class="qcard__text">Fastest a designer has ever understood the room. The type system runs our whole label now — every sleeve, every drop.</blockquote>
+        <figcaption class="qcard__by">
+          <span class="qcard__av" aria-hidden="true">RM</span>
+          <span>
+            <span class="qcard__name">Rina Mokri</span><br>
+            <span class="qcard__role">A&amp;R, Noise Records</span>
+          </span>
+        </figcaption>
+      </figure>
+
+      <figure class="qcard reveal">
+        <span class="qcard__mark" aria-hidden="true">“</span>
+        <blockquote class="qcard__text">We came in scared of being “too much.” He talked us out of it in ten minutes and our sell-through doubled.</blockquote>
+        <figcaption class="qcard__by">
+          <span class="qcard__av" aria-hidden="true">DV</span>
+          <span>
+            <span class="qcard__name">Dev Vellum</span><br>
+            <span class="qcard__role">Creative Director, Vellum &amp; Co.</span>
+          </span>
+        </figcaption>
+      </figure>
+
+      <figure class="qcard reveal">
+        <span class="qcard__mark" aria-hidden="true">“</span>
+        <blockquote class="qcard__text">Working with Alex is like turning the lights all the way up. Slightly terrifying, exactly what we needed.</blockquote>
+        <figcaption class="qcard__by">
+          <span class="qcard__av" aria-hidden="true">PK</span>
+          <span>
+            <span class="qcard__name">Priya Khan</span><br>
+            <span class="qcard__role">CEO, Orbit OS</span>
+          </span>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SELECTED QUOTE ===================== -->
+<section id="manifesto" data-module="selected_quotes" data-variant="large_type" aria-labelledby="manifesto-h">
+  <div class="wrap">
+    <div class="bigquote reveal">
+      <p id="manifesto-h">
+        If they don’t remember it <span class="b">tomorrow</span>,
+        we <span class="a">failed</span> today.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SERVICES ===================== -->
+<section id="services" data-module="services" data-variant="list" aria-labelledby="services-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="sec-head__num">06</span>
+        <h2 id="services-h" class="display-md">What You Hire Me For</h2>
+      </div>
+      <p class="sec-head__meta">
+        Three ways in. Scope is a conversation — these are the starting lines.
+      </p>
+    </div>
+
+    <div class="svc-list reveal">
+      <div class="svc">
+        <span class="svc__no" aria-hidden="true">01</span>
+        <div>
+          <h3 class="svc__h">Brand Identity</h3>
+          <p class="svc__d">Naming through to a full system: logo, type, color, motion and a guidelines doc your team can actually use.</p>
+        </div>
+        <span class="svc__price">From £12k</span>
+      </div>
+      <div class="svc">
+        <span class="svc__no" aria-hidden="true">02</span>
+        <div>
+          <h3 class="svc__h">Art Direction</h3>
+          <p class="svc__d">Campaign and editorial direction for a launch, a season or a release — I set the look and steer the shoot.</p>
+        </div>
+        <span class="svc__price">From £6k</span>
+      </div>
+      <div class="svc">
+        <span class="svc__no" aria-hidden="true">03</span>
+        <div>
+          <h3 class="svc__h">Identity Sprint</h3>
+          <p class="svc__d">One loud week. We pin the positioning, the voice and a starter kit you can run with immediately.</p>
+        </div>
+        <span class="svc__price">£3.5k / week</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CREDENTIALS ===================== -->
+<section id="creds" data-module="credentials" data-variant="pills" aria-labelledby="creds-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="sec-head__num">07</span>
+        <h2 id="creds-h" class="display-md">Receipts, Part Two</h2>
+      </div>
+      <p class="sec-head__meta">
+        Awards, features and the rooms I’ve stood in.
+      </p>
+    </div>
+
+    <div class="creds">
+      <span class="cred reveal"><span class="cred__yr">’24</span><span class="cred__t">D&amp;AD Wood Pencil — Brand Identity</span></span>
+      <span class="cred reveal"><span class="cred__yr">’24</span><span class="cred__t">It’s Nice That — Graphic Design</span></span>
+      <span class="cred reveal"><span class="cred__yr">’23</span><span class="cred__t">Brand New — Reviewed &amp; Approved</span></span>
+      <span class="cred reveal"><span class="cred__yr">’23</span><span class="cred__t">OFFF Barcelona — Speaker</span></span>
+      <span class="cred reveal"><span class="cred__yr">’22</span><span class="cred__t">Type Directors Club — Cert. of Excellence</span></span>
+      <span class="cred reveal"><span class="cred__yr">’14</span><span class="cred__t">BA (Hons) Graphic Design — Central Saint Martins</span></span>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section id="faq" data-module="faq" data-variant="accordion" aria-labelledby="faq-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="sec-head__num">08</span>
+        <h2 id="faq-h" class="display-md">Before You Ask</h2>
+      </div>
+      <p class="sec-head__meta">
+        The things every new client wants to know on day one.
+      </p>
+    </div>
+
+    <div class="faq reveal">
+      <details>
+        <summary>How long does a brand take?<span class="sign" aria-hidden="true"></span></summary>
+        <p class="faq__a">A full identity is typically 6–10 weeks. Need it yesterday? The Identity Sprint compresses the core decisions into one loud week.</p>
+      </details>
+      <details>
+        <summary>Will it be as loud as your portfolio?<span class="sign" aria-hidden="true"></span></summary>
+        <p class="faq__a">Only as loud as your brand earns. I push hard, but the volume is calibrated to your audience — bold is a strategy, not a default setting.</p>
+      </details>
+      <details>
+        <summary>Do you work with small or new brands?<span class="sign" aria-hidden="true"></span></summary>
+        <p class="faq__a">Absolutely — some of my favorite work is launch work. The Sprint exists exactly for teams who need a strong start without a big-studio retainer.</p>
+      </details>
+      <details>
+        <summary>Who actually does the work?<span class="sign" aria-hidden="true"></span></summary>
+        <p class="faq__a">Me. I’m an independent studio of one and bring in trusted collaborators (motion, web, print) only when a project needs them — you always deal with me directly.</p>
+      </details>
+      <details>
+        <summary>What do you need from us to start?<span class="sign" aria-hidden="true"></span></summary>
+        <p class="faq__a">A short call, an honest answer to “what do you want to be known for,” and a green light. I’ll handle the rest of the brief.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONTACT ===================== -->
+<section id="contact" class="contact on-acid" data-module="contact" data-variant="cta_band" aria-labelledby="contact-h">
+  <div class="wrap">
+    <div class="contact__big reveal">
+      <h2 id="contact-h">Let’s make<br>n<span class="o">oi</span>se</h2>
+      <div class="contact__row on-blue">
+        <a class="contact__mail" href="mailto:studio@alexmercer.work">
+          <span>studio@alexmercer.work</span>
+          <span aria-hidden="true">↗</span>
+        </a>
+        <div class="contact__socials">
+          <a class="soc soc--ig" href="https://instagram.com/" rel="noopener" target="_blank">
+            <span class="soc__top"><span class="soc__h">Instagram</span><span aria-hidden="true">↗</span></span>
+            <span class="label" style="color:var(--ink-muted)">@alexmercer</span>
+          </a>
+          <a class="soc soc--be" href="https://behance.net/" rel="noopener" target="_blank">
+            <span class="soc__top"><span class="soc__h">Behance</span><span aria-hidden="true">↗</span></span>
+            <span class="label" style="color:var(--ink-muted)">Full portfolio</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="foot__inner">
+    <span class="label">© 2024 Alex Mercer — AM Studio</span>
+    <span class="label">Most brands whisper. Mine don’t.</span>
+    <a class="label" href="#top" style="text-decoration:none;border-bottom:3px solid var(--blue)">Back to top ↑</a>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var reduce = window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var els = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+
+  if (reduce || !('IntersectionObserver' in window)) {
+    els.forEach(function(el){ el.classList.add('in'); });
+    return;
+  }
+
+  // staggered page-load reveal for hero items (above the fold)
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting){
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+
+  els.forEach(function(el, i){
+    // small stagger so the load feels orchestrated, capped so nothing lingers hidden
+    el.style.transitionDelay = Math.min(i * 55, 330) + 'ms';
+    io.observe(el);
+  });
+})();
+</script>
+
+<div class="atlas-photo-toggle" role="group" aria-label="示例照片 / Demo photos">
+  <span>照片 Photos</span>
+  <button id="atlasPhotoBtn" type="button" aria-pressed="true">On</button>
+</div>
+<script>
+(function(){var b=document.getElementById('atlasPhotoBtn');if(!b)return;function set(on){document.body.classList.toggle('no-photos',!on);b.setAttribute('aria-pressed',on?'true':'false');b.textContent=on?'On':'Off';}b.addEventListener('click',function(){set(document.body.classList.contains('no-photos'));});set(true);})();
+</script>
+</body>
+</html>

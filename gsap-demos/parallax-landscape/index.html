@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>纵深 · 寒川远行手记 — 林霁旅行摄影随笔</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0a0c10;
+    --ink-2:#11151c;
+    --fog:#cfd6dd;
+    --fog-dim:#8b97a3;
+    --paper:#e9e3d6;
+    --gold:#c9a35c;
+    --gold-soft:#d8bd86;
+    --line:rgba(207,214,221,0.16);
+    --serif:"Cormorant Garamond", "Noto Serif SC", Georgia, serif;
+    --serif-cn:"Noto Serif SC", "Songti SC", serif;
+    --maxw:1180px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:auto;}
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--fog);
+    font-family:var(--serif-cn);
+    font-weight:300;
+    line-height:1.85;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  img{display:block;max-width:100%;}
+  a{color:var(--gold-soft);}
+
+  ::selection{background:var(--gold);color:var(--ink);}
+
+  /* visible focus for accessibility */
+  a:focus-visible,
+  button:focus-visible{
+    outline:2px solid var(--gold);
+    outline-offset:4px;
+  }
+
+  /* ---------- shared layout ---------- */
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px;}
+  .eyebrow{
+    font-family:var(--serif);
+    letter-spacing:.42em;
+    text-transform:uppercase;
+    font-size:.72rem;
+    color:var(--gold);
+    margin:0 0 1.4rem;
+    font-weight:500;
+  }
+  .display{
+    font-family:var(--serif);
+    font-weight:500;
+    line-height:1.02;
+    letter-spacing:.01em;
+    color:var(--paper);
+    margin:0;
+  }
+  h2.display{font-size:clamp(2.2rem,6vw,4.4rem);}
+  p.lede{
+    font-size:clamp(1.05rem,1.6vw,1.35rem);
+    color:var(--fog);
+    max-width:46ch;
+    font-weight:300;
+  }
+
+  /* ====================================================== */
+  /*  HERO — full-bleed cinematic, multi-layer parallax     */
+  /* ====================================================== */
+  .hero{
+    position:relative;
+    height:100svh;
+    min-height:560px;
+    overflow:hidden;
+    display:flex;
+    align-items:flex-end;
+  }
+  .hero__bg{
+    position:absolute;
+    inset:-12% -6%;
+    background-size:cover;
+    background-position:center 40%;
+    will-change:transform;
+  }
+  .hero__bg--far{
+    background-image:url('/assets/landscape-vinyl-clouds.webp');
+    filter:saturate(.7) brightness(.55);
+  }
+  .hero__bg--mid{
+    background-image:url('/assets/landscape-samurai-hazy.webp');
+    background-position:center 55%;
+    filter:contrast(1.05) brightness(.7);
+    mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 58%, rgba(0,0,0,0) 100%);
+    -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 58%, rgba(0,0,0,0) 100%);
+  }
+  .hero__scrim{
+    position:absolute;inset:0;
+    background:
+      radial-gradient(120% 80% at 50% 8%, transparent 0%, rgba(10,12,16,.35) 60%, rgba(10,12,16,.92) 100%),
+      linear-gradient(to bottom, rgba(10,12,16,.55) 0%, transparent 30%, transparent 55%, rgba(10,12,16,.96) 100%);
+  }
+  .hero__content{
+    position:relative;
+    width:100%;
+    padding-bottom:clamp(3rem,9vh,8rem);
+    z-index:3;
+  }
+  .hero__title{
+    font-family:var(--serif-cn);
+    font-weight:600;
+    font-size:clamp(3.4rem,12vw,9.5rem);
+    line-height:.95;
+    letter-spacing:.04em;
+    color:var(--paper);
+    margin:0;
+    text-shadow:0 18px 60px rgba(0,0,0,.6);
+  }
+  .hero__title .char{display:inline-block;will-change:transform,opacity;}
+  .hero__sub{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:clamp(1.1rem,2.4vw,1.7rem);
+    color:var(--gold-soft);
+    margin:1.2rem 0 0;
+    letter-spacing:.04em;
+  }
+  .hero__meta{
+    display:flex;
+    gap:1.6rem;
+    flex-wrap:wrap;
+    margin-top:2rem;
+    font-family:var(--serif);
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    font-size:.7rem;
+    color:var(--fog-dim);
+  }
+  .hero__meta span{display:flex;align-items:center;gap:.6rem;}
+  .hero__meta span::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--gold);}
+
+  .scroll-cue{
+    position:absolute;
+    left:50%;bottom:2rem;
+    transform:translateX(-50%);
+    z-index:4;
+    display:flex;flex-direction:column;align-items:center;gap:.7rem;
+    font-family:var(--serif);
+    letter-spacing:.34em;
+    text-transform:uppercase;
+    font-size:.6rem;
+    color:var(--fog-dim);
+  }
+  .scroll-cue__line{
+    width:1px;height:48px;
+    background:linear-gradient(to bottom, var(--gold) 0%, transparent 100%);
+    transform-origin:top;
+  }
+
+  /* ====================================================== */
+  /*  INTRO — text rises from darkness                      */
+  /* ====================================================== */
+  .intro{
+    padding:clamp(7rem,16vh,12rem) 0 clamp(5rem,12vh,9rem);
+    background:linear-gradient(to bottom, var(--ink) 0%, var(--ink-2) 100%);
+  }
+  .intro__grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:2.6rem;
+    align-items:start;
+  }
+  .intro__big{
+    font-family:var(--serif-cn);
+    font-weight:400;
+    font-size:clamp(1.5rem,3.6vw,2.7rem);
+    line-height:1.55;
+    color:var(--paper);
+    max-width:24ch;
+    margin:0;
+  }
+  .intro__big em{
+    font-family:var(--serif);
+    font-style:italic;
+    color:var(--gold-soft);
+    font-weight:500;
+  }
+  .reveal-line{display:block;overflow:hidden;}
+  .reveal-line > span{display:block;will-change:transform;}
+  .intro__col{
+    color:var(--fog-dim);
+    font-size:1rem;
+    max-width:40ch;
+  }
+  .intro__col p{margin:0 0 1.2rem;}
+  @media(min-width:860px){
+    .intro__grid{grid-template-columns:1.4fr .9fr;gap:5rem;}
+  }
+
+  /* ====================================================== */
+  /*  PLATES — pinned parallax photo chapters               */
+  /* ====================================================== */
+  .plate{
+    position:relative;
+    height:120svh;
+    overflow:hidden;
+  }
+  .plate__frame{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+  }
+  .plate__img{
+    position:absolute;
+    inset:-14% 0;
+    width:100%;
+    height:128%;
+    object-fit:cover;
+    will-change:transform;
+  }
+  .plate__veil{
+    position:absolute;inset:0;
+    background:linear-gradient(to top, rgba(10,12,16,.95) 0%, rgba(10,12,16,.25) 45%, rgba(10,12,16,.5) 100%);
+  }
+  .plate__caption{
+    position:absolute;
+    left:0;right:0;bottom:0;
+    z-index:2;
+    padding:0 0 clamp(3rem,8vh,6rem);
+  }
+  .plate__no{
+    font-family:var(--serif);
+    font-size:clamp(4rem,16vw,11rem);
+    line-height:.8;
+    color:transparent;
+    -webkit-text-stroke:1px rgba(217,189,134,.55);
+    letter-spacing:.02em;
+    margin:0 0 .4rem;
+    will-change:transform;
+  }
+  .plate__title{
+    font-family:var(--serif-cn);
+    font-weight:600;
+    font-size:clamp(1.8rem,5vw,3.6rem);
+    color:var(--paper);
+    margin:.2rem 0 1rem;
+    line-height:1.1;
+    will-change:transform,opacity;
+  }
+  .plate__body{
+    max-width:42ch;
+    color:var(--fog);
+    font-weight:300;
+    will-change:transform,opacity;
+  }
+  .plate__coord{
+    margin-top:1.4rem;
+    font-family:var(--serif);
+    letter-spacing:.26em;
+    text-transform:uppercase;
+    font-size:.68rem;
+    color:var(--gold);
+  }
+
+  /* ====================================================== */
+  /*  DUSK — horizontal drift strip (scrub)                 */
+  /* ====================================================== */
+  .strip{
+    background:var(--ink-2);
+    padding:clamp(6rem,13vh,10rem) 0;
+    overflow:hidden;
+  }
+  .strip__head{margin-bottom:3rem;}
+  .strip__track{
+    display:flex;
+    gap:clamp(1.4rem,3vw,3rem);
+    width:max-content;
+    will-change:transform;
+    padding-left:28px;
+  }
+  .strip__card{
+    position:relative;
+    width:clamp(240px,42vw,460px);
+    aspect-ratio:3/4;
+    border-radius:2px;
+    overflow:hidden;
+    flex:0 0 auto;
+  }
+  .strip__card img{
+    width:100%;height:100%;
+    object-fit:cover;
+    filter:brightness(.82) contrast(1.04);
+    will-change:transform;
+  }
+  .strip__card figcaption{
+    position:absolute;left:0;right:0;bottom:0;
+    padding:1.4rem 1.4rem 1.2rem;
+    background:linear-gradient(to top, rgba(10,12,16,.9), transparent);
+    font-family:var(--serif);
+    font-style:italic;
+    color:var(--paper);
+    font-size:1.05rem;
+  }
+  .strip__card figcaption b{
+    display:block;
+    font-family:var(--serif);
+    font-style:normal;
+    font-size:.64rem;
+    letter-spacing:.26em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-top:.4rem;
+    font-weight:500;
+  }
+
+  /* ====================================================== */
+  /*  QUOTE — depth pull-quote over night image            */
+  /* ====================================================== */
+  .quote{
+    position:relative;
+    min-height:90svh;
+    display:flex;align-items:center;
+    overflow:hidden;
+  }
+  .quote__bg{
+    position:absolute;inset:-12% 0;
+    background:url('/assets/editorial-motel-car-night.webp') center/cover;
+    filter:brightness(.5) saturate(.9);
+    will-change:transform;
+  }
+  .quote__scrim{
+    position:absolute;inset:0;
+    background:radial-gradient(90% 90% at 30% 50%, rgba(10,12,16,.4), rgba(10,12,16,.94));
+  }
+  .quote__text{
+    position:relative;z-index:2;
+    font-family:var(--serif);
+    font-style:italic;
+    font-weight:400;
+    font-size:clamp(1.7rem,4.4vw,3.4rem);
+    line-height:1.35;
+    color:var(--paper);
+    max-width:20ch;
+  }
+  .quote__word{display:inline-block;will-change:transform,opacity;}
+  .quote__by{
+    display:block;
+    margin-top:2rem;
+    font-family:var(--serif-cn);
+    font-style:normal;
+    font-size:.9rem;
+    letter-spacing:.2em;
+    color:var(--gold-soft);
+  }
+
+  /* ====================================================== */
+  /*  CITY — final dusk cityscape, layered rise            */
+  /* ====================================================== */
+  .city{
+    position:relative;
+    min-height:100svh;
+    overflow:hidden;
+    display:flex;align-items:flex-end;
+  }
+  .city__bg{
+    position:absolute;inset:-12% 0;
+    background:url('/assets/editorial-dusk-cityscape.webp') center/cover;
+    will-change:transform;
+  }
+  .city__scrim{
+    position:absolute;inset:0;
+    background:linear-gradient(to bottom, rgba(10,12,16,.7) 0%, transparent 30%, rgba(10,12,16,.97) 92%);
+  }
+  .city__inner{position:relative;z-index:2;width:100%;padding-bottom:clamp(4rem,10vh,8rem);}
+  .city__title{
+    font-family:var(--serif-cn);
+    font-weight:600;
+    font-size:clamp(2.4rem,7vw,5.2rem);
+    color:var(--paper);
+    line-height:1.05;
+    margin:0 0 1.4rem;
+  }
+
+  /* ====================================================== */
+  /*  CLOSE / colophon                                      */
+  /* ====================================================== */
+  .close{
+    background:var(--ink);
+    padding:clamp(6rem,14vh,11rem) 0 5rem;
+    text-align:center;
+  }
+  .close__mark{
+    font-family:var(--serif);
+    font-size:clamp(2.6rem,8vw,5.5rem);
+    color:var(--paper);
+    margin:0;
+    letter-spacing:.06em;
+  }
+  .close__rule{
+    width:1px;height:60px;
+    background:linear-gradient(var(--gold),transparent);
+    margin:2.4rem auto;
+  }
+  .colophon{
+    margin-top:3.4rem;
+    font-family:var(--serif);
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    font-size:.66rem;
+    color:var(--fog-dim);
+    line-height:2.4;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+  }
+</style>
+</head>
+<body>
+
+  <!-- =================== HERO =================== -->
+  <header class="hero" aria-label="封面">
+    <div class="hero__bg hero__bg--far" data-speed="far" role="img" aria-label="远处层叠的山脊与流云"></div>
+    <div class="hero__bg hero__bg--mid" data-speed="mid" role="img" aria-label="薄雾中独行者走过的山道"></div>
+    <div class="hero__scrim"></div>
+
+    <div class="hero__content wrap">
+      <p class="eyebrow">林霁 · 旅行摄影随笔 第柒辑</p>
+      <h1 class="hero__title" aria-label="纵深">
+        <span class="char">纵</span><span class="char">深</span>
+      </h1>
+      <p class="hero__sub">In the Depth of Distance — 寒川远行手记</p>
+      <div class="hero__meta">
+        <span>2024 — 2025</span>
+        <span>北纬 36° 至 43°</span>
+        <span>胶片 · 中画幅</span>
+        <span>14 段路程</span>
+      </div>
+    </div>
+
+    <div class="scroll-cue" aria-hidden="true">
+      <span>向下 · Scroll</span>
+      <span class="scroll-cue__line"></span>
+    </div>
+  </header>
+
+  <!-- =================== INTRO =================== -->
+  <section class="intro" aria-label="序">
+    <div class="wrap intro__grid">
+      <p class="intro__big">
+        <span class="reveal-line"><span>我习惯把远方</span></span>
+        <span class="reveal-line"><span>留到最后一卷胶片，</span></span>
+        <span class="reveal-line"><span>因为<em>纵深</em>不在镜头里，</span></span>
+        <span class="reveal-line"><span>而在一层层退去的雾中。</span></span>
+      </p>
+      <div class="intro__col">
+        <p>三年里我沿着寒川一路向北，从城郊的薄暮走到无人的雪线。相机记录的不是风景本身，而是风景与风景之间那段被空气稀释的距离——前山清晰，远山隐没，世界因此有了深度。</p>
+        <p>这一辑收录十四段路程。请把屏幕调暗一点，让远方慢慢浮上来。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== PLATE 01 =================== -->
+  <section class="plate" aria-label="第一章 独行者">
+    <div class="plate__frame">
+      <img class="plate__img" data-plate-img src="/assets/landscape-lone-figure.webp" alt="一名独行者站在开阔山谷中，身影渺小，远山在雾中淡去">
+      <div class="plate__veil"></div>
+    </div>
+    <div class="plate__caption wrap">
+      <p class="plate__no" data-plate-no>01</p>
+      <h2 class="plate__title" data-plate-el>独行者，与他身后退去的群山</h2>
+      <p class="plate__body" data-plate-el>清晨五点，雾还压在谷底。我把人放在画面最低处，让山一层层往上叠——最近的一道脊线是墨，最远的那道几乎只剩一缕灰。距离把山变薄，也把人变得无比安静。</p>
+      <p class="plate__coord" data-plate-el>寒川上游 · 鹿鸣谷 · 海拔 1,840m</p>
+    </div>
+  </section>
+
+  <!-- =================== PLATE 02 =================== -->
+  <section class="plate" aria-label="第二章 山道">
+    <div class="plate__frame">
+      <img class="plate__img" data-plate-img src="/assets/landscape-samurai-road.webp" alt="一条蜿蜒山道消失在浓雾深处，路旁是模糊的林影">
+      <div class="plate__veil"></div>
+    </div>
+    <div class="plate__caption wrap">
+      <p class="plate__no" data-plate-no>02</p>
+      <h2 class="plate__title" data-plate-el>那条路，最终走进了白色</h2>
+      <p class="plate__body" data-plate-el>越往里走雾越厚。山道像被人一笔笔擦淡，三十米外便没有了世界。我没有按下快门去记录路通向哪里，而是记录它如何溶解——纵深的尽头，往往不是一个地方，而是一片留白。</p>
+      <p class="plate__coord" data-plate-el>云脊古道 · 第七公里 · 雾</p>
+    </div>
+  </section>
+
+  <!-- =================== PLATE 03 =================== -->
+  <section class="plate" aria-label="第三章 孤树">
+    <div class="plate__frame">
+      <img class="plate__img" data-plate-img src="/assets/landscape-solitary-bw.webp" alt="黑白影像中一棵孤树立于空旷原野，远方地平线低垂">
+      <div class="plate__veil"></div>
+    </div>
+    <div class="plate__caption wrap">
+      <p class="plate__no" data-plate-no>03</p>
+      <h2 class="plate__title" data-plate-el>原野上，只剩一棵树替我站着</h2>
+      <p class="plate__body" data-plate-el>褪去颜色之后，纵深更诚实了。前景的草、中景的树、远景压得极低的地平线——黑白把它们排成三句话。那天风很大，我在树下站了很久，直到自己也成了画面里最小的一格。</p>
+      <p class="plate__coord" data-plate-el>北原 · 无名坡地 · 黄昏前一小时</p>
+    </div>
+  </section>
+
+  <!-- =================== DUSK STRIP =================== -->
+  <section class="strip" aria-label="暮色横幅">
+    <div class="wrap strip__head">
+      <p class="eyebrow">中段 · 暮色横移</p>
+      <h2 class="display">当白昼退场，<br>距离开始发光</h2>
+    </div>
+    <div class="strip__track" data-strip>
+      <figure class="strip__card">
+        <img src="/assets/landscape-samurai-hazy.webp" alt="雾中模糊的人影走过山间小径">
+        <figcaption>雾里的人影，像一个还没显影的念头。<b>云脊 · 卷 04</b></figcaption>
+      </figure>
+      <figure class="strip__card">
+        <img src="/assets/landscape-modern-villa.webp" alt="暮色中一栋现代别墅独立于山坡">
+        <figcaption>山坡上唯一亮着的窗，是今晚的坐标。<b>南岭 · 卷 07</b></figcaption>
+      </figure>
+      <figure class="strip__card">
+        <img src="/assets/landscape-vinyl-clouds.webp" alt="层叠的云海铺向天际线">
+        <figcaption>云海把山脊一座座盖住，只露出尖。<b>高地 · 卷 09</b></figcaption>
+      </figure>
+      <figure class="strip__card">
+        <img src="/assets/landscape-lone-figure.webp" alt="开阔地中一名渺小的独行者">
+        <figcaption>把人放进去，山才说得清它有多远。<b>鹿鸣谷 · 卷 11</b></figcaption>
+      </figure>
+      <figure class="strip__card">
+        <img src="/assets/landscape-samurai-road.webp" alt="消失在雾中的蜿蜒山道">
+        <figcaption>路是这本随笔里最长的一个句子。<b>古道 · 卷 12</b></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- =================== QUOTE =================== -->
+  <section class="quote" aria-label="夜行手记">
+    <div class="quote__bg" data-quote-bg></div>
+    <div class="quote__scrim"></div>
+    <blockquote class="quote__text wrap">
+      <span data-quote-words>夜里开车穿过空镇，车灯只照亮三十米，世界的其余部分都交给了想象。</span>
+      <cite class="quote__by">— 寒川夜行 · 第十三段路程</cite>
+    </blockquote>
+  </section>
+
+  <!-- =================== CITY =================== -->
+  <section class="city" aria-label="终章 城市暮色">
+    <div class="city__bg" data-city-bg></div>
+    <div class="city__scrim"></div>
+    <div class="city__inner wrap">
+      <p class="eyebrow">终章 · 回到有灯火的地方</p>
+      <h2 class="city__title" data-city-title>远方走到尽头，<br>是另一座城的薄暮</h2>
+      <p class="plate__body" data-city-body>十四段路程之后，寒川把我送回了平原。最远的山在身后合上，眼前这座城市的天际线在暮色里一格格点亮——原来纵深从不消失，它只是换了一种形状，继续在更前面等我。</p>
+    </div>
+  </section>
+
+  <!-- =================== CLOSE =================== -->
+  <footer class="close" aria-label="结语">
+    <div class="wrap">
+      <p class="close__mark">纵深 · 终</p>
+      <div class="close__rule" aria-hidden="true"></div>
+      <p class="colophon">
+        摄影与文字 · 林霁<br>
+        寒川远行手记 第柒辑 · 2024–2025<br>
+        中画幅胶片 · 后期仅做密度调整<br>
+        谢谢你陪我走到了最远的一格
+      </p>
+    </div>
+  </footer>
+
+  <!-- ===== GSAP: core first, then plugins, then register ===== -->
+  <script src="/vendor/gsap/gsap.min.js"></script>
+  <script src="/vendor/gsap/ScrollTrigger.min.js"></script>
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    const mm = gsap.matchMedia();
+
+    /* ---------------------------------------------------- */
+    /*  FULL MOTION  (no reduced-motion preference)         */
+    /* ---------------------------------------------------- */
+    mm.add("(prefers-reduced-motion: no-preference)", () => {
+
+      /* ---- HERO intro: chars rise, layers settle ---- */
+      const heroTl = gsap.timeline({ defaults: { ease: "power3.out" } });
+      heroTl
+        .from(".hero__title .char", { yPercent: 120, opacity: 0, duration: 1.1, stagger: 0.12 }, 0.15)
+        .from(".hero__sub", { y: 24, opacity: 0, duration: 0.9 }, "-=0.6")
+        .from(".hero__meta span", { y: 16, opacity: 0, duration: 0.7, stagger: 0.1 }, "-=0.5")
+        .from(".eyebrow", { opacity: 0, duration: 0.8 }, 0.1);
+
+      /* hero parallax: far + mid layers move at different speeds while scrolling out */
+      gsap.to(".hero__bg--far", {
+        yPercent: 18, ease: "none",
+        scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true }
+      });
+      gsap.to(".hero__bg--mid", {
+        yPercent: 38, scale: 1.08, ease: "none",
+        scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true }
+      });
+      gsap.to(".hero__content", {
+        yPercent: -28, opacity: 0, ease: "none",
+        scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom 30%", scrub: true }
+      });
+      gsap.to(".scroll-cue", {
+        opacity: 0, ease: "none",
+        scrollTrigger: { trigger: ".hero", start: "top top", end: "15% top", scrub: true }
+      });
+
+      /* ---- INTRO: lines rise from their own clip ---- */
+      gsap.from(".reveal-line > span", {
+        yPercent: 115, opacity: 0, duration: 1, ease: "power3.out", stagger: 0.12,
+        scrollTrigger: { trigger: ".intro", start: "top 72%", end: "top 30%", toggleActions: "play none none reverse" }
+      });
+      gsap.from(".intro__col p", {
+        y: 30, opacity: 0, duration: 0.9, ease: "power2.out", stagger: 0.18,
+        scrollTrigger: { trigger: ".intro__col", start: "top 80%", toggleActions: "play none none reverse" }
+      });
+
+      /* ---- PLATES: each pinned, image slow-zoom + parallax, text rises ---- */
+      gsap.utils.toArray(".plate").forEach((plate) => {
+        const img = plate.querySelector("[data-plate-img]");
+        const no  = plate.querySelector("[data-plate-no]");
+        const els = plate.querySelectorAll("[data-plate-el]");
+
+        /* slow zoom + vertical parallax across the whole plate's scroll life */
+        gsap.fromTo(img,
+          { yPercent: -8, scale: 1.18 },
+          {
+            yPercent: 8, scale: 1.32, ease: "none",
+            scrollTrigger: { trigger: plate, start: "top bottom", end: "bottom top", scrub: true }
+          }
+        );
+
+        /* big outline number drifts up faster than the image -> depth */
+        gsap.to(no, {
+          yPercent: -120, ease: "none",
+          scrollTrigger: { trigger: plate, start: "top bottom", end: "bottom top", scrub: 1 }
+        });
+
+        /* caption text rises from the image as the plate centers */
+        gsap.from(els, {
+          y: 60, opacity: 0, duration: 1, ease: "power3.out", stagger: 0.14,
+          scrollTrigger: { trigger: plate, start: "top 55%", end: "center 60%", toggleActions: "play none none reverse" }
+        });
+      });
+
+      /* ---- DUSK STRIP: horizontal drift driven by vertical scroll ---- */
+      const strip = document.querySelector("[data-strip]");
+      const driftX = () => -(strip.scrollWidth - window.innerWidth + 56);
+      gsap.to(strip, {
+        x: driftX, ease: "none",
+        scrollTrigger: {
+          trigger: ".strip",
+          start: "top top",
+          end: () => "+=" + (strip.scrollWidth - window.innerWidth + window.innerHeight * 0.4),
+          pin: true,
+          scrub: 1,
+          invalidateOnRefresh: true,
+          anticipatePin: 1
+        }
+      });
+      /* mild counter-parallax on each card's inner image as the strip drifts */
+      gsap.utils.toArray(".strip__card img").forEach((cardImg, i) => {
+        gsap.fromTo(cardImg, { scale: 1.18, xPercent: i % 2 ? 4 : -4 }, {
+          scale: 1.04, xPercent: 0, ease: "none",
+          scrollTrigger: {
+            trigger: ".strip", start: "top top",
+            end: () => "+=" + (strip.scrollWidth - window.innerWidth + window.innerHeight * 0.4),
+            scrub: true, invalidateOnRefresh: true
+          }
+        });
+      });
+
+      /* ---- QUOTE: bg parallax + words rise one by one ---- */
+      gsap.fromTo(".quote__bg", { yPercent: -10, scale: 1.15 }, {
+        yPercent: 10, scale: 1.22, ease: "none",
+        scrollTrigger: { trigger: ".quote", start: "top bottom", end: "bottom top", scrub: true }
+      });
+      /* split the quote into word spans for a staggered rise */
+      const qEl = document.querySelector("[data-quote-words]");
+      const words = qEl.textContent.split("");
+      qEl.textContent = "";
+      words.forEach((c) => {
+        const s = document.createElement("span");
+        s.className = "quote__word";
+        s.textContent = c;
+        qEl.appendChild(s);
+      });
+      gsap.from(".quote__word", {
+        yPercent: 110, opacity: 0, duration: 0.9, ease: "power3.out", stagger: 0.02,
+        scrollTrigger: { trigger: ".quote", start: "top 60%", end: "center 60%", toggleActions: "play none none reverse" }
+      });
+      gsap.from(".quote__by", {
+        y: 20, opacity: 0, duration: 0.8, ease: "power2.out",
+        scrollTrigger: { trigger: ".quote", start: "top 45%", toggleActions: "play none none reverse" }
+      });
+
+      /* ---- CITY: bg rises, title + body lift from skyline ---- */
+      gsap.fromTo(".city__bg", { yPercent: -8, scale: 1.12 }, {
+        yPercent: 8, scale: 1.2, ease: "none",
+        scrollTrigger: { trigger: ".city", start: "top bottom", end: "bottom top", scrub: true }
+      });
+      gsap.from(["[data-city-title]", "[data-city-body]", ".city .eyebrow"], {
+        y: 50, opacity: 0, duration: 1, ease: "power3.out", stagger: 0.16,
+        scrollTrigger: { trigger: ".city", start: "top 55%", toggleActions: "play none none reverse" }
+      });
+
+      /* ---- CLOSE: mark + rule settle in ---- */
+      gsap.from([".close__mark", ".colophon"], {
+        y: 40, opacity: 0, duration: 1, ease: "power2.out", stagger: 0.2,
+        scrollTrigger: { trigger: ".close", start: "top 78%", toggleActions: "play none none reverse" }
+      });
+      gsap.fromTo(".close__rule", { scaleY: 0 }, {
+        scaleY: 1, transformOrigin: "top", duration: 1.1, ease: "power2.inOut",
+        scrollTrigger: { trigger: ".close", start: "top 70%", toggleActions: "play none none reverse" }
+      });
+
+      return () => { /* matchMedia auto-reverts all of the above on cleanup */ };
+    });
+
+    /* ---------------------------------------------------- */
+    /*  REDUCED MOTION: render the final state, no scroll   */
+    /*  driving, no loops. Everything visible & legible.    */
+    /* ---------------------------------------------------- */
+    mm.add("(prefers-reduced-motion: reduce)", () => {
+      gsap.set([
+        ".hero__title .char", ".hero__sub", ".hero__meta span", ".eyebrow",
+        ".reveal-line > span", ".intro__col p",
+        "[data-plate-el]", "[data-city-title]", "[data-city-body]",
+        ".close__mark", ".colophon"
+      ], { clearProps: "all", opacity: 1, y: 0, yPercent: 0 });
+      gsap.set(".close__rule", { scaleY: 1 });
+      // quote words are not split in reduced mode; original text remains intact.
+    });
+
+    /* recalc after fonts load (text metrics shift trigger positions) */
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => ScrollTrigger.refresh());
+    }
+    window.addEventListener("load", () => ScrollTrigger.refresh());
+  </script>
+</body>
+</html>

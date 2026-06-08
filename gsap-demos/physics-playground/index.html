@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>物理游乐场 · 林咚咚的弹力自我介绍</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#fff7ef;
+    --bg-2:#ffe9d6;
+    --ink:#3a2b3a;
+    --ink-soft:#7c6477;
+    --cream:#fffdf9;
+    --pink:#ff9ec4;
+    --pink-deep:#ff6fa5;
+    --mint:#8be3c9;
+    --mint-deep:#3fcba3;
+    --lemon:#ffe27a;
+    --lemon-deep:#ffce3b;
+    --sky:#9ad7ff;
+    --sky-deep:#5fb6f5;
+    --grape:#c8a9ff;
+    --grape-deep:#a275ff;
+    --coral:#ff8b6b;
+    --shadow:#e7b48a;
+    --r-blob:46% 54% 58% 42% / 52% 44% 56% 48%;
+    --ring:#ff6fa5;
+    font-size:clamp(15px,1.4vw,18px);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(120% 80% at 12% -10%, var(--bg-2), transparent 60%),
+      radial-gradient(120% 90% at 110% 0%, #ffe1ef, transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:"Baloo 2","ZCOOL KuaiLe",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+    overflow-x:hidden;
+    line-height:1.55;
+  }
+  .zk{font-family:"ZCOOL KuaiLe","Baloo 2",sans-serif}
+
+  a{color:inherit}
+  img{display:block;max-width:100%}
+
+  :focus-visible{
+    outline:3px dashed var(--ring);
+    outline-offset:4px;
+    border-radius:14px;
+  }
+
+  /* ---------- shared toy surfaces ---------- */
+  .pill{
+    display:inline-flex;align-items:center;gap:.5em;
+    padding:.5em 1.1em;border-radius:999px;
+    background:var(--cream);
+    border:3px solid var(--ink);
+    box-shadow:0 6px 0 var(--ink);
+    font-weight:700;
+  }
+  .clay{
+    border:3px solid var(--ink);
+    border-radius:34px;
+    box-shadow:0 10px 0 var(--ink), 0 22px 36px rgba(120,70,40,.18);
+    background:var(--cream);
+  }
+
+  /* ---------- sticky canvas for physics confetti ---------- */
+  #fx{
+    position:fixed;inset:0;
+    pointer-events:none;
+    z-index:60;
+    overflow:hidden;
+  }
+  .chip{
+    position:absolute;top:0;left:0;
+    width:22px;height:22px;
+    will-change:transform,opacity;
+    display:flex;align-items:center;justify-content:center;
+    font-size:20px;line-height:1;
+  }
+  .chip.sq{border-radius:6px}
+  .chip.ci{border-radius:50%}
+
+  /* ---------- section frame ---------- */
+  section{position:relative;padding:clamp(48px,7vw,96px) clamp(18px,5vw,72px)}
+  .wrap{max-width:1180px;margin:0 auto}
+
+  .eyebrow{
+    font-family:"ZCOOL KuaiLe",sans-serif;
+    color:var(--pink-deep);
+    letter-spacing:.04em;
+    font-size:1rem;
+    margin:0 0 .4em;
+  }
+
+  /* ===== HERO ===== */
+  .hero{min-height:100svh;display:grid;align-content:center;overflow:hidden}
+  .hero-inner{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(24px,4vw,56px);align-items:center}
+  @media(max-width:820px){.hero-inner{grid-template-columns:1fr;text-align:center}}
+
+  .hero h1{
+    font-family:"ZCOOL KuaiLe",sans-serif;
+    font-weight:400;
+    font-size:clamp(2.7rem,8vw,6rem);
+    line-height:.98;
+    margin:.1em 0 .35em;
+    letter-spacing:.01em;
+  }
+  .hero h1 .ch{display:inline-block;will-change:transform}
+  .pop{color:var(--pink-deep)}
+  .pop-2{color:var(--mint-deep)}
+  .pop-3{color:var(--grape-deep)}
+
+  .hero p.lead{
+    font-size:clamp(1rem,2vw,1.3rem);
+    max-width:34ch;color:var(--ink-soft);font-weight:600;
+    margin:0 auto;
+  }
+  @media(min-width:821px){.hero p.lead{margin:0}}
+
+  .hero-cta{margin-top:1.6em;display:flex;gap:.8em;flex-wrap:wrap;justify-content:center}
+  @media(min-width:821px){.hero-cta{justify-content:flex-start}}
+
+  .btn{
+    cursor:pointer;border:none;font:inherit;font-weight:800;
+    padding:.85em 1.5em;border-radius:999px;
+    border:3px solid var(--ink);
+    box-shadow:0 8px 0 var(--ink);
+    transition:transform .08s, box-shadow .08s;
+    color:var(--ink);
+    display:inline-flex;align-items:center;gap:.5em;
+  }
+  .btn:active{transform:translateY(6px);box-shadow:0 2px 0 var(--ink)}
+  .btn-pink{background:var(--pink)}
+  .btn-mint{background:var(--mint)}
+  .btn-lemon{background:var(--lemon)}
+
+  /* avatar blob */
+  .avatar-stage{position:relative;display:grid;place-items:center}
+  .blob{
+    position:relative;
+    width:min(78vw,360px);aspect-ratio:1;
+    border-radius:var(--r-blob);
+    background:linear-gradient(150deg,var(--pink),var(--coral));
+    border:4px solid var(--ink);
+    box-shadow:0 16px 0 var(--ink), 0 30px 50px rgba(120,70,40,.22);
+    overflow:hidden;
+    will-change:transform,border-radius;
+  }
+  .blob img{width:100%;height:100%;object-fit:cover}
+  .orbit{position:absolute;inset:0;pointer-events:none}
+  .orbit .dot{
+    position:absolute;top:50%;left:50%;
+    width:46px;height:46px;margin:-23px;
+    border-radius:16px;border:3px solid var(--ink);
+    display:grid;place-items:center;font-size:24px;
+    background:var(--lemon);
+    box-shadow:0 5px 0 var(--ink);
+    will-change:transform;
+  }
+
+  /* scroll hint */
+  .scroll-hint{
+    position:absolute;left:50%;bottom:22px;transform:translateX(-50%);
+    display:flex;flex-direction:column;align-items:center;gap:.3em;
+    color:var(--ink-soft);font-weight:700;font-size:.85rem;
+  }
+  .scroll-hint .wheel{font-size:1.6rem;will-change:transform}
+
+  /* ===== DRAG PLAYGROUND ===== */
+  #play{background:linear-gradient(180deg,transparent, #fff1e2 30%, #ffe7d2)}
+  .play-head{display:flex;flex-wrap:wrap;gap:1em;align-items:flex-end;justify-content:space-between;margin-bottom:1.6em}
+  .play-head h2{font-family:"ZCOOL KuaiLe";font-weight:400;font-size:clamp(2rem,5vw,3.4rem);margin:.1em 0}
+
+  .arena{
+    position:relative;
+    height:clamp(420px,64vh,640px);
+    border-radius:40px;
+    border:4px dashed var(--grape-deep);
+    background:
+      radial-gradient(circle at 20% 30%, #fff, transparent 40%),
+      repeating-linear-gradient(45deg,#fff6ee 0 16px,#ffeede 16px 32px);
+    overflow:hidden;
+    touch-action:none;
+  }
+  .toy{
+    position:absolute;
+    width:clamp(96px,15vw,140px);
+    aspect-ratio:1;
+    border:3px solid var(--ink);
+    border-radius:28px;
+    box-shadow:0 9px 0 var(--ink);
+    cursor:grab;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;gap:.15em;
+    font-weight:800;
+    will-change:transform;
+    user-select:none;
+    padding:.4em;
+    touch-action:none;
+  }
+  .toy:active{cursor:grabbing}
+  .toy .emoji{font-size:clamp(28px,5vw,42px);line-height:1}
+  .toy .lbl{font-size:.8rem;color:var(--ink)}
+  .toy .sub{font-size:.62rem;color:var(--ink-soft);font-weight:700}
+  .toy.t-pink{background:var(--pink)}
+  .toy.t-mint{background:var(--mint)}
+  .toy.t-lemon{background:var(--lemon)}
+  .toy.t-sky{background:var(--sky)}
+  .toy.t-grape{background:var(--grape)}
+  .toy.is-photo{border-radius:50%;padding:0;overflow:hidden}
+  .toy.is-photo img{width:100%;height:100%;object-fit:cover}
+
+  .arena-hint{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    color:var(--ink-soft);font-family:"ZCOOL KuaiLe";font-size:clamp(1rem,3vw,1.5rem);
+    pointer-events:none;text-align:center;opacity:.55;
+  }
+
+  /* ===== FACTS (physics burst on reveal) ===== */
+  .facts-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:clamp(16px,2.4vw,26px);margin-top:1.4em}
+  .fact{
+    padding:1.5em 1.3em;border-radius:32px;
+    border:3px solid var(--ink);box-shadow:0 9px 0 var(--ink);
+    background:var(--cream);position:relative;overflow:hidden;
+    will-change:transform,opacity;
+  }
+  .fact .big{font-family:"ZCOOL KuaiLe";font-size:clamp(2rem,5vw,3rem);line-height:1;color:var(--pink-deep)}
+  .fact .big.m{color:var(--mint-deep)}
+  .fact .big.g{color:var(--grape-deep)}
+  .fact .big.s{color:var(--sky-deep)}
+  .fact p{margin:.4em 0 0;color:var(--ink-soft);font-weight:600;font-size:.92rem}
+  .fact .face{position:absolute;top:-10px;right:-2px;font-size:42px;opacity:.18;transform:rotate(12deg)}
+
+  /* ===== TIMELINE / 经历 ===== */
+  .road{position:relative;margin-top:2em;padding-left:14px}
+  .road::before{content:"";position:absolute;left:24px;top:0;bottom:0;width:6px;border-radius:6px;background:repeating-linear-gradient(var(--grape-deep) 0 14px, transparent 14px 26px)}
+  .stop{position:relative;display:grid;grid-template-columns:64px 1fr;gap:1em;align-items:start;margin:0 0 1.6em;will-change:transform,opacity}
+  .stop .node{
+    width:52px;height:52px;border-radius:18px;border:3px solid var(--ink);
+    display:grid;place-items:center;font-size:26px;background:var(--lemon);
+    box-shadow:0 6px 0 var(--ink);z-index:1;
+  }
+  .stop .card{padding:1.1em 1.3em}
+  .stop .yr{font-family:"ZCOOL KuaiLe";color:var(--pink-deep);font-size:1.2rem}
+  .stop h3{margin:.1em 0 .3em;font-size:1.15rem}
+  .stop p{margin:0;color:var(--ink-soft);font-weight:600;font-size:.92rem}
+
+  /* ===== SHAKE / 摇一摇 ===== */
+  #shake{text-align:center;background:linear-gradient(180deg, transparent, #ffeaf3)}
+  #shake h2{font-family:"ZCOOL KuaiLe";font-weight:400;font-size:clamp(2.2rem,6vw,4rem);margin:.1em 0}
+  #shake p{color:var(--ink-soft);font-weight:600;max-width:40ch;margin:.4em auto 1.6em}
+  .shake-btn{
+    font-family:"ZCOOL KuaiLe";font-size:clamp(1.3rem,4vw,2.2rem);
+    padding:.7em 1.6em;background:var(--mint);
+    will-change:transform;
+  }
+  .shake-emoji{display:inline-block;font-size:1.1em;will-change:transform}
+
+  /* ===== FOOTER ===== */
+  footer{padding:clamp(40px,6vw,80px) clamp(18px,5vw,72px) 90px;text-align:center}
+  footer .sign{font-family:"ZCOOL KuaiLe";font-size:clamp(1.8rem,5vw,3rem);color:var(--grape-deep)}
+  footer .links{display:flex;gap:.7em;flex-wrap:wrap;justify-content:center;margin-top:1.2em}
+  footer .note{margin-top:1.6em;color:var(--ink-soft);font-weight:600;font-size:.85rem}
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<!-- physics confetti layer -->
+<div id="fx" aria-hidden="true"></div>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="wrap hero-inner">
+    <div class="hero-copy">
+      <p class="eyebrow zk">交互式自我介绍 · 请随便戳一戳</p>
+      <h1 aria-label="嗨，我是林咚咚">
+        <span class="ch">嗨</span><span class="ch">，</span><br>
+        <span class="ch">我</span><span class="ch">是</span>
+        <span class="ch pop">林</span><span class="ch pop">咚</span><span class="ch pop">咚</span>
+      </h1>
+      <p class="lead">会捏黏土、写代码、给小程序做<span class="pop-2">弹一弹</span>动效的交互设计师。<br>这一整页都能拖、能摔、能<span class="pop-3">摇一摇</span>——别客气。</p>
+      <div class="hero-cta">
+        <button class="btn btn-pink" id="goPlay">去游乐场玩 →</button>
+        <button class="btn btn-mint" id="goShake">摇一摇 ✦</button>
+      </div>
+    </div>
+
+    <div class="avatar-stage">
+      <div class="blob" id="blob">
+        <img src="/assets/illustration-lady-3d.webp" alt="林咚咚的 3D 风格头像插画" />
+      </div>
+      <div class="orbit" id="orbit" aria-hidden="true">
+        <div class="dot">🎨</div>
+        <div class="dot">🧱</div>
+        <div class="dot">⚡</div>
+        <div class="dot">🍡</div>
+        <div class="dot">🐱</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-hint" aria-hidden="true">
+    <span>往下滚有惊喜</span>
+    <span class="wheel">⬇︎</span>
+  </div>
+</section>
+
+<!-- ============ DRAG PLAYGROUND ============ -->
+<section id="play">
+  <div class="wrap">
+    <div class="play-head">
+      <div>
+        <p class="eyebrow zk">PLAYGROUND · 物理沙盒</p>
+        <h2>把我拆开，随便丢</h2>
+      </div>
+      <span class="pill" id="dragCount">已抛出 0 次</span>
+    </div>
+
+    <div class="arena" id="arena" role="application" aria-label="可拖拽的玩具沙盒：拖动方块再松手，它们会被惯性抛出并落定">
+      <span class="arena-hint zk">抓住一个 → 甩出去 → 看它惯性落定</span>
+
+      <div class="toy t-pink"  data-x="6"  data-y="8"  tabindex="0" role="button" aria-label="拖动：每天捏黏土 20 分钟">
+        <span class="emoji">🧱</span><span class="lbl">捏黏土</span><span class="sub">每天 20 分钟</span>
+      </div>
+      <div class="toy t-mint"  data-x="40" data-y="14" tabindex="0" role="button" aria-label="拖动：写交互动效六年">
+        <span class="emoji">⚡</span><span class="lbl">写动效</span><span class="sub">第 6 年</span>
+      </div>
+      <div class="toy t-lemon" data-x="72" data-y="6"  tabindex="0" role="button" aria-label="拖动：养了一只叫布丁的猫">
+        <span class="emoji">🐱</span><span class="lbl">猫·布丁</span><span class="sub">监工一只</span>
+      </div>
+      <div class="toy t-sky"   data-x="18" data-y="52" tabindex="0" role="button" aria-label="拖动：爱喝杨枝甘露">
+        <span class="emoji">🍮</span><span class="lbl">杨枝甘露</span><span class="sub">续命饮料</span>
+      </div>
+      <div class="toy t-grape" data-x="58" data-y="48" tabindex="0" role="button" aria-label="拖动：周末去攀岩抱石">
+        <span class="emoji">🧗</span><span class="lbl">抱石</span><span class="sub">V4 卡关中</span>
+      </div>
+      <div class="toy is-photo" data-x="84" data-y="46" tabindex="0" role="button" aria-label="拖动：林咚咚的猫插画头像">
+        <img src="/assets/illustration-cat-glasses.webp" alt="一只戴眼镜的猫的插画" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FACTS ============ -->
+<section id="facts">
+  <div class="wrap">
+    <p class="eyebrow zk">BY THE NUMBERS · 一些数字</p>
+    <h2 class="zk" style="font-weight:400;font-size:clamp(2rem,5vw,3.2rem);margin:.1em 0">数字也会弹跳</h2>
+    <div class="facts-grid">
+      <div class="fact"><span class="face">🎨</span><span class="big" data-num="218">0</span><p>做过的可玩动效原型，从弹簧菜单到摔不坏的吉祥物。</p></div>
+      <div class="fact"><span class="face">🧱</span><span class="big m" data-num="640">0</span><p>捏过又捏塌的黏土小人，泥点子全在工位墙上。</p></div>
+      <div class="fact"><span class="face">⚡</span><span class="big g" data-num="12">0</span><p>主导上线的弹力交互系统，被同事亲切称作「软软规范」。</p></div>
+      <div class="fact"><span class="face">☕️</span><span class="big s" data-num="999">0</span><p>杯杨枝甘露续命额度，每一杯都在赶 deadline。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TIMELINE ============ -->
+<section id="road">
+  <div class="wrap">
+    <p class="eyebrow zk">THE BOUNCY ROAD · 一路弹过来</p>
+    <h2 class="zk" style="font-weight:400;font-size:clamp(2rem,5vw,3.2rem);margin:.1em 0">我的弹跳路线</h2>
+
+    <div class="road">
+      <div class="stop">
+        <div class="node">🌱</div>
+        <div class="card clay">
+          <div class="yr">2016</div>
+          <h3>从平面跳进交互</h3>
+          <p>美院视觉毕业，第一份工作做 banner，偷偷给每个按钮加上回弹——被老板发现后调去做动效。</p>
+        </div>
+      </div>
+      <div class="stop">
+        <div class="node" style="background:var(--mint)">🚀</div>
+        <div class="card clay">
+          <div class="yr">2019</div>
+          <h3>主导「软软规范」</h3>
+          <p>在一家儿童教育产品搭建弹力交互体系，把生硬的状态切换全部换成物理回弹，留存率涨了一截。</p>
+        </div>
+      </div>
+      <div class="stop">
+        <div class="node" style="background:var(--grape)">🧱</div>
+        <div class="card clay">
+          <div class="yr">2022</div>
+          <h3>开了黏土小课</h3>
+          <p>把捏黏土的手感搬进设计课，教大家「先在手上把一个形状玩弹，再去屏幕上还原它」。</p>
+        </div>
+      </div>
+      <div class="stop">
+        <div class="node" style="background:var(--coral)">✦</div>
+        <div class="card clay">
+          <div class="yr">现在</div>
+          <h3>独立接玩具感项目</h3>
+          <p>专做「让人忍不住多戳两下」的界面：吉祥物、引导页、品牌彩蛋。这一页就是名片。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SHAKE ============ -->
+<section id="shake">
+  <div class="wrap">
+    <p class="eyebrow zk">FINALE · 大招</p>
+    <h2>摇 一 摇</h2>
+    <p>戳一下按钮，整屏会下起重力彩屑雨——这就是我做产品时最爱埋的那种小彩蛋。</p>
+    <button class="btn shake-btn" id="bigShake">
+      <span class="shake-emoji" id="shakeEmoji">🎉</span> 摇出彩屑！
+    </button>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <p class="eyebrow zk" style="margin-bottom:.6em">谢谢你玩到这里</p>
+    <p class="sign">咚咚 · 随时来戳</p>
+    <div class="links">
+      <a class="pill" href="#top">回到顶部 ↑</a>
+      <span class="pill">hi@dongdong.toys</span>
+      <span class="pill">小红书 @咚咚捏弹力</span>
+    </div>
+    <p class="note">本页全部动效由 GSAP 驱动 · Physics2D 重力彩屑 · Draggable + Inertia 抛掷落定</p>
+  </div>
+</footer>
+
+<!-- ===== GSAP: core first, then plugins, then register ===== -->
+<script src="/vendor/gsap/gsap.min.js"></script>
+<script src="/vendor/gsap/Physics2DPlugin.min.js"></script>
+<script src="/vendor/gsap/Draggable.min.js"></script>
+<script src="/vendor/gsap/InertiaPlugin.min.js"></script>
+<script>
+gsap.registerPlugin(Physics2DPlugin, Draggable, InertiaPlugin);
+
+(function(){
+  "use strict";
+
+  var fx = document.getElementById("fx");
+  var EMOJIS = ["🎉","✦","🍬","🧱","🐱","⭐️","🍮","💖","🟣","🟡"];
+  var COLORS = ["#ff9ec4","#8be3c9","#ffe27a","#9ad7ff","#c8a9ff","#ff8b6b"];
+
+  // ---------- confetti burst (Physics2DPlugin) ----------
+  function burst(x, y, count, power){
+    var n = count || 26;
+    var frag = document.createDocumentFragment();
+    var nodes = [];
+    for (var i=0;i<n;i++){
+      var c = document.createElement("span");
+      var useEmoji = Math.random() < .45;
+      c.className = "chip " + (Math.random()<.5 ? "sq":"ci");
+      if (useEmoji){
+        c.textContent = EMOJIS[(Math.random()*EMOJIS.length)|0];
+        c.style.background = "transparent";
+      } else {
+        c.style.background = COLORS[(Math.random()*COLORS.length)|0];
+      }
+      frag.appendChild(c);
+      nodes.push(c);
+    }
+    fx.appendChild(frag);
+
+    nodes.forEach(function(c){
+      gsap.set(c, { x:x, y:y, opacity:1, scale: gsap.utils.random(.6,1.3) });
+      gsap.to(c, {
+        duration: gsap.utils.random(1.1, 1.9),
+        physics2D: {
+          velocity: gsap.utils.random(220, 520) * (power||1),
+          angle: gsap.utils.random(200, 340),   // shoot upward-ish
+          gravity: 980
+        },
+        rotation: gsap.utils.random(-360, 360),
+        ease: "none"
+      });
+      gsap.to(c, {
+        delay: gsap.utils.random(.7, 1.2),
+        duration: .5, opacity: 0,
+        onComplete: function(){ c.remove(); }
+      });
+    });
+  }
+
+  // emoji face-pop burst from an element's center
+  function burstFromEl(el, count, power){
+    var r = el.getBoundingClientRect();
+    burst(r.left + r.width/2, r.top + r.height/2, count, power);
+  }
+
+  // ---------- matchMedia: full motion vs reduced ----------
+  var mm = gsap.matchMedia();
+
+  // ===== reduced motion: render end states, no scroll-driven / infinite loops =====
+  mm.add("(prefers-reduced-motion: reduce)", function(){
+    gsap.set(".hero h1 .ch", { y:0, opacity:1, rotation:0 });
+    gsap.set([".fact", ".stop"], { y:0, opacity:1 });
+    document.querySelectorAll(".fact .big").forEach(function(el){
+      el.textContent = el.getAttribute("data-num");
+    });
+    // toys still draggable but without inertia/loops
+    setupDraggable(false);
+    setupButtons(false);
+    // no confetti auto-loops; shake button still gives a tiny static pulse-free burst on click only
+  });
+
+  // ===== full motion =====
+  mm.add("(prefers-reduced-motion: no-preference)", function(){
+    var ctx = gsap.context(function(){
+
+      // hero letters drop & settle (bounce)
+      gsap.from(".hero h1 .ch", {
+        y: -120, opacity: 0, rotation: () => gsap.utils.random(-40,40),
+        ease: "bounce.out", duration: 1.1,
+        stagger: { each: .07, from: "start" },
+        delay: .15
+      });
+      gsap.from(".hero-copy .eyebrow, .hero .lead, .hero-cta", {
+        y: 26, opacity: 0, duration: .7, stagger: .12, delay: .9, ease: "power2.out"
+      });
+
+      // avatar blob: gentle morph + float + squish breathing
+      gsap.to("#blob", {
+        borderRadius: "58% 42% 46% 54% / 44% 56% 48% 52%",
+        duration: 3.4, ease: "sine.inOut", repeat: -1, yoyo: true
+      });
+      gsap.to("#blob", { y: -16, duration: 2.2, ease: "sine.inOut", repeat: -1, yoyo: true });
+      gsap.from("#blob", { scale: 0, rotation: -20, ease: "elastic.out(1,.55)", duration: 1.4, delay: .5 });
+
+      // orbiting clay dots
+      var dots = gsap.utils.toArray("#orbit .dot");
+      var R = 0.62; // fraction of blob radius
+      dots.forEach(function(d, i){
+        var base = (i / dots.length) * Math.PI * 2;
+        var radius = () => (document.getElementById("blob").offsetWidth/2) * (0.92 + R*0);
+        gsap.to(d, {
+          duration: 9 + i, ease: "none", repeat: -1,
+          onUpdate: function(){
+            var t = this.progress() * Math.PI * 2 + base;
+            var rad = document.getElementById("blob").offsetWidth/2 + 18;
+            gsap.set(d, { x: Math.cos(t)*rad, y: Math.sin(t)*rad });
+          }
+        });
+        gsap.to(d, { rotation: 360, duration: 4+i*0.6, ease:"none", repeat:-1 });
+      });
+
+      // scroll hint bob
+      gsap.to(".scroll-hint .wheel", { y: 8, duration: .8, ease:"sine.inOut", repeat:-1, yoyo:true });
+
+      setupDraggable(true);
+      setupButtons(true);
+      setupScrollReveals();
+      setupCounters();
+
+      // welcome confetti after hero settles
+      gsap.delayedCall(1.6, function(){
+        burst(window.innerWidth*0.5, window.innerHeight*0.42, 36, 1.05);
+      });
+
+    });
+    return function(){ ctx.revert(); };
+  });
+
+  // ---------- Draggable + Inertia toys ----------
+  var dragCount = 0;
+  var countEl = document.getElementById("dragCount");
+  function bumpCount(){
+    dragCount++;
+    if (countEl) countEl.textContent = "已抛出 " + dragCount + " 次";
+  }
+
+  function placeToys(){
+    var arena = document.getElementById("arena");
+    if (!arena) return;
+    var aw = arena.clientWidth, ah = arena.clientHeight;
+    gsap.utils.toArray(".toy").forEach(function(t){
+      var px = parseFloat(t.getAttribute("data-x"))/100;
+      var py = parseFloat(t.getAttribute("data-y"))/100;
+      gsap.set(t, {
+        left: Math.min(px*aw, aw - t.offsetWidth - 6),
+        top:  Math.min(py*ah, ah - t.offsetHeight - 6),
+        x:0, y:0, rotation: gsap.utils.random(-8,8)
+      });
+    });
+  }
+
+  function setupDraggable(withInertia){
+    placeToys();
+    window.addEventListener("resize", placeToys);
+
+    Draggable.create(".toy", {
+      type: "x,y",
+      bounds: "#arena",
+      inertia: withInertia,
+      edgeResistance: 0.72,
+      dragResistance: 0.05,
+      onPressInit: function(){ gsap.killTweensOf(this.target); },
+      onPress: function(){
+        gsap.to(this.target, { scale: 1.16, duration:.18, ease:"back.out(3)", overwrite:"auto" });
+        gsap.set(this.target, { zIndex: 30 });
+      },
+      onDrag: function(){
+        // tilt toward drag direction
+        gsap.to(this.target, { rotation: gsap.utils.clamp(-22,22, this.deltaX*0.6), duration:.2, overwrite:"auto" });
+      },
+      onDragEnd: function(){
+        gsap.to(this.target, { scale: 1, duration:.4, ease:"elastic.out(1,.5)", overwrite:"auto" });
+      },
+      onThrowComplete: function(){
+        // squash landing + tiny confetti puff
+        var t = this.target;
+        gsap.timeline()
+          .to(t, { scaleX:1.22, scaleY:.82, duration:.12, ease:"power2.out" })
+          .to(t, { scaleX:1, scaleY:1, rotation: gsap.utils.random(-7,7), duration:.7, ease:"elastic.out(1,.45)" });
+        burstFromEl(t, 10, .7);
+        bumpCount();
+      }
+    });
+
+    // keyboard: Enter / Space = playful kick + burst
+    gsap.utils.toArray(".toy").forEach(function(t){
+      t.addEventListener("keydown", function(e){
+        if (e.key === "Enter" || e.key === " "){
+          e.preventDefault();
+          gsap.fromTo(t, {y:"-=0"}, {
+            keyframes:[{y:"-=40",duration:.22,ease:"power2.out"},{y:"+=40",duration:.5,ease:"bounce.out"}]
+          });
+          gsap.fromTo(t, {rotation:gsap.getProperty(t,"rotation")}, {rotation:"+=360",duration:.7,ease:"power1.inOut"});
+          burstFromEl(t, 12, .8);
+          bumpCount();
+        }
+      });
+    });
+  }
+
+  // ---------- buttons ----------
+  function fireShake(){
+    // full-screen confetti from bottom + a couple side cannons
+    burst(window.innerWidth*0.5, window.innerHeight + 10, 60, 1.5);
+    burst(20, window.innerHeight*0.55, 28, 1.1);
+    burst(window.innerWidth-20, window.innerHeight*0.55, 28, 1.1);
+  }
+
+  function setupButtons(animated){
+    var bigShake = document.getElementById("bigShake");
+    var shakeEmoji = document.getElementById("shakeEmoji");
+    if (bigShake){
+      bigShake.addEventListener("click", function(){
+        fireShake();
+        if (animated){
+          gsap.fromTo(bigShake, {rotation:0}, {keyframes:[
+            {rotation:-7,duration:.06},{rotation:7,duration:.06},{rotation:-5,duration:.06},
+            {rotation:5,duration:.06},{rotation:0,duration:.1}
+          ]});
+          if (shakeEmoji) gsap.fromTo(shakeEmoji,{scale:1},{scale:1.6,duration:.2,yoyo:true,repeat:1,ease:"power2.out"});
+        }
+      });
+    }
+
+    // hero CTAs scroll to sections (native smooth) + confetti tease
+    var goPlay = document.getElementById("goPlay");
+    var goShake = document.getElementById("goShake");
+    if (goPlay) goPlay.addEventListener("click", function(){
+      document.getElementById("play").scrollIntoView({behavior: animated?"smooth":"auto", block:"start"});
+    });
+    if (goShake) goShake.addEventListener("click", function(){
+      document.getElementById("shake").scrollIntoView({behavior: animated?"smooth":"auto", block:"center"});
+      if (animated) gsap.delayedCall(.6, fireShake);
+    });
+
+    // blob avatar: click = bounce squash + burst
+    var blob = document.getElementById("blob");
+    if (blob){
+      blob.addEventListener("click", function(){
+        if (animated){
+          gsap.fromTo(blob,{scaleX:1,scaleY:1},{keyframes:[
+            {scaleX:1.18,scaleY:.84,duration:.12,ease:"power2.out"},
+            {scaleX:1,scaleY:1,duration:.7,ease:"elastic.out(1,.4)"}
+          ]});
+        }
+        burstFromEl(blob, 22, 1);
+      });
+    }
+  }
+
+  // ---------- scroll reveals (lightweight, no ScrollTrigger plugin loaded) ----------
+  var revealObs = null;
+  function setupScrollReveals(){
+    gsap.set([".fact", ".stop"], { y: 60, opacity: 0 });
+    if (!("IntersectionObserver" in window)){
+      gsap.set([".fact",".stop"], {y:0,opacity:1});
+      return;
+    }
+    revealObs = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (en.isIntersecting){
+          var el = en.target;
+          revealObs.unobserve(el);
+          if (el.classList.contains("fact")){
+            gsap.to(el, { y:0, opacity:1, duration:.7, ease:"bounce.out" });
+            burstFromEl(el, 10, .6);
+          } else {
+            gsap.to(el, { y:0, opacity:1, duration:.6, ease:"back.out(1.7)" });
+          }
+        }
+      });
+    }, { threshold:.35 });
+    gsap.utils.toArray(".fact, .stop").forEach(function(el){ revealObs.observe(el); });
+  }
+
+  // ---------- count-up numbers ----------
+  function setupCounters(){
+    gsap.utils.toArray(".fact .big").forEach(function(el){
+      var target = parseInt(el.getAttribute("data-num"),10);
+      var fired = false;
+      var io = new IntersectionObserver(function(ents){
+        ents.forEach(function(e){
+          if (e.isIntersecting && !fired){
+            fired = true; io.disconnect();
+            var o = {v:0};
+            gsap.to(o, { v: target, duration: 1.4, ease:"power2.out", delay:.2,
+              onUpdate: function(){ el.textContent = Math.round(o.v); } });
+          }
+        });
+      }, {threshold:.5});
+      io.observe(el);
+    });
+  }
+
+})();
+</script>
+</body>
+</html>

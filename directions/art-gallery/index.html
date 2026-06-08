@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yuki Tanaka — Photographer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --canvas:#fbfbf9;
+    --surface:#f4f3ef;
+    --ink:#1a1a18;
+    --ink-muted:#6b6a64;
+    --ink-subtle:#9b998f;
+    --accent:#1a1a18;
+    --accent-hover:#000000;
+    --hairline:#e6e4dd;
+
+    --serif:'Newsreader', Georgia, serif;
+    --sans:'Inter', system-ui, -apple-system, sans-serif;
+
+    --section:160px;
+    --block:56px;
+    --tight:16px;
+
+    --gutter:clamp(20px, 6vw, 96px);
+    --measure:640px;
+  }
+
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--canvas);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:16px;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  img{display:block;max-width:100%}
+  a{color:var(--accent);text-decoration:none}
+  a:focus-visible,button:focus-visible{
+    outline:2px solid var(--ink);
+    outline-offset:3px;
+  }
+
+  .wrap{padding-inline:var(--gutter)}
+  .eyebrow{
+    font-family:var(--sans);
+    font-size:11px;
+    font-weight:500;
+    line-height:1.3;
+    letter-spacing:2.4px;
+    text-transform:uppercase;
+    color:var(--ink-muted);
+    margin:0;
+  }
+  .caption{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:13px;
+    line-height:1.4;
+    letter-spacing:0.1px;
+    color:var(--ink-subtle);
+    margin:var(--tight) 0 0;
+  }
+
+  /* ---------- reveal motion ---------- */
+  .reveal{
+    opacity:0;
+    transform:translateY(18px);
+    transition:opacity 1.4s cubic-bezier(.16,.7,.2,1), transform 1.4s cubic-bezier(.16,.7,.2,1);
+    will-change:opacity, transform;
+  }
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){
+    .reveal{opacity:1 !important;transform:none !important;transition:none}
+    html{scroll-behavior:auto}
+  }
+
+  /* ---------- hero ---------- */
+  header.site{
+    padding-top:clamp(48px, 9vh, 96px);
+    padding-bottom:0;
+  }
+  .hero-head{
+    max-width:880px;
+  }
+  .hero-head .eyebrow{margin-bottom:28px}
+  .hero-title{
+    font-family:var(--serif);
+    font-weight:400;
+    font-size:clamp(34px, 6vw, 64px);
+    line-height:1.06;
+    letter-spacing:-1.4px;
+    margin:0;
+    max-width:14ch;
+  }
+  .hero-title em{font-style:italic}
+
+  .hero-figure{
+    margin:clamp(56px, 9vw, 110px) 0 0;
+  }
+  .hero-frame{position:relative}
+  .hero-img{
+    width:100%;
+    height:min(78vh, 760px);
+    object-fit:cover;
+    object-position:center;
+  }
+  /* fallback hero plate */
+  .hero-fallback{
+    width:100%;
+    min-height:min(78vh,760px);
+    background:var(--surface);
+    border:1px solid var(--hairline);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:clamp(32px,8vw,96px);
+  }
+  body.no-photos .hero-fallback{display:flex !important}
+  .hero-fallback .plate{
+    text-align:center;
+    max-width:24ch;
+  }
+  .hero-fallback .plate-mark{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:clamp(26px,4vw,40px);
+    line-height:1.25;
+    letter-spacing:-0.6px;
+    color:var(--ink);
+    margin:0;
+  }
+  .hero-fallback .plate-sub{
+    margin-top:24px;
+    font-family:var(--sans);
+    font-size:11px;
+    font-weight:500;
+    letter-spacing:2.4px;
+    text-transform:uppercase;
+    color:var(--ink-subtle);
+  }
+  .plate-rule{
+    width:48px;height:1px;background:var(--ink-subtle);
+    margin:28px auto 0;
+  }
+  figcaption.plate{
+    display:flex;
+    gap:18px;
+    align-items:baseline;
+    flex-wrap:wrap;
+    margin-top:var(--tight);
+  }
+  figcaption.plate .num{
+    font-family:var(--sans);
+    font-size:11px;letter-spacing:2px;text-transform:uppercase;
+    color:var(--ink-subtle);
+  }
+
+  /* ---------- selected work ---------- */
+  section{padding-top:var(--section)}
+  .sec-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:24px;
+    border-top:1px solid var(--hairline);
+    padding-top:22px;
+    margin-bottom:var(--block);
+  }
+  .sec-head h2{
+    font-family:var(--serif);
+    font-weight:400;
+    font-size:clamp(24px,3.4vw,32px);
+    line-height:1.18;
+    letter-spacing:-0.6px;
+    margin:0;
+  }
+  .sec-head .eyebrow{white-space:nowrap}
+
+  .gallery{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:clamp(64px, 8vw, 120px) clamp(28px, 4vw, 56px);
+  }
+  @media(min-width:720px){
+    .gallery{grid-template-columns:repeat(12, 1fr)}
+    .plate-a{grid-column:1 / span 7}
+    .plate-b{grid-column:9 / span 4; align-self:end}
+    .plate-c{grid-column:1 / span 4}
+    .plate-d{grid-column:6 / span 7}
+    .plate-e{grid-column:2 / span 6}
+    .plate-f{grid-column:9 / span 4; align-self:end}
+  }
+  figure.work{margin:0}
+  figure.work .shot{
+    width:100%;
+    background:var(--surface);
+    object-fit:cover;
+  }
+  /* placeholder when photos off — keep the composition legible */
+  .work-fallback{
+    width:100%;
+    background:var(--surface);
+    border:1px solid var(--hairline);
+    aspect-ratio:var(--ar, 4/5);
+    display:flex;
+    align-items:flex-end;
+    padding:16px;
+  }
+  body.no-photos .work-fallback{display:flex !important}
+  .work-fallback .wf-mark{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:14px;
+    color:var(--ink-subtle);
+  }
+  .ar-portrait{aspect-ratio:4/5}
+  .ar-land{aspect-ratio:3/2}
+  .ar-square{aspect-ratio:1/1}
+  .ar-tall{aspect-ratio:5/7}
+
+  /* ---------- statement ---------- */
+  .statement{
+    max-width:var(--measure);
+  }
+  .statement .lede{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:clamp(19px,2.4vw,21px);
+    line-height:1.5;
+    letter-spacing:-0.1px;
+    color:var(--ink);
+    margin:0 0 28px;
+  }
+  .statement p{
+    color:var(--ink-muted);
+    margin:0 0 18px;
+    max-width:56ch;
+  }
+
+  /* ---------- exhibitions (metrics · big_numerals) ---------- */
+  .ledger{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:var(--block) clamp(28px,5vw,72px);
+  }
+  @media(min-width:640px){ .ledger{grid-template-columns:repeat(2,1fr)} }
+  @media(min-width:960px){ .ledger{grid-template-columns:repeat(4,1fr)} }
+  .ledger .stat{
+    border-top:1px solid var(--hairline);
+    padding-top:20px;
+  }
+  .ledger .stat .num{
+    font-family:var(--serif);
+    font-weight:400;
+    font-size:clamp(44px,6vw,68px);
+    line-height:1;
+    letter-spacing:-2px;
+    color:var(--ink);
+    margin:0;
+  }
+  .ledger .stat .lab{
+    margin-top:18px;
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:14px;
+    line-height:1.4;
+    color:var(--ink-subtle);
+  }
+
+  /* ---------- pull quote (selected_quotes · large_type) ---------- */
+  .pull{ max-width:18ch; }
+  .pull blockquote{
+    margin:0;
+    font-family:var(--serif);
+    font-weight:400;
+    font-size:clamp(28px,5.4vw,52px);
+    line-height:1.14;
+    letter-spacing:-1.2px;
+    color:var(--ink);
+  }
+  .pull blockquote em{font-style:italic}
+  .pull .cite{
+    margin-top:32px;
+    font-family:var(--sans);
+    font-size:11px;letter-spacing:2.4px;text-transform:uppercase;
+    color:var(--ink-subtle);
+  }
+
+  /* ---------- beliefs (numbered) ---------- */
+  .tenets{
+    list-style:none;
+    margin:0;padding:0;
+    display:grid;
+    grid-template-columns:1fr;
+    gap:var(--block);
+  }
+  @media(min-width:760px){ .tenets{grid-template-columns:repeat(3,1fr)} }
+  .tenets li{
+    border-top:1px solid var(--hairline);
+    padding-top:20px;
+  }
+  .tenets .ix{
+    font-family:var(--sans);
+    font-size:11px;letter-spacing:2.4px;text-transform:uppercase;
+    color:var(--ink-subtle);
+    margin:0 0 16px;
+  }
+  .tenets .ti{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:clamp(18px,2.2vw,20px);
+    line-height:1.4;
+    letter-spacing:-0.1px;
+    color:var(--ink);
+    margin:0 0 12px;
+  }
+  .tenets p{
+    margin:0;
+    color:var(--ink-muted);
+    font-size:15px;
+    max-width:34ch;
+  }
+
+  /* ---------- exhibitions / credentials (list) ---------- */
+  .record{
+    list-style:none;
+    margin:0;padding:0;
+    max-width:780px;
+  }
+  .record li{
+    display:flex;
+    gap:18px clamp(20px,4vw,56px);
+    align-items:baseline;
+    flex-wrap:wrap;
+    border-top:1px solid var(--hairline);
+    padding:22px 0;
+  }
+  .record .yr{
+    font-family:var(--sans);
+    font-size:11px;letter-spacing:2px;text-transform:uppercase;
+    color:var(--ink-subtle);
+    flex:0 0 5ch;
+  }
+  .record .body{flex:1 1 14rem}
+  .record .ti{
+    font-family:var(--serif);
+    font-size:19px;
+    line-height:1.3;
+    color:var(--ink);
+    margin:0;
+  }
+  .record .ti em{font-style:italic}
+  .record .ven{
+    margin:6px 0 0;
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:13px;
+    color:var(--ink-subtle);
+  }
+
+  /* ---------- now / currently_building ---------- */
+  .now-block{
+    max-width:var(--measure);
+  }
+  .now-block .lede{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:clamp(19px,2.4vw,21px);
+    line-height:1.5;
+    letter-spacing:-0.1px;
+    color:var(--ink);
+    margin:0 0 28px;
+  }
+  .now-block p{
+    color:var(--ink-muted);
+    margin:0 0 18px;
+    max-width:56ch;
+  }
+  .now-block .asof{
+    margin-top:8px;
+    font-family:var(--sans);
+    font-size:11px;letter-spacing:2px;text-transform:uppercase;
+    color:var(--ink-subtle);
+  }
+
+  /* ---------- elsewhere (social_links · text_row) ---------- */
+  .elsewhere{
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px 40px;
+    align-items:baseline;
+  }
+  .elsewhere a{
+    font-family:var(--sans);
+    font-size:15px;
+    color:var(--ink);
+    position:relative;
+    padding-bottom:3px;
+  }
+  .elsewhere a::after{
+    content:"";
+    position:absolute;left:0;right:100%;bottom:0;height:1px;
+    background:var(--ink);
+    transition:right .4s cubic-bezier(.16,.7,.2,1);
+  }
+  .elsewhere a:hover::after,.elsewhere a:focus-visible::after{right:0}
+
+  /* ---------- contact ---------- */
+  .contact{
+    border-top:1px solid var(--hairline);
+    padding-top:var(--block);
+    padding-bottom:clamp(80px,14vh,160px);
+    margin-top:var(--section);
+  }
+  .contact h2{
+    font-family:var(--serif);
+    font-weight:400;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.18;
+    letter-spacing:-0.8px;
+    margin:0 0 36px;
+    max-width:18ch;
+  }
+  .contact-links{
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px 40px;
+    align-items:baseline;
+  }
+  .contact-links a{
+    font-family:var(--sans);
+    font-size:15px;
+    color:var(--ink);
+    position:relative;
+    padding-bottom:3px;
+  }
+  .contact-links a::after{
+    content:"";
+    position:absolute;left:0;right:100%;bottom:0;height:1px;
+    background:var(--ink);
+    transition:right .4s cubic-bezier(.16,.7,.2,1);
+  }
+  .contact-links a:hover::after,.contact-links a:focus-visible::after{right:0}
+  .contact .meta{
+    margin-top:48px;
+    font-family:var(--sans);
+    font-size:11px;letter-spacing:2px;text-transform:uppercase;
+    color:var(--ink-subtle);
+  }
+
+  /* ---------- photo toggle contract ---------- */
+  .u-fallback{display:none !important}
+  body.no-photos .u-photo{display:none !important}
+  body.no-photos .u-fallback{display:revert !important}
+
+  .atlas-photo-toggle{position:fixed;right:16px;bottom:16px;z-index:99999;display:flex;align-items:center;gap:8px;background:rgba(20,20,22,.88);color:#fff;border-radius:999px;padding:6px 6px 6px 14px;font:600 12px/1 -apple-system,system-ui,sans-serif;box-shadow:0 8px 28px -10px rgba(0,0,0,.55)}
+  .atlas-photo-toggle button{appearance:none;border:0;cursor:pointer;font:inherit;color:#16161a;background:#fff;border-radius:999px;padding:6px 14px;min-width:46px}
+  .atlas-photo-toggle button[aria-pressed="false"]{background:#3a3a42;color:#fff}
+</style>
+</head>
+<body>
+
+  <header class="site wrap" data-module="hero" data-variant="minimal_centered">
+    <div class="hero-head reveal in">
+      <p class="eyebrow">Yuki Tanaka — Photographer</p>
+      <h1 class="hero-title">I photograph the quiet seconds <em>before something changes.</em></h1>
+    </div>
+
+    <figure class="hero-figure reveal in">
+      <div class="hero-frame">
+        <img class="u-photo hero-img"
+             src="portrait.webp"
+             alt="A lone figure standing in a vast, still landscape under soft grey light.">
+        <div class="u-fallback hero-fallback" aria-hidden="true">
+          <div class="plate">
+            <p class="plate-mark">The quiet seconds before something changes.</p>
+            <div class="plate-rule"></div>
+            <p class="plate-sub">Plate I</p>
+          </div>
+        </div>
+      </div>
+      <figcaption class="plate">
+        <span class="num">Plate I</span>
+        <span class="caption">Before the Tide — Echizen Coast, 2024</span>
+      </figcaption>
+    </figure>
+  </header>
+
+  <main>
+    <!-- selected work -->
+    <section class="wrap" aria-labelledby="work-h" data-module="selected_work" data-variant="grid">
+      <div class="sec-head reveal">
+        <h2 id="work-h">Selected work</h2>
+        <p class="eyebrow">2021 — 2024</p>
+      </div>
+
+      <div class="gallery">
+        <figure class="work plate-a reveal">
+          <div class="u-fallback work-fallback ar-land"><span class="wf-mark">Threshold</span></div>
+          <img class="u-photo shot ar-land" src="portrait.webp" alt="A wide, hushed horizon at the edge of morning.">
+          <figcaption class="caption">Threshold — gelatin silver print · 2024</figcaption>
+        </figure>
+
+        <figure class="work plate-b reveal">
+          <div class="u-fallback work-fallback ar-portrait"><span class="wf-mark">Held Breath</span></div>
+          <img class="u-photo shot ar-portrait" src="portrait.webp" alt="A solitary figure caught mid-pause.">
+          <figcaption class="caption">Held Breath — archival pigment · 2023</figcaption>
+        </figure>
+
+        <figure class="work plate-c reveal">
+          <div class="u-fallback work-fallback ar-square"><span class="wf-mark">Still, Then</span></div>
+          <img class="u-photo shot ar-square" src="portrait.webp" alt="A near-empty room a moment before light moves.">
+          <figcaption class="caption">Still, Then — gelatin silver print · 2023</figcaption>
+        </figure>
+
+        <figure class="work plate-d reveal">
+          <div class="u-fallback work-fallback ar-land"><span class="wf-mark">Last Light, Berlin</span></div>
+          <img class="u-photo shot ar-land" src="portrait.webp" alt="A grey Berlin afternoon dissolving into dusk.">
+          <figcaption class="caption">Last Light, Berlin — archival pigment · 2024</figcaption>
+        </figure>
+
+        <figure class="work plate-e reveal">
+          <div class="u-fallback work-fallback ar-land"><span class="wf-mark">The Long Wait</span></div>
+          <img class="u-photo shot ar-land" src="portrait.webp" alt="An expanse of land waiting for weather.">
+          <figcaption class="caption">The Long Wait — gelatin silver print · 2022</figcaption>
+        </figure>
+
+        <figure class="work plate-f reveal">
+          <div class="u-fallback work-fallback ar-tall"><span class="wf-mark">Departure</span></div>
+          <img class="u-photo shot ar-tall" src="portrait.webp" alt="A figure turning, about to leave the frame.">
+          <figcaption class="caption">Departure — archival pigment · 2021</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- statement -->
+    <section class="wrap" aria-labelledby="story-h" data-module="story" data-variant="quote_led">
+      <div class="sec-head reveal">
+        <h2 id="story-h">On the work</h2>
+        <p class="eyebrow">Statement</p>
+      </div>
+      <div class="statement reveal">
+        <p class="lede">I am drawn to the held breath — the instant a place is still, just before it turns into something else.</p>
+        <p>The pictures are made slowly, on the coast and in quiet rooms, waiting for the light to settle rather than chasing it. What I'm after is the second before change: a kind of stillness that already knows it won't last.</p>
+        <p>Work has been shown in solo exhibitions in Tokyo (2023) and Berlin (2024), and published in <em>Aperture</em>. Limited print editions are available to collectors.</p>
+      </div>
+    </section>
+
+    <!-- pull quote -->
+    <section class="wrap" aria-labelledby="quote-h" data-module="selected_quotes" data-variant="large_type">
+      <h2 id="quote-h" class="eyebrow reveal" style="border-top:1px solid var(--hairline);padding-top:22px;margin-bottom:var(--block)">From a conversation</h2>
+      <div class="pull reveal">
+        <blockquote>Tanaka doesn't photograph places. He photographs the <em>moment a place is about to forget itself.</em></blockquote>
+        <p class="cite">— Aperture, Spring 2024</p>
+      </div>
+    </section>
+
+    <!-- exhibition record / ledger -->
+    <section class="wrap" aria-labelledby="ledger-h" data-module="metrics" data-variant="big_numerals">
+      <div class="sec-head reveal">
+        <h2 id="ledger-h">By the numbers</h2>
+        <p class="eyebrow">2018 — 2024</p>
+      </div>
+      <div class="ledger">
+        <div class="stat reveal"><p class="num">14</p><p class="lab">solo &amp; group exhibitions</p></div>
+        <div class="stat reveal"><p class="num">3</p><p class="lab">monographs published</p></div>
+        <div class="stat reveal"><p class="num">9</p><p class="lab">museum &amp; private collections</p></div>
+        <div class="stat reveal"><p class="num">120+</p><p class="lab">prints in editioned circulation</p></div>
+      </div>
+    </section>
+
+    <!-- working principles -->
+    <section class="wrap" aria-labelledby="tenets-h" data-module="beliefs" data-variant="numbered">
+      <div class="sec-head reveal">
+        <h2 id="tenets-h">How I work</h2>
+        <p class="eyebrow">Principles</p>
+      </div>
+      <ol class="tenets">
+        <li class="reveal">
+          <p class="ix">01</p>
+          <p class="ti">Wait for the light; never chase it.</p>
+          <p>A frame is found, not taken. I will return to a coast for weeks until the air is right.</p>
+        </li>
+        <li class="reveal">
+          <p class="ix">02</p>
+          <p class="ti">Leave the room to breathe.</p>
+          <p>Emptiness is composition. What is withheld from a picture carries as much as what is shown.</p>
+        </li>
+        <li class="reveal">
+          <p class="ix">03</p>
+          <p class="ti">Print slow, edition small.</p>
+          <p>Each print is made by hand and kept rare, so a single image can still hold a wall.</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- exhibition history -->
+    <section class="wrap" aria-labelledby="exh-h" data-module="experience" data-variant="timeline">
+      <div class="sec-head reveal">
+        <h2 id="exh-h">Selected exhibitions</h2>
+        <p class="eyebrow">Solo &amp; group</p>
+      </div>
+      <ol class="record reveal">
+        <li>
+          <span class="yr">2024</span>
+          <div class="body">
+            <p class="ti"><em>Before the Tide</em> — solo</p>
+            <p class="ven">Galerie Nord, Berlin</p>
+          </div>
+        </li>
+        <li>
+          <span class="yr">2023</span>
+          <div class="body">
+            <p class="ti"><em>Held Breath</em> — solo</p>
+            <p class="ven">Gallery Koen, Tokyo</p>
+          </div>
+        </li>
+        <li>
+          <span class="yr">2022</span>
+          <div class="body">
+            <p class="ti">Quiet Geographies — group</p>
+            <p class="ven">Kyoto Museum of Photography</p>
+          </div>
+        </li>
+        <li>
+          <span class="yr">2021</span>
+          <div class="body">
+            <p class="ti">New Contemporaries — group</p>
+            <p class="ven">The Photographers' Gallery, London</p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- collections & press -->
+    <section class="wrap" aria-labelledby="cred-h" data-module="credentials" data-variant="list">
+      <div class="sec-head reveal">
+        <h2 id="cred-h">Collections &amp; press</h2>
+        <p class="eyebrow">Acknowledgements</p>
+      </div>
+      <ul class="record reveal">
+        <li>
+          <span class="yr">Coll.</span>
+          <div class="body">
+            <p class="ti">Tokyo Photographic Art Museum</p>
+            <p class="ven">Permanent collection · two prints</p>
+          </div>
+        </li>
+        <li>
+          <span class="yr">Coll.</span>
+          <div class="body">
+            <p class="ti">Pinakothek der Moderne, Munich</p>
+            <p class="ven">Acquisition, 2024</p>
+          </div>
+        </li>
+        <li>
+          <span class="yr">Press</span>
+          <div class="body">
+            <p class="ti"><em>Aperture</em> — portfolio feature</p>
+            <p class="ven">Spring 2024</p>
+          </div>
+        </li>
+        <li>
+          <span class="yr">Award</span>
+          <div class="body">
+            <p class="ti">Hasselblad Foundation grant</p>
+            <p class="ven">Recipient, 2022</p>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- now -->
+    <section class="wrap" aria-labelledby="now-h" data-module="currently_building" data-variant="now_block">
+      <div class="sec-head reveal">
+        <h2 id="now-h">In the studio now</h2>
+        <p class="eyebrow">Now</p>
+      </div>
+      <div class="now-block reveal">
+        <p class="lede">A new body of work along the Sea of Japan — the same coast, photographed across a single winter.</p>
+        <p>Most mornings are spent printing the Echizen negatives by hand and editing toward a fourth monograph, due late 2025. A small London show is in early conversation. Prints from the <em>Before the Tide</em> series are available in editions of seven.</p>
+        <p class="asof">As of Spring 2024 · Tokyo</p>
+      </div>
+    </section>
+
+    <!-- elsewhere -->
+    <section class="wrap" aria-labelledby="else-h" data-module="social_links" data-variant="text_row">
+      <div class="sec-head reveal">
+        <h2 id="else-h">Elsewhere</h2>
+        <p class="eyebrow">Follow the work</p>
+      </div>
+      <nav class="elsewhere reveal" aria-label="Elsewhere">
+        <a href="https://instagram.com/yukitanaka" rel="me">Instagram</a>
+        <a href="#">Journal</a>
+        <a href="#">Print archive</a>
+        <a href="#">Newsletter</a>
+      </nav>
+    </section>
+  </main>
+
+  <!-- contact -->
+  <footer class="contact wrap" aria-labelledby="contact-h" data-module="contact" data-variant="conversion">
+    <h2 id="contact-h" class="reveal">For exhibitions, commissions &amp; prints — please be in touch.</h2>
+    <nav class="contact-links reveal" aria-label="Contact">
+      <a href="mailto:studio@yukitanaka.photo">Inquire — studio@yukitanaka.photo</a>
+      <a href="https://instagram.com/yukitanaka" rel="me">Instagram</a>
+      <a href="#newsletter">Newsletter</a>
+    </nav>
+    <p class="meta reveal">Yuki Tanaka · Tokyo &amp; Berlin · © 2024</p>
+  </footer>
+
+  <div class="atlas-photo-toggle" role="group" aria-label="示例照片 / Demo photos"><span>照片 Photos</span><button id="atlasPhotoBtn" type="button" aria-pressed="true">On</button></div>
+  <script>(function(){var b=document.getElementById('atlasPhotoBtn');if(!b)return;function set(on){document.body.classList.toggle('no-photos',!on);b.setAttribute('aria-pressed',on?'true':'false');b.textContent=on?'On':'Off';}b.addEventListener('click',function(){set(document.body.classList.contains('no-photos'));});set(true);})();</script>
+
+  <script>
+    (function(){
+      var els = document.querySelectorAll('.reveal');
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(reduce || !('IntersectionObserver' in window)){
+        els.forEach(function(e){e.classList.add('in');});
+        return;
+      }
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+        });
+      }, {rootMargin:'0px 0px -8% 0px', threshold:0.08});
+      els.forEach(function(e){ if(!e.classList.contains('in')) io.observe(e); });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,624 @@
+{
+  "_note": "How each direction treats the user photo (pure CSS, no image editing). Built by the extract-image-treatments workflow; joined with registry.json in image-lab.js.",
+  "images": [
+    {
+      "id": "art-deco",
+      "persona": "Evariste Laurent — keynote speaker & author",
+      "portrait": "portrait.webp",
+      "image_role": "肖像被供奉在中央的 Art Deco 金框祭坛里，是英雄气质的核心视觉焦点。",
+      "treat": {
+        "filter": "sepia(.18) saturate(.92) contrast(1.02)",
+        "aspect": "3/4",
+        "object_position": "center 30%",
+        "radius": "0",
+        "border": "1px solid #c8a253",
+        "shadow": "inset 0 0 0 6px #0c1c17, inset 0 0 0 7px rgba(200,162,83,0.28), 0 0 0 7px #0c1c17, 0 0 0 8px rgba(200,162,83,0.28)",
+        "rotate": ""
+      },
+      "overlay": "",
+      "techniques": [
+        "复古暖调 (filter:sepia+saturate+contrast)",
+        "3:4 cover 竖幅裁切 (aspect-ratio+object-fit)",
+        "焦点下移 30% (object-position)",
+        "金色细边框 (border)",
+        "多层金线嵌套画框 (box-shadow inset/outset)"
+      ]
+    },
+    {
+      "id": "art-gallery",
+      "persona": "Yuki Tanaka — 摄影师 / 艺术摄影",
+      "portrait": "portrait.webp",
+      "image_role": "照片是主角，作为全宽大幅作品级影像呈现，干净无滤镜、无边框，让画面本身说话。",
+      "treat": {
+        "filter": "",
+        "aspect": "",
+        "object_position": "center",
+        "radius": "0",
+        "border": "",
+        "shadow": "",
+        "rotate": ""
+      },
+      "overlay": "",
+      "techniques": [
+        "全宽 cover 裁切 (object-fit:cover)",
+        "固定高度大画幅 height:min(78vh,760px)",
+        "无滤镜原色呈现 (no filter)",
+        "无圆角硬直角 (border-radius:0)",
+        "作品集网格多比例展陈 (aspect-ratio 4/5·3/2·1/1·5/7)"
+      ]
+    },
+    {
+      "id": "athletic-sport",
+      "persona": "Dre Coleman — 运动表现教练",
+      "portrait": "portrait.webp",
+      "image_role": "照片作满屏 hero 背景，巨号标题与导航压在其上，营造紧张的运动赛场氛围。",
+      "treat": {
+        "filter": "grayscale(.25) contrast(1.08) brightness(.82)",
+        "aspect": "",
+        "object_position": "50% 30%",
+        "radius": "0",
+        "border": "",
+        "shadow": "",
+        "rotate": ""
+      },
+      "overlay": "巨号标题+导航条压在图上；底部至上的暗渐变 scrim（双重 linear-gradient，底部到 rgba(10,10,10,.94)），左侧再叠一层横向暗渐变",
+      "techniques": [
+        "满屏 hero 背景 (object-fit:cover)",
+        "压暗+微去色 (filter:brightness/grayscale/contrast)",
+        "焦点上移裁切 (object-position:50% 30%)",
+        "底部暗渐变 scrim (::after linear-gradient)",
+        "巨号标题叠图 (z-index 分层)"
+      ]
+    },
+    {
+      "id": "bold-brutalist",
+      "persona": "Alex Mercer — graphic designer & art director",
+      "portrait": "portrait.jpg",
+      "image_role": "肖像作为一块硬边设计元素，旋转贴在巨号标题旁，去色处理融入扁平撞色配色。",
+      "treat": {
+        "filter": "grayscale(1) contrast(1.18) brightness(1.02)",
+        "aspect": "1/1",
+        "object_position": "center",
+        "radius": "0",
+        "border": "3px solid #0a0a0a",
+        "shadow": "6px 6px 0 #0a0a0a",
+        "rotate": "1.6deg"
+      },
+      "overlay": "",
+      "techniques": [
+        "去色 B&W + 增对比 (filter:grayscale/contrast)",
+        "1:1 正方裁切 cover (object-fit:cover)",
+        "硬黑边 3px + 6px 偏移硬阴影 (border/box-shadow)",
+        "旋转 1.6° (transform:rotate)",
+        "直角无圆角 (border-radius:0)"
+      ]
+    },
+    {
+      "id": "cinematic-dark",
+      "persona": "Marcus Holt — Director & Cinematographer",
+      "portrait": "portrait.webp",
+      "image_role": "照片作为全屏满铺电影剧照背景铺满 hero，标题与信息直接压在画面上。",
+      "treat": {
+        "filter": "grayscale(1) contrast(1.05) brightness(.82)",
+        "aspect": "",
+        "object_position": "center",
+        "radius": "0",
+        "border": "",
+        "shadow": "",
+        "rotate": ""
+      },
+      "overlay": "标题/姓名/CTA 叠在图上 + 上下黑色 letterbox 横条 + 顶/底暗渐变 scrim 保证文字可读",
+      "techniques": [
+        "去色压暗 B&W (filter:grayscale/contrast/brightness)",
+        "全屏满铺 cover 铺底 (position:absolute inset:0 + object-fit:cover)",
+        "暗渐变 scrim 叠加 (linear-gradient)",
+        "电影黑边 letterbox (.bar 黑条)",
+        "标题叠图 (z-index 分层)"
+      ]
+    },
+    {
+      "id": "dark-luxe",
+      "persona": "Adaeze Okonkwo — Board Advisor & Former Operator",
+      "portrait": "portrait.webp",
+      "image_role": "黑白肖像置于金色细双线画框内，作为奢华克制的权威象征单独陈列。",
+      "treat": {
+        "filter": "grayscale(100%) contrast(1.04)",
+        "aspect": "4/5",
+        "object_position": "center",
+        "radius": "0",
+        "border": "1px solid #5a4a24",
+        "shadow": "",
+        "rotate": ""
+      },
+      "overlay": "",
+      "techniques": [
+        "去色 B&W (filter:grayscale)",
+        "微提对比 (filter:contrast 1.04)",
+        "4:5 cover 裁切 (aspect-ratio + object-fit)",
+        "金色细线双框 (border + ::before inset)",
+        "四角金色角标 (.portrait-corner border)"
+      ]
+    },
+    {
+      "id": "editorial-dark",
+      "persona": "Theodore Vance — 影评与文化评论人",
+      "portrait": "portrait.webp",
+      "image_role": "黑白人像作为暗色版式中的卷首插画，被细描边卡纸相框托起，安静地立在 hero 右侧。",
+      "treat": {
+        "filter": "grayscale(100%) contrast(1.04)",
+        "aspect": "4/5",
+        "object_position": "50% 30%",
+        "radius": "1px",
+        "border": "",
+        "shadow": "",
+        "rotate": ""
+      },
+      "overlay": "",
+      "techniques": [
+        "去色 B&W (filter:grayscale)",
+        "轻提对比 (filter:contrast 1.04)",
+        "4:5 cover 裁切 (aspect-ratio+object-fit)",
+        "构图下压偏上 (object-position 50% 30%)",
+        "细描边卡纸相框 (.frame border+8px padding)"
+      ]
+    },
+    {
+      "id": "editorial",
+      "persona": "Mara Lindqvist — 独立随笔作家与记者",
+      "portrait": "portrait.jpg",
+      "image_role": "杂志风作者肖像，作为双栏 hero 的次要列，肖像独立呈现、与正文并置而不被覆盖。",
+      "treat": {
+        "filter": "",
+        "aspect": "4/5",
+        "object_position": "center",
+        "radius": "2px",
+        "border": "1px solid #e3ddd0",
+        "shadow": "-14px 14px 0 -1px #f3efe7, -14px 14px 0 0 #e3ddd0",
+        "rotate": ""
+      },
+      "overlay": "",
+      "techniques": [
+        "4:5 cover 竖裁切",
+        "极细发丝边框 (border 1px)",
+        "左下偏移卡片阴影 (box-shadow -14px 14px)",
+        "微圆角 2px (border-radius)",
+        "斜体说明文字置于图下方"
+      ]
+    },
+    {
+      "id": "fashion-luxe",
+      "persona": "Sienna Marchetti — 时尚造型师 / 创意总监",
+      "portrait": "portrait.webp",
+      "image_role": "全屏黑白人像占据 hero 一半版面，作为杂志大片封面般的主视觉，与右侧巨号衬线刊头分屏对照。",
+      "treat": {
+        "filter": "grayscale(100%) contrast(1.06)",
+        "aspect": "",
+        "object_position": "50% 28%",
+        "radius": "0",
+        "border": "",
+        "shadow": "",
+        "rotate": ""
+      },
+      "overlay": "图上压了暗渐变 scrim（上25%→底55%）、左上洋红角标签与右下白色拍摄说明；巨号刊头在相邻分屏面板而非直接压图。",
+      "techniques": [
+        "去色 B&W (filter:grayscale)",
+        "对比微提 (filter:contrast 1.06)",
+        "全屏 cover 裁切 (object-fit:cover)",
+        "焦点上移构图 (object-position:50% 28%)",
+        "暗渐变 scrim 叠图 (::after linear-gradient)"
+      ]
+    },
+    {
+      "id": "glassmorphism",
+      "persona": "Kai Anders — AI Product Designer",
+      "portrait": "portrait.webp",
+      "image_role": "照片不作肖像，而是整页固定铺底、重度模糊的环境氛围色，毛玻璃面板浮于其上。",
+      "treat": {
+        "filter": "blur(34px) saturate(135%) brightness(0.82)",
+        "aspect": "",
+        "object_position": "center",
+        "radius": "0",
+        "border": "",
+        "shadow": "",
+        "rotate": ""
+      },
+      "overlay": "毛玻璃卡片与暗紫渐变 scrim（径向+线性）整层压在图上，保证文字可读",
+      "techniques": [
+        "重度模糊铺底 (filter:blur 34px)",
+        "提饱和压亮度 (saturate135%/brightness.82)",
+        "object-fit:cover 满屏铺满 (inset:-8%+scale1.06)",
+        "毛玻璃面板叠图 (backdrop-filter:blur)",
+        "暗紫渐变 scrim 压图 (.backdrop-overlay)"
+      ]
+    },
+    {
+      "id": "handcrafted-sketch",
+      "persona": "Posy Wren — 童书作者 & 插画师",
+      "portrait": "portrait.webp",
+      "image_role": "把人像/插画当成贴进手账页的拍立得照片，用胶带、白边和倾斜营造手作剪贴感。",
+      "treat": {
+        "filter": "",
+        "aspect": "",
+        "object_position": "center",
+        "radius": "2px",
+        "border": "",
+        "shadow": "",
+        "rotate": "1.6deg"
+      },
+      "overlay": "",
+      "techniques": [
+        "整张倾斜 1.6° (transform:rotate)",
+        "白色相纸内衬+柔阴影 (.frame padding+box-shadow)",
+        "washi 胶带斜贴四角 (.washi 旋转条)",
+        "图自然比例不裁切 (height:auto)",
+        "手写体图注落在图下方 (figcaption)"
+      ]
+    },
+    {
+      "id": "illustration-brand",
+      "persona": "Tara Nguyen — 生产力教练 / Notion 模板作者",
+      "portrait": "portrait.webp",
+      "image_role": "把人像当成插画感的主视觉卡片，圆角白边裱起来，四周飘贴纸和手绘装饰，营造亲和、活泼的个人品牌氛围。",
+      "treat": {
+        "filter": "",
+        "aspect": "4/4.6",
+        "object_position": "50% 18%",
+        "radius": "32px",
+        "border": "6px solid #fff",
+        "shadow": "0 18px 40px -22px rgba(40,30,30,.32)",
+        "rotate": ""
+      },
+      "overlay": "",
+      "techniques": [
+        "4:4.6 cover 竖裁 (aspect-ratio + object-fit:cover)",
+        "焦点上移 object-position:50% 18%",
+        "大圆角 32px (border-radius)",
+        "6px 白色边框裱框 (border)",
+        "柔和投影 (box-shadow)",
+        "外圈飘贴纸+手绘 SVG 装饰 (绝对定位+float 动画)"
+      ]
+    },
+    {
+      "id": "maximalist-collage",
+      "persona": "Juno Castellano — 多领域艺术家 / zine 制作人",
+      "portrait": "portrait.webp",
+      "image_role": "照片当作一张贴进拼贴墙的拍立得卡片：歪斜、撕边、带胶带和贴纸，是整页 collage 氛围的核心物件。",
+      "treat": {
+        "filter": "contrast(1.05) saturate(1.08)",
+        "aspect": "",
+        "object_position": "center",
+        "radius": "0",
+        "border": "1.5px solid #16140f",
+        "shadow": "8px 10px 0 rgba(22,20,15,.9)",
+        "rotate": "3deg"
+      },
+      "overlay": "",
+      "techniques": [
+        "微调对比+饱和 (filter:contrast/saturate)",
+        "硬黑边框 1.5px (border)",
+        "8px/10px 偏移硬阴影 (box-shadow)",
+        "旋转 +3° (transform:rotate)",
+        "撕纸边卡片 (clip-path)"
+      ]
+    },
+    {
+      "id": "memphis-postmodern",
+      "persona": "Bruno Salas — 平面设计师 + 设计课老师",
+      "portrait": "portrait.webp",
+      "image_role": "照片当成一张被裱起来的孟菲斯展品：白边相框 + 粗黑边 + 硬阴影，整体歪斜挂在视觉里。",
+      "treat": {
+        "filter": "",
+        "aspect": "",
+        "object_position": "center",
+        "radius": "14px",
+        "border": "4px solid #15130f",
+        "shadow": "10px 10px 0 #15130f",
+        "rotate": "3deg"
+      },
+      "overlay": "底部叠了一枚 magenta 标签胶囊（图说），但位于相框下缘外侧、不压在照片上",
+      "techniques": [
+        "白边相框裱框 (padding+border)",
+        "粗黑边框 4px solid (border)",
+        "硬黑色偏移阴影 10px (box-shadow)",
+        "整框旋转 3° (transform:rotate)",
+        "圆角 14px (border-radius)"
+      ]
+    },
+    {
+      "id": "mono-zine",
+      "persona": "Sam Rourke — 独立开发者 & 写作者",
+      "portrait": "portrait.webp",
+      "image_role": "把人像当成 riso 海报印版，嵌在带白边的硬黑框里，作为版面右侧的一块印刷'图版'。",
+      "treat": {
+        "filter": "grayscale(.15) contrast(1.02)",
+        "aspect": "",
+        "object_position": "center",
+        "radius": "0",
+        "border": "1.5px solid #1a1a1a",
+        "shadow": "",
+        "rotate": ""
+      },
+      "overlay": "",
+      "techniques": [
+        "轻度去色+提对比 (filter:grayscale .15 contrast 1.02)",
+        "自然比例不裁切 (height:auto)",
+        "外框 1.5px 硬黑边 (border)",
+        "8px 白边卡纸装裱 (platebox padding)",
+        "图下 fig.01 单线说明 (figcaption)"
+      ]
+    },
+    {
+      "id": "neo-saas",
+      "persona": "Arjun Mehta — 独立创始人 / 产品工程师",
+      "portrait": "portrait.webp",
+      "image_role": "证件照式的小幅头像放进圆角卡片框，作为可信度道具陪衬左侧大标题，弱化处理、干净克制。",
+      "treat": {
+        "filter": "",
+        "aspect": "15/17",
+        "object_position": "center",
+        "radius": "12px",
+        "border": "1px solid #e3e5ea",
+        "shadow": "0 2px 4px rgba(22,22,26,.05),0 14px 32px -12px rgba(91,91,214,.22)",
+        "rotate": ""
+      },
+      "overlay": "",
+      "techniques": [
+        "固定 300x340 框 cover 裁切 (object-fit:cover)",
+        "12px 圆角卡片 (border-radius+overflow:hidden)",
+        "1px 细发丝边 (border)",
+        "柔和抬升投影带紫调 (box-shadow)",
+        "无滤镜原色呈现 (filter:none)"
+      ]
+    },
+    {
+      "id": "newsprint",
+      "persona": "Hannah Cole — 调查记者 (investigative journalist)",
+      "portrait": "portrait.webp",
+      "image_role": "照片作为报纸内文里的纪实插图 (documentary cut)，嵌在多栏正文中、配斜体图注，去色处理像新闻纸黑白照。",
+      "treat": {
+        "filter": "grayscale(1) contrast(1.06)",
+        "aspect": "",
+        "object_position": "center",
+        "radius": "0",
+        "border": "",
+        "shadow": "",
+        "rotate": ""
+      },
+      "overlay": "",
+      "techniques": [
+        "去色 B&W (filter:grayscale)",
+        "微提对比 (contrast(1.06))",
+        "保留原始比例 (width:100%; height:auto)",
+        "无圆角硬直角 (border-radius:0)",
+        "嵌入多栏正文 + 斜体图注 (figure.cut + figcaption)"
+      ]
+    },
+    {
+      "id": "organic-natural",
+      "persona": "Elena Vasquez — writer & retreat host",
+      "portrait": "portrait.webp",
+      "image_role": "肖像是 split hero 的右半主角，被裁进有机不规则 blob 形状里，配后置漂浮色块，传递温暖手作、慢生活的自然气质。",
+      "treat": {
+        "filter": "saturate(.94) contrast(1.02)",
+        "aspect": "4/5",
+        "object_position": "center",
+        "radius": "48% 52% 60% 40% / 55% 45% 55% 45%",
+        "border": "",
+        "shadow": "0 26px 60px -28px rgba(51,49,42,.55)",
+        "rotate": ""
+      },
+      "overlay": "",
+      "techniques": [
+        "有机 blob 异形遮罩 (border-radius 不规则百分比)",
+        "4:5 cover 裁切 (aspect-ratio + object-fit:cover)",
+        "微降饱和+轻提对比 (filter:saturate/contrast)",
+        "柔和长投影 (box-shadow)",
+        "后置漂浮色块衬底 (decorative blobs, z-index)"
+      ]
+    },
+    {
+      "id": "playful-rounded",
+      "persona": "Lola Benitez — community builder & educator",
+      "portrait": "portrait.webp",
+      "image_role": "把照片当成一张俏皮的圆角卡片：大圆角、微旋转、彩色渐变托底，四周再贴卡通贴纸，活泼亲切。",
+      "treat": {
+        "filter": "",
+        "aspect": "4/5",
+        "object_position": "center",
+        "radius": "40px",
+        "border": "",
+        "shadow": "0 22px 50px -24px rgba(99,71,180,.30)",
+        "rotate": "2deg"
+      },
+      "overlay": "",
+      "techniques": [
+        "大圆角卡片 40px (border-radius)",
+        "4:5 cover 裁切 (aspect-ratio + object-fit)",
+        "整卡微旋转 2° (rotate)",
+        "紫调柔光投影 (box-shadow)",
+        "彩色渐变托底 (linear-gradient 背景)"
+      ]
+    },
+    {
+      "id": "retro-print",
+      "persona": "Margot Hale — Illustrator",
+      "portrait": "portrait.webp",
+      "image_role": "把作品图当成裱在画框里的丝网版画，用硬黑边框 + 偏移黄色阴影做实体印刷质感。",
+      "treat": {
+        "filter": "saturate(.92) contrast(1.02)",
+        "aspect": "",
+        "object_position": "center",
+        "radius": "0",
+        "border": "2px solid #2a1f16",
+        "shadow": "10px 10px 0 #d99a2b",
+        "rotate": ""
+      },
+      "overlay": "",
+      "techniques": [
+        "降饱和+微增对比 印刷质感 (filter:saturate/contrast)",
+        "硬黑画框边 (border:2px solid)",
+        "10px 偏移实色阴影 (box-shadow)",
+        "内描边双框 (::after inset border)",
+        "保持原比例不裁切 (width:100%;height:auto)"
+      ]
+    },
+    {
+      "id": "risograph",
+      "persona": "Saoirse Quinn — 插画师 / 独立印刷出版人",
+      "portrait": "portrait.webp",
+      "image_role": "把人像当作一张丝网印刷品来处理：去色后用 multiply 与彩色版叠印，做出 riso 套色错位的手工印刷质感。",
+      "treat": {
+        "filter": "grayscale(1) contrast(1.15) brightness(1.05)",
+        "aspect": "4/5",
+        "object_position": "center",
+        "radius": "0",
+        "border": "",
+        "shadow": "",
+        "rotate": ""
+      },
+      "overlay": "图上盖一层 var(--pink) #ff48b0 的 screen 混合洗色 (opacity .34)；背后还有蓝/黄两块偏移色版做错位套印，底部贴 FIG.01 标签",
+      "techniques": [
+        "去色 B&W (filter:grayscale)",
+        "提对比+提亮 (contrast/brightness)",
+        "4:5 cover 裁切 (aspect-ratio + object-fit:cover)",
+        "正片叠底叠版 (mix-blend-mode:multiply)",
+        "粉色 screen 洗色叠图 (.pink-wash mix-blend-mode:screen)"
+      ]
+    },
+    {
+      "id": "soft-3d-clay",
+      "persona": "Milo Park — 玩具设计师 & 3D 艺术家",
+      "portrait": "portrait.webp",
+      "image_role": "照片被放进一个软糖黏土质感的展示橱窗里，作为陈列的「藏品」呈现。",
+      "treat": {
+        "filter": "",
+        "aspect": "1/1",
+        "object_position": "center",
+        "radius": "30px",
+        "border": "",
+        "shadow": "",
+        "rotate": ""
+      },
+      "overlay": "图本身无文字叠压；外框橱窗有内嵌黏土阴影，周围漂浮装饰圆点 + 底部『★ shelf no.1』黄色药丸标签。",
+      "techniques": [
+        "1:1 cover 裁切 (aspect-ratio:1/1 + object-fit:cover)",
+        "大圆角 30px (border-radius)",
+        "橱窗内嵌黏土阴影 (box-shadow inset)",
+        "外框软糖渐变底座 (linear-gradient + overflow:hidden)",
+        "底部药丸标签叠在橱窗边缘 (scene-tag pill)"
+      ]
+    },
+    {
+      "id": "swiss-minimal",
+      "persona": "Daniel Roth — 独立产品策略顾问",
+      "portrait": "portrait.jpg",
+      "image_role": "瑞士极简风把肖像缩成一张克制的小方块，只用一条发丝黑边框定，作为网格中的中性证件照式元素，不喧宾夺主。",
+      "treat": {
+        "filter": "",
+        "aspect": "1/1",
+        "object_position": "center",
+        "radius": "0",
+        "border": "1px solid #0d0d0d",
+        "shadow": "",
+        "rotate": ""
+      },
+      "overlay": "",
+      "techniques": [
+        "1:1 cover 裁切 (object-fit:cover)",
+        "发丝黑边 1px (border)",
+        "硬直角 0 圆角 (border-radius:0)",
+        "小尺寸 clamp 150-190px (width/height)"
+      ]
+    },
+    {
+      "id": "technical-mono",
+      "persona": "Kenji Watanabe — distributed-systems engineer",
+      "portrait": "portrait.jpg",
+      "image_role": "照片缩成 54px 的小头像，和首字母 avatar 同款硬边方框，去色处理后融入终端式深色界面，只作身份标识不抢戏。",
+      "treat": {
+        "filter": "grayscale(.55) contrast(1.02)",
+        "aspect": "1/1",
+        "object_position": "center",
+        "radius": "6px",
+        "border": "1px solid #5eead4",
+        "shadow": "inset 0 0 0 1px rgba(94,234,212,.08), 0 0 0 1px rgba(94,234,212,.12)",
+        "rotate": ""
+      },
+      "overlay": "",
+      "techniques": [
+        "半去色 desat (filter:grayscale .55)",
+        "1:1 cover 方形裁切 (object-fit:cover)",
+        "硬边圆角 6px (border-radius)",
+        "青色 1px 描边 (border-color)",
+        "内外双青色光环 (inset+outer box-shadow)"
+      ]
+    },
+    {
+      "id": "vibrant-gradient",
+      "persona": "Nia Okafor — Brand & Content Creator",
+      "portrait": "portrait.webp",
+      "image_role": "照片放进一个渐变描边的相框里，作为 hero 右栏的视觉主体，底部叠一张玻璃名片。",
+      "treat": {
+        "filter": "",
+        "aspect": "",
+        "object_position": "center",
+        "radius": "32px",
+        "border": "",
+        "shadow": "",
+        "rotate": ""
+      },
+      "overlay": "底部叠一张毛玻璃名片 badge（头像缩写+姓名+职位），非标题压图、非暗渐变 scrim",
+      "techniques": [
+        "cover 裁切到定高 clamp(360-520px) (object-fit:cover + height)",
+        "圆角 32px (border-radius:calc(--rl - 4px))",
+        "渐变描边相框 (::before background:linear-gradient(120deg,#5b5bff,#d633ff,#ff6b5b))",
+        "底部毛玻璃名片叠图 (.badge backdrop-filter:blur)"
+      ]
+    },
+    {
+      "id": "warm-personal",
+      "persona": "Priya Nair — 高管与领导力教练",
+      "portrait": "portrait.jpg",
+      "image_role": "照片作为温暖人本的主视觉，方形圆角裁切、纸质柔影，外加一圈虚线手绘环呼应有机暖调氛围。",
+      "treat": {
+        "filter": "",
+        "aspect": "1/1",
+        "object_position": "center",
+        "radius": "28px",
+        "border": "",
+        "shadow": "0 4px 8px rgba(43, 37, 32, 0.06), 0 22px 54px rgba(122, 78, 48, 0.13)",
+        "rotate": ""
+      },
+      "overlay": "",
+      "techniques": [
+        "1:1 cover 裁切 (aspect-ratio:1 + object-fit:cover)",
+        "大圆角 28px (border-radius:var(--r-lg))",
+        "纸质柔影 (box-shadow:var(--shadow-lift))",
+        "外层虚线手绘环陪衬 (.portrait-ring border:dashed)"
+      ]
+    },
+    {
+      "id": "y2k-vapor",
+      "persona": "Vex Romero — DJ & electronic producer",
+      "portrait": "portrait.webp",
+      "image_role": "把人像当成赛博朋克霓虹装置：去色玻璃化处理后嵌进发光机框，叠满扫描线与青/品红双色光，是整个 hero 的视觉主角。",
+      "treat": {
+        "filter": "grayscale(1) contrast(1.15) brightness(.95)",
+        "aspect": "4/5",
+        "object_position": "center",
+        "radius": "28px",
+        "border": "1px solid rgba(255,255,255,.16)",
+        "shadow": "0 0 0 1px rgba(0,229,255,.25), 0 30px 80px -30px #000, 0 0 60px -12px #ff2bd6, inset 0 0 60px -20px rgba(0,229,255,.4)",
+        "rotate": ""
+      },
+      "overlay": "图上叠 luminosity 混合 + 双色 duotone 渐变 (青→品红) + 扫描线纹理 + 顶部循环扫光条 (sweep)，左下角还压一枚 LIVE·3AM SET 霓虹标签",
+      "techniques": [
+        "去色 B&W + 提对比降亮 (filter:grayscale/contrast/brightness)",
+        "4:5 cover 裁切 (aspect-ratio + object-fit:cover)",
+        "luminosity 混合融入背景 (mix-blend-mode)",
+        "圆角玻璃机框 + 多层霓虹发光 (border-radius+box-shadow+backdrop-filter)",
+        "双色 duotone + 扫描线 + 扫光条叠图 (::before/::after, mix-blend-mode:screen)"
+      ]
+    }
+  ]
+}

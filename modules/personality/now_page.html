@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>now_page · personality — specimen sheet</title>
+<style>
+:root{--bg:#ffffff;--surface:#f6f6f4;--surface-2:#efefea;--ink:#191917;--muted:#6b6b67;--subtle:#9a9a94;--accent:#2f56ff;--accent-soft:#e9eefc;--hairline:#e7e7e2;--ink-line:#191917;--ok:#1f7a44;--radius:12px;--pad:24px}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+html{-webkit-text-size-adjust:100%}
+
+body{
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+.sheet{
+  max-width:980px;
+  margin:0 auto;
+  padding:clamp(24px,5vw,56px) clamp(16px,4vw,40px) 80px;
+}
+
+/* ---------- specimen header ---------- */
+.sheet-head{
+  border-bottom:1px solid var(--hairline);
+  padding-bottom:20px;
+  margin-bottom:40px;
+}
+.sheet-head h1{
+  font-size:clamp(20px,3vw,26px);
+  font-weight:650;
+  letter-spacing:-0.02em;
+}
+.sheet-head .meta{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:8px 12px;
+  margin-top:10px;
+  font-size:13px;
+  color:var(--muted);
+}
+.sheet-head .meta code{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:12px;
+  background:var(--surface);
+  border:1px solid var(--hairline);
+  border-radius:6px;
+  padding:2px 7px;
+  color:var(--ink);
+}
+.sheet-head .meta .dot{color:var(--subtle)}
+.sheet-head .meta .count{
+  color:var(--accent);
+  font-weight:600;
+}
+
+/* ---------- variant block ---------- */
+.variant{margin-bottom:48px}
+.variant:last-child{margin-bottom:0}
+
+.variant-label{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:6px 12px;
+  margin-bottom:14px;
+}
+.variant-label .id{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:12px;
+  font-weight:600;
+  color:var(--ink);
+  background:var(--accent-soft);
+  border:1px solid #d4def8;
+  border-radius:6px;
+  padding:3px 9px;
+}
+.variant-label .hint{
+  font-size:13px;
+  color:var(--muted);
+}
+
+.stage{
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  background:var(--surface);
+  padding:clamp(18px,4vw,40px);
+}
+
+/* =========================================================
+   COMPONENT: Now page — list of 当前在做 / 在读 / 在学
+   ========================================================= */
+.now{
+  background:var(--bg);
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  padding:clamp(20px,3.5vw,36px);
+  max-width:640px;
+  margin:0 auto;
+}
+
+.now-head{
+  display:flex;
+  align-items:flex-start;
+  gap:16px;
+}
+.now-avatar{
+  flex:0 0 auto;
+  width:52px;
+  height:52px;
+  border-radius:50%;
+  background:var(--surface-2);
+  border:1px solid var(--hairline);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:600;
+  font-size:17px;
+  letter-spacing:0.02em;
+  color:var(--muted);
+}
+.now-id{flex:1 1 auto;min-width:0}
+.now-id h2{
+  font-size:18px;
+  font-weight:650;
+  letter-spacing:-0.01em;
+}
+.now-id .role{
+  font-size:13.5px;
+  color:var(--muted);
+  margin-top:2px;
+}
+.now-stamp{
+  margin-top:14px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-style:italic;
+  font-size:14px;
+  color:var(--ink);
+}
+.now-stamp .live{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-family:system-ui,-apple-system,sans-serif;
+  font-style:normal;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  color:var(--ok);
+}
+.now-stamp .live::before{
+  content:"";
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--ok);
+  box-shadow:0 0 0 3px rgba(31,122,68,0.14);
+  animation:pulse 2.4s ease-in-out infinite;
+}
+@keyframes pulse{
+  0%,100%{opacity:1}
+  50%{opacity:0.45}
+}
+.now-stamp .sep{color:var(--subtle)}
+.now-stamp .when{color:var(--muted);font-style:normal;font-family:system-ui,sans-serif;font-size:12.5px}
+
+.now-intro{
+  margin-top:18px;
+  padding-top:18px;
+  border-top:1px solid var(--hairline);
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:15.5px;
+  line-height:1.6;
+  color:var(--ink);
+}
+
+/* ----- the three lists ----- */
+.now-sections{
+  margin-top:8px;
+}
+.now-section{
+  padding-top:26px;
+}
+.now-section-head{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:14px;
+}
+.now-section-head .glyph{
+  flex:0 0 auto;
+  width:26px;
+  height:26px;
+  border-radius:7px;
+  background:var(--surface);
+  border:1px solid var(--hairline);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--accent);
+}
+.now-section-head .glyph svg{display:block}
+.now-section-head h3{
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+.now-section-head .zh{
+  font-size:13px;
+  color:var(--subtle);
+  font-weight:500;
+  letter-spacing:0;
+  text-transform:none;
+}
+
+.now-list{
+  list-style:none;
+  display:flex;
+  flex-direction:column;
+}
+.now-list li{
+  position:relative;
+  padding:11px 0 11px 22px;
+  border-top:1px solid var(--hairline);
+}
+.now-list li:first-child{border-top:none;padding-top:2px}
+.now-list li::before{
+  content:"";
+  position:absolute;
+  left:2px;
+  top:18px;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:var(--ink-line);
+}
+.now-list li:first-child::before{top:9px}
+.now-list .title{
+  font-size:15px;
+  font-weight:550;
+  color:var(--ink);
+}
+.now-list .title em{
+  font-family:Georgia,serif;
+  font-style:italic;
+  font-weight:400;
+}
+.now-list .note{
+  display:block;
+  font-size:13px;
+  color:var(--muted);
+  margin-top:3px;
+}
+.now-list .meta-row{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:6px 10px;
+  margin-top:7px;
+}
+.now-list .tag{
+  font-size:11px;
+  font-weight:500;
+  color:var(--muted);
+  background:var(--surface);
+  border:1px solid var(--hairline);
+  border-radius:20px;
+  padding:2px 9px;
+}
+.now-list .prog{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  font-size:11.5px;
+  color:var(--muted);
+}
+.now-list .bar{
+  width:64px;
+  height:5px;
+  border-radius:3px;
+  background:var(--surface-2);
+  overflow:hidden;
+}
+.now-list .bar span{
+  display:block;
+  height:100%;
+  background:var(--accent);
+  border-radius:3px;
+}
+.now-list a.link{
+  color:var(--accent);
+  text-decoration:none;
+  border-bottom:1px solid transparent;
+  font-size:13px;
+  font-weight:500;
+}
+.now-list a.link:hover{border-bottom-color:var(--accent)}
+
+.now-foot{
+  margin-top:28px;
+  padding-top:18px;
+  border-top:1px solid var(--hairline);
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  font-size:12.5px;
+  color:var(--subtle);
+}
+.now-foot .why{color:var(--muted)}
+.now-foot a{
+  color:var(--accent);
+  text-decoration:none;
+  font-weight:500;
+}
+.now-foot a:hover{text-decoration:underline}
+
+/* ----- accessible focus ----- */
+a:focus-visible,
+li:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:3px;
+  border-radius:4px;
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+
+@media (max-width:420px){
+  .now-head{gap:12px}
+  .now-avatar{width:46px;height:46px;font-size:15px}
+}
+
+/* slot caption for photo placeholder */
+.slot-cap{
+  display:block;
+  text-align:center;
+  font-size:10px;
+  color:var(--subtle);
+  letter-spacing:0.04em;
+  margin-top:6px;
+}
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header class="sheet-head">
+    <h1>Now page / Now 页</h1>
+    <div class="meta">
+      <code>now_page</code>
+      <span class="dot">·</span>
+      <span>personality</span>
+      <span class="dot">·</span>
+      <span class="count">1 variant</span>
+    </div>
+  </header>
+
+  <!-- ============ VARIANT: list ============ -->
+  <section class="variant" aria-labelledby="v-list">
+    <div class="variant-label">
+      <span class="id" id="v-list">list</span>
+      <span class="hint">当前在做 / 在读 / 在学 列表</span>
+    </div>
+
+    <div class="stage">
+      <article class="now" aria-label="Now page for Maya Chen">
+
+        <div class="now-head">
+          <div class="now-avatar" role="img" aria-label="Photo slot — portrait of Maya Chen, showing initials M C">MC</div>
+          <div class="now-id">
+            <h2>Maya Chen</h2>
+            <p class="role">Product designer · Brooklyn, NY</p>
+            <p class="now-stamp">
+              <span class="live" aria-label="Currently active">Now</span>
+              <span class="sep">·</span>
+              <span class="when">Updated May 28, 2026</span>
+            </p>
+          </div>
+        </div>
+
+        <p class="now-intro">
+          A snapshot of what has my attention this month — not a résumé, just where my hours are
+          actually going. Inspired by Derek Sivers&rsquo; <em>/now</em> page.
+        </p>
+
+        <div class="now-sections">
+
+          <!-- 当前在做 -->
+          <section class="now-section" aria-labelledby="sec-doing">
+            <div class="now-section-head">
+              <span class="glyph" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 1v6l4 2"/><circle cx="7" cy="7" r="6"/></svg>
+              </span>
+              <h3 id="sec-doing">Working on <span class="zh">当前在做</span></h3>
+            </div>
+            <ul class="now-list">
+              <li>
+                <span class="title">Redesigning the onboarding flow at Loomwork</span>
+                <span class="note">Cutting first-run setup from 9 steps to 4; running 5 moderated usability sessions this week.</span>
+                <span class="meta-row">
+                  <span class="tag">work</span>
+                  <span class="prog"><span class="bar"><span style="width:60%"></span></span>~60% through</span>
+                </span>
+              </li>
+              <li>
+                <span class="title">Self-publishing a zine on interface microcopy</span>
+                <span class="note">Writing, typesetting, and risograph-printing 200 copies for a June launch.</span>
+                <span class="meta-row">
+                  <span class="tag">side project</span>
+                  <a class="link" href="#zine">follow along →</a>
+                </span>
+              </li>
+              <li>
+                <span class="title">Mentoring two designers through ADPList</span>
+                <span class="note">Biweekly portfolio reviews — both are job-hunting for their first product role.</span>
+                <span class="meta-row">
+                  <span class="tag">community</span>
+                </span>
+              </li>
+            </ul>
+          </section>
+
+          <!-- 在读 -->
+          <section class="now-section" aria-labelledby="sec-reading">
+            <div class="now-section-head">
+              <span class="glyph" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3.5C5.5 2.3 3.5 2 1.5 2.5v8C3.5 10 5.5 10.3 7 11.5 8.5 10.3 10.5 10 12.5 10.5v-8C10.5 2 8.5 2.3 7 3.5z"/><path d="M7 3.5v8"/></svg>
+              </span>
+              <h3 id="sec-reading">Reading <span class="zh">在读</span></h3>
+            </div>
+            <ul class="now-list">
+              <li>
+                <span class="title"><em>The Shape of Design</em> — Frank Chimero</span>
+                <span class="note">Re-read. The chapter on improvisation keeps changing how I run kickoffs.</span>
+                <span class="meta-row">
+                  <span class="tag">book</span>
+                  <span class="prog"><span class="bar"><span style="width:80%"></span></span>p. 142 / 178</span>
+                </span>
+              </li>
+              <li>
+                <span class="title"><em>The Overstory</em> — Richard Powers</span>
+                <span class="note">Slow bedtime fiction. One of the few novels I&rsquo;ve read twice on purpose.</span>
+                <span class="meta-row">
+                  <span class="tag">fiction</span>
+                  <span class="prog"><span class="bar"><span style="width:35%"></span></span>just started</span>
+                </span>
+              </li>
+              <li>
+                <span class="title">Ink &amp; Switch essays on local-first software</span>
+                <span class="note">Working through the archive to inform an offline sync project at work.</span>
+                <span class="meta-row">
+                  <span class="tag">essays</span>
+                  <a class="link" href="#inkswitch">reading list →</a>
+                </span>
+              </li>
+            </ul>
+          </section>
+
+          <!-- 在学 -->
+          <section class="now-section" aria-labelledby="sec-learning">
+            <div class="now-section-head">
+              <span class="glyph" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 1.5l6 3-6 3-6-3 6-3z"/><path d="M3 6v3c0 1.1 1.8 2 4 2s4-.9 4-2V6"/></svg>
+              </span>
+              <h3 id="sec-learning">Learning <span class="zh">在学</span></h3>
+            </div>
+            <ul class="now-list">
+              <li>
+                <span class="title">Hand lettering with a broad-edge nib</span>
+                <span class="note">One A4 page of drills every morning before email. Messy but improving.</span>
+                <span class="meta-row">
+                  <span class="tag">craft</span>
+                  <span class="prog"><span class="bar"><span style="width:25%"></span></span>week 3 of ~12</span>
+                </span>
+              </li>
+              <li>
+                <span class="title">Conversational Mandarin</span>
+                <span class="note">15 min/day on flashcards plus a weekly call with a tutor in Taipei.</span>
+                <span class="meta-row">
+                  <span class="tag">language</span>
+                  <span class="prog"><span class="bar"><span style="width:45%"></span></span>~600 words</span>
+                </span>
+              </li>
+              <li>
+                <span class="title">Writing small tools in Svelte</span>
+                <span class="note">Building a personal reading tracker so I stop lying to myself on this page.</span>
+                <span class="meta-row">
+                  <span class="tag">code</span>
+                  <a class="link" href="#svelte">repo →</a>
+                </span>
+              </li>
+            </ul>
+          </section>
+
+        </div>
+
+        <footer class="now-foot">
+          <span class="why">This page changes when my priorities do — usually monthly.</span>
+          <a href="#changelog">What changed?</a>
+        </footer>
+
+      </article>
+      <span class="slot-cap">Avatar above is a photo slot — neutral placeholder, no external image.</span>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>mono-zine — photo specimen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    min-height:100vh;
+    display:grid;
+    place-items:center;
+    padding:28px;
+    background:#f4f3ee;
+    /* faint ruled-paper hairline behind everything (from the real page) */
+    background-image:linear-gradient(#d6d4ca 1px, transparent 1px);
+    background-size:100% 2.04em;
+    background-position:0 -1px;
+    color:#1a1a1a;
+    font-family:'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  }
+  img{max-width:100%;display:block;}
+
+  /* framed plate — values copied from index.html .plate / .platebox / figcaption */
+  .plate{
+    width:100%;
+    max-width:260px;
+    margin:0;
+  }
+  .platebox{
+    border:1.5px solid #1a1a1a;
+    padding:8px;
+    background:#f4f3ee;
+  }
+  .platebox img{
+    width:100%;
+    height:auto;
+    filter:grayscale(.15) contrast(1.02);
+  }
+  figcaption{
+    display:flex;
+    justify-content:space-between;
+    font-size:12px;
+    letter-spacing:.5px;
+    text-transform:uppercase;
+    color:#56544e;
+    padding-top:7px;
+  }
+  figcaption .red{color:#d83a2a;font-weight:700;}
+</style>
+</head>
+<body>
+  <figure class="plate">
+    <div class="platebox">
+      <img src="portrait.webp" alt="Risograph-style poster plate" width="280" height="330" />
+    </div>
+    <figcaption><span class="red">[ fig.01 ]</span><span>plate / poster</span></figcaption>
+  </figure>
+</body>
+</html>

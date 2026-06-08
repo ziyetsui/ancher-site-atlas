@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Experience / 工作经历 — specimen sheet</title>
+<style>
+:root{--bg:#ffffff;--surface:#f6f6f4;--surface-2:#efefea;--ink:#191917;--muted:#6b6b67;--subtle:#9a9a94;--accent:#2f56ff;--accent-soft:#e9eefc;--hairline:#e7e7e2;--ink-line:#191917;--ok:#1f7a44;--radius:12px;--pad:24px}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:15px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+.serif{font-family:Georgia,"Times New Roman",serif}
+
+/* ---------- specimen scaffold ---------- */
+.sheet{
+  max-width:980px;
+  margin:0 auto;
+  padding:clamp(20px,5vw,56px) clamp(16px,4vw,40px) 80px;
+}
+
+.sheet-head{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:8px 16px;
+  padding-bottom:18px;
+  border-bottom:1px solid var(--hairline);
+  margin-bottom:40px;
+}
+.sheet-head h1{
+  font-family:Georgia,serif;
+  font-weight:400;
+  font-size:clamp(22px,4vw,30px);
+  letter-spacing:-.01em;
+  margin:0;
+}
+.sheet-head .cat{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  color:var(--accent);
+  background:var(--accent-soft);
+  padding:3px 9px;
+  border-radius:999px;
+}
+.sheet-head .count{
+  margin-left:auto;
+  font-size:13px;
+  color:var(--muted);
+  font-variant-numeric:tabular-nums;
+}
+
+.variant{margin-bottom:48px}
+.variant:last-child{margin-bottom:0}
+
+.variant-label{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:6px 12px;
+  margin-bottom:14px;
+}
+.variant-label .id{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:13px;
+  font-weight:600;
+  color:var(--ink);
+  background:var(--surface-2);
+  padding:2px 8px;
+  border-radius:6px;
+}
+.variant-label .hint{
+  font-size:13px;
+  color:var(--muted);
+}
+
+.stage{
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  background:var(--surface);
+  padding:clamp(20px,4vw,40px);
+}
+
+/* photo slot — neutral placeholder */
+.avatar{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--surface-2);
+  color:var(--subtle);
+  font-weight:600;
+  letter-spacing:.04em;
+  border-radius:50%;
+  flex:none;
+  user-select:none;
+}
+.avatar::after{
+  content:attr(data-slot);
+  position:absolute;
+}
+.avatar span{position:relative;z-index:1}
+
+a{color:var(--accent)}
+:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:3px;
+  border-radius:4px;
+}
+
+/* =======================================================
+   VARIANT 1 — timeline (竖向时间线)
+   ======================================================= */
+.tl{
+  position:relative;
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+.tl::before{
+  content:"";
+  position:absolute;
+  left:7px;
+  top:10px;
+  bottom:10px;
+  width:2px;
+  background:var(--hairline);
+}
+.tl-item{
+  position:relative;
+  padding:0 0 30px 36px;
+}
+.tl-item:last-child{padding-bottom:0}
+.tl-dot{
+  position:absolute;
+  left:0;
+  top:5px;
+  width:16px;
+  height:16px;
+  border-radius:50%;
+  background:var(--bg);
+  border:2px solid var(--subtle);
+  box-sizing:border-box;
+}
+.tl-item.is-current .tl-dot{
+  border-color:var(--accent);
+  background:var(--accent);
+  box-shadow:0 0 0 4px var(--accent-soft);
+}
+.tl-period{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:12px;
+  letter-spacing:.04em;
+  color:var(--muted);
+  font-variant-numeric:tabular-nums;
+  margin-bottom:4px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.tl-period .now{
+  color:var(--ok);
+  background:rgba(31,122,68,.1);
+  font-family:system-ui,sans-serif;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  font-size:10px;
+  font-weight:600;
+  padding:1px 6px;
+  border-radius:999px;
+}
+.tl-role{
+  font-size:17px;
+  font-weight:600;
+  letter-spacing:-.01em;
+  margin:0 0 1px;
+}
+.tl-company{
+  font-size:14px;
+  color:var(--ink);
+}
+.tl-company .at{color:var(--subtle)}
+.tl-loc{color:var(--muted)}
+.tl-desc{
+  margin:8px 0 0;
+  font-size:14px;
+  color:var(--muted);
+  line-height:1.55;
+  max-width:60ch;
+}
+.tl-tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-top:10px;
+}
+.tl-tags li{
+  font-size:11.5px;
+  color:var(--ink);
+  background:var(--surface-2);
+  border:1px solid var(--hairline);
+  padding:2px 8px;
+  border-radius:999px;
+  letter-spacing:.01em;
+}
+
+/* =======================================================
+   VARIANT 2 — compact_list (公司 · 职位 · 年份)
+   ======================================================= */
+.cl{
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+.cl-item{
+  display:grid;
+  grid-template-columns:40px 1fr auto;
+  align-items:center;
+  gap:0 16px;
+  padding:14px 0;
+  border-bottom:1px solid var(--hairline);
+}
+.cl-item:first-child{padding-top:0}
+.cl-item:last-child{border-bottom:0;padding-bottom:0}
+.cl-logo{
+  width:40px;
+  height:40px;
+  border-radius:9px;
+  font-size:13px;
+}
+.cl-body{min-width:0}
+.cl-company{
+  font-size:15px;
+  font-weight:600;
+  letter-spacing:-.005em;
+}
+.cl-role{
+  font-size:13.5px;
+  color:var(--muted);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.cl-role .sep{
+  color:var(--subtle);
+  padding:0 6px;
+}
+.cl-years{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:12.5px;
+  color:var(--muted);
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+  text-align:right;
+}
+.cl-years .now{color:var(--ok);font-weight:600}
+
+@media (max-width:480px){
+  .cl-item{
+    grid-template-columns:36px 1fr;
+    grid-template-areas:
+      "logo body"
+      ".    years";
+    row-gap:4px;
+  }
+  .cl-logo{grid-area:logo;width:36px;height:36px}
+  .cl-body{grid-area:body}
+  .cl-years{grid-area:years;text-align:left}
+}
+
+@media (prefers-reduced-motion:no-preference){
+  .tl-item.is-current .tl-dot{
+    animation:pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{box-shadow:0 0 0 4px var(--accent-soft)}
+    50%{box-shadow:0 0 0 7px rgba(47,86,255,.06)}
+  }
+}
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header class="sheet-head">
+    <h1>Experience <span class="serif" style="color:var(--subtle)">/ 工作经历</span></h1>
+    <span class="cat">trust</span>
+    <span class="count">2 variants</span>
+  </header>
+
+  <!-- ============ VARIANT 1 : timeline ============ -->
+  <section class="variant" aria-labelledby="v-timeline">
+    <div class="variant-label">
+      <code class="id">timeline</code>
+      <span class="hint">竖向时间线</span>
+    </div>
+    <div class="stage">
+      <h2 id="v-timeline" class="serif" style="margin:0 0 22px;font-weight:400;font-size:18px">
+        Maya Chen — Product Designer
+      </h2>
+      <ol class="tl">
+
+        <li class="tl-item is-current">
+          <span class="tl-dot" aria-hidden="true"></span>
+          <div class="tl-period">
+            2022 — Present
+            <span class="now">Now</span>
+          </div>
+          <h3 class="tl-role">Staff Product Designer</h3>
+          <div class="tl-company">
+            <strong>Linear</strong>
+            <span class="at"> · </span><span class="tl-loc">Remote (PST)</span>
+          </div>
+          <p class="tl-desc">
+            Lead designer for the issue-tracking core. Shipped the redesigned
+            triage inbox and keyboard-first command menu now used by 12,000+ teams.
+          </p>
+          <ul class="tl-tags">
+            <li>Design systems</li>
+            <li>Prototyping</li>
+            <li>0→1</li>
+          </ul>
+        </li>
+
+        <li class="tl-item">
+          <span class="tl-dot" aria-hidden="true"></span>
+          <div class="tl-period">2019 — 2022</div>
+          <h3 class="tl-role">Senior Product Designer</h3>
+          <div class="tl-company">
+            <strong>Figma</strong>
+            <span class="at"> · </span><span class="tl-loc">San Francisco, CA</span>
+          </div>
+          <p class="tl-desc">
+            Owned the components &amp; variants surface from beta to GA. Partnered
+            with three engineers to cut handoff time by roughly 40%.
+          </p>
+          <ul class="tl-tags">
+            <li>Component models</li>
+            <li>Design ops</li>
+          </ul>
+        </li>
+
+        <li class="tl-item">
+          <span class="tl-dot" aria-hidden="true"></span>
+          <div class="tl-period">2017 — 2019</div>
+          <h3 class="tl-role">Product Designer</h3>
+          <div class="tl-company">
+            <strong>Stripe</strong>
+            <span class="at"> · </span><span class="tl-loc">Seattle, WA</span>
+          </div>
+          <p class="tl-desc">
+            Designed the Dashboard onboarding flow and the first version of the
+            Radar fraud-rules editor.
+          </p>
+        </li>
+
+        <li class="tl-item">
+          <span class="tl-dot" aria-hidden="true"></span>
+          <div class="tl-period">2015 — 2017</div>
+          <h3 class="tl-role">UX Designer</h3>
+          <div class="tl-company">
+            <strong>Mailchimp</strong>
+            <span class="at"> · </span><span class="tl-loc">Atlanta, GA</span>
+          </div>
+          <p class="tl-desc">
+            First design hire on the mobile team; shipped the campaign editor for iOS.
+          </p>
+        </li>
+
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ VARIANT 2 : compact_list ============ -->
+  <section class="variant" aria-labelledby="v-compact">
+    <div class="variant-label">
+      <code class="id">compact_list</code>
+      <span class="hint">紧凑列表：公司 · 职位 · 年份</span>
+    </div>
+    <div class="stage">
+      <h2 id="v-compact" class="serif" style="margin:0 0 18px;font-weight:400;font-size:18px">
+        Maya Chen — Experience
+      </h2>
+      <ul class="cl">
+
+        <li class="cl-item">
+          <!-- photo slot: company logo -->
+          <span class="avatar cl-logo" role="img" aria-label="Linear logo placeholder"><span>LN</span></span>
+          <div class="cl-body">
+            <div class="cl-company">Linear</div>
+            <div class="cl-role">Staff Product Designer<span class="sep">·</span>Remote</div>
+          </div>
+          <div class="cl-years"><span class="now">2022 — Now</span></div>
+        </li>
+
+        <li class="cl-item">
+          <span class="avatar cl-logo" role="img" aria-label="Figma logo placeholder"><span>FG</span></span>
+          <div class="cl-body">
+            <div class="cl-company">Figma</div>
+            <div class="cl-role">Senior Product Designer<span class="sep">·</span>San Francisco</div>
+          </div>
+          <div class="cl-years">2019 — 2022</div>
+        </li>
+
+        <li class="cl-item">
+          <span class="avatar cl-logo" role="img" aria-label="Stripe logo placeholder"><span>ST</span></span>
+          <div class="cl-body">
+            <div class="cl-company">Stripe</div>
+            <div class="cl-role">Product Designer<span class="sep">·</span>Seattle</div>
+          </div>
+          <div class="cl-years">2017 — 2019</div>
+        </li>
+
+        <li class="cl-item">
+          <span class="avatar cl-logo" role="img" aria-label="Mailchimp logo placeholder"><span>MC</span></span>
+          <div class="cl-body">
+            <div class="cl-company">Mailchimp</div>
+            <div class="cl-role">UX Designer<span class="sep">·</span>Atlanta</div>
+          </div>
+          <div class="cl-years">2015 — 2017</div>
+        </li>
+
+      </ul>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>metrics — trust module specimen</title>
+<style>
+:root{--bg:#ffffff;--surface:#f6f6f4;--surface-2:#efefea;--ink:#191917;--muted:#6b6b67;--subtle:#9a9a94;--accent:#2f56ff;--accent-soft:#e9eefc;--hairline:#e7e7e2;--ink-line:#191917;--ok:#1f7a44;--radius:12px;--pad:24px}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:16px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+.serif{font-family:Georgia,"Times New Roman",serif}
+
+/* ---------- page shell ---------- */
+.sheet{max-width:1040px;margin:0 auto;padding:clamp(20px,4vw,48px) clamp(16px,4vw,40px)}
+
+.sheet-header{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px;
+  padding-bottom:18px;margin-bottom:40px;
+  border-bottom:1px solid var(--ink-line);
+}
+.sheet-header h1{
+  font-size:clamp(18px,2.4vw,22px);
+  font-weight:600;letter-spacing:-.01em;margin:0;
+}
+.sheet-header .cat{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:12px;color:var(--muted);
+  background:var(--surface-2);
+  padding:3px 8px;border-radius:6px;
+}
+.sheet-header .count{
+  margin-left:auto;
+  font-size:13px;color:var(--subtle);
+}
+.sheet-header .sep{color:var(--subtle)}
+
+/* ---------- variant block ---------- */
+.variant{margin-bottom:44px}
+.variant:last-child{margin-bottom:0}
+.variant-label{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;
+  margin-bottom:12px;
+}
+.variant-label .id{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:13px;font-weight:600;color:var(--ink);
+}
+.variant-label .id::before{content:"#";color:var(--accent);font-weight:600}
+.variant-label .hint{font-size:13px;color:var(--muted)}
+
+.stage{
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  background:var(--surface);
+  padding:clamp(20px,4vw,40px) clamp(18px,4vw,40px);
+  overflow:hidden;
+}
+
+/* visible focus for any interactive demo bits */
+a:focus-visible,button:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:3px;
+  border-radius:4px;
+}
+
+/* ===================================================== */
+/* VARIANT: stat_row                                     */
+/* ===================================================== */
+.statrow{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1px;
+  background:var(--hairline);
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  overflow:hidden;
+}
+.statrow .cell{
+  background:var(--bg);
+  padding:22px 24px;
+  display:flex;flex-direction:column;gap:4px;
+}
+.statrow .num{
+  font-size:clamp(28px,4vw,38px);
+  font-weight:600;
+  letter-spacing:-.02em;
+  line-height:1;
+  font-variant-numeric:tabular-nums;
+}
+.statrow .num .unit{color:var(--accent);font-weight:600}
+.statrow .label{
+  font-size:13px;color:var(--muted);
+  margin-top:6px;
+}
+.statrow .sub{
+  font-size:12px;color:var(--subtle);
+  display:inline-flex;align-items:center;gap:5px;
+}
+.statrow .sub .dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--ok);flex:none;
+}
+
+@media (max-width:720px){
+  .statrow{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:420px){
+  .statrow{grid-template-columns:1fr}
+}
+
+/* ===================================================== */
+/* VARIANT: big_numerals                                 */
+/* ===================================================== */
+.bignum{
+  display:grid;
+  grid-template-columns:1.1fr 1fr;
+  gap:clamp(28px,5vw,56px);
+  align-items:center;
+}
+.bignum .lead{
+  font-size:clamp(13px,1.6vw,15px);
+  color:var(--muted);
+  max-width:34ch;
+}
+.bignum .lead .kicker{
+  display:block;
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--subtle);margin-bottom:12px;
+}
+.bignum .lead h3{
+  font-family:Georgia,serif;
+  font-size:clamp(20px,3vw,26px);
+  font-weight:400;line-height:1.25;
+  color:var(--ink);margin:0 0 12px;
+}
+.bignum .photo{
+  margin-top:18px;
+  display:flex;align-items:center;gap:10px;
+}
+.bignum .avatar{
+  width:40px;height:40px;border-radius:50%;
+  background:var(--surface-2);
+  display:grid;place-items:center;
+  font-size:13px;font-weight:600;color:var(--muted);
+  border:1px solid var(--hairline);flex:none;
+}
+.bignum .photo .who{font-size:12px;color:var(--muted);line-height:1.35}
+.bignum .photo .who b{color:var(--ink);font-weight:600;display:block}
+.bignum .photo .who small{display:block;color:var(--subtle);font-size:11px}
+
+.bignum .stack{display:flex;flex-direction:column}
+.bignum .big{
+  padding:18px 0;
+  border-top:1px solid var(--hairline);
+}
+.bignum .big:first-child{border-top:0;padding-top:0}
+.bignum .big:last-child{padding-bottom:0}
+.bignum .big .figure{
+  font-size:clamp(54px,9vw,84px);
+  font-weight:600;
+  letter-spacing:-.04em;
+  line-height:.92;
+  font-variant-numeric:tabular-nums;
+  color:var(--ink);
+}
+.bignum .big .figure .unit{
+  font-size:.42em;
+  color:var(--accent);
+  vertical-align:baseline;
+  margin-left:2px;
+  letter-spacing:-.01em;
+}
+.bignum .big .cap{
+  font-size:13px;color:var(--muted);
+  margin-top:8px;max-width:30ch;
+}
+
+@media (max-width:680px){
+  .bignum{grid-template-columns:1fr;gap:28px}
+}
+
+footer.note{
+  margin-top:48px;padding-top:16px;
+  border-top:1px solid var(--hairline);
+  font-size:12px;color:var(--subtle);
+}
+footer.note code{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:11px;color:var(--muted);
+}
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header class="sheet-header">
+    <h1>Metrics / 数据成就</h1>
+    <span class="cat">trust</span>
+    <span class="sep" aria-hidden="true">·</span>
+    <span class="count">2 variants</span>
+  </header>
+
+  <!-- ============ VARIANT 1: stat_row ============ -->
+  <section class="variant" aria-labelledby="v-statrow">
+    <div class="variant-label">
+      <span class="id" id="v-statrow">stat_row</span>
+      <span class="hint">一排统计：数字 + 标签</span>
+    </div>
+    <div class="stage">
+      <dl class="statrow">
+        <div class="cell">
+          <dt class="label">Products shipped</dt>
+          <dd class="num">37<span class="unit"></span></dd>
+          <span class="sub"><span class="dot" aria-hidden="true"></span>across 4 teams</span>
+        </div>
+        <div class="cell">
+          <dt class="label">Years designing</dt>
+          <dd class="num">9</dd>
+          <span class="sub"><span class="dot" aria-hidden="true"></span>since 2017</span>
+        </div>
+        <div class="cell">
+          <dt class="label">Avg. NPS lift</dt>
+          <dd class="num">+24<span class="unit">pt</span></dd>
+          <span class="sub"><span class="dot" aria-hidden="true"></span>post-redesign</span>
+        </div>
+        <div class="cell">
+          <dt class="label">Users reached</dt>
+          <dd class="num">2.1<span class="unit">M</span></dd>
+          <span class="sub"><span class="dot" aria-hidden="true"></span>monthly active</span>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ VARIANT 2: big_numerals ============ -->
+  <section class="variant" aria-labelledby="v-bignum">
+    <div class="variant-label">
+      <span class="id" id="v-bignum">big_numerals</span>
+      <span class="hint">巨号数字块</span>
+    </div>
+    <div class="stage">
+      <div class="bignum">
+        <div class="lead">
+          <span class="kicker">By the numbers</span>
+          <h3 class="serif">A decade of shipping design systems people actually keep.</h3>
+          <p>Three figures that hold up under scrutiny — measured, not estimated, and tied to work I can walk you through.</p>
+          <div class="photo">
+            <span class="avatar" aria-hidden="true">MC</span>
+            <span class="who">
+              <b>Maya Chen</b>
+              <small>Photo slot · product designer</small>
+            </span>
+          </div>
+        </div>
+
+        <div class="stack">
+          <div class="big">
+            <div class="figure">2.1<span class="unit">M</span></div>
+            <p class="cap">Monthly active users across products I led design on.</p>
+          </div>
+          <div class="big">
+            <div class="figure">37</div>
+            <p class="cap">Products shipped end-to-end, from research to launch.</p>
+          </div>
+          <div class="big">
+            <div class="figure">+24<span class="unit">pt</span></div>
+            <p class="cap">Median NPS lift in the two quarters after redesign.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="note">
+    Structure specimen · neutral style · system fonts only · no external resources.
+    Tokens via <code>:root</code> CSS variables. Photo slots are CSS placeholders.
+  </footer>
+
+</main>
+</body>
+</html>

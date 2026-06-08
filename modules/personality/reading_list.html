@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>reading_list · specimen sheet</title>
+<style>
+:root{--bg:#ffffff;--surface:#f6f6f4;--surface-2:#efefea;--ink:#191917;--muted:#6b6b67;--subtle:#9a9a94;--accent:#2f56ff;--accent-soft:#e9eefc;--hairline:#e7e7e2;--ink-line:#191917;--ok:#1f7a44;--radius:12px;--pad:24px}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+html{-webkit-text-size-adjust:100%}
+
+body{
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+.sheet{
+  max-width:1080px;
+  margin:0 auto;
+  padding:40px 24px 80px;
+}
+
+/* ---------- specimen header ---------- */
+.sheet-head{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:10px 14px;
+  padding-bottom:18px;
+  border-bottom:1px solid var(--hairline);
+  margin-bottom:40px;
+}
+.sheet-head h1{
+  font-size:18px;
+  font-weight:650;
+  letter-spacing:-.01em;
+}
+.sheet-head .crumb{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:12.5px;
+  color:var(--muted);
+}
+.sheet-head .crumb::before{content:"·";margin-right:14px;color:var(--subtle)}
+.sheet-head .count{
+  margin-left:auto;
+  font-size:12px;
+  color:var(--muted);
+  border:1px solid var(--hairline);
+  border-radius:999px;
+  padding:4px 11px;
+  background:var(--surface);
+}
+
+/* ---------- variant blocks ---------- */
+.variant{margin-bottom:48px}
+.variant:last-child{margin-bottom:0}
+
+.variant-label{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:6px 12px;
+  margin-bottom:14px;
+}
+.variant-label .id{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:12.5px;
+  font-weight:600;
+  color:var(--ink);
+  background:var(--surface-2);
+  padding:3px 8px;
+  border-radius:6px;
+}
+.variant-label .hint{
+  font-size:13px;
+  color:var(--muted);
+}
+
+.stage{
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  background:var(--surface);
+  padding:var(--pad);
+}
+
+/* ---------- shared module card frame ---------- */
+.rl{
+  background:var(--bg);
+  border:1px solid var(--hairline);
+  border-radius:10px;
+  padding:22px 24px;
+  max-width:560px;
+}
+.rl-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:6px;
+}
+.rl-title{
+  font-size:15px;
+  font-weight:650;
+  letter-spacing:-.005em;
+}
+.rl-title .zh{
+  font-weight:450;
+  color:var(--muted);
+  margin-left:7px;
+  font-size:14px;
+}
+.rl-meta{
+  font-size:12px;
+  color:var(--subtle);
+  white-space:nowrap;
+  padding-top:2px;
+}
+.rl-sub{
+  font-family:Georgia,"Times New Roman",serif;
+  font-style:italic;
+  font-size:13.5px;
+  color:var(--muted);
+  margin-bottom:18px;
+}
+
+/* ---------- variant: list ---------- */
+.rl-list{
+  list-style:none;
+  display:flex;
+  flex-direction:column;
+}
+.rl-item{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:baseline;
+  gap:4px 14px;
+  padding:13px 0;
+  border-top:1px solid var(--hairline);
+}
+.rl-item:first-child{border-top:0;padding-top:4px}
+.rl-rank{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:12px;
+  color:var(--subtle);
+  font-variant-numeric:tabular-nums;
+  padding-top:1px;
+}
+.rl-book{min-width:0}
+.rl-book .bk-title{
+  font-size:14px;
+  font-weight:550;
+  letter-spacing:-.003em;
+}
+.rl-book .bk-author{
+  font-size:13px;
+  color:var(--muted);
+}
+.rl-status{
+  justify-self:end;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.02em;
+  text-transform:uppercase;
+  padding:3px 9px;
+  border-radius:999px;
+  white-space:nowrap;
+}
+.rl-status.reading{
+  color:var(--accent);
+  background:var(--accent-soft);
+}
+.rl-status.done{
+  color:var(--ok);
+  background:#e7f3ec;
+}
+.rl-status.queued{
+  color:var(--muted);
+  background:var(--surface-2);
+}
+.rl-note{
+  grid-column:2 / -1;
+  margin-top:5px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:13px;
+  font-style:italic;
+  color:var(--muted);
+  line-height:1.45;
+}
+.rl-foot{
+  margin-top:18px;
+  padding-top:14px;
+  border-top:1px solid var(--hairline);
+}
+.rl-link{
+  font-size:13px;
+  font-weight:550;
+  color:var(--accent);
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  border-radius:6px;
+}
+.rl-link:hover{text-decoration:underline}
+.rl-link svg{width:13px;height:13px}
+
+/* ---------- variant: covers ---------- */
+.rl-covers .rl{max-width:640px}
+.cover-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+}
+.cover{
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+}
+.cover-art{
+  position:relative;
+  aspect-ratio:2 / 3;
+  background:var(--surface-2);
+  border:1px solid var(--hairline);
+  border-radius:7px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  padding:11px 11px 12px;
+}
+.cover-art .corner{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:9px;
+  color:var(--subtle);
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+.cover-art .spine{
+  position:absolute;
+  left:0;top:0;bottom:0;
+  width:5px;
+  background:var(--ink-line);
+  opacity:.16;
+}
+.cover-art .glyph{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:26px;
+  font-weight:700;
+  color:var(--ink);
+  opacity:.78;
+  line-height:1;
+}
+.cover-art .ph-tag{
+  position:absolute;
+  bottom:7px;right:8px;
+  font-size:8.5px;
+  color:var(--subtle);
+}
+.cover-art img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.cover-art.is-reading{
+  background:var(--accent-soft);
+  border-color:#cdd9fb;
+}
+.cover-art.is-reading .spine{background:var(--accent);opacity:.55}
+.cover-art.is-reading .glyph{color:var(--accent);opacity:.9}
+.cover-cap{display:flex;flex-direction:column;gap:1px}
+.cover-cap .ct{
+  font-size:12px;
+  font-weight:550;
+  letter-spacing:-.003em;
+  line-height:1.3;
+}
+.cover-cap .ca{
+  font-size:11.5px;
+  color:var(--muted);
+}
+.cover-cap .badge{
+  margin-top:3px;
+  align-self:flex-start;
+  font-size:10px;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:.03em;
+  color:var(--accent);
+}
+
+.stage-foot{
+  margin-top:16px;
+  font-size:11.5px;
+  color:var(--subtle);
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+
+/* ---------- a11y / focus ---------- */
+a:focus-visible,
+.rl-link:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:3px;
+}
+
+/* ---------- responsive ---------- */
+@media (max-width:720px){
+  .cover-grid{grid-template-columns:repeat(3,1fr);gap:14px}
+}
+@media (max-width:480px){
+  .sheet{padding:28px 16px 56px}
+  .stage{padding:16px}
+  .rl{padding:18px 16px}
+  .cover-grid{grid-template-columns:repeat(2,1fr)}
+  .sheet-head .count{margin-left:0;order:3}
+  .rl-item{grid-template-columns:auto 1fr;grid-template-areas:"rank book" ". status" ". note";gap:3px 12px}
+  .rl-rank{grid-area:rank}
+  .rl-book{grid-area:book}
+  .rl-status{grid-area:status;justify-self:start;margin-top:4px}
+  .rl-note{grid-area:note}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important;scroll-behavior:auto !important}
+}
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header class="sheet-head">
+    <h1>reading_list</h1>
+    <span class="crumb">personality / Reading list · 在读</span>
+    <span class="count">2 variants</span>
+  </header>
+
+  <!-- ===================== VARIANT: list ===================== -->
+  <section class="variant" aria-labelledby="v-list">
+    <div class="variant-label">
+      <span class="id" id="v-list">list</span>
+      <span class="hint">书单列表</span>
+    </div>
+    <div class="stage">
+      <article class="rl" aria-label="Reading list of Maya Chen">
+        <div class="rl-head">
+          <h2 class="rl-title">Reading list<span class="zh">在读</span></h2>
+          <span class="rl-meta">Updated May 2026</span>
+        </div>
+        <p class="rl-sub">What Maya Chen is reading this quarter — design, systems, and a little fiction.</p>
+
+        <ol class="rl-list">
+          <li class="rl-item">
+            <span class="rl-rank">01</span>
+            <div class="rl-book">
+              <span class="bk-title">The Design of Everyday Things</span>
+              <span class="bk-author"> · Don Norman</span>
+            </div>
+            <span class="rl-status reading">Reading</span>
+            <p class="rl-note">Re-reading the affordances chapter before the onboarding redesign.</p>
+          </li>
+          <li class="rl-item">
+            <span class="rl-rank">02</span>
+            <div class="rl-book">
+              <span class="bk-title">Thinking in Systems</span>
+              <span class="bk-author"> · Donella Meadows</span>
+            </div>
+            <span class="rl-status done">Finished</span>
+          </li>
+          <li class="rl-item">
+            <span class="rl-rank">03</span>
+            <div class="rl-book">
+              <span class="bk-title">Shape Up</span>
+              <span class="bk-author"> · Ryan Singer</span>
+            </div>
+            <span class="rl-status done">Finished</span>
+            <p class="rl-note">Borrowing the appetite-vs-estimate framing for our planning doc.</p>
+          </li>
+          <li class="rl-item">
+            <span class="rl-rank">04</span>
+            <div class="rl-book">
+              <span class="bk-title">Klara and the Sun</span>
+              <span class="bk-author"> · Kazuo Ishiguro</span>
+            </div>
+            <span class="rl-status queued">Up next</span>
+          </li>
+          <li class="rl-item">
+            <span class="rl-rank">05</span>
+            <div class="rl-book">
+              <span class="bk-title">Refactoring UI</span>
+              <span class="bk-author"> · Wathan &amp; Schoger</span>
+            </div>
+            <span class="rl-status queued">Up next</span>
+          </li>
+        </ol>
+
+        <div class="rl-foot">
+          <a class="rl-link" href="#" aria-label="See full reading log on the books page">
+            Full reading log
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M3 8h9M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===================== VARIANT: covers ===================== -->
+  <section class="variant rl-covers" aria-labelledby="v-covers">
+    <div class="variant-label">
+      <span class="id" id="v-covers">covers</span>
+      <span class="hint">封面网格（灰块封面）</span>
+    </div>
+    <div class="stage">
+      <article class="rl" aria-label="Reading list cover grid of Maya Chen">
+        <div class="rl-head">
+          <h2 class="rl-title">On the shelf<span class="zh">书架</span></h2>
+          <span class="rl-meta">8 books</span>
+        </div>
+        <p class="rl-sub">A visual shelf — placeholder covers stand in for real artwork.</p>
+
+        <div class="cover-grid" role="list">
+          <div class="cover" role="listitem">
+            <div class="cover-art is-reading" role="img" aria-label="Cover art for The Design of Everyday Things, currently reading">
+              <img src="../../assets/poster-bowie-king.webp" alt="" loading="lazy">
+              <span class="spine" aria-hidden="true"></span>
+              <span class="corner">Now</span>
+            </div>
+            <div class="cover-cap">
+              <span class="ct">The Design of Everyday Things</span>
+              <span class="ca">Don Norman</span>
+              <span class="badge">Reading</span>
+            </div>
+          </div>
+
+          <div class="cover" role="listitem">
+            <div class="cover-art" role="img" aria-label="Cover art for Thinking in Systems">
+              <img src="../../assets/poster-we-the-people.webp" alt="" loading="lazy">
+              <span class="spine" aria-hidden="true"></span>
+              <span class="corner">2026</span>
+            </div>
+            <div class="cover-cap">
+              <span class="ct">Thinking in Systems</span>
+              <span class="ca">Donella Meadows</span>
+            </div>
+          </div>
+
+          <div class="cover" role="listitem">
+            <div class="cover-art" role="img" aria-label="Cover art for Shape Up">
+              <img src="../../assets/poster-soviet.webp" alt="" loading="lazy">
+              <span class="spine" aria-hidden="true"></span>
+              <span class="corner">2025</span>
+            </div>
+            <div class="cover-cap">
+              <span class="ct">Shape Up</span>
+              <span class="ca">Ryan Singer</span>
+            </div>
+          </div>
+
+          <div class="cover" role="listitem">
+            <div class="cover-art" role="img" aria-label="Cover art for Refactoring UI">
+              <img src="../../assets/poster-pipeline.webp" alt="" loading="lazy">
+              <span class="spine" aria-hidden="true"></span>
+              <span class="corner">2025</span>
+            </div>
+            <div class="cover-cap">
+              <span class="ct">Refactoring UI</span>
+              <span class="ca">Wathan &amp; Schoger</span>
+            </div>
+          </div>
+
+          <div class="cover" role="listitem">
+            <div class="cover-art" role="img" aria-label="Cover art for Klara and the Sun">
+              <img src="../../assets/illustration-cow-condo.webp" alt="" loading="lazy">
+              <span class="spine" aria-hidden="true"></span>
+              <span class="corner">Fiction</span>
+            </div>
+            <div class="cover-cap">
+              <span class="ct">Klara and the Sun</span>
+              <span class="ca">Kazuo Ishiguro</span>
+            </div>
+          </div>
+
+          <div class="cover" role="listitem">
+            <div class="cover-art" role="img" aria-label="Cover art for A Pattern Language">
+              <img src="../../assets/illustration-ninja-halftone.webp" alt="" loading="lazy">
+              <span class="spine" aria-hidden="true"></span>
+              <span class="corner">Ref</span>
+            </div>
+            <div class="cover-cap">
+              <span class="ct">A Pattern Language</span>
+              <span class="ca">Christopher Alexander</span>
+            </div>
+          </div>
+
+          <div class="cover" role="listitem">
+            <div class="cover-art" role="img" aria-label="Cover art for The Timeless Way of Building">
+              <img src="../../assets/poster-soviet.webp" alt="" loading="lazy">
+              <span class="spine" aria-hidden="true"></span>
+              <span class="corner">Ref</span>
+            </div>
+            <div class="cover-cap">
+              <span class="ct">The Timeless Way of Building</span>
+              <span class="ca">Christopher Alexander</span>
+            </div>
+          </div>
+
+          <div class="cover" role="listitem">
+            <div class="cover-art" role="img" aria-label="Cover art for Tufte: Visual Display">
+              <img src="../../assets/poster-we-the-people.webp" alt="" loading="lazy">
+              <span class="spine" aria-hidden="true"></span>
+              <span class="corner">2024</span>
+            </div>
+            <div class="cover-cap">
+              <span class="ct">The Visual Display of Quantitative Information</span>
+              <span class="ca">Edward Tufte</span>
+            </div>
+          </div>
+        </div>
+
+        <p class="stage-foot">covers are neutral CSS placeholders — swap for real artwork at <code>/images</code></p>
+      </article>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>

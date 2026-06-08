@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bruno Salas — Design That Refuses to Be Boring</title>
+<meta name="description" content="Bruno Salas — graphic designer & design teacher. I make design that refuses to be boring, and teach you to do the same." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800;900&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --canvas:#fbf7ee;
+    --surface:#ffffff;
+    --ink:#15130f;
+    --ink-muted:#4a463d;
+    --cyan:#2ad4d4;
+    --magenta:#ff4fa3;
+    --yellow:#ffd23f;
+    --accent:#ff4fa3;
+    --accent-hover:#e03a8c;
+    --outline:#15130f;
+    --shadow:6px 6px 0 var(--outline);
+    --shadow-sm:4px 4px 0 var(--outline);
+    --shadow-lg:10px 10px 0 var(--outline);
+    --border:3px solid var(--outline);
+    --section:104px;
+    --block:36px;
+    --tight:14px;
+    --r-sm:4px;
+    --r-md:14px;
+    --r-pill:999px;
+    --maxw:1200px;
+  }
+
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--canvas);
+    color:var(--ink);
+    font-family:'Poppins',system-ui,sans-serif;
+    font-size:18px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    /* faint dotted paper texture */
+    background-image:radial-gradient(var(--ink) 1px, transparent 1.4px);
+    background-size:28px 28px;
+    background-position:0 0;
+  }
+  body::before{
+    /* lighten the dot texture so it's a whisper */
+    content:"";position:fixed;inset:0;background:var(--canvas);opacity:.93;z-index:-1;pointer-events:none;
+  }
+
+  h1,h2,h3{font-family:'Archivo',system-ui,sans-serif;text-transform:uppercase;margin:0}
+  p{margin:0}
+  a{color:inherit}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  section{padding:var(--section) 0;position:relative}
+
+  /* ---------- reusable bits ---------- */
+  .eyebrow{
+    display:inline-block;
+    font-family:'Archivo',sans-serif;
+    font-weight:800;
+    font-size:13px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    background:var(--ink);
+    color:var(--canvas);
+    border:var(--border);
+    border-radius:var(--r-pill);
+    padding:7px 16px;
+    box-shadow:var(--shadow-sm);
+  }
+  .section-tag{
+    display:inline-block;
+    font-family:'Archivo',sans-serif;font-weight:800;font-size:13px;letter-spacing:2px;text-transform:uppercase;
+    padding:6px 14px;border:var(--border);border-radius:var(--r-pill);box-shadow:var(--shadow-sm);
+    margin-bottom:24px;
+  }
+  .tag-cyan{background:var(--cyan)}
+  .tag-yellow{background:var(--yellow)}
+  .tag-magenta{background:var(--magenta);color:#fff}
+
+  .h2{
+    font-size:clamp(34px,6vw,58px);
+    font-weight:900;
+    line-height:0.94;
+    letter-spacing:-1.5px;
+    max-width:18ch;
+  }
+  .lead{
+    font-size:clamp(17px,2.4vw,21px);
+    color:var(--ink-muted);
+    max-width:52ch;
+    margin-top:18px;
+    font-weight:500;
+  }
+
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    font-family:'Archivo',sans-serif;font-weight:800;font-size:15px;letter-spacing:.5px;text-transform:uppercase;
+    text-decoration:none;
+    padding:15px 26px;
+    border:var(--border);
+    border-radius:var(--r-pill);
+    box-shadow:var(--shadow);
+    transition:transform .12s ease, box-shadow .12s ease;
+    cursor:pointer;
+  }
+  .btn:hover{transform:translate(-2px,-2px);box-shadow:var(--shadow-lg)}
+  .btn:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--outline)}
+  .btn-magenta{background:var(--magenta);color:#fff}
+  .btn-cyan{background:var(--cyan);color:var(--ink)}
+  .btn-yellow{background:var(--yellow);color:var(--ink)}
+  .btn-white{background:var(--surface);color:var(--ink)}
+
+  a:focus-visible,.btn:focus-visible,button:focus-visible{
+    outline:4px solid var(--magenta);
+    outline-offset:3px;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{padding-top:84px;padding-bottom:80px}
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:48px;
+    align-items:center;
+    position:relative;
+    z-index:2;
+  }
+  .hero h1{
+    font-size:clamp(48px,11vw,92px);
+    font-weight:900;
+    line-height:0.9;
+    letter-spacing:-2px;
+    margin:22px 0 0;
+  }
+  .hero h1 .hl{
+    color:var(--magenta);
+    -webkit-text-stroke:2px var(--outline);
+    paint-order:stroke fill;
+  }
+  .hero h1 .hl2{
+    background:var(--yellow);
+    border:var(--border);
+    box-shadow:var(--shadow-sm);
+    border-radius:var(--r-sm);
+    padding:0 10px;
+    display:inline-block;
+    transform:rotate(-2deg);
+  }
+  .hero-sub{
+    font-size:clamp(17px,2.4vw,20px);
+    color:var(--ink-muted);
+    font-weight:500;
+    max-width:46ch;
+    margin-top:26px;
+  }
+  .hero-cta{display:flex;flex-wrap:wrap;gap:16px;margin-top:30px}
+
+  /* portrait / illustration frame */
+  .portrait-wrap{
+    position:relative;
+    justify-self:center;
+    width:min(420px,86vw);
+  }
+  .portrait-frame{
+    position:relative;
+    background:var(--surface);
+    border:4px solid var(--outline);
+    border-radius:var(--r-md);
+    box-shadow:var(--shadow-lg);
+    padding:16px;
+    transform:rotate(3deg);
+    z-index:3;
+  }
+  .portrait-frame img{
+    display:block;width:100%;height:auto;
+    border:var(--border);
+    border-radius:6px;
+    background:var(--cyan);
+  }
+  .portrait-caption{
+    position:absolute;left:50%;bottom:-22px;transform:translateX(-50%) rotate(-3deg);
+    background:var(--magenta);color:#fff;
+    font-family:'Archivo',sans-serif;font-weight:800;font-size:13px;letter-spacing:1px;text-transform:uppercase;
+    padding:8px 16px;border:var(--border);border-radius:var(--r-pill);box-shadow:var(--shadow-sm);
+    z-index:4;white-space:nowrap;
+  }
+  /* fallback monogram block */
+  .u-fallback.monogram{
+    position:relative;
+    background:var(--cyan);
+    border:4px solid var(--outline);
+    border-radius:var(--r-md);
+    box-shadow:var(--shadow-lg);
+    aspect-ratio:1/1;
+    transform:rotate(3deg);
+    place-items:center;
+    text-align:center;
+    overflow:hidden;
+  }
+  body.no-photos .u-fallback.monogram{display:grid !important}
+  .monogram .mono-letters{
+    font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(80px,22vw,140px);
+    line-height:.85;color:var(--ink);letter-spacing:-4px;
+  }
+  .monogram .mono-tag{
+    font-family:'Archivo',sans-serif;font-weight:800;font-size:13px;letter-spacing:2px;text-transform:uppercase;
+    margin-top:10px;background:var(--yellow);border:var(--border);border-radius:var(--r-pill);padding:6px 14px;
+  }
+  .monogram::before{content:"";position:absolute;top:-30px;right:-30px;width:120px;height:120px;border-radius:50%;background:var(--magenta);border:var(--border)}
+  .monogram::after{content:"";position:absolute;bottom:-26px;left:-26px;width:90px;height:90px;background:var(--yellow);border:var(--border);transform:rotate(18deg)}
+
+  /* ---------- floating memphis shapes ---------- */
+  .shapes{position:absolute;inset:0;z-index:1;pointer-events:none}
+  .shape{position:absolute}
+  .sh-circle{border-radius:50%;border:var(--border)}
+  .sh-block{border:var(--border)}
+  .s1{top:4%;left:2%;width:70px;height:70px;background:var(--cyan)}
+  .s1{border-radius:50%;border:var(--border)}
+  .s2{top:14%;right:6%;width:0;height:0;border-left:38px solid transparent;border-right:38px solid transparent;border-bottom:64px solid var(--yellow);filter:drop-shadow(3px 3px 0 var(--outline))}
+  .s3{bottom:10%;left:7%;width:54px;height:54px;background:var(--magenta);border:var(--border);transform:rotate(20deg)}
+  .s4{top:46%;right:2%;width:84px;height:84px;background:var(--yellow);border:var(--border);border-radius:50% 50% 50% 0;transform:rotate(8deg)}
+  .squiggle{position:absolute;top:60%;left:40%;opacity:.95}
+  .dots-grid{position:absolute;top:8%;left:46%}
+  .zig{position:absolute;bottom:6%;right:14%}
+
+  @media(prefers-reduced-motion:no-preference){
+    .float{animation:floaty 6s ease-in-out infinite}
+    .s1{animation-delay:0s}.s2{animation-delay:.8s}.s3{animation-delay:1.6s}.s4{animation-delay:.4s}
+  }
+  @keyframes floaty{0%,100%{transform:translateY(0) rotate(var(--rot,0deg))}50%{transform:translateY(-12px) rotate(var(--rot,0deg))}}
+  .s3{--rot:20deg}.s4{--rot:8deg}
+
+  /* ---------- WORK GRID ---------- */
+  .work-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:26px;
+    margin-top:44px;
+  }
+  .tile{
+    border:var(--border);
+    border-radius:var(--r-md);
+    box-shadow:var(--shadow);
+    padding:26px 24px 22px;
+    text-decoration:none;
+    color:var(--ink);
+    display:flex;flex-direction:column;gap:14px;
+    min-height:200px;
+    transition:transform .14s ease, box-shadow .14s ease;
+    position:relative;
+    overflow:hidden;
+  }
+  .tile:hover{transform:translate(-3px,-3px) rotate(0deg) !important;box-shadow:var(--shadow-lg)}
+  .tile .num{
+    font-family:'Archivo',sans-serif;font-weight:900;font-size:20px;
+    width:42px;height:42px;border:var(--border);border-radius:50%;display:grid;place-items:center;background:var(--surface);
+  }
+  .tile h3{font-size:24px;font-weight:900;line-height:1;letter-spacing:-.5px}
+  .tile .meta{font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;opacity:.85}
+  .tile .arrow{margin-top:auto;font-family:'Archivo',sans-serif;font-weight:800;font-size:13px;letter-spacing:1px;text-transform:uppercase}
+  .t-cyan{background:var(--cyan);transform:rotate(-2deg)}
+  .t-yellow{background:var(--yellow);transform:rotate(2deg)}
+  .t-magenta{background:var(--magenta);color:#fff;transform:rotate(-1.5deg)}
+  .t-magenta .num,.t-magenta .arrow{color:var(--ink)}
+  .t-white{background:var(--surface);transform:rotate(1.5deg)}
+  .t-cyan2{background:var(--cyan);transform:rotate(1deg)}
+  .t-yellow2{background:var(--yellow);transform:rotate(-2.5deg)}
+
+  /* ---------- METRICS ---------- */
+  .metrics{background:var(--ink);color:var(--canvas);border-top:var(--border);border-bottom:var(--border)}
+  .metrics .section-tag{color:var(--ink)}
+  .metric-grid{
+    display:grid;grid-template-columns:1fr;gap:26px;margin-top:40px;
+  }
+  .metric{
+    border:var(--border);
+    border-radius:var(--r-md);
+    box-shadow:6px 6px 0 var(--magenta);
+    padding:28px 24px;
+    color:var(--ink);
+  }
+  .metric:nth-child(1){background:var(--cyan);box-shadow:6px 6px 0 var(--yellow);transform:rotate(-1.5deg)}
+  .metric:nth-child(2){background:var(--yellow);box-shadow:6px 6px 0 var(--magenta);transform:rotate(1.5deg)}
+  .metric:nth-child(3){background:var(--magenta);color:#fff;box-shadow:6px 6px 0 var(--cyan);transform:rotate(-1deg)}
+  .metric .big{
+    font-family:'Archivo',sans-serif;font-weight:900;
+    font-size:clamp(64px,12vw,92px);line-height:.85;letter-spacing:-3px;
+  }
+  .metric .label{
+    font-family:'Archivo',sans-serif;font-weight:800;font-size:14px;letter-spacing:1.5px;text-transform:uppercase;margin-top:14px;
+  }
+  .metric .sub{font-weight:500;font-size:15px;margin-top:8px;opacity:.9}
+  .metric:nth-child(3) .label,.metric:nth-child(3) .sub{color:#fff}
+
+  /* ---------- TESTIMONIALS ---------- */
+  .quote-grid{display:grid;grid-template-columns:1fr;gap:26px;margin-top:44px}
+  .quote{
+    background:var(--surface);
+    border:var(--border);border-radius:var(--r-md);box-shadow:var(--shadow);
+    padding:28px 26px;position:relative;
+  }
+  .quote:nth-child(1){transform:rotate(-1.5deg)}
+  .quote:nth-child(2){transform:rotate(1.5deg)}
+  .quote:nth-child(3){transform:rotate(-1deg)}
+  .quote .mark{
+    position:absolute;top:-18px;left:22px;
+    font-family:'Archivo',sans-serif;font-weight:900;font-size:48px;line-height:1;
+    background:var(--yellow);border:var(--border);border-radius:50%;width:52px;height:52px;display:grid;place-items:center;color:var(--ink);box-shadow:var(--shadow-sm);
+  }
+  .quote p{font-size:19px;font-weight:500;line-height:1.5;margin-top:14px}
+  .quote .who{display:flex;align-items:center;gap:12px;margin-top:20px}
+  .quote .who .av{
+    width:40px;height:40px;border-radius:50%;border:var(--border);display:grid;place-items:center;
+    font-family:'Archivo',sans-serif;font-weight:900;font-size:16px;
+  }
+  .av-c{background:var(--cyan)}.av-m{background:var(--magenta);color:#fff}.av-y{background:var(--yellow)}
+  .quote .who .nm{font-family:'Archivo',sans-serif;font-weight:800;font-size:14px;text-transform:uppercase;letter-spacing:.5px}
+  .quote .who .rl{font-size:13px;color:var(--ink-muted);font-weight:500}
+
+  /* ---------- CONTACT ---------- */
+  .contact{position:relative}
+  .contact-card{
+    background:var(--cyan);
+    border:4px solid var(--outline);
+    border-radius:24px;
+    box-shadow:var(--shadow-lg);
+    padding:clamp(34px,6vw,64px);
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .contact-card::before{content:"";position:absolute;top:-40px;left:-40px;width:140px;height:140px;border-radius:50%;background:var(--yellow);border:var(--border)}
+  .contact-card::after{content:"";position:absolute;bottom:-46px;right:-30px;width:120px;height:120px;background:var(--magenta);border:var(--border);transform:rotate(20deg)}
+  .contact-card .inner{position:relative;z-index:2}
+  .contact h2{font-size:clamp(36px,7vw,64px);font-weight:900;line-height:.92;letter-spacing:-1.5px}
+  .contact .lead{margin:18px auto 0;color:var(--ink)}
+  .contact-cta{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-top:32px}
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    border-top:var(--border);
+    padding:34px 0;
+    text-align:center;
+  }
+  footer .fl{
+    font-family:'Archivo',sans-serif;font-weight:800;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;
+    color:var(--ink-muted);
+  }
+
+  /* ---------- scroll reveal ---------- */
+  .reveal{opacity:0;transform:translateY(24px)}
+  @media(prefers-reduced-motion:no-preference){
+    .reveal{transition:opacity .55s cubic-bezier(.2,.7,.2,1), transform .55s cubic-bezier(.2,.7,.2,1)}
+    .reveal.in{opacity:1;transform:none}
+    .reveal.in.wiggle{animation:wig .5s ease}
+    @keyframes wig{0%{transform:rotate(0)}30%{transform:rotate(-1.4deg)}60%{transform:rotate(1deg)}100%{transform:rotate(0)}}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none}
+    .float{animation:none !important}
+    html{scroll-behavior:auto}
+  }
+
+  /* ---------- responsive ---------- */
+  @media(min-width:680px){
+    .work-grid{grid-template-columns:1fr 1fr}
+    .metric-grid{grid-template-columns:1fr 1fr 1fr}
+    .quote-grid{grid-template-columns:1fr 1fr}
+    .svc-grid{grid-template-columns:1fr 1fr}
+    .now-grid{grid-template-columns:1fr 1fr 1fr}
+    .faq-grid{grid-template-columns:1fr 1fr}
+    .cred-list{grid-template-columns:1fr 1fr}
+  }
+  @media(min-width:960px){
+    .hero-grid{grid-template-columns:1.15fr .85fr;gap:60px}
+    .work-grid{grid-template-columns:repeat(3,1fr)}
+    .quote-grid{grid-template-columns:repeat(3,1fr)}
+    .svc-grid{grid-template-columns:repeat(3,1fr)}
+    .belief-grid{grid-template-columns:1fr 1fr}
+  }
+
+  /* ---------- NAV ---------- */
+  .nav{
+    position:sticky;top:0;z-index:50;
+    background:var(--canvas);
+    border-bottom:var(--border);
+  }
+  .nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:14px;padding-bottom:14px;flex-wrap:wrap}
+  .nav .brand{
+    font-family:'Archivo',sans-serif;font-weight:900;font-size:20px;letter-spacing:-.5px;text-transform:uppercase;
+    text-decoration:none;
+    background:var(--yellow);border:var(--border);border-radius:var(--r-pill);
+    padding:6px 16px;box-shadow:var(--shadow-sm);transform:rotate(-2deg);
+  }
+  .nav-links{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .nav-links a{
+    font-family:'Archivo',sans-serif;font-weight:800;font-size:12px;letter-spacing:1px;text-transform:uppercase;
+    text-decoration:none;padding:6px 12px;border:var(--border);border-radius:var(--r-pill);background:var(--surface);
+    box-shadow:2px 2px 0 var(--outline);transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .nav-links a:hover{transform:translate(-1px,-1px);box-shadow:var(--shadow-sm)}
+  .nav-links a.is-cyan{background:var(--cyan)}
+  .nav-links a.is-magenta{background:var(--magenta);color:#fff}
+
+  /* ---------- SERVICES (cards) ---------- */
+  .svc-grid{display:grid;grid-template-columns:1fr;gap:26px;margin-top:44px}
+  .svc{
+    border:var(--border);border-radius:var(--r-md);box-shadow:var(--shadow);
+    padding:28px 26px;display:flex;flex-direction:column;gap:14px;background:var(--surface);
+  }
+  .svc:nth-child(1){background:var(--cyan);transform:rotate(-1.5deg)}
+  .svc:nth-child(2){background:var(--yellow);transform:rotate(1.5deg)}
+  .svc:nth-child(3){background:var(--magenta);color:#fff;transform:rotate(-1deg)}
+  .svc .svc-num{
+    font-family:'Archivo',sans-serif;font-weight:900;font-size:18px;
+    width:46px;height:46px;border:var(--border);border-radius:var(--r-sm);display:grid;place-items:center;
+    background:var(--surface);color:var(--ink);transform:rotate(6deg);
+  }
+  .svc h3{font-size:24px;font-weight:900;line-height:1;letter-spacing:-.5px}
+  .svc p{font-weight:500;font-size:16px;line-height:1.5}
+  .svc:nth-child(3) p{color:#fff}
+  .svc .price{
+    margin-top:auto;font-family:'Archivo',sans-serif;font-weight:800;font-size:13px;letter-spacing:1px;text-transform:uppercase;
+    align-self:flex-start;background:var(--ink);color:var(--canvas);border:var(--border);border-radius:var(--r-pill);
+    padding:6px 14px;box-shadow:var(--shadow-sm);
+  }
+
+  /* ---------- BELIEFS (numbered) ---------- */
+  .belief-grid{display:grid;grid-template-columns:1fr;gap:24px;margin-top:44px}
+  .belief{
+    display:flex;gap:18px;align-items:flex-start;
+    border:var(--border);border-radius:var(--r-md);box-shadow:var(--shadow);
+    background:var(--surface);padding:24px 24px;
+  }
+  .belief:nth-child(odd){transform:rotate(-1deg)}
+  .belief:nth-child(even){transform:rotate(1deg)}
+  .belief .bnum{
+    flex:0 0 auto;
+    font-family:'Archivo',sans-serif;font-weight:900;font-size:32px;line-height:1;letter-spacing:-2px;
+    width:62px;height:62px;border:var(--border);border-radius:50%;display:grid;place-items:center;
+    box-shadow:var(--shadow-sm);
+  }
+  .belief:nth-child(1) .bnum{background:var(--cyan)}
+  .belief:nth-child(2) .bnum{background:var(--magenta);color:#fff}
+  .belief:nth-child(3) .bnum{background:var(--yellow)}
+  .belief:nth-child(4) .bnum{background:var(--cyan)}
+  .belief h3{font-size:21px;font-weight:900;line-height:1.05;letter-spacing:-.5px;margin-bottom:8px}
+  .belief p{font-weight:500;font-size:16px;line-height:1.5;color:var(--ink-muted)}
+
+  /* ---------- TOOLS (stack_list) + CREDENTIALS (pills) ---------- */
+  .pill-cloud{display:flex;flex-wrap:wrap;gap:14px;margin-top:36px}
+  .pillx{
+    font-family:'Archivo',sans-serif;font-weight:800;font-size:14px;letter-spacing:.5px;text-transform:uppercase;
+    border:var(--border);border-radius:var(--r-pill);padding:10px 18px;box-shadow:var(--shadow-sm);background:var(--surface);
+  }
+  .pillx:nth-child(3n+1){background:var(--cyan);transform:rotate(-2deg)}
+  .pillx:nth-child(3n+2){background:var(--yellow);transform:rotate(1.5deg)}
+  .pillx:nth-child(3n){background:var(--magenta);color:#fff;transform:rotate(-1deg)}
+
+  .cred-list{list-style:none;padding:0;margin:36px 0 0;display:grid;grid-template-columns:1fr;gap:18px}
+  .cred-list li{
+    display:flex;gap:16px;align-items:baseline;
+    border-bottom:var(--border);padding-bottom:16px;
+  }
+  .cred-list .yr{
+    flex:0 0 auto;
+    font-family:'Archivo',sans-serif;font-weight:900;font-size:15px;letter-spacing:1px;
+    background:var(--ink);color:var(--canvas);border:var(--border);border-radius:var(--r-pill);
+    padding:5px 13px;box-shadow:2px 2px 0 var(--outline);
+  }
+  .cred-list .ct{font-weight:500;font-size:16px}
+  .cred-list .ct strong{font-family:'Archivo',sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:-.3px;display:block;font-size:18px}
+
+  /* ---------- SELECTED QUOTE (large_type) ---------- */
+  .bigquote{
+    background:var(--yellow);
+    border:4px solid var(--outline);border-radius:24px;box-shadow:var(--shadow-lg);
+    padding:clamp(34px,6vw,64px);position:relative;overflow:hidden;
+  }
+  .bigquote::before{content:"";position:absolute;top:-36px;right:-36px;width:130px;height:130px;border-radius:50%;background:var(--cyan);border:var(--border)}
+  .bigquote::after{content:"";position:absolute;bottom:-40px;left:-30px;width:110px;height:110px;background:var(--magenta);border:var(--border);transform:rotate(18deg)}
+  .bigquote blockquote{
+    margin:0;position:relative;z-index:2;
+    font-family:'Archivo',sans-serif;font-weight:900;text-transform:uppercase;
+    font-size:clamp(28px,5.5vw,52px);line-height:1.0;letter-spacing:-1.5px;max-width:18ch;
+  }
+  .bigquote .bq-mark{color:var(--magenta);-webkit-text-stroke:2px var(--outline);paint-order:stroke fill}
+  .bigquote cite{
+    display:inline-block;margin-top:24px;position:relative;z-index:2;font-style:normal;
+    font-family:'Archivo',sans-serif;font-weight:800;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;
+    background:var(--ink);color:var(--canvas);border:var(--border);border-radius:var(--r-pill);padding:7px 16px;box-shadow:var(--shadow-sm);
+  }
+
+  /* ---------- NOW / CURRENTLY BUILDING ---------- */
+  .now-grid{display:grid;grid-template-columns:1fr;gap:22px;margin-top:44px}
+  .now-card{
+    border:var(--border);border-radius:var(--r-md);box-shadow:var(--shadow);
+    background:var(--surface);padding:24px 24px;display:flex;flex-direction:column;gap:10px;
+  }
+  .now-card:nth-child(1){transform:rotate(-1.5deg)}
+  .now-card:nth-child(2){transform:rotate(1deg)}
+  .now-card:nth-child(3){transform:rotate(-1deg)}
+  .now-card .now-tag{
+    align-self:flex-start;
+    font-family:'Archivo',sans-serif;font-weight:800;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;
+    border:var(--border);border-radius:var(--r-pill);padding:5px 12px;box-shadow:2px 2px 0 var(--outline);
+  }
+  .now-card:nth-child(1) .now-tag{background:var(--cyan)}
+  .now-card:nth-child(2) .now-tag{background:var(--magenta);color:#fff}
+  .now-card:nth-child(3) .now-tag{background:var(--yellow)}
+  .now-card h3{font-size:20px;font-weight:900;line-height:1.05;letter-spacing:-.5px}
+  .now-card p{font-weight:500;font-size:16px;line-height:1.5;color:var(--ink-muted)}
+
+  /* ---------- FAQ (two_column) ---------- */
+  .faq-grid{display:grid;grid-template-columns:1fr;gap:26px;margin-top:44px}
+  .faq-item{
+    border:var(--border);border-radius:var(--r-md);box-shadow:var(--shadow);
+    background:var(--surface);padding:24px 24px;
+  }
+  .faq-item:nth-child(odd){transform:rotate(-1deg)}
+  .faq-item:nth-child(even){transform:rotate(1deg)}
+  .faq-item h3{
+    font-size:18px;font-weight:900;line-height:1.1;letter-spacing:-.3px;
+    display:flex;gap:12px;align-items:flex-start;
+  }
+  .faq-item h3 .q{
+    flex:0 0 auto;
+    background:var(--magenta);color:#fff;border:var(--border);border-radius:50%;
+    width:34px;height:34px;display:grid;place-items:center;font-size:16px;box-shadow:2px 2px 0 var(--outline);
+  }
+  .faq-item p{font-weight:500;font-size:15px;line-height:1.55;color:var(--ink-muted);margin-top:12px}
+
+  /* ---------- SOCIAL LINKS (text_row) ---------- */
+  .social-row{display:flex;flex-wrap:wrap;gap:16px;margin-top:36px}
+  .social-row a{
+    font-family:'Archivo',sans-serif;font-weight:800;font-size:14px;letter-spacing:.5px;text-transform:uppercase;
+    text-decoration:none;border:var(--border);border-radius:var(--r-pill);padding:11px 20px;box-shadow:var(--shadow-sm);
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .social-row a:hover{transform:translate(-2px,-2px);box-shadow:var(--shadow)}
+  .social-row a:nth-child(4n+1){background:var(--cyan)}
+  .social-row a:nth-child(4n+2){background:var(--magenta);color:#fff}
+  .social-row a:nth-child(4n+3){background:var(--yellow)}
+  .social-row a:nth-child(4n){background:var(--surface)}
+
+  /* ---------- photo toggle (atlas contract) ---------- */
+  .u-fallback{display:none !important}
+  body.no-photos .u-photo{display:none !important}
+  body.no-photos .u-fallback{display:revert !important}
+  .atlas-photo-toggle{position:fixed;right:16px;bottom:16px;z-index:99999;display:flex;align-items:center;gap:8px;background:rgba(20,20,22,.88);color:#fff;border-radius:999px;padding:6px 6px 6px 14px;font:600 12px/1 -apple-system,system-ui,sans-serif;box-shadow:0 8px 28px -10px rgba(0,0,0,.55)}
+  .atlas-photo-toggle button{appearance:none;border:0;cursor:pointer;font:inherit;color:#16161a;background:#fff;border-radius:999px;padding:6px 14px;min-width:46px}
+  .atlas-photo-toggle button[aria-pressed="false"]{background:#3a3a42;color:#fff}
+</style>
+</head>
+<body>
+
+  <!-- ============ NAV ============ -->
+  <nav class="nav" data-module="nav" data-variant="split" aria-label="Primary">
+    <div class="wrap">
+      <a class="brand" href="#top">Studio Salas</a>
+      <div class="nav-links">
+        <a href="#work">Work</a>
+        <a href="#services" class="is-cyan">Services</a>
+        <a href="#beliefs">Rules</a>
+        <a href="#students">Students</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact" class="is-magenta">Hire me</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <span id="top"></span>
+  <header class="hero wrap" data-module="hero" data-variant="bold_statement">
+    <div class="shapes" aria-hidden="true">
+      <span class="shape s1 float"></span>
+      <span class="shape s2 float"></span>
+      <span class="shape s3 float"></span>
+      <span class="shape s4 float"></span>
+      <svg class="squiggle" width="120" height="40" viewBox="0 0 120 40" fill="none" aria-hidden="true">
+        <path d="M3 20c10-22 20 22 30 0s20-22 30 0 20 22 30 0 20-22 24-6" stroke="#ff4fa3" stroke-width="5" stroke-linecap="round"/>
+      </svg>
+      <svg class="dots-grid" width="86" height="86" viewBox="0 0 86 86" aria-hidden="true">
+        <g fill="#15130f">
+          <circle cx="8" cy="8" r="5"/><circle cx="28" cy="8" r="5"/><circle cx="48" cy="8" r="5"/><circle cx="68" cy="8" r="5"/>
+          <circle cx="8" cy="28" r="5"/><circle cx="28" cy="28" r="5"/><circle cx="48" cy="28" r="5"/><circle cx="68" cy="28" r="5"/>
+          <circle cx="8" cy="48" r="5"/><circle cx="28" cy="48" r="5"/><circle cx="48" cy="48" r="5"/><circle cx="68" cy="48" r="5"/>
+        </g>
+      </svg>
+      <svg class="zig" width="120" height="34" viewBox="0 0 120 34" fill="none" aria-hidden="true">
+        <path d="M2 30 14 6 26 30 38 6 50 30 62 6 74 30 86 6 98 30 110 6 118 24" stroke="#2ad4d4" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow">Bruno Salas · Graphic Designer + Teacher</span>
+        <h1>
+          I Make Design That <span class="hl">Refuses</span><br/>
+          To Be <span class="hl2">Boring</span>.
+        </h1>
+        <p class="hero-sub">And I teach you to do the same. Identity, posters, packaging, and the confidence to break a grid on purpose — for design students and brands who want work people actually remember.</p>
+        <div class="hero-cta">
+          <a class="btn btn-magenta" href="#contact">Take the course →</a>
+          <a class="btn btn-white" href="#contact">Hire me</a>
+        </div>
+      </div>
+
+      <div class="portrait-wrap">
+        <!-- PHOTO (default ON) -->
+        <figure class="u-photo portrait-frame" style="margin:0">
+          <img src="portrait.webp" alt="A quirky framed illustration of a cow living in a condo — a playful piece from Bruno Salas's work" />
+          <figcaption class="portrait-caption">Yes, a cow in a condo.</figcaption>
+        </figure>
+        <!-- FALLBACK (no-photos) -->
+        <div class="u-fallback monogram" aria-hidden="true">
+          <div>
+            <div class="mono-letters">BS</div>
+            <span class="mono-tag">Studio Salas</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ SELECTED WORK ============ -->
+  <section id="work" class="wrap" data-module="selected_work" data-variant="grid">
+    <span class="section-tag tag-cyan reveal">Selected Work</span>
+    <h2 class="h2 reveal">Loud Work, On Purpose.</h2>
+    <p class="lead reveal">Twelve years of identities, posters, and packaging — some of it in the design annuals, all of it allergic to dull.</p>
+
+    <div class="work-grid">
+      <a class="tile t-cyan reveal wiggle" href="#contact">
+        <span class="num">01</span>
+        <h3>Mango Riot</h3>
+        <span class="meta">Brand Identity · 2024</span>
+        <span class="arrow">See it →</span>
+      </a>
+      <a class="tile t-yellow reveal wiggle" href="#contact">
+        <span class="num">02</span>
+        <h3>Festival Tipográfico</h3>
+        <span class="meta">Poster Series · 2023</span>
+        <span class="arrow">See it →</span>
+      </a>
+      <a class="tile t-magenta reveal wiggle" href="#contact">
+        <span class="num">03</span>
+        <h3>Soda Pop Co.</h3>
+        <span class="meta">Packaging · 2023</span>
+        <span class="arrow">See it →</span>
+      </a>
+      <a class="tile t-white reveal wiggle" href="#contact">
+        <span class="num">04</span>
+        <h3>Editorial — NOISE</h3>
+        <span class="meta">Magazine Design · 2022</span>
+        <span class="arrow">See it →</span>
+      </a>
+      <a class="tile t-cyan2 reveal wiggle" href="#contact">
+        <span class="num">05</span>
+        <h3>Casa Cultura</h3>
+        <span class="meta">Wayfinding + Identity · 2022</span>
+        <span class="arrow">See it →</span>
+      </a>
+      <a class="tile t-yellow2 reveal wiggle" href="#contact">
+        <span class="num">06</span>
+        <h3>Cow Condo</h3>
+        <span class="meta">Illustration · 2021</span>
+        <span class="arrow">See it →</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============ METRICS ============ -->
+  <section class="metrics" data-module="metrics" data-variant="big_numerals">
+    <div class="wrap">
+      <span class="section-tag tag-yellow reveal">By The Numbers</span>
+      <h2 class="h2 reveal" style="color:var(--canvas)">Receipts, Not Adjectives.</h2>
+      <div class="metric-grid">
+        <div class="metric reveal wiggle">
+          <div class="big">12</div>
+          <div class="label">Years Designing</div>
+          <div class="sub">Studio + freelance, identity to packaging.</div>
+        </div>
+        <div class="metric reveal wiggle">
+          <div class="big">8,000<span style="font-size:.5em">+</span></div>
+          <div class="label">Students Taught</div>
+          <div class="sub">Workshops, online course & studio mentorship.</div>
+        </div>
+        <div class="metric reveal wiggle">
+          <div class="big">∞</div>
+          <div class="label">Work In Design Annuals</div>
+          <div class="sub">Identity, poster & editorial features.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TESTIMONIALS ============ -->
+  <section id="students" class="wrap" data-module="testimonials" data-variant="cards">
+    <span class="section-tag tag-magenta reveal">Word On The Street</span>
+    <h2 class="h2 reveal">Students Don't Whisper About It.</h2>
+
+    <div class="quote-grid">
+      <figure class="quote reveal wiggle" style="margin:0">
+        <span class="mark" aria-hidden="true">“</span>
+        <p>Bruno made me unlearn every safe instinct I had. My portfolio went from quiet to unforgettable in eight weeks.</p>
+        <div class="who">
+          <span class="av av-c">DR</span>
+          <span>
+            <span class="nm">Daniela Rojas</span><br/>
+            <span class="rl">Junior Designer · course grad</span>
+          </span>
+        </div>
+      </figure>
+      <figure class="quote reveal wiggle" style="margin:0">
+        <span class="mark" aria-hidden="true">“</span>
+        <p>We hired Bruno to rebrand a tired product. He gave us something kids actually screenshot. Sales people noticed.</p>
+        <div class="who">
+          <span class="av av-m">MT</span>
+          <span>
+            <span class="nm">Marco Téllez</span><br/>
+            <span class="rl">Founder · Soda Pop Co.</span>
+          </span>
+        </div>
+      </figure>
+      <figure class="quote reveal wiggle" style="margin:0">
+        <span class="mark" aria-hidden="true">“</span>
+        <p>Best money I spent on my career. He teaches taste, not templates — and somehow makes the hard stuff fun.</p>
+        <div class="who">
+          <span class="av av-y">PK</span>
+          <span>
+            <span class="nm">Priya Kapoor</span><br/>
+            <span class="rl">Art Director · workshop alum</span>
+          </span>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============ SERVICES ============ -->
+  <section id="services" class="wrap" data-module="services" data-variant="cards">
+    <span class="section-tag tag-cyan reveal">What You Can Hire</span>
+    <h2 class="h2 reveal">Three Ways To Get Loud.</h2>
+    <p class="lead reveal">Pick the one that fits — every option ships work that refuses to blend in.</p>
+
+    <div class="svc-grid">
+      <div class="svc reveal wiggle">
+        <span class="svc-num">01</span>
+        <h3>Brand Identity</h3>
+        <p>Logo, type system, color, and a sticker-sheet of assets your team can actually wield. Built to be remembered, not approved-and-forgotten.</p>
+        <span class="price">From $6k · 4 weeks</span>
+      </div>
+      <div class="svc reveal wiggle">
+        <span class="svc-num">02</span>
+        <h3>Posters &amp; Packaging</h3>
+        <p>One-off campaigns, festival posters, and packaging that earns a screenshot on the shelf. Big type, bigger nerve.</p>
+        <span class="price">From $2.5k · 2 weeks</span>
+      </div>
+      <div class="svc reveal wiggle">
+        <span class="svc-num">03</span>
+        <h3>The Loud Design Course</h3>
+        <p>Eight weeks of unlearning safe instincts. Live crits, real briefs, and a portfolio that stops scrolls by week six.</p>
+        <span class="price">$390 · cohort-based</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BELIEFS ============ -->
+  <section id="beliefs" class="wrap" data-module="beliefs" data-variant="numbered">
+    <span class="section-tag tag-yellow reveal">House Rules</span>
+    <h2 class="h2 reveal">Four Things I Refuse To Negotiate.</h2>
+
+    <div class="belief-grid">
+      <div class="belief reveal wiggle">
+        <span class="bnum" aria-hidden="true">1</span>
+        <div>
+          <h3>Boring Is The Only Failure</h3>
+          <p>A polite design nobody remembers did its job for no one. Risk a little; earn a reaction.</p>
+        </div>
+      </div>
+      <div class="belief reveal wiggle">
+        <span class="bnum" aria-hidden="true">2</span>
+        <div>
+          <h3>Break The Grid On Purpose</h3>
+          <p>You can only break the rules well once you can keep them. We learn the grid, then we tilt it.</p>
+        </div>
+      </div>
+      <div class="belief reveal wiggle">
+        <span class="bnum" aria-hidden="true">3</span>
+        <div>
+          <h3>Taste Over Templates</h3>
+          <p>I teach judgement, not presets. The goal is work you could not have downloaded.</p>
+        </div>
+      </div>
+      <div class="belief reveal wiggle">
+        <span class="bnum" aria-hidden="true">4</span>
+        <div>
+          <h3>Make The Hard Stuff Fun</h3>
+          <p>Color theory, kerning, hierarchy — all of it lands faster when the room is laughing.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SELECTED QUOTE ============ -->
+  <section class="wrap" data-module="selected_quotes" data-variant="large_type">
+    <div class="bigquote reveal">
+      <blockquote>
+        <span class="bq-mark">“</span>If it does not make someone <em style="font-style:normal;text-decoration:underline;text-decoration-thickness:4px">feel</em> something, it is just decoration with a deadline.
+      </blockquote>
+      <cite>— Bruno's first studio crit, every single time</cite>
+    </div>
+  </section>
+
+  <!-- ============ NOW / CURRENTLY BUILDING ============ -->
+  <section id="now" class="wrap" data-module="currently_building" data-variant="now_block">
+    <span class="section-tag tag-magenta reveal">Now</span>
+    <h2 class="h2 reveal">What's On The Table This Month.</h2>
+
+    <div class="now-grid">
+      <div class="now-card reveal wiggle">
+        <span class="now-tag">Building</span>
+        <h3>Cohort #07 of the course</h3>
+        <p>Rewriting the typography week from scratch. New briefs, louder crits.</p>
+      </div>
+      <div class="now-card reveal wiggle">
+        <span class="now-tag">Designing</span>
+        <h3>Festival Tipográfico 2026</h3>
+        <p>A poster series and full wayfinding kit for the city's type festival.</p>
+      </div>
+      <div class="now-card reveal wiggle">
+        <span class="now-tag">Reading</span>
+        <h3>Sottsass, again</h3>
+        <p>Re-reading the Memphis Group catalogues. It never stops being fuel.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TOOLS ============ -->
+  <section class="wrap" data-module="tools" data-variant="stack_list">
+    <span class="section-tag tag-cyan reveal">The Kit</span>
+    <h2 class="h2 reveal">What I Actually Reach For.</h2>
+    <p class="lead reveal">No magic tools — just sharp ones, used with intent.</p>
+
+    <div class="pill-cloud reveal wiggle">
+      <span class="pillx">Illustrator</span>
+      <span class="pillx">InDesign</span>
+      <span class="pillx">Figma</span>
+      <span class="pillx">Procreate</span>
+      <span class="pillx">Risograph</span>
+      <span class="pillx">Glyphs</span>
+      <span class="pillx">Letterpress</span>
+      <span class="pillx">After Effects</span>
+      <span class="pillx">A very loud Pantone book</span>
+    </div>
+  </section>
+
+  <!-- ============ CREDENTIALS ============ -->
+  <section class="wrap" data-module="credentials" data-variant="list">
+    <span class="section-tag tag-yellow reveal">Receipts</span>
+    <h2 class="h2 reveal">Awards, Talks &amp; Other Loud Noises.</h2>
+
+    <ul class="cred-list reveal">
+      <li>
+        <span class="yr">2024</span>
+        <span class="ct"><strong>Type Directors Club</strong> Award — Festival Tipográfico poster series.</span>
+      </li>
+      <li>
+        <span class="yr">2023</span>
+        <span class="ct"><strong>Latin American Design Annual</strong> — Soda Pop Co. packaging featured.</span>
+      </li>
+      <li>
+        <span class="yr">2022</span>
+        <span class="ct"><strong>OFFF Festival</strong> — main-stage talk: "Break The Grid On Purpose."</span>
+      </li>
+      <li>
+        <span class="yr">2018</span>
+        <span class="ct"><strong>BFA, Graphic Design</strong> — Universidad de las Artes, with honors.</span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section id="faq" class="wrap" data-module="faq" data-variant="two_column">
+    <span class="section-tag tag-magenta reveal">Before You Ask</span>
+    <h2 class="h2 reveal">Questions People Always Ask.</h2>
+
+    <div class="faq-grid">
+      <div class="faq-item reveal wiggle">
+        <h3><span class="q" aria-hidden="true">?</span> Do I need to be "good at art" for the course?</h3>
+        <p>No. You need taste and nerve — both are trainable. We sharpen the eye first, the hand follows.</p>
+      </div>
+      <div class="faq-item reveal wiggle">
+        <h3><span class="q" aria-hidden="true">?</span> Will this style work for a serious brand?</h3>
+        <p>Loud is not the same as unserious. The boldness is dialed to fit the brief — sometimes a whisper, sometimes a shout.</p>
+      </div>
+      <div class="faq-item reveal wiggle">
+        <h3><span class="q" aria-hidden="true">?</span> What's your turnaround for client work?</h3>
+        <p>Posters in about two weeks, full identities in four. I take a few projects at a time so each one gets the noise it deserves.</p>
+      </div>
+      <div class="faq-item reveal wiggle">
+        <h3><span class="q" aria-hidden="true">?</span> Is the course live or self-paced?</h3>
+        <p>Live and cohort-based. Real crits, real deadlines, a real room. Replays exist, but the energy is in showing up.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SOCIAL LINKS ============ -->
+  <section class="wrap" data-module="social_links" data-variant="text_row">
+    <span class="section-tag tag-cyan reveal">Find Me Being Loud</span>
+    <h2 class="h2 reveal">Around The Internet.</h2>
+    <div class="social-row reveal wiggle">
+      <a href="#" rel="me">Instagram ↗</a>
+      <a href="#" rel="me">Behance ↗</a>
+      <a href="#" rel="me">Dribbble ↗</a>
+      <a href="#" rel="me">Are.na ↗</a>
+      <a href="#" rel="me">YouTube ↗</a>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact" class="wrap contact" data-module="contact" data-variant="cta_band">
+    <div class="contact-card reveal">
+      <div class="inner">
+        <h2>Let's Make Something Loud.</h2>
+        <p class="lead">Join the course, or bring me your brand. Either way, we are not making anything boring.</p>
+        <div class="contact-cta">
+          <a class="btn btn-magenta" href="#">Take the course →</a>
+          <a class="btn btn-yellow" href="mailto:hola@brunosalas.studio">hola@brunosalas.studio</a>
+          <a class="btn btn-white" href="#" rel="me">Instagram @brunosalas</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <p class="fl">© 2026 Bruno Salas · Design That Refuses to Be Boring</p>
+    </div>
+  </footer>
+
+  <div class="atlas-photo-toggle" role="group" aria-label="示例照片 / Demo photos"><span>照片 Photos</span><button id="atlasPhotoBtn" type="button" aria-pressed="true">On</button></div>
+  <script>(function(){var b=document.getElementById('atlasPhotoBtn');if(!b)return;function set(on){document.body.classList.toggle('no-photos',!on);b.setAttribute('aria-pressed',on?'true':'false');b.textContent=on?'On':'Off';}b.addEventListener('click',function(){set(document.body.classList.contains('no-photos'));});set(true);})();</script>
+
+  <script>
+    (function(){
+      var els=document.querySelectorAll('.reveal');
+      if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in')});return;}
+      var io=new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}
+        });
+      },{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+      els.forEach(function(e){io.observe(e);});
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Risograph — Framed Photo Specimen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+
+  body{
+    margin:0;
+    background:#f6f1e3;            /* --paper : direction page bg */
+    min-height:100vh;
+    display:grid;
+    place-items:center;
+    padding:28px;
+  }
+
+  /* ---- riso print panel (framed photo), scaled to fit ~360x300 ---- */
+  .print-panel{
+    position:relative;
+    width:100%;
+    max-width:240px;              /* whole composition incl. offset frames stays small */
+    aspect-ratio:4/5;
+    margin:0 auto;
+  }
+
+  /* misregistered colour frames — blue offset down/right, yellow offset up/left */
+  .print-panel .frame{
+    position:absolute;inset:0;background:#0078bf;        /* --blue */
+    transform:translate(10px,12px);mix-blend-mode:multiply;
+  }
+  .print-panel .frame2{
+    position:absolute;inset:0;background:#ffd400;        /* --yellow */
+    transform:translate(-10px,-10px);mix-blend-mode:multiply;
+  }
+
+  /* the photo */
+  .u-photo{position:absolute;inset:0;z-index:2}
+  .u-photo img{
+    width:100%;height:100%;object-fit:cover;display:block;
+    filter:grayscale(1) contrast(1.15) brightness(1.05);
+    mix-blend-mode:multiply;
+  }
+
+  /* pink screen wash over the portrait */
+  .print-panel .pink-wash{
+    position:absolute;inset:0;z-index:3;background:#ff48b0; /* --pink */
+    mix-blend-mode:screen;opacity:.34;pointer-events:none;
+  }
+
+  /* mono caption tag */
+  .print-panel .panel-tag{
+    position:absolute;left:0;bottom:-14px;z-index:4;
+    font-family:'Space Mono',ui-monospace,monospace;
+    font-size:11px;font-weight:700;
+    letter-spacing:2px;text-transform:uppercase;color:#4a463c; /* --ink-soft */
+    background:#f6f1e3;padding:4px 8px;                        /* --paper */
+  }
+</style>
+</head>
+<body>
+  <div class="print-panel">
+    <div class="frame" aria-hidden="true"></div>
+    <div class="frame2" aria-hidden="true"></div>
+
+    <div class="u-photo">
+      <img src="portrait.webp" alt="Risograph portrait, spot-colour, slightly off register.">
+      <div class="pink-wash" aria-hidden="true"></div>
+    </div>
+
+    <span class="panel-tag">FIG. 01 — HALFTONE EDITION</span>
+  </div>
+</body>
+</html>

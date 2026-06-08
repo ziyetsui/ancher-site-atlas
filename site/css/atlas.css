@@ -1,0 +1,116 @@
+:root {
+  --bg: #fcfcfa;
+  --surface: #ffffff;
+  --ink: #16161a;
+  --ink-muted: #5b5b66;
+  --ink-subtle: #8a8a96;
+  --line: #e7e7e2;
+  --line-strong: #d4d4cc;
+  --accent: #1a1a1a;
+  --radius: 14px;
+  --maxw: 1240px;
+  --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: var(--font); line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+a { color: inherit; }
+
+/* masthead */
+.masthead { border-bottom: 1px solid var(--line); padding: 56px 0 0; background:
+  radial-gradient(1200px 300px at 20% -10%, #f4f1ea 0%, transparent 70%); }
+.masthead h1 { font-size: clamp(28px, 4vw, 46px); line-height: 1.05;
+  letter-spacing: -1.2px; margin: 0 0 14px; font-weight: 700; }
+.masthead h1 .en { color: var(--ink-subtle); font-weight: 500; }
+.lede { max-width: 760px; font-size: 17px; color: var(--ink-muted); margin: 0 0 26px; }
+.lede strong { color: var(--ink); font-weight: 600; }
+.stats { display: flex; gap: 28px; margin-bottom: 26px; }
+.stats .stat b { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; }
+.stats .stat span { display: block; font-size: 12px; color: var(--ink-subtle);
+  text-transform: uppercase; letter-spacing: 0.5px; }
+
+.tabs { display: flex; gap: 4px; }
+.tab { appearance: none; border: 0; background: transparent; cursor: pointer;
+  font: inherit; font-weight: 600; color: var(--ink-subtle);
+  padding: 12px 16px; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.tab.is-active { color: var(--ink); border-bottom-color: var(--ink); }
+.tab span { color: var(--ink-subtle); font-weight: 500; }
+
+/* grid */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 28px; padding: 40px 0 72px; }
+@media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+
+.card { background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column;
+  transition: box-shadow .18s ease, transform .18s ease, border-color .18s ease; }
+.card:hover { box-shadow: 0 12px 40px -16px rgba(0,0,0,.22); transform: translateY(-3px);
+  border-color: var(--line-strong); }
+
+.thumb { position: relative; display: block; height: 260px; overflow: hidden;
+  background: #f0efe9; border-bottom: 1px solid var(--line); }
+.thumb img { width: 100%; display: block; object-fit: cover; object-position: top center; }
+.thumb::after { content: "查看示例页 ↗"; position: absolute; inset: 0; display: grid;
+  place-items: center; background: rgba(20,20,22,.55); color: #fff; font-weight: 600;
+  font-size: 14px; opacity: 0; transition: opacity .18s ease; }
+.thumb:hover::after { opacity: 1; }
+.lineage { position: absolute; top: 12px; left: 12px; z-index: 2; font-size: 11px;
+  font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase; color: #fff;
+  background: rgba(20,20,22,.62); backdrop-filter: blur(4px);
+  padding: 4px 9px; border-radius: 999px; }
+
+.body { padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+.namerow { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.name-cn { margin: 0; font-size: 19px; font-weight: 700; letter-spacing: -0.3px; }
+.name-en { font-size: 13px; color: var(--ink-subtle); font-family: var(--mono); }
+.desc { margin: 0; font-size: 14px; color: var(--ink-muted); line-height: 1.55;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+.swatches { display: flex; gap: 6px; }
+.swatches i { width: 22px; height: 22px; border-radius: 6px; border: 1px solid rgba(0,0,0,.12); }
+
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tags span { font-size: 11px; color: var(--ink-muted); background: #f3f2ec;
+  border: 1px solid var(--line); padding: 2px 8px; border-radius: 999px; }
+
+.actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 6px; }
+.btn { appearance: none; cursor: pointer; font: inherit; font-size: 13px; font-weight: 600;
+  border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink);
+  padding: 8px 12px; border-radius: 9px; text-decoration: none; transition: background .15s, border-color .15s; }
+.btn:hover { background: #f5f4ee; }
+.btn-primary { background: var(--ink); color: #fff; border-color: var(--ink); }
+.btn-primary:hover { background: #2c2c30; }
+.btn.ghost { border-color: transparent; color: var(--ink-subtle); padding-left: 6px; padding-right: 6px; }
+.btn.copy.copied { background: #1f7a44; color: #fff; border-color: #1f7a44; }
+
+/* modules panel */
+.panel { padding: 40px 0 80px; max-width: 720px; }
+.panel h2 { font-size: 22px; }
+.panel a { color: #b4451f; }
+
+.foot { border-top: 1px solid var(--line); padding: 22px 0; color: var(--ink-subtle); font-size: 13px; }
+.foot .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+/* ---- in-page viewer overlay (open a direction without leaving the gallery) ---- */
+.viewer-overlay { position: fixed; inset: 0; z-index: 1000; display: flex;
+  background: rgba(16,16,20,.58); backdrop-filter: blur(3px);
+  animation: viewer-fade .18s ease; }
+.viewer-overlay[hidden] { display: none; }
+.viewer-frame { margin: auto; width: min(1320px, calc(100vw - 48px)); height: calc(100vh - 48px);
+  border: 0; display: block; background: #16161a; border-radius: 14px; overflow: hidden;
+  box-shadow: 0 40px 120px -24px rgba(0,0,0,.7); }
+@keyframes viewer-fade { from { opacity: 0; } to { opacity: 1; } }
+@media (max-width: 760px) {
+  .viewer-frame { width: 100vw; height: 100vh; border-radius: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .viewer-overlay { animation: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; scroll-behavior: auto !important; }
+}

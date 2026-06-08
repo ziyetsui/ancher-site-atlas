@@ -1,0 +1,9 @@
+{
+  "id": "kinetic-hero",
+  "name_cn": "动态标题",
+  "name_en": "Kinetic Hero",
+  "style": "近黑底配酸性青柠强调色、超大 grotesque 标题填满首屏的动态字体设计师作品集，硬朗瑞士网格 + 单字驱动的运动排版。",
+  "plugins": ["SplitText (chars + lines + mask)", "ScrollTrigger (scrub / 触发 / 视差)", "CustomEase (招牌缓动)", "Timeline (intro 编排)", "matchMedia (响应式 + reduced-motion)", "quickTo / utils (clamp, toArray)"],
+  "focus": "演示 GSAP 把巨型标题逐字符带遮罩升起、宣言逐行揭示、作品列表 stagger、标题 hover 字符波动，并用一条 CustomEase 招牌缓动贯穿全站。",
+  "prompt": "做一个动态字体设计师的单页作品集落地页。视觉：近黑底 #0b0b0c，单一电光酸性青柠 #c6ff3a 作唯一强调色，超大 grotesque（Archivo Black 类）全大写标题、行高极紧、字距收紧，配等宽字体做标签与序号，硬朗瑞士网格＋细线分隔，原创、避免通用 AI 网站感。分四区：①Hero 巨标题填满首屏，三行词 TYPE / IN / MOTION，一行描边空心、一行实心青柠，下方有简介、scroll 指示与底部无限滚动 ticker；②宣言区一段中英混排短文逐行揭示；③精选作品为列表（序号＋项目名＋副标题＋年份），hover 浮出小幅图片预览并跟随鼠标；④页脚巨型 CTA 'LET'S MAKE NOISE' 加联系网格。动效全部用 GSAP：先有百分比数字预加载器，结束后整块上移揭页；Hero 标题用 SplitText 按字符拆分、每字在遮罩内带轻微旋转交错升起；定义一条 CustomEase 招牌缓动设为全站默认；标题支持鼠标字符波动（越近抬越高、离开弹性回落）；ticker 无限横滚；宣言用 SplitText 按行拆分、ScrollTrigger 触发逐行升起；作品行随滚动 stagger 上移淡入；一条巨型大词随滚动 scrub 视差横移；页脚 CTA 按行遮罩升起、hover 有青柠下划线扫过。只动 transform/opacity，ScrollTrigger 写完整 start/end，响应式 360–1440，语义化可访问。用 matchMedia 处理 reduced-motion：直接渲染终态、关闭循环与滚动驱动。主角为上海动态字体设计师陈未央。"
+}

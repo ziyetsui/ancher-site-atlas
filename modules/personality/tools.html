@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Specimen · tools / 技术栈</title>
+<style>
+  :root{--bg:#ffffff;--surface:#f6f6f4;--surface-2:#efefea;--ink:#191917;--muted:#6b6b67;--subtle:#9a9a94;--accent:#2f56ff;--accent-soft:#e9eefc;--hairline:#e7e7e2;--ink-line:#191917;--ok:#1f7a44;--radius:12px;--pad:24px}
+
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+  .serif{font-family:Georgia,"Times New Roman",serif}
+
+  /* ---------- specimen sheet shell ---------- */
+  .sheet{max-width:980px;margin:0 auto;padding:clamp(20px,5vw,56px) clamp(16px,4vw,40px)}
+
+  header.sheet-head{
+    display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px;
+    padding-bottom:18px;margin-bottom:40px;
+    border-bottom:1px solid var(--hairline);
+  }
+  .sheet-head h1{
+    font-size:clamp(20px,3vw,26px);
+    margin:0;letter-spacing:-.01em;font-weight:650;
+  }
+  .sheet-head .crumb{
+    display:flex;align-items:baseline;gap:10px;color:var(--muted);font-size:13px;
+  }
+  .sheet-head .crumb .dot{color:var(--subtle)}
+  .sheet-head .count{
+    margin-left:auto;
+    font-size:12px;letter-spacing:.04em;text-transform:uppercase;
+    color:var(--muted);
+    background:var(--surface);border:1px solid var(--hairline);
+    padding:5px 10px;border-radius:999px;white-space:nowrap;
+  }
+
+  /* ---------- per-variant block ---------- */
+  .variant{margin-bottom:44px}
+  .variant:last-child{margin-bottom:0}
+  .label-row{
+    display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;
+    margin-bottom:12px;
+  }
+  .label-row .vid{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:13px;color:var(--ink);
+    background:var(--surface-2);
+    padding:3px 8px;border-radius:6px;
+    border:1px solid var(--hairline);
+  }
+  .label-row .hint{font-size:13px;color:var(--muted)}
+  .label-row .idx{
+    margin-left:auto;font-size:12px;color:var(--subtle);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+
+  .stage{
+    border:1px solid var(--hairline);
+    border-radius:var(--radius);
+    background:var(--surface);
+    padding:clamp(20px,4vw,40px);
+  }
+
+  /* ---------- shared component scaffold ---------- */
+  .card{
+    background:var(--bg);
+    border:1px solid var(--hairline);
+    border-radius:var(--radius);
+    padding:var(--pad);
+    max-width:560px;
+  }
+  .module-eyebrow{
+    display:flex;align-items:center;gap:10px;
+    font-size:11px;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--subtle);margin:0 0 18px;
+  }
+  .module-eyebrow::after{content:"";flex:1;height:1px;background:var(--hairline)}
+  .module-eyebrow .cn{letter-spacing:.04em}
+
+  a.focusable:focus-visible,
+  button:focus-visible,
+  .chip:focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:2px;
+    border-radius:7px;
+  }
+
+  /* ---------- VARIANT 1 · stack_list (grouped list) ---------- */
+  .stack-groups{display:grid;gap:22px}
+  .stack-group{display:grid;grid-template-columns:128px 1fr;gap:6px 20px}
+  @media (max-width:520px){.stack-group{grid-template-columns:1fr;gap:8px}}
+  .stack-group > .grp-head{
+    padding-top:4px;
+  }
+  .grp-head .grp-name{
+    font-size:13px;font-weight:600;color:var(--ink);margin:0;
+    letter-spacing:-.005em;
+  }
+  .grp-head .grp-cn{
+    display:block;font-size:11px;color:var(--subtle);margin-top:2px;
+    font-family:Georgia,serif;font-style:italic;
+  }
+  .stack-rows{display:grid;gap:2px}
+  .stack-rows .row{
+    display:flex;align-items:baseline;gap:12px;
+    padding:9px 0;
+    border-bottom:1px solid var(--hairline);
+  }
+  .stack-rows .row:last-child{border-bottom:none}
+  .row .tool{font-size:14px;color:var(--ink);font-weight:500;min-width:0}
+  .row .note{font-size:12.5px;color:var(--muted);margin-left:auto;text-align:right}
+  .row .lvl{
+    display:inline-flex;gap:3px;align-items:center;flex:none;
+  }
+  .row .lvl i{
+    width:6px;height:6px;border-radius:50%;
+    background:var(--surface-2);border:1px solid var(--hairline);
+    display:block;
+  }
+  .row .lvl i.on{background:var(--accent);border-color:var(--accent)}
+  .row .lvl[data-label]{position:relative}
+
+  /* ---------- VARIANT 2 · grid (tag grid) ---------- */
+  .grid-legend{
+    display:flex;flex-wrap:wrap;gap:14px;align-items:center;
+    margin-bottom:18px;font-size:12px;color:var(--muted);
+  }
+  .grid-legend .key{display:inline-flex;align-items:center;gap:7px}
+  .grid-legend .swatch{
+    width:11px;height:11px;border-radius:3px;flex:none;
+    border:1px solid var(--hairline);
+  }
+  .sw-core{background:var(--accent)}
+  .sw-fluent{background:var(--accent-soft)}
+  .sw-learn{background:var(--surface-2)}
+
+  .chip-grid{
+    display:flex;flex-wrap:wrap;gap:9px;
+  }
+  .chip{
+    display:inline-flex;align-items:center;gap:8px;
+    font:inherit;font-size:13px;line-height:1;
+    padding:9px 13px;
+    border-radius:999px;
+    border:1px solid var(--hairline);
+    background:var(--bg);
+    color:var(--ink);
+    cursor:default;
+    transition:border-color .16s ease,transform .16s ease,background .16s ease;
+  }
+  .chip:hover{transform:translateY(-1px);border-color:var(--subtle)}
+  .chip .ico{
+    width:18px;height:18px;border-radius:5px;flex:none;
+    display:grid;place-items:center;
+    background:var(--surface-2);
+    font-size:9px;font-weight:700;color:var(--muted);
+    font-family:ui-monospace,Menlo,monospace;letter-spacing:-.04em;
+  }
+  .chip .ico svg{width:11px;height:11px;display:block}
+  .chip[data-tier="core"]{
+    background:var(--accent);border-color:var(--accent);color:#fff;
+  }
+  .chip[data-tier="core"] .ico{background:rgba(255,255,255,.22);color:#fff}
+  .chip[data-tier="core"]:hover{background:#244ae8;border-color:#244ae8}
+  .chip[data-tier="fluent"]{background:var(--accent-soft);border-color:#d4ddf7}
+  .chip[data-tier="fluent"] .ico{background:#fff;color:var(--accent)}
+  .chip-grid .chip .meta{color:var(--subtle);font-size:11px}
+  .chip[data-tier="core"] .meta{color:rgba(255,255,255,.7)}
+
+  .photo-note{
+    margin-top:18px;font-size:11px;color:var(--subtle);
+    display:flex;align-items:center;gap:8px;
+  }
+  .photo-note .ph{
+    width:34px;height:34px;border-radius:7px;flex:none;
+    background:var(--surface-2);border:1px solid var(--hairline);
+    display:grid;place-items:center;
+    font-size:11px;font-weight:600;color:var(--muted);
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important;animation:none!important}
+    .chip:hover{transform:none}
+  }
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header class="sheet-head">
+    <h1>tools <span class="serif" style="font-weight:400;color:var(--muted);font-size:.8em">/ 技术栈</span></h1>
+    <div class="crumb">
+      <span class="dot">·</span>
+      <span>category: personality</span>
+    </div>
+    <span class="count">2 variants</span>
+  </header>
+
+  <!-- ============ VARIANT 1 ============ -->
+  <section class="variant" aria-labelledby="v1-label">
+    <div class="label-row">
+      <span class="vid" id="v1-label">stack_list</span>
+      <span class="hint">分组列表 — grouped by domain, proficiency as a quiet rail</span>
+      <span class="idx">01 / 02</span>
+    </div>
+
+    <div class="stage">
+      <article class="card" aria-label="Tools — grouped list">
+        <p class="module-eyebrow">Tools <span class="cn">· 技术栈</span></p>
+
+        <div class="stack-groups">
+
+          <div class="stack-group">
+            <div class="grp-head">
+              <p class="grp-name">Design</p>
+              <span class="grp-cn">设计</span>
+            </div>
+            <div class="stack-rows">
+              <div class="row">
+                <span class="tool">Figma</span>
+                <span class="lvl" role="img" aria-label="Proficiency 5 of 5">
+                  <i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i>
+                </span>
+                <span class="note">daily driver</span>
+              </div>
+              <div class="row">
+                <span class="tool">Framer</span>
+                <span class="lvl" role="img" aria-label="Proficiency 4 of 5">
+                  <i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i>
+                </span>
+                <span class="note">prototypes</span>
+              </div>
+              <div class="row">
+                <span class="tool">Rive</span>
+                <span class="lvl" role="img" aria-label="Proficiency 3 of 5">
+                  <i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i>
+                </span>
+                <span class="note">micro-interactions</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="stack-group">
+            <div class="grp-head">
+              <p class="grp-name">Build</p>
+              <span class="grp-cn">前端</span>
+            </div>
+            <div class="stack-rows">
+              <div class="row">
+                <span class="tool">TypeScript</span>
+                <span class="lvl" role="img" aria-label="Proficiency 4 of 5">
+                  <i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i>
+                </span>
+                <span class="note">React, Next.js</span>
+              </div>
+              <div class="row">
+                <span class="tool">Tailwind CSS</span>
+                <span class="lvl" role="img" aria-label="Proficiency 5 of 5">
+                  <i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i>
+                </span>
+                <span class="note">design tokens</span>
+              </div>
+              <div class="row">
+                <span class="tool">Storybook</span>
+                <span class="lvl" role="img" aria-label="Proficiency 3 of 5">
+                  <i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i>
+                </span>
+                <span class="note">component docs</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="stack-group">
+            <div class="grp-head">
+              <p class="grp-name">Research</p>
+              <span class="grp-cn">研究</span>
+            </div>
+            <div class="stack-rows">
+              <div class="row">
+                <span class="tool">Maze</span>
+                <span class="lvl" role="img" aria-label="Proficiency 4 of 5">
+                  <i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i>
+                </span>
+                <span class="note">usability tests</span>
+              </div>
+              <div class="row">
+                <span class="tool">Dovetail</span>
+                <span class="lvl" role="img" aria-label="Proficiency 3 of 5">
+                  <i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i>
+                </span>
+                <span class="note">synthesis</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ VARIANT 2 ============ -->
+  <section class="variant" aria-labelledby="v2-label">
+    <div class="label-row">
+      <span class="vid" id="v2-label">grid</span>
+      <span class="hint">标签网格 — flat scannable chips, tier shown by fill weight</span>
+      <span class="idx">02 / 02</span>
+    </div>
+
+    <div class="stage">
+      <article class="card" aria-label="Tools — tag grid">
+        <p class="module-eyebrow">Tools <span class="cn">· 技术栈</span></p>
+
+        <div class="grid-legend" aria-hidden="false">
+          <span class="key"><span class="swatch sw-core"></span> core / 主力</span>
+          <span class="key"><span class="swatch sw-fluent"></span> fluent / 熟练</span>
+          <span class="key"><span class="swatch sw-learn"></span> learning / 在学</span>
+        </div>
+
+        <ul class="chip-grid" aria-label="Toolset tags">
+          <li><button class="chip focusable" data-tier="core" type="button">
+            <span class="ico" aria-hidden="true">Fi</span>Figma
+          </button></li>
+          <li><button class="chip focusable" data-tier="core" type="button">
+            <span class="ico" aria-hidden="true">Ts</span>TypeScript
+          </button></li>
+          <li><button class="chip focusable" data-tier="core" type="button">
+            <span class="ico" aria-hidden="true">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 11l3-6 3 6M3.4 9h3.2"/><path d="M9 5h2.2a1.6 1.6 0 0 1 0 3.2H9V5zm0 3.2V11"/></svg>
+            </span>Tailwind
+          </button></li>
+          <li><button class="chip focusable" data-tier="fluent" type="button">
+            <span class="ico" aria-hidden="true">Fr</span>Framer
+          </button></li>
+          <li><button class="chip focusable" data-tier="fluent" type="button">
+            <span class="ico" aria-hidden="true">Re</span>React
+          </button></li>
+          <li><button class="chip focusable" data-tier="fluent" type="button">
+            <span class="ico" aria-hidden="true">Mz</span>Maze
+          </button></li>
+          <li><button class="chip focusable" data-tier="fluent" type="button">
+            <span class="ico" aria-hidden="true">Sb</span>Storybook
+          </button></li>
+          <li><button class="chip focusable" type="button">
+            <span class="ico" aria-hidden="true">Rv</span>Rive
+          </button></li>
+          <li><button class="chip focusable" type="button">
+            <span class="ico" aria-hidden="true">Dt</span>Dovetail
+          </button></li>
+          <li><button class="chip focusable" type="button">
+            <span class="ico" aria-hidden="true">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.5" y="2.5" width="11" height="11" rx="2.5"/><path d="M5.5 8h5M8 5.5v5"/></svg>
+            </span>Three.js
+          </button></li>
+          <li><button class="chip focusable" type="button">
+            <span class="ico" aria-hidden="true">Sv</span>Svelte
+          </button></li>
+        </ul>
+
+        <p class="photo-note">
+          <span class="ph" aria-hidden="true">MC</span>
+          Photo slot — neutral CSS placeholder (avatar / tool logo strip would sit here)
+        </p>
+      </article>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>

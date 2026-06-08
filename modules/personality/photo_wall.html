@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>photo_wall · specimen sheet</title>
+<style>
+:root{--bg:#ffffff;--surface:#f6f6f4;--surface-2:#efefea;--ink:#191917;--muted:#6b6b67;--subtle:#9a9a94;--accent:#2f56ff;--accent-soft:#e9eefc;--hairline:#e7e7e2;--ink-line:#191917;--ok:#1f7a44;--radius:12px;--pad:24px}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:15px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+.serif{font-family:Georgia,"Times New Roman",serif}
+
+.sheet{
+  max-width:1200px;
+  margin:0 auto;
+  padding:clamp(20px,4vw,48px);
+}
+
+/* ---------- header ---------- */
+.sheet-head{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:10px 16px;
+  padding-bottom:18px;
+  border-bottom:1px solid var(--hairline);
+}
+.sheet-head h1{
+  font-size:clamp(20px,2.6vw,26px);
+  letter-spacing:-.01em;
+  margin:0;
+  font-weight:650;
+}
+.sheet-head .dot{color:var(--subtle)}
+.sheet-head .cat{
+  font-size:13px;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+.sheet-head .count{
+  margin-left:auto;
+  font-size:12px;
+  color:var(--muted);
+  border:1px solid var(--hairline);
+  border-radius:999px;
+  padding:4px 11px;
+  background:var(--surface);
+}
+
+/* ---------- variant block ---------- */
+.variant{margin-top:40px}
+.variant-label{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:8px 14px;
+  margin-bottom:12px;
+}
+.variant-id{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:13px;
+  font-weight:600;
+  color:var(--ink);
+  background:var(--accent-soft);
+  border:1px solid #d8e0fb;
+  border-radius:6px;
+  padding:3px 9px;
+}
+.variant-hint{font-size:13.5px;color:var(--muted)}
+
+.stage{
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  padding:var(--pad);
+  background:var(--surface);
+}
+
+/* ---------- photo slot primitive ---------- */
+.slot{
+  position:relative;
+  background:var(--surface-2);
+  border:1px solid var(--hairline);
+  border-radius:10px;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--subtle);
+}
+.slot .initials{
+  font-family:Georgia,serif;
+  font-size:clamp(18px,3.5vw,30px);
+  font-weight:400;
+  color:var(--subtle);
+  letter-spacing:.02em;
+}
+.slot .slot-tag{
+  position:absolute;
+  left:8px;
+  bottom:8px;
+  font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  font-size:10px;
+  letter-spacing:.04em;
+  color:var(--muted);
+  background:rgba(255,255,255,.82);
+  border:1px solid var(--hairline);
+  border-radius:5px;
+  padding:2px 6px;
+}
+.slot svg{width:30%;max-width:46px;height:auto;opacity:.5}
+.slot img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* ---------- masonry ---------- */
+.masonry-wrap{}
+.masonry-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  margin-bottom:16px;
+  gap:12px;
+}
+.masonry-head .who{
+  font-family:Georgia,serif;
+  font-size:18px;
+  font-weight:400;
+}
+.masonry-head .who small{
+  display:block;
+  font-family:system-ui,sans-serif;
+  font-size:12px;
+  color:var(--muted);
+  margin-top:2px;
+}
+.masonry-head .meta{
+  font-size:12px;
+  color:var(--subtle);
+  font-family:ui-monospace,Menlo,monospace;
+  white-space:nowrap;
+}
+.masonry{
+  columns:4 180px;
+  column-gap:14px;
+}
+.masonry .slot{
+  margin:0 0 14px;
+  width:100%;
+  break-inside:avoid;
+}
+/* varied heights for the "错落" rhythm */
+.m1{aspect-ratio:4/5}
+.m2{aspect-ratio:1/1}
+.m3{aspect-ratio:3/4}
+.m4{aspect-ratio:4/3}
+.m5{aspect-ratio:1/1}
+.m6{aspect-ratio:2/3}
+.m7{aspect-ratio:4/5}
+.m8{aspect-ratio:5/4}
+.m9{aspect-ratio:3/4}
+.m10{aspect-ratio:1/1}
+
+/* ---------- strip ---------- */
+.strip-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  margin-bottom:14px;
+  gap:12px;
+}
+.strip-head .who{font-family:Georgia,serif;font-size:18px}
+.strip-head .hint-inline{
+  font-size:12px;color:var(--subtle);
+  display:flex;align-items:center;gap:6px;
+}
+.strip-head .hint-inline svg{width:14px;height:14px;opacity:.6}
+
+.strip-scroll{
+  display:flex;
+  gap:14px;
+  overflow-x:auto;
+  padding:2px 2px 14px;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:thin;
+  scrollbar-color:var(--subtle) transparent;
+}
+.strip-scroll::-webkit-scrollbar{height:8px}
+.strip-scroll::-webkit-scrollbar-thumb{background:var(--subtle);border-radius:99px}
+.strip-scroll::-webkit-scrollbar-track{background:transparent}
+
+.strip-item{
+  scroll-snap-align:start;
+  flex:0 0 auto;
+}
+.strip-item figure{margin:0}
+.strip-item .slot{
+  width:200px;
+  height:150px;
+}
+.strip-item figcaption{
+  margin-top:8px;
+  font-size:12.5px;
+  color:var(--muted);
+  max-width:200px;
+}
+.strip-item figcaption b{
+  display:block;
+  color:var(--ink);
+  font-weight:600;
+  font-size:13px;
+}
+.strip-foot{
+  margin-top:6px;
+  font-size:11.5px;
+  color:var(--subtle);
+  font-family:ui-monospace,Menlo,monospace;
+}
+
+a.focusable:focus-visible,
+.strip-scroll:focus-visible,
+.slot:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:2px;
+  border-radius:10px;
+}
+
+@media (max-width:640px){
+  .masonry{columns:2 130px;}
+  .strip-item .slot{width:160px;height:120px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{scroll-behavior:auto !important;animation:none !important;transition:none !important}
+}
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header class="sheet-head">
+    <h1>photo_wall</h1>
+    <span class="dot">·</span>
+    <span class="cat">personality</span>
+    <span class="count" aria-label="2 variants">2 variants</span>
+  </header>
+
+  <!-- ============ VARIANT 1: masonry ============ -->
+  <section class="variant" aria-labelledby="v-masonry">
+    <div class="variant-label">
+      <span class="variant-id" id="v-masonry">masonry</span>
+      <span class="variant-hint">错落网格（灰块）— staggered columns, varied photo heights</span>
+    </div>
+
+    <div class="stage">
+      <div class="masonry-wrap">
+        <div class="masonry-head">
+          <div class="who">
+            Maya Chen
+            <small>Product designer · Berlin → Taipei</small>
+          </div>
+          <div class="meta">10 photos</div>
+        </div>
+
+        <div class="masonry" role="list" aria-label="Photo wall, masonry layout">
+          <div class="slot m1" role="listitem" tabindex="0" aria-label="Photo slot 1: studio desk, morning">
+            <img src="../../assets/portrait-woman-studio.webp" alt="Maya at her studio desk in the morning" loading="lazy"><span class="slot-tag">photo · 4:5</span>
+          </div>
+          <div class="slot m2" role="listitem" tabindex="0" aria-label="Photo slot 2: ceramics shelf">
+            <img src="../../assets/editorial-bloom-flowers.webp" alt="Flowers blooming on a shelf" loading="lazy"><span class="slot-tag">photo · 1:1</span>
+          </div>
+          <div class="slot m3" role="listitem" tabindex="0" aria-label="Photo slot 3: trail run, Yangmingshan">
+            <img src="../../assets/editorial-street-running.webp" alt="Running through the city streets" loading="lazy"><span class="slot-tag">photo · 3:4</span>
+          </div>
+          <div class="slot m4" role="listitem" tabindex="0" aria-label="Photo slot 4: whiteboard sketch session">
+            <img src="../../assets/illustration-couple-reading.webp" alt="Two people reading together" loading="lazy"><span class="slot-tag">photo · 4:3</span>
+          </div>
+          <div class="slot m5" role="listitem" tabindex="0" aria-label="Photo slot 5: night market noodles">
+            <img src="../../assets/illustration-cat-glasses.webp" alt="A cat wearing glasses" loading="lazy"><span class="slot-tag">photo · 1:1</span>
+          </div>
+          <div class="slot m6" role="listitem" tabindex="0" aria-label="Photo slot 6: book stack, evening">
+            <img src="../../assets/landscape-lone-figure.webp" alt="A lone figure in an open landscape" loading="lazy"><span class="slot-tag">photo · 2:3</span>
+          </div>
+          <div class="slot m7" role="listitem" tabindex="0" aria-label="Photo slot 7: prototype shipped, team toast">
+            <img src="../../assets/editorial-pink-yacht.webp" alt="A bright pink yacht by the water" loading="lazy"><span class="slot-tag">photo · 4:5</span>
+          </div>
+          <div class="slot m8" role="listitem" tabindex="0" aria-label="Photo slot 8: window light, plants">
+            <img src="../../assets/illustration-kitten-seaside.webp" alt="A kitten by the seaside" loading="lazy"><span class="slot-tag">photo · 5:4</span>
+          </div>
+          <div class="slot m9" role="listitem" tabindex="0" aria-label="Photo slot 9: ferry to Penghu">
+            <img src="../../assets/landscape-solitary-bw.webp" alt="A solitary black-and-white landscape" loading="lazy"><span class="slot-tag">photo · 3:4</span>
+          </div>
+          <div class="slot m10" role="listitem" tabindex="0" aria-label="Photo slot 10: keyboard close-up">
+            <img src="../../assets/bw-portrait-closeup.webp" alt="A black-and-white portrait close-up" loading="lazy"><span class="slot-tag">photo · 1:1</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VARIANT 2: strip ============ -->
+  <section class="variant" aria-labelledby="v-strip">
+    <div class="variant-label">
+      <span class="variant-id" id="v-strip">strip</span>
+      <span class="variant-hint">横向条带（灰块）— horizontal scroll-snap row with captions</span>
+    </div>
+
+    <div class="stage">
+      <div class="strip-head">
+        <span class="who">A year in frames — Maya Chen</span>
+        <span class="hint-inline">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          scroll →
+        </span>
+      </div>
+
+      <div class="strip-scroll" tabindex="0" role="list" aria-label="Photo wall, horizontal strip. Scroll horizontally to see more.">
+        <div class="strip-item" role="listitem">
+          <figure>
+            <div class="slot" tabindex="0" aria-label="Photo slot: kickoff workshop, January">
+              <img src="../../assets/illustration-travel-woman.webp" alt="A woman setting off to travel" loading="lazy"><span class="slot-tag">photo · 4:3</span>
+            </div>
+            <figcaption><b>Jan — Kickoff</b>First wall sketch for the onboarding flow.</figcaption>
+          </figure>
+          <div class="strip-foot">taipei.studio</div>
+        </div>
+
+        <div class="strip-item" role="listitem">
+          <figure>
+            <div class="slot" tabindex="0" aria-label="Photo slot: design review, March">
+              <img src="../../assets/portrait-woman-kiss.webp" alt="A candid portrait moment" loading="lazy"><span class="slot-tag">photo · 4:3</span>
+            </div>
+            <figcaption><b>Mar — Review</b>Component library hit v1 with the team.</figcaption>
+          </figure>
+          <div class="strip-foot">remote · 4 cities</div>
+        </div>
+
+        <div class="strip-item" role="listitem">
+          <figure>
+            <div class="slot" tabindex="0" aria-label="Photo slot: conference talk, June">
+              <img src="../../assets/poster-bowie-king.webp" alt="A bold graphic poster on the wall" loading="lazy"><span class="slot-tag">photo · 4:3</span>
+            </div>
+            <figcaption><b>Jun — Talk</b>Spoke on motion systems at Config TPE.</figcaption>
+          </figure>
+          <div class="strip-foot">config.tpe</div>
+        </div>
+
+        <div class="strip-item" role="listitem">
+          <figure>
+            <div class="slot" tabindex="0" aria-label="Photo slot: field research, September">
+              <img src="../../assets/illustration-goose-skateboard.webp" alt="A goose on a skateboard" loading="lazy"><span class="slot-tag">photo · 4:3</span>
+            </div>
+            <figcaption><b>Sep — Field</b>Two weeks of user interviews in Tainan.</figcaption>
+          </figure>
+          <div class="strip-foot">tainan · 18 sessions</div>
+        </div>
+
+        <div class="strip-item" role="listitem">
+          <figure>
+            <div class="slot" tabindex="0" aria-label="Photo slot: launch day, November">
+              <img src="../../assets/editorial-pink-sunglasses.webp" alt="A playful editorial shot with pink sunglasses" loading="lazy"><span class="slot-tag">photo · 4:3</span>
+            </div>
+            <figcaption><b>Nov — Launch</b>Shipped the redesign to 40k users.</figcaption>
+          </figure>
+          <div class="strip-foot">v2.0 live</div>
+        </div>
+
+        <div class="strip-item" role="listitem">
+          <figure>
+            <div class="slot" tabindex="0" aria-label="Photo slot: year-end retro, December">
+              <img src="../../assets/editorial-fashion-mono.webp" alt="A monochrome fashion editorial frame" loading="lazy"><span class="slot-tag">photo · 4:3</span>
+            </div>
+            <figcaption><b>Dec — Retro</b>Closing the year with the whole crew.</figcaption>
+          </figure>
+          <div class="strip-foot">studio · 12 people</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>

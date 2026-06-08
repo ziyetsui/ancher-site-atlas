@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>faq · specimen sheet</title>
+<style>
+:root{--bg:#ffffff;--surface:#f6f6f4;--surface-2:#efefea;--ink:#191917;--muted:#6b6b67;--subtle:#9a9a94;--accent:#2f56ff;--accent-soft:#e9eefc;--hairline:#e7e7e2;--ink-line:#191917;--ok:#1f7a44;--radius:12px;--pad:24px}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:15px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+.mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace}
+.serif{font-family:Georgia,"Times New Roman",serif}
+
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+
+:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:2px;
+  border-radius:4px;
+}
+
+/* ---------- page shell ---------- */
+.sheet{max-width:1120px;margin:0 auto;padding:40px 28px 96px}
+
+.sheet-head{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:8px 16px;
+  padding-bottom:18px;
+  border-bottom:1px solid var(--hairline);
+  margin-bottom:44px;
+}
+.sheet-head h1{
+  font-size:20px;
+  font-weight:600;
+  letter-spacing:-.01em;
+  margin:0;
+}
+.sheet-head .dot{color:var(--subtle)}
+.sheet-head .meta{color:var(--muted);font-size:13.5px}
+.sheet-head .count{
+  margin-left:auto;
+  font-size:12px;
+  color:var(--muted);
+  background:var(--surface);
+  border:1px solid var(--hairline);
+  border-radius:999px;
+  padding:4px 12px;
+}
+
+/* ---------- variant block ---------- */
+.variant{margin-bottom:52px}
+.variant-label{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:6px 12px;
+  margin-bottom:14px;
+}
+.variant-label .id{
+  font-size:13px;
+  color:var(--ink);
+  background:var(--accent-soft);
+  border:1px solid #d6e0fb;
+  border-radius:6px;
+  padding:2px 8px;
+  font-weight:500;
+}
+.variant-label .hint{color:var(--muted);font-size:13px}
+
+.stage{
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  padding:var(--pad);
+  background:var(--surface);
+}
+
+/* ---------- shared atoms ---------- */
+.eyebrow{
+  font-size:11px;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  color:var(--subtle);
+  font-weight:600;
+}
+
+/* =========================================================
+   VARIANT 1 — accordion
+   ========================================================= */
+.accordion{
+  max-width:720px;
+  border:1px solid var(--hairline);
+  border-radius:10px;
+  background:var(--bg);
+  overflow:hidden;
+}
+.acc-item{border-bottom:1px solid var(--hairline)}
+.acc-item:last-child{border-bottom:0}
+.acc-trigger{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:16px 18px;
+  background:none;
+  border:0;
+  font:inherit;
+  text-align:left;
+  color:var(--ink);
+  font-weight:600;
+  font-size:15px;
+  cursor:pointer;
+  transition:background .15s ease;
+}
+.acc-trigger:hover{background:var(--surface-2)}
+.acc-trigger .chevron{
+  flex:0 0 auto;
+  color:var(--subtle);
+  transition:transform .2s ease,color .15s ease;
+}
+.acc-trigger .chevron svg{width:18px;height:18px;display:block}
+.acc-trigger[aria-expanded="true"] .chevron{transform:rotate(180deg);color:var(--accent)}
+.acc-panel{
+  display:none;
+  padding:0 18px 18px;
+}
+.acc-panel[data-open]{display:block}
+.acc-panel p{margin:0;color:var(--muted);font-size:14px;line-height:1.55;max-width:60ch}
+
+/* =========================================================
+   VARIANT 2 — two_column
+   ========================================================= */
+.faq-cols{
+  columns:2;
+  column-gap:40px;
+  max-width:880px;
+}
+.faq-cols .qa{
+  break-inside:avoid;
+  -webkit-column-break-inside:avoid;
+  page-break-inside:avoid;
+  margin:0 0 22px;
+}
+.faq-cols .qa:first-child h3{margin-top:0}
+.faq-cols h3{
+  margin:0 0 6px;
+  font-size:14.5px;
+  font-weight:600;
+  letter-spacing:-.005em;
+  color:var(--ink);
+}
+.faq-cols p{
+  margin:0;
+  color:var(--muted);
+  font-size:13.5px;
+  line-height:1.55;
+}
+
+@media (max-width:640px){
+  .faq-cols{columns:1}
+}
+@media (max-width:520px){
+  .sheet{padding:28px 16px 72px}
+  .stage{padding:16px}
+  .sheet-head .count{margin-left:0}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header class="sheet-head">
+    <h1>faq</h1>
+    <span class="dot">·</span>
+    <span class="meta mono">category: conversion</span>
+    <span class="dot">·</span>
+    <span class="meta">Frequently asked / 常见问题</span>
+    <span class="count">2 variants</span>
+  </header>
+
+  <!-- ============ VARIANT 1: accordion ============ -->
+  <section class="variant" aria-labelledby="v-accordion">
+    <div class="variant-label">
+      <span class="id mono" id="v-accordion">accordion</span>
+      <span class="hint">可展开折叠 — accessible expand/collapse, one answer at a time</span>
+    </div>
+    <div class="stage">
+      <div class="accordion" data-accordion>
+
+        <div class="acc-item">
+          <button class="acc-trigger" type="button" aria-expanded="true" aria-controls="acc-p1" id="acc-t1">
+            <span>Are you taking on new work right now?</span>
+            <span class="chevron" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </span>
+          </button>
+          <div class="acc-panel" id="acc-p1" role="region" aria-labelledby="acc-t1" data-open>
+            <p>Yes — I usually have room for one new project at a time. I'm currently booking from early next month, and I keep a short waitlist when things are full. The fastest way to find out is to send a quick note about your timeline.</p>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-trigger" type="button" aria-expanded="false" aria-controls="acc-p2" id="acc-t2">
+            <span>How do you charge — hourly or fixed?</span>
+            <span class="chevron" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </span>
+          </button>
+          <div class="acc-panel" id="acc-p2" role="region" aria-labelledby="acc-t2">
+            <p>For most engagements I quote a fixed project fee once we've scoped the work together, so there are no surprises on the invoice. For open-ended or advisory work I bill a weekly rate. I'll always share the number in writing before anything starts.</p>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-trigger" type="button" aria-expanded="false" aria-controls="acc-p3" id="acc-t3">
+            <span>What does the process look like?</span>
+            <span class="chevron" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </span>
+          </button>
+          <div class="acc-panel" id="acc-p3" role="region" aria-labelledby="acc-t3">
+            <p>We start with a short call to align on goals and scope. Then I send a written proposal with timeline and price. Once it's signed, we work in weekly check-ins so you always see progress, and I hand off everything — files, source, and a short walkthrough — at the end.</p>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-trigger" type="button" aria-expanded="false" aria-controls="acc-p4" id="acc-t4">
+            <span>Which timezone do you work in?</span>
+            <span class="chevron" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </span>
+          </button>
+          <div class="acc-panel" id="acc-p4" role="region" aria-labelledby="acc-t4">
+            <p>I'm based in CET (UTC+1) but I've worked happily with teams from San Francisco to Singapore. I keep a few overlapping hours each day for live calls and I'm comfortable working mostly async otherwise — most clients never feel the gap.</p>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-trigger" type="button" aria-expanded="false" aria-controls="acc-p5" id="acc-t5">
+            <span>What kinds of projects are a good fit?</span>
+            <span class="chevron" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </span>
+          </button>
+          <div class="acc-panel" id="acc-p5" role="region" aria-labelledby="acc-t5">
+            <p>I do my best work on product design and front-end builds for small teams — marketing sites, web apps, and design systems. If your project lives somewhere near that, get in touch; if it's clearly outside it, I'm glad to point you toward someone better suited.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VARIANT 2: two_column ============ -->
+  <section class="variant" aria-labelledby="v-two-column">
+    <div class="variant-label">
+      <span class="id mono" id="v-two-column">two_column</span>
+      <span class="hint">双栏全展开 — every answer visible, flowing in two columns</span>
+    </div>
+    <div class="stage">
+      <p class="eyebrow" style="margin:0 0 18px">Frequently asked</p>
+      <div class="faq-cols">
+
+        <div class="qa">
+          <h3>Are you available for new projects?</h3>
+          <p>Usually yes, for one project at a time. I book a month or two out and keep a short waitlist when I'm full — a quick message is the fastest way to check my next opening.</p>
+        </div>
+
+        <div class="qa">
+          <h3>How do you price your work?</h3>
+          <p>A fixed project fee for scoped work, or a weekly rate for ongoing and advisory engagements. You'll always get the number in writing before we begin, with no surprise line items later.</p>
+        </div>
+
+        <div class="qa">
+          <h3>How do we get started?</h3>
+          <p>Send a short note with what you're building and your rough timeline. We'll do a 30-minute intro call, and if it's a fit I'll follow up with a written proposal you can say yes to.</p>
+        </div>
+
+        <div class="qa">
+          <h3>What's the working process?</h3>
+          <p>Scope call, written proposal, then weekly check-ins so progress is always visible. At the end you get every file, the source, and a short walkthrough so your team can take it from there.</p>
+        </div>
+
+        <div class="qa">
+          <h3>What timezone are you in?</h3>
+          <p>I'm in CET (UTC+1) and overlap a few live hours a day with teams worldwide, from the US to Asia. Most of the work runs async, so the time difference rarely gets in the way.</p>
+        </div>
+
+        <div class="qa">
+          <h3>What do you actually work on?</h3>
+          <p>Product design and front-end builds for small teams — marketing sites, web apps, and design systems. If your project is near that, reach out; if not, I'm happy to recommend someone.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+(function(){
+  document.querySelectorAll('[data-accordion]').forEach(function(root){
+    var triggers = root.querySelectorAll('.acc-trigger');
+    triggers.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var panel = document.getElementById(btn.getAttribute('aria-controls'));
+        var open = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', String(!open));
+        if(panel){
+          if(open){ panel.removeAttribute('data-open'); }
+          else { panel.setAttribute('data-open',''); }
+        }
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>

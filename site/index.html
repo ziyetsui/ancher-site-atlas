@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>个人站风格图鉴 · Personal Site Style Atlas</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/atlas.css" />
+</head>
+<body>
+  <header class="masthead">
+    <div class="wrap">
+      <h1>个人站风格图鉴<span class="en"> · Personal Site Style Atlas</span></h1>
+      <p class="lede">
+        每个「设计方向」都附一份可复制的<strong>生成 Prompt</strong>、一套结构化 <strong>design token</strong>，
+        以及由该 Prompt <strong>实际生成</strong>的单文件示例页。复制 Prompt → apply 到能写前端的 agent → 得到基本一致的效果。
+      </p>
+      <div class="stats" id="stats"></div>
+      <nav class="tabs" role="tablist" aria-label="图鉴视图">
+        <button class="tab is-active" data-view="directions" id="tab-directions" role="tab" aria-selected="true" aria-controls="view-directions">设计方向 <span id="dir-count"></span></button>
+        <button class="tab" data-view="modules" id="tab-modules" role="tab" aria-selected="false" aria-controls="view-modules" tabindex="-1">模块图鉴</button>
+        <button class="tab" data-view="skins" id="tab-skins" role="tab" aria-selected="false" tabindex="-1">组件实验室</button>
+        <button class="tab" data-view="motion" id="tab-motion" role="tab" aria-selected="false" tabindex="-1">文字动效</button>
+        <button class="tab" data-view="image" id="tab-image" role="tab" aria-selected="false" tabindex="-1">图像处理</button>
+        <button class="tab" data-view="gsap" id="tab-gsap" role="tab" aria-selected="false" tabindex="-1">GSAP 动效</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section id="view-directions" class="grid" role="tabpanel" aria-labelledby="tab-directions" tabindex="0" aria-label="设计方向"></section>
+    <section id="view-modules" class="panel" role="tabpanel" aria-labelledby="tab-modules" tabindex="0" hidden>
+      <h2>模块图鉴 · Module Atlas</h2>
+      <p>结构层（hero / story / selected_work / contact …）的 variant 图鉴见
+        <a href="modules.html">模块图鉴 →</a>。</p>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <span>Ancher · Personal Site Style Atlas</span>
+    </div>
+  </footer>
+
+  <!-- card template -->
+  <template id="card-tpl">
+    <article class="card">
+      <a class="thumb" target="_blank" rel="noopener">
+        <img loading="lazy" alt="" />
+        <span class="lineage"></span>
+      </a>
+      <div class="body">
+        <div class="namerow">
+          <h3 class="name-cn"></h3>
+          <span class="name-en"></span>
+        </div>
+        <p class="desc"></p>
+        <div class="swatches" aria-hidden="true"></div>
+        <div class="tags"></div>
+        <div class="actions">
+          <a class="btn btn-primary live" target="_blank" rel="noopener">查看示例页 ↗</a>
+          <button class="btn copy">复制 Prompt</button>
+          <a class="btn ghost design" target="_blank" rel="noopener">DESIGN.md</a>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <!-- in-page viewer: frames view.html so opening a direction never leaves the gallery -->
+  <div class="viewer-overlay" id="viewer" hidden>
+    <iframe class="viewer-frame" id="viewer-frame" title="设计方向示例页查看器"></iframe>
+  </div>
+
+  <script src="js/atlas.js"></script>
+</body>
+</html>

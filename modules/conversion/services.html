@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>services · specimen sheet</title>
+<style>
+:root{--bg:#ffffff;--surface:#f6f6f4;--surface-2:#efefea;--ink:#191917;--muted:#6b6b67;--subtle:#9a9a94;--accent:#2f56ff;--accent-soft:#e9eefc;--hairline:#e7e7e2;--ink-line:#191917;--ok:#1f7a44;--radius:12px;--pad:24px}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:15px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+.mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace}
+.serif{font-family:Georgia,"Times New Roman",serif}
+
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+
+:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:2px;
+  border-radius:4px;
+}
+
+/* ---------- page shell ---------- */
+.sheet{max-width:1120px;margin:0 auto;padding:40px 28px 96px}
+
+.sheet-head{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:8px 16px;
+  padding-bottom:18px;
+  border-bottom:1px solid var(--hairline);
+  margin-bottom:44px;
+}
+.sheet-head h1{
+  font-size:20px;
+  font-weight:600;
+  letter-spacing:-.01em;
+  margin:0;
+}
+.sheet-head .dot{color:var(--subtle)}
+.sheet-head .meta{color:var(--muted);font-size:13.5px}
+.sheet-head .count{
+  margin-left:auto;
+  font-size:12px;
+  color:var(--muted);
+  background:var(--surface);
+  border:1px solid var(--hairline);
+  border-radius:999px;
+  padding:4px 12px;
+}
+
+/* ---------- variant block ---------- */
+.variant{margin-bottom:52px}
+.variant:last-child{margin-bottom:0}
+.variant-label{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:6px 12px;
+  margin-bottom:14px;
+}
+.variant-label .id{
+  font-size:13px;
+  color:var(--ink);
+  background:var(--accent-soft);
+  border:1px solid #d6e0fb;
+  border-radius:6px;
+  padding:2px 8px;
+  font-weight:500;
+}
+.variant-label .hint{color:var(--muted);font-size:13px}
+
+.stage{
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  padding:var(--pad);
+  background:var(--surface);
+}
+
+/* ---------- shared atoms ---------- */
+.eyebrow{
+  font-size:11px;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  color:var(--subtle);
+  font-weight:600;
+}
+.price{font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+
+/* =========================================================
+   VARIANT 1 — cards
+   ========================================================= */
+.svc-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:18px;
+}
+.svc-card{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  background:var(--bg);
+  border:1px solid var(--hairline);
+  border-radius:10px;
+  padding:22px 20px 20px;
+  transition:border-color .18s ease,transform .18s ease,box-shadow .18s ease;
+}
+.svc-card:hover,.svc-card:focus-within{
+  border-color:#cfcfc8;
+  transform:translateY(-2px);
+  box-shadow:0 8px 24px -16px rgba(25,25,23,.4);
+}
+.svc-icon{
+  width:42px;height:42px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--accent-soft);
+  border:1px solid #d6e0fb;
+  border-radius:11px;
+  color:var(--accent);
+}
+.svc-icon svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.svc-card h3{margin:0;font-size:16px;font-weight:600;letter-spacing:-.01em}
+.svc-card p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.5}
+.svc-foot{
+  display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+  margin-top:auto;padding-top:6px;
+}
+.svc-from{font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--subtle)}
+.svc-from b{display:block;margin-top:1px;font-size:16px;color:var(--ink);text-transform:none;letter-spacing:-.01em}
+.svc-more{font-size:13px;font-weight:500;display:inline-flex;align-items:center;gap:5px}
+.svc-more svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2}
+
+/* =========================================================
+   VARIANT 2 — pricing_tiers
+   ========================================================= */
+.tiers{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+  align-items:start;
+}
+.tier{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  background:var(--bg);
+  border:1px solid var(--hairline);
+  border-radius:14px;
+  padding:24px 22px;
+}
+.tier.is-recommended{
+  border-color:var(--accent);
+  box-shadow:0 0 0 1px var(--accent),0 14px 30px -20px rgba(47,86,255,.5);
+}
+.tier-badge{
+  position:absolute;top:-11px;left:50%;transform:translateX(-50%);
+  font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  color:#fff;background:var(--accent);
+  border-radius:999px;padding:3px 12px;white-space:nowrap;
+}
+.tier-name{margin:0;font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.tier-price{display:flex;align-items:baseline;gap:4px;margin:10px 0 2px}
+.tier-price .amount{font-size:30px;font-weight:600}
+.tier-price .per{font-size:13px;color:var(--subtle)}
+.tier-blurb{margin:6px 0 18px;color:var(--muted);font-size:13.5px;line-height:1.5}
+.tier-feats{list-style:none;margin:0 0 22px;padding:0;display:flex;flex-direction:column;gap:10px}
+.tier-feats li{display:flex;gap:9px;align-items:flex-start;font-size:13.5px}
+.tier-feats svg{flex:0 0 16px;width:16px;height:16px;margin-top:1px;fill:none;stroke:var(--accent);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.tier-cta{
+  margin-top:auto;
+  display:inline-flex;align-items:center;justify-content:center;
+  font:inherit;font-size:14px;font-weight:600;
+  padding:11px 16px;border-radius:10px;cursor:pointer;
+  text-decoration:none;
+  border:1px solid var(--accent);
+  color:var(--accent);background:var(--bg);
+  transition:background .15s ease,filter .15s ease;
+}
+.tier-cta:hover{background:var(--accent-soft);text-decoration:none}
+.tier.is-recommended .tier-cta{color:#fff;background:var(--accent)}
+.tier.is-recommended .tier-cta:hover{filter:brightness(1.07);background:var(--accent)}
+
+/* =========================================================
+   VARIANT 3 — list
+   ========================================================= */
+.svc-list{list-style:none;margin:0;padding:0}
+.svc-row{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:8px 24px;
+  padding:18px 4px;
+  border-bottom:1px solid var(--hairline);
+}
+.svc-list .svc-row:first-child{padding-top:4px}
+.svc-list .svc-row:last-child{border-bottom:0;padding-bottom:4px}
+.svc-row-main{flex:1 1 260px;min-width:0}
+.svc-row-main h3{margin:0 0 3px;font-size:15.5px;font-weight:600;letter-spacing:-.01em}
+.svc-row-main p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.45}
+.svc-row-meta{
+  flex:0 0 auto;
+  display:flex;
+  gap:28px;
+  text-align:right;
+}
+.svc-row-meta div{display:flex;flex-direction:column;gap:2px}
+.svc-row-meta .k{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--subtle)}
+.svc-row-meta .v{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}
+
+@media (max-width:760px){
+  .tiers{grid-template-columns:1fr}
+  .tier-badge{left:22px;transform:none}
+}
+@media (max-width:520px){
+  .sheet{padding:28px 16px 72px}
+  .stage{padding:16px}
+  .sheet-head .count{margin-left:0}
+  .svc-row-meta{flex-basis:100%;text-align:left;gap:24px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header class="sheet-head">
+    <h1>services</h1>
+    <span class="dot">·</span>
+    <span class="meta mono">category: conversion</span>
+    <span class="dot">·</span>
+    <span class="meta">Services / offerings · 服务</span>
+    <span class="count">3 variants</span>
+  </header>
+
+  <!-- ============ VARIANT 1: cards ============ -->
+  <section class="variant" aria-labelledby="v-cards">
+    <div class="variant-label">
+      <span class="id mono" id="v-cards">cards</span>
+      <span class="hint">服务卡片网格 — icon + blurb + from-price card grid</span>
+    </div>
+    <div class="stage">
+      <ul class="svc-grid" role="list">
+
+        <li class="svc-card">
+          <span class="svc-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="3.5"/></svg>
+          </span>
+          <h3>Product design sprint</h3>
+          <p>One focused week: from messy problem to a clickable, tested prototype your team can build from.</p>
+          <div class="svc-foot">
+            <span class="svc-from">From<b class="price">$6,500</b></span>
+            <a class="svc-more" href="#sprint">details
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </li>
+
+        <li class="svc-card">
+          <span class="svc-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+          </span>
+          <h3>Design systems</h3>
+          <p>Audit, tokenize, and document a component library your engineers actually want to use.</p>
+          <div class="svc-foot">
+            <span class="svc-from">From<b class="price">$12,000</b></span>
+            <a class="svc-more" href="#systems">details
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </li>
+
+        <li class="svc-card">
+          <span class="svc-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 3l2.5 5 5.5.8-4 3.9 1 5.5L12 16.5 7.5 18.7l1-5.5-4-3.9L10 8z"/></svg>
+          </span>
+          <h3>Advisory</h3>
+          <p>A standing seat in your week: design reviews, hiring help, and a second pair of eyes on the roadmap.</p>
+          <div class="svc-foot">
+            <span class="svc-from">From<b class="price">$1,800<span style="font-size:12px;color:var(--subtle);font-weight:400">/mo</span></b></span>
+            <a class="svc-more" href="#advisory">details
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ VARIANT 2: pricing_tiers ============ -->
+  <section class="variant" aria-labelledby="v-pricing">
+    <div class="variant-label">
+      <span class="id mono" id="v-pricing">pricing_tiers</span>
+      <span class="hint">三档定价 — three tiers, middle one recommended</span>
+    </div>
+    <div class="stage">
+      <ul class="tiers" role="list">
+
+        <li class="tier">
+          <h3 class="tier-name">Starter</h3>
+          <div class="tier-price">
+            <span class="amount price">$2,400</span>
+            <span class="per">fixed</span>
+          </div>
+          <p class="tier-blurb">A single, well-scoped screen or flow, designed and handed off.</p>
+          <ul class="tier-feats" role="list">
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg>1 flow, up to 6 screens</li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg>Figma source files</li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg>One round of revisions</li>
+          </ul>
+          <a class="tier-cta" href="#starter">Choose Starter</a>
+        </li>
+
+        <li class="tier is-recommended" aria-label="Standard, recommended">
+          <span class="tier-badge">Most popular</span>
+          <h3 class="tier-name">Standard</h3>
+          <div class="tier-price">
+            <span class="amount price">$6,500</span>
+            <span class="per">/ project</span>
+          </div>
+          <p class="tier-blurb">End-to-end design for a feature or small product, from research to handoff.</p>
+          <ul class="tier-feats" role="list">
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg>Full feature, unlimited screens</li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg>Prototype + usability testing</li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg>Engineer handoff + specs</li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg>Two rounds of revisions</li>
+          </ul>
+          <a class="tier-cta" href="#standard">Choose Standard</a>
+        </li>
+
+        <li class="tier">
+          <h3 class="tier-name">Partner</h3>
+          <div class="tier-price">
+            <span class="amount price">$9,000</span>
+            <span class="per">/ month</span>
+          </div>
+          <p class="tier-blurb">Embedded design partner — I work alongside your team, week to week.</p>
+          <ul class="tier-feats" role="list">
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg>Dedicated days each week</li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg>Shared roadmap &amp; rituals</li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg>Async priority access</li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg>Pause or cancel anytime</li>
+          </ul>
+          <a class="tier-cta" href="#partner">Talk to me</a>
+        </li>
+
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ VARIANT 3: list ============ -->
+  <section class="variant" aria-labelledby="v-list">
+    <div class="variant-label">
+      <span class="id mono" id="v-list">list</span>
+      <span class="hint">分隔线列表 — stacked rows, scope · price · timeline</span>
+    </div>
+    <div class="stage">
+      <ul class="svc-list" role="list">
+
+        <li class="svc-row">
+          <div class="svc-row-main">
+            <h3>Product design sprint</h3>
+            <p>A focused week turning a fuzzy problem into a tested, buildable prototype.</p>
+          </div>
+          <div class="svc-row-meta">
+            <div><span class="k">Scope</span><span class="v">1 problem</span></div>
+            <div><span class="k">From</span><span class="v price">$6,500</span></div>
+            <div><span class="k">Timeline</span><span class="v">1 week</span></div>
+          </div>
+        </li>
+
+        <li class="svc-row">
+          <div class="svc-row-main">
+            <h3>Design system build</h3>
+            <p>Audit, token architecture, and a documented component library for your team.</p>
+          </div>
+          <div class="svc-row-meta">
+            <div><span class="k">Scope</span><span class="v">Full library</span></div>
+            <div><span class="k">From</span><span class="v price">$12,000</span></div>
+            <div><span class="k">Timeline</span><span class="v">4–6 weeks</span></div>
+          </div>
+        </li>
+
+        <li class="svc-row">
+          <div class="svc-row-main">
+            <h3>End-to-end feature design</h3>
+            <p>Research through handoff for a feature or small product, with usability testing.</p>
+          </div>
+          <div class="svc-row-meta">
+            <div><span class="k">Scope</span><span class="v">1 feature</span></div>
+            <div><span class="k">From</span><span class="v price">$8,500</span></div>
+            <div><span class="k">Timeline</span><span class="v">3–5 weeks</span></div>
+          </div>
+        </li>
+
+        <li class="svc-row">
+          <div class="svc-row-main">
+            <h3>Advisory &amp; design reviews</h3>
+            <p>A standing seat in your week — reviews, hiring help, and roadmap input.</p>
+          </div>
+          <div class="svc-row-meta">
+            <div><span class="k">Scope</span><span class="v">Retainer</span></div>
+            <div><span class="k">From</span><span class="v price">$1,800/mo</span></div>
+            <div><span class="k">Timeline</span><span class="v">Monthly</span></div>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>

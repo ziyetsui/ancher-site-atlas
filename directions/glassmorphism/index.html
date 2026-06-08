@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kai Anders — AI Product Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --backdrop:#1c1033;
+    --backdrop-2:#3a1d6e;
+    --glass-fill:rgba(255,255,255,0.10);
+    --glass-fill-strong:rgba(255,255,255,0.16);
+    --glass-border:rgba(255,255,255,0.28);
+    --glass-highlight:rgba(255,255,255,0.55);
+    --ink:#ffffff;
+    --ink-muted:rgba(255,255,255,0.74);
+    --ink-subtle:rgba(255,255,255,0.52);
+    --accent:#a78bfa;
+    --accent-2:#f0abfc;
+    --accent-glow:rgba(167,139,250,0.45);
+    --section:104px;
+    --block:32px;
+    --tight:14px;
+    --r-sm:14px;
+    --r-md:22px;
+    --r-lg:30px;
+    --maxw:1080px;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    color:var(--ink);
+    background:var(--backdrop);
+    line-height:1.62;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+    position:relative;
+    overflow-x:hidden;
+  }
+
+  /* ---------- BACKDROP ---------- */
+  .backdrop{
+    position:fixed;
+    inset:0;
+    z-index:-2;
+    overflow:hidden;
+    background:var(--backdrop);
+  }
+  .backdrop .u-photo{
+    position:absolute;
+    inset:-8%;
+    width:116%;
+    height:116%;
+    object-fit:cover;
+    filter:blur(34px) saturate(135%) brightness(0.82);
+    transform:scale(1.06);
+  }
+  /* pure-CSS fallback backdrop */
+  .u-fallback.backdrop-fallback{
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(60% 55% at 22% 18%, rgba(240,171,252,0.55), transparent 60%),
+      radial-gradient(55% 50% at 82% 28%, rgba(167,139,250,0.55), transparent 60%),
+      radial-gradient(70% 60% at 60% 92%, rgba(99,102,241,0.45), transparent 65%),
+      linear-gradient(150deg, var(--backdrop) 0%, var(--backdrop-2) 100%);
+  }
+  /* darkening + tint overlay so glass + text stay legible over any photo */
+  .backdrop-overlay{
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    pointer-events:none;
+    background:
+      radial-gradient(120% 90% at 50% -10%, transparent 40%, rgba(16,8,33,0.55) 100%),
+      linear-gradient(180deg, rgba(20,11,40,0.30) 0%, rgba(20,11,40,0.62) 100%);
+  }
+
+  /* ---------- GLASS RECIPE ---------- */
+  .glass{
+    background:var(--glass-fill);
+    -webkit-backdrop-filter:blur(22px) saturate(140%);
+    backdrop-filter:blur(22px) saturate(140%);
+    border:1px solid var(--glass-border);
+    border-radius:var(--r-lg);
+    box-shadow:
+      0 20px 50px -20px rgba(0,0,0,.55),
+      inset 0 1px 0 var(--glass-highlight),
+      inset 0 0 40px rgba(255,255,255,0.04);
+  }
+
+  /* ---------- LAYOUT ---------- */
+  .wrap{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:0 24px;
+  }
+  section{padding-block:var(--section)}
+
+  .eyebrow{
+    font-size:12px;font-weight:600;letter-spacing:2.2px;
+    text-transform:uppercase;color:var(--accent-2);
+    display:inline-flex;align-items:center;gap:9px;
+  }
+  .eyebrow::before{
+    content:"";width:22px;height:1px;background:var(--accent-2);
+    opacity:.7;
+  }
+
+  h1.display{
+    font-size:clamp(40px,8vw,68px);
+    font-weight:800;line-height:1.04;letter-spacing:-2.4px;
+    margin:18px 0 0;
+  }
+  .display .glow{
+    background:linear-gradient(100deg,var(--accent-2),var(--accent) 55%,#c4b5fd);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  h2{
+    font-size:clamp(26px,4.5vw,30px);
+    font-weight:700;line-height:1.14;letter-spacing:-0.8px;
+  }
+  .lede{
+    font-size:clamp(18px,2.6vw,21px);font-weight:400;line-height:1.5;
+    letter-spacing:-0.2px;color:var(--ink-muted);
+  }
+  p.body{font-size:17px;color:var(--ink-muted)}
+
+  /* ---------- HERO ---------- */
+  .hero{min-height:100svh;display:flex;align-items:center;padding-block:120px 88px}
+  .hero-card{
+    padding:clamp(28px,5vw,52px);
+    max-width:760px;
+  }
+  .hero-sub{margin-top:22px;max-width:50ch}
+  .cta-row{
+    display:flex;flex-wrap:wrap;gap:16px;align-items:center;
+    margin-top:34px;
+  }
+  .btn-primary{
+    display:inline-flex;align-items:center;gap:9px;
+    font-size:15px;font-weight:600;color:#1a1030;
+    text-decoration:none;
+    padding:14px 26px;border-radius:999px;
+    background:linear-gradient(120deg,#fff,#e9e3ff);
+    border:1px solid rgba(255,255,255,0.6);
+    box-shadow:0 12px 30px -10px var(--accent-glow), inset 0 1px 0 #fff;
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .btn-primary:hover{transform:translateY(-3px);box-shadow:0 18px 40px -10px var(--accent-glow), inset 0 1px 0 #fff}
+  .btn-primary .arrow{transition:transform .25s ease}
+  .btn-primary:hover .arrow{transform:translateX(4px)}
+  .link-ghost{
+    color:var(--ink);text-decoration:none;font-weight:500;font-size:15px;
+    padding:13px 4px;border-bottom:1px solid rgba(255,255,255,0.35);
+    transition:border-color .2s ease,color .2s ease;
+  }
+  .link-ghost:hover{border-color:var(--accent-2);color:var(--accent-2)}
+
+  /* ---------- SECTION HEADER ---------- */
+  .sec-head{margin-bottom:var(--block)}
+  .sec-head h2{margin-top:14px}
+
+  /* ---------- SELECTED WORK ---------- */
+  .work-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+  }
+  .work-card{
+    padding:28px 26px 26px;
+    display:flex;flex-direction:column;gap:14px;
+    border-radius:var(--r-md);
+    transition:transform .3s cubic-bezier(.2,.7,.2,1), box-shadow .3s ease, background .3s ease;
+    text-decoration:none;color:inherit;
+  }
+  .work-card:hover,.work-card:focus-visible{
+    transform:translateY(-8px);
+    background:var(--glass-fill-strong);
+    box-shadow:0 32px 60px -22px rgba(0,0,0,.6), inset 0 1px 0 var(--glass-highlight);
+  }
+  .work-num{
+    font-size:13px;font-weight:700;color:var(--accent-2);letter-spacing:.5px;
+  }
+  .work-card h3{font-size:19px;font-weight:700;letter-spacing:-0.4px;line-height:1.25}
+  .work-card p{font-size:15px;color:var(--ink-muted);line-height:1.55;flex:1}
+  .tag{
+    align-self:flex-start;
+    font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;
+    color:var(--ink-muted);
+    padding:6px 12px;border-radius:999px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.18);
+  }
+
+  /* ---------- METRICS ---------- */
+  .metrics-band{
+    padding:14px;
+    display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+    border-radius:var(--r-lg);
+  }
+  .metric-tile{
+    padding:30px 24px;text-align:center;border-radius:var(--r-md);
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.12);
+  }
+  .metric-num{
+    font-size:clamp(38px,6vw,46px);font-weight:800;line-height:1;letter-spacing:-1.6px;
+    background:linear-gradient(110deg,#fff,var(--accent-2));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .metric-label{margin-top:12px;font-size:13px;color:var(--ink-muted);letter-spacing:.3px}
+
+  /* ---------- BELIEFS (numbered) ---------- */
+  .beliefs-grid{
+    display:grid;grid-template-columns:repeat(2,1fr);gap:18px;
+  }
+  .belief{
+    padding:26px 26px 24px;border-radius:var(--r-md);
+    display:flex;flex-direction:column;gap:10px;
+  }
+  .belief-num{
+    font-size:13px;font-weight:700;letter-spacing:.5px;color:var(--accent-2);
+  }
+  .belief h3{font-size:18px;font-weight:700;letter-spacing:-0.4px;line-height:1.3}
+  .belief p{font-size:15px;color:var(--ink-muted);line-height:1.55}
+
+  /* ---------- EXPERIENCE (timeline) ---------- */
+  .timeline{padding:clamp(26px,4vw,40px)}
+  .tl-row{
+    display:grid;grid-template-columns:140px 1fr;gap:24px;
+    padding:22px 0;
+    border-top:1px solid rgba(255,255,255,0.14);
+  }
+  .tl-row:first-child{border-top:0;padding-top:0}
+  .tl-row:last-child{padding-bottom:0}
+  .tl-when{font-size:13px;font-weight:600;color:var(--accent-2);letter-spacing:.4px;padding-top:2px}
+  .tl-what h3{font-size:18px;font-weight:700;letter-spacing:-0.3px;line-height:1.3}
+  .tl-org{font-size:14px;color:var(--ink-subtle);margin-top:2px}
+  .tl-what p{font-size:15px;color:var(--ink-muted);line-height:1.55;margin-top:9px}
+
+  /* ---------- TOOLS (stack_list) ---------- */
+  .stack-grid{
+    display:grid;grid-template-columns:repeat(2,1fr);gap:18px;
+  }
+  .stack-group{padding:24px 24px 22px;border-radius:var(--r-md)}
+  .stack-group h3{
+    font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
+    color:var(--accent-2);margin-bottom:14px;
+  }
+  .pill-row{display:flex;flex-wrap:wrap;gap:9px}
+  .pill{
+    font-size:13px;font-weight:500;color:var(--ink-muted);
+    padding:7px 14px;border-radius:999px;
+    background:rgba(255,255,255,0.07);
+    border:1px solid rgba(255,255,255,0.18);
+  }
+
+  /* ---------- TESTIMONIALS (quote_led) ---------- */
+  .quote-card{padding:clamp(30px,5vw,48px);max-width:780px}
+  .quote-card blockquote{
+    font-size:clamp(20px,3vw,26px);font-weight:500;line-height:1.4;letter-spacing:-0.5px;
+    color:var(--ink);
+  }
+  .quote-card blockquote .glow{
+    background:linear-gradient(100deg,var(--accent-2),var(--accent) 55%,#c4b5fd);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .quote-cite{margin-top:22px;font-size:14px;color:var(--ink-muted)}
+  .quote-cite strong{color:var(--ink);font-weight:600}
+
+  /* ---------- NOW / CURRENTLY BUILDING ---------- */
+  .now-card{padding:clamp(28px,5vw,44px);max-width:760px}
+  .now-list{display:grid;gap:18px;margin-top:8px}
+  .now-item{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:start}
+  .now-dot{
+    width:9px;height:9px;border-radius:999px;margin-top:8px;
+    background:var(--accent-2);
+    box-shadow:0 0 0 4px var(--accent-glow);
+  }
+  .now-item h3{font-size:17px;font-weight:600;letter-spacing:-0.2px;line-height:1.35}
+  .now-item p{font-size:15px;color:var(--ink-muted);line-height:1.55;margin-top:3px}
+  .now-stamp{font-size:13px;color:var(--ink-subtle);margin-top:18px}
+
+  /* ---------- FAQ (two_column) ---------- */
+  .faq-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  .faq-item{padding:24px 24px 22px;border-radius:var(--r-md)}
+  .faq-item h3{font-size:16px;font-weight:700;letter-spacing:-0.2px;line-height:1.35;margin-bottom:9px}
+  .faq-item p{font-size:15px;color:var(--ink-muted);line-height:1.58}
+
+  /* ---------- CONTACT ---------- */
+  .contact-card{padding:clamp(28px,5vw,48px);max-width:640px;margin:0 auto}
+  .contact-card .lede{margin:14px 0 28px}
+  form{display:grid;gap:16px}
+  .field{display:grid;gap:7px}
+  label{font-size:12px;font-weight:600;letter-spacing:.6px;color:var(--ink-subtle);text-transform:uppercase}
+  input,textarea{
+    font-family:inherit;font-size:15px;color:var(--ink);
+    background:rgba(255,255,255,0.07);
+    border:1px solid rgba(255,255,255,0.20);
+    border-radius:var(--r-sm);
+    padding:13px 15px;
+    -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+    transition:border-color .2s ease, background .2s ease, box-shadow .2s ease;
+    resize:vertical;
+  }
+  input::placeholder,textarea::placeholder{color:rgba(255,255,255,0.40)}
+  input:focus,textarea:focus{
+    outline:none;
+    border-color:var(--accent-2);
+    background:rgba(255,255,255,0.12);
+    box-shadow:0 0 0 3px var(--accent-glow);
+  }
+  button.submit{
+    margin-top:4px;justify-self:start;
+    font-family:inherit;font-size:15px;font-weight:600;color:#1a1030;cursor:pointer;
+    padding:14px 30px;border-radius:999px;border:1px solid rgba(255,255,255,0.6);
+    background:linear-gradient(120deg,#fff,#e9e3ff);
+    box-shadow:0 12px 30px -10px var(--accent-glow), inset 0 1px 0 #fff;
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  button.submit:hover{transform:translateY(-3px);box-shadow:0 18px 42px -10px var(--accent-glow), inset 0 1px 0 #fff}
+  .contact-fallback{margin-top:20px;font-size:14px;color:var(--ink-subtle)}
+  .contact-fallback a{color:var(--accent-2);text-decoration:none}
+  .contact-fallback a:hover{text-decoration:underline}
+
+  /* ---------- FOOTER ---------- */
+  footer{padding:48px 0 70px;text-align:center}
+  footer p{font-size:13px;color:var(--ink-subtle)}
+
+  /* ---------- FOCUS / A11Y ---------- */
+  a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
+    outline:2px solid var(--accent-2);outline-offset:3px;
+  }
+
+  /* ---------- MOTION ---------- */
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  @media (prefers-reduced-motion:reduce){
+    *{scroll-behavior:auto !important}
+    .reveal{opacity:1 !important;transform:none !important;transition:none}
+    .btn-primary,.work-card,.submit,.btn-primary .arrow{transition:none !important}
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:860px){
+    .work-grid{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:860px){
+    .beliefs-grid{grid-template-columns:1fr}
+    .stack-grid{grid-template-columns:1fr}
+    .faq-grid{grid-template-columns:1fr}
+  }
+  @media (max-width:600px){
+    :root{--section:72px;--block:24px}
+    .work-grid{grid-template-columns:1fr}
+    .metrics-band{grid-template-columns:1fr}
+    .cta-row{gap:12px}
+    .btn-primary,.link-ghost{width:100%;justify-content:center;text-align:center}
+    .tl-row{grid-template-columns:1fr;gap:6px}
+  }
+
+  /* ---------- TOGGLE (contract) ---------- */
+  .u-fallback{display:none !important}
+  body.no-photos .u-photo{display:none !important}
+  body.no-photos .u-fallback{display:revert !important}
+  body.no-photos .u-fallback.backdrop-fallback{display:block !important}
+
+  .atlas-photo-toggle{position:fixed;right:16px;bottom:16px;z-index:99999;display:flex;align-items:center;gap:8px;background:rgba(20,20,22,.88);color:#fff;border-radius:999px;padding:6px 6px 6px 14px;font:600 12px/1 -apple-system,system-ui,sans-serif;box-shadow:0 8px 28px -10px rgba(0,0,0,.55)}
+  .atlas-photo-toggle button{appearance:none;border:0;cursor:pointer;font:inherit;color:#16161a;background:#fff;border-radius:999px;padding:6px 14px;min-width:46px}
+  .atlas-photo-toggle button[aria-pressed="false"]{background:#3a3a42;color:#fff}
+</style>
+</head>
+<body>
+
+  <!-- BACKDROP: vivid photo, heavily blurred. Fallback = pure-CSS gradient -->
+  <div class="backdrop" aria-hidden="true">
+    <img class="u-photo" src="portrait.webp" alt="Soft blurred photographic backdrop in pink and violet tones, used as ambient color behind frosted glass panels">
+    <div class="u-fallback backdrop-fallback"></div>
+  </div>
+  <div class="backdrop-overlay" aria-hidden="true"></div>
+
+  <!-- HERO -->
+  <header class="hero" data-module="hero" data-variant="glass_card_over_backdrop">
+    <div class="wrap" style="width:100%">
+      <div class="glass hero-card reveal">
+        <span class="eyebrow">Kai Anders · AI Product Designer</span>
+        <h1 class="display">I design AI tools that feel <span class="glow">calm</span>, not magic-tricky.</h1>
+        <p class="lede hero-sub">For startups and product teams shipping AI features that people actually trust — interfaces that explain themselves, stay quiet, and earn their place.</p>
+        <div class="cta-row">
+          <a class="btn-primary" href="#contact">Let's work together <span class="arrow" aria-hidden="true">→</span></a>
+          <a class="link-ghost" href="#work">See selected work</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- SELECTED WORK -->
+    <section id="work" aria-labelledby="work-h" data-module="selected_work" data-variant="grid">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <span class="eyebrow">Selected work</span>
+          <h2 id="work-h">Calm surfaces for hard AI problems.</h2>
+        </div>
+        <div class="work-grid">
+          <a class="glass work-card reveal" href="#contact">
+            <span class="work-num">01</span>
+            <h3>Inbox triage, without the panic</h3>
+            <p>An AI triage surface for a support team — ranked, explainable, reversible. Agents see why a message was flagged, not just that it was. Cut time-to-first-reply by a third.</p>
+            <span class="tag">0→1 · AI UX</span>
+          </a>
+          <a class="glass work-card reveal" href="#contact">
+            <span class="work-num">02</span>
+            <h3>Handoff that humans trust</h3>
+            <p>Designed the agent-to-human handoff for a support product: clear seams, full context carried over, no silent automation. People stopped fighting the bot and started leaning on it.</p>
+            <span class="tag">Agent flows</span>
+          </a>
+          <a class="glass work-card reveal" href="#contact">
+            <span class="work-num">03</span>
+            <h3>Confidence you can read</h3>
+            <p>A model-confidence pattern that shows uncertainty honestly — when to trust the suggestion, when to check. Turned "spooky black box" feedback into measured adoption.</p>
+            <span class="tag">Design system</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- METRICS -->
+    <section aria-label="By the numbers" data-module="metrics" data-variant="stat_row">
+      <div class="wrap">
+        <div class="glass metrics-band reveal">
+          <div class="metric-tile">
+            <div class="metric-num">2</div>
+            <div class="metric-label">venture-backed startups shipped</div>
+          </div>
+          <div class="metric-tile">
+            <div class="metric-num">10</div>
+            <div class="metric-label">years designing software end-to-end</div>
+          </div>
+          <div class="metric-tile">
+            <div class="metric-num">0→1</div>
+            <div class="metric-label">AI surfaces led as design lead</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BELIEFS -->
+    <section id="beliefs" aria-labelledby="beliefs-h" data-module="beliefs" data-variant="numbered">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <span class="eyebrow">How I work</span>
+          <h2 id="beliefs-h">Principles I keep coming back to.</h2>
+        </div>
+        <div class="beliefs-grid">
+          <div class="glass belief reveal">
+            <span class="belief-num">01</span>
+            <h3>Calm beats clever</h3>
+            <p>A feature that explains itself quietly beats one that dazzles and disappears. I design for the second use, not the demo.</p>
+          </div>
+          <div class="glass belief reveal">
+            <span class="belief-num">02</span>
+            <h3>Show the seams</h3>
+            <p>People trust what they can inspect. When the model is unsure, the interface should say so — not paper over it with confidence it hasn't earned.</p>
+          </div>
+          <div class="glass belief reveal">
+            <span class="belief-num">03</span>
+            <h3>Reversible by default</h3>
+            <p>Automation should never be a one-way door. Every AI action ships with an obvious undo and a path back to the human.</p>
+          </div>
+          <div class="glass belief reveal">
+            <span class="belief-num">04</span>
+            <h3>Ship the boring 80%</h3>
+            <p>The magic lives in the unglamorous flows — empty states, errors, the second screen. I'd rather get those right than chase a flashy hero.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIAL -->
+    <section aria-label="What people say" data-module="testimonials" data-variant="quote_led">
+      <div class="wrap">
+        <div class="glass quote-card reveal">
+          <span class="eyebrow">In their words</span>
+          <blockquote style="margin-top:18px">"Kai took our scariest AI feature and made it feel <span class="glow">trustworthy</span> overnight. Support adoption went from grudging to default — and our team finally stopped second-guessing the model."</blockquote>
+          <p class="quote-cite"><strong>Dana Reyes</strong> · VP Product, Loop Support</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience" aria-labelledby="exp-h" data-module="experience" data-variant="timeline">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <span class="eyebrow">Track record</span>
+          <h2 id="exp-h">Where I've been designing.</h2>
+        </div>
+        <div class="glass timeline reveal">
+          <div class="tl-row">
+            <div class="tl-when">2022 — Now</div>
+            <div class="tl-what">
+              <h3>Lead Product Designer, AI</h3>
+              <div class="tl-org">Loop Support · Remote</div>
+              <p>Owned the design of agent-assist and human-in-the-loop surfaces for a support platform used by 400+ teams. Built the confidence and handoff patterns the rest of the product now leans on.</p>
+            </div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-when">2019 — 2022</div>
+            <div class="tl-what">
+              <h3>Senior Product Designer</h3>
+              <div class="tl-org">Northpine (acquired) · Berlin</div>
+              <p>First design hire. Took an analytics tool from 0→1, shaped the design system, and stayed through acquisition to keep the experience coherent as the team scaled.</p>
+            </div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-when">2015 — 2019</div>
+            <div class="tl-what">
+              <h3>Product Designer</h3>
+              <div class="tl-org">Studio Halcyon · Berlin</div>
+              <p>Agency years — shipped interfaces for fintech, health, and developer tools. Learned to design fast, defend decisions, and make calm things under pressure.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOOLS -->
+    <section id="tools" aria-labelledby="tools-h" data-module="tools" data-variant="stack_list">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <span class="eyebrow">The stack</span>
+          <h2 id="tools-h">What I build with.</h2>
+        </div>
+        <div class="stack-grid">
+          <div class="glass stack-group reveal">
+            <h3>Design</h3>
+            <div class="pill-row">
+              <span class="pill">Figma</span>
+              <span class="pill">FigJam</span>
+              <span class="pill">Origami Studio</span>
+              <span class="pill">Rive</span>
+              <span class="pill">Spline</span>
+            </div>
+          </div>
+          <div class="glass stack-group reveal">
+            <h3>Prototyping</h3>
+            <div class="pill-row">
+              <span class="pill">React</span>
+              <span class="pill">Tailwind</span>
+              <span class="pill">Framer Motion</span>
+              <span class="pill">v0</span>
+            </div>
+          </div>
+          <div class="glass stack-group reveal">
+            <h3>AI &amp; eval</h3>
+            <div class="pill-row">
+              <span class="pill">OpenAI API</span>
+              <span class="pill">LangSmith</span>
+              <span class="pill">Braintrust</span>
+              <span class="pill">Cursor</span>
+            </div>
+          </div>
+          <div class="glass stack-group reveal">
+            <h3>Research</h3>
+            <div class="pill-row">
+              <span class="pill">Dovetail</span>
+              <span class="pill">Maze</span>
+              <span class="pill">Notion</span>
+              <span class="pill">Linear</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NOW -->
+    <section id="now" aria-labelledby="now-h" data-module="currently_building" data-variant="now_block">
+      <div class="wrap">
+        <div class="glass now-card reveal">
+          <span class="eyebrow">Now</span>
+          <h2 id="now-h" style="margin:14px 0 22px">What I'm focused on this season.</h2>
+          <div class="now-list">
+            <div class="now-item">
+              <span class="now-dot" aria-hidden="true"></span>
+              <div>
+                <h3>Writing a small pattern library for AI confidence UI</h3>
+                <p>Honest ways to show uncertainty without scaring people off. Aiming to open-source the first set this summer.</p>
+              </div>
+            </div>
+            <div class="now-item">
+              <span class="now-dot" aria-hidden="true"></span>
+              <div>
+                <h3>Advising two early-stage AI teams</h3>
+                <p>Fractional design help, one day a week each — mostly on first-run experiences and trust.</p>
+              </div>
+            </div>
+            <div class="now-item">
+              <span class="now-dot" aria-hidden="true"></span>
+              <div>
+                <h3>Learning to draw, badly and happily</h3>
+                <p>Ten minutes of life drawing a day. It's quietly making me a better designer.</p>
+              </div>
+            </div>
+          </div>
+          <p class="now-stamp">Updated May 2026 · Berlin</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" aria-labelledby="faq-h" data-module="faq" data-variant="two_column">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <span class="eyebrow">Before you reach out</span>
+          <h2 id="faq-h">A few honest answers.</h2>
+        </div>
+        <div class="faq-grid">
+          <div class="glass faq-item reveal">
+            <h3>What kind of work do you take on?</h3>
+            <p>Mostly AI product surfaces for startups — anything where a model meets a real user and trust is on the line. Full engagements or focused sprints both work.</p>
+          </div>
+          <div class="glass faq-item reveal">
+            <h3>Do you work fractionally?</h3>
+            <p>Yes. I keep one or two advisory slots open for early teams — usually a day a week, enough to shape direction without slowing you down.</p>
+          </div>
+          <div class="glass faq-item reveal">
+            <h3>Can you prototype, not just design?</h3>
+            <p>I build working React prototypes when it helps a decision. Real interaction beats a flat mockup for anything AI-driven.</p>
+          </div>
+          <div class="glass faq-item reveal">
+            <h3>What's your timezone?</h3>
+            <p>Berlin (CET). I overlap comfortably with European mornings and US East Coast afternoons, and I'm flexible for kickoffs.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" aria-labelledby="contact-h" data-module="contact" data-variant="contact_form">
+      <div class="wrap">
+        <div class="glass contact-card reveal">
+          <span class="eyebrow">Work with me</span>
+          <h2 id="contact-h" style="margin-top:14px">Tell me what you're building.</h2>
+          <p class="lede">If you've got an AI feature that feels too clever and not calm enough, that's exactly my kind of problem. Drop a line — I read every one.</p>
+          <form onsubmit="event.preventDefault(); this.querySelector('button').textContent='Thanks — I’ll be in touch';">
+            <div class="field">
+              <label for="name">Name</label>
+              <input id="name" name="name" type="text" placeholder="Your name" required autocomplete="name">
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="you@company.com" required autocomplete="email">
+            </div>
+            <div class="field">
+              <label for="message">What you're working on</label>
+              <textarea id="message" name="message" rows="4" placeholder="A sentence or two about the product and where it feels off." required></textarea>
+            </div>
+            <button class="submit" type="submit">Send message</button>
+          </form>
+          <p class="contact-fallback">Prefer email? <a href="mailto:kai@kaianders.design">kai@kaianders.design</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p>Kai Anders — AI product designer. Designed to feel calm.</p>
+    </div>
+  </footer>
+
+  <div class="atlas-photo-toggle" role="group" aria-label="示例照片 / Demo photos"><span>照片 Photos</span><button id="atlasPhotoBtn" type="button" aria-pressed="true">On</button></div>
+  <script>(function(){var b=document.getElementById('atlasPhotoBtn');if(!b)return;function set(on){document.body.classList.toggle('no-photos',!on);b.setAttribute('aria-pressed',on?'true':'false');b.textContent=on?'On':'Off';}b.addEventListener('click',function(){set(document.body.classList.contains('no-photos'));});set(true);})();</script>
+
+  <script>
+    (function(){
+      var els = document.querySelectorAll('.reveal');
+      if(!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+        els.forEach(function(el){el.classList.add('in');});
+        return;
+      }
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+        });
+      }, {threshold:0.12, rootMargin:'0px 0px -8% 0px'});
+      els.forEach(function(el){io.observe(el);});
+    })();
+  </script>
+
+</body>
+</html>

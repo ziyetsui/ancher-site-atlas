@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>留白 — 当代影像与版画典藏 · The White Cube</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Serif+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f4f1ea;        /* warm gallery white */
+    --paper-2:#eceae1;
+    --wall:#ffffff;
+    --ink:#1a1816;          /* near-black serif ink */
+    --ink-soft:#5a554d;
+    --hair:#cfc9bd;         /* hairline rules */
+    --frame:#1d1b18;        /* wide museum frame */
+    --mat:#fbfaf6;          /* inner mat board */
+    --accent:#7a2418;       /* oxblood / vermilion restraint */
+    --accent-2:#a8946b;     /* aged brass */
+    --shadow:0 24px 60px -28px rgba(20,18,16,.45);
+    --serif:"Cormorant Garamond","Noto Serif SC",Georgia,serif;
+    --serif-cn:"Noto Serif SC","Cormorant Garamond",serif;
+    --gut:clamp(20px,5vw,72px);
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--serif-cn);font-weight:400;line-height:1.6;
+    overflow-x:hidden;-webkit-font-smoothing:antialiased;
+  }
+  img{display:block;max-width:100%}
+  a{color:inherit}
+  ::selection{background:var(--accent);color:var(--paper)}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  .eyebrow{
+    font-family:var(--serif);font-style:italic;font-size:clamp(.95rem,1.6vw,1.2rem);
+    letter-spacing:.04em;color:var(--accent);margin:0;
+  }
+  .label{
+    font-family:var(--serif-cn);font-weight:500;font-size:.66rem;
+    letter-spacing:.42em;text-transform:uppercase;color:var(--ink-soft);
+  }
+  .display{
+    font-family:var(--serif);font-weight:500;line-height:.98;
+    letter-spacing:-.01em;margin:0;
+  }
+
+  /* ---------- HEADER / HERO ---------- */
+  header.hero{
+    position:relative;padding:clamp(28px,5vw,56px) var(--gut) clamp(40px,7vw,92px);
+    border-bottom:1px solid var(--hair);overflow:hidden;
+  }
+  .topbar{
+    display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+    flex-wrap:wrap;
+  }
+  .wordmark{font-family:var(--serif);font-size:1.4rem;letter-spacing:.06em;font-weight:600}
+  .wordmark small{font-style:italic;font-weight:400;color:var(--ink-soft);margin-left:.5em;font-size:.78em}
+  .topmeta{display:flex;gap:clamp(14px,3vw,34px);flex-wrap:wrap}
+  .topmeta span{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft)}
+
+  .hero-title{
+    margin-top:clamp(40px,9vw,120px);
+    font-size:clamp(3.2rem,13vw,11rem);
+  }
+  .hero-title .l2{display:block;padding-left:.06em}
+  .hero-title .l2 em{font-style:italic;color:var(--accent)}
+  .hero-sub{
+    display:flex;justify-content:space-between;align-items:flex-end;gap:24px;
+    flex-wrap:wrap;margin-top:clamp(22px,3vw,34px);
+  }
+  .hero-sub p{
+    max-width:46ch;margin:0;font-size:clamp(1rem,1.4vw,1.18rem);color:var(--ink-soft);
+    font-weight:300;
+  }
+  .hero-sub .credit{
+    font-family:var(--serif);font-style:italic;font-size:1.1rem;color:var(--ink);
+    white-space:nowrap;
+  }
+  .scroll-cue{
+    margin-top:clamp(30px,5vw,60px);display:flex;align-items:center;gap:14px;
+    font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-soft);
+  }
+  .scroll-cue .line{height:1px;width:64px;background:var(--ink-soft);transform-origin:left}
+
+  /* ---------- GALLERY (DRAGGABLE) ---------- */
+  section.gallery{
+    position:relative;padding:clamp(40px,7vw,96px) 0 clamp(30px,5vw,60px);
+  }
+  .gallery-head{
+    display:flex;justify-content:space-between;align-items:flex-end;gap:20px;
+    flex-wrap:wrap;padding:0 var(--gut) clamp(26px,4vw,46px);
+  }
+  .gallery-head h2{font-size:clamp(2rem,5vw,3.6rem)}
+  .gallery-head .hint{
+    font-family:var(--serif);font-style:italic;color:var(--ink-soft);font-size:1.05rem;
+    display:flex;align-items:center;gap:12px;
+  }
+  .gallery-head .hint .dot{
+    width:9px;height:9px;border-radius:50%;background:var(--accent);
+  }
+
+  .viewport{
+    position:relative;overflow:hidden;cursor:grab;
+    padding:clamp(30px,6vw,80px) 0;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .viewport.is-grabbing{cursor:grabbing}
+  .viewport::before,.viewport::after{
+    content:"";position:absolute;top:0;bottom:0;width:clamp(20px,6vw,80px);z-index:5;
+    pointer-events:none;
+  }
+  .viewport::before{left:0;background:linear-gradient(90deg,var(--paper),transparent)}
+  .viewport::after{right:0;background:linear-gradient(270deg,var(--paper),transparent)}
+
+  .track{
+    display:flex;gap:clamp(36px,6vw,90px);width:max-content;
+    padding:0 50vw;will-change:transform;align-items:center;
+  }
+
+  .artwork{
+    position:relative;flex:0 0 auto;width:clamp(230px,42vw,420px);
+    text-align:center;will-change:transform,opacity;
+  }
+  .frame{
+    position:relative;background:var(--frame);
+    padding:clamp(14px,2.4vw,30px);
+    box-shadow:var(--shadow);
+    transition:box-shadow .5s ease;
+  }
+  .frame::after{
+    content:"";position:absolute;inset:clamp(14px,2.4vw,30px);
+    box-shadow:inset 0 2px 10px rgba(0,0,0,.35);pointer-events:none;z-index:2;
+  }
+  .mat{
+    background:var(--mat);padding:clamp(12px,2.2vw,26px);position:relative;
+    box-shadow:inset 0 1px 3px rgba(0,0,0,.18);
+  }
+  .mat img{
+    width:100%;height:clamp(220px,34vw,420px);object-fit:cover;
+    filter:grayscale(.12) contrast(1.02);
+    pointer-events:none;-webkit-user-drag:none;user-select:none;
+  }
+  .plate{
+    margin-top:clamp(16px,2.2vw,26px);
+  }
+  .plate .no{
+    font-family:var(--serif);font-style:italic;color:var(--accent-2);
+    font-size:.95rem;letter-spacing:.06em;
+  }
+  .plate .t{
+    font-family:var(--serif);font-weight:500;font-size:clamp(1.15rem,2.2vw,1.7rem);
+    margin:.15em 0 .1em;line-height:1.15;
+  }
+  .plate .meta{font-size:.8rem;color:var(--ink-soft);letter-spacing:.02em}
+
+  /* active artwork emphasis */
+  .artwork.is-active .frame{box-shadow:0 40px 80px -34px rgba(122,36,24,.5),0 0 0 1px rgba(122,36,24,.15)}
+
+  /* ---------- PROGRESS SLIDER ---------- */
+  .controls{
+    padding:clamp(20px,3vw,40px) var(--gut) 0;
+  }
+  .slider-row{
+    display:flex;align-items:center;gap:clamp(16px,3vw,32px);
+  }
+  .counter{
+    font-family:var(--serif);font-size:clamp(1.4rem,3vw,2.4rem);
+    white-space:nowrap;font-weight:500;
+  }
+  .counter .cur{color:var(--accent)}
+  .counter .sep{color:var(--hair);margin:0 .15em;font-style:italic}
+  .rail{
+    position:relative;flex:1;height:2px;background:var(--hair);
+    touch-action:none;
+  }
+  .rail .fill{
+    position:absolute;left:0;top:0;height:100%;width:0;background:var(--ink);
+  }
+  .ticks{position:absolute;inset:0;display:flex;justify-content:space-between;pointer-events:none}
+  .ticks i{width:1px;height:8px;background:var(--hair);transform:translateY(-3px)}
+  .knob{
+    position:absolute;top:50%;left:0;width:clamp(34px,5vw,46px);height:clamp(34px,5vw,46px);
+    margin:0;transform:translate(-50%,-50%);
+    background:var(--paper);border:1px solid var(--ink);border-radius:50%;
+    cursor:grab;display:grid;place-items:center;touch-action:none;
+    box-shadow:var(--shadow);transition:background .3s,color .3s;
+  }
+  .knob:active{cursor:grabbing}
+  .knob::after{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent)}
+  .knob.is-drag{background:var(--ink)}
+  .knob.is-drag::after{background:var(--paper)}
+
+  /* ---------- DETAIL / SELECTED CARTEL ---------- */
+  section.detail{
+    margin-top:clamp(50px,8vw,110px);padding:clamp(50px,8vw,110px) var(--gut);
+    border-top:1px solid var(--hair);background:var(--wall);
+    position:relative;
+  }
+  .detail-grid{
+    display:grid;grid-template-columns:1fr;gap:clamp(30px,5vw,68px);align-items:start;
+  }
+  @media(min-width:880px){.detail-grid{grid-template-columns:0.85fr 1.15fr}}
+  .detail-frame{
+    position:relative;background:var(--frame);padding:clamp(16px,2vw,28px);
+    box-shadow:var(--shadow);align-self:start;overflow:hidden;
+  }
+  .detail-frame .mat{padding:clamp(14px,2vw,24px)}
+  .detail-frame img{
+    width:100%;height:clamp(280px,40vw,520px);object-fit:cover;
+    filter:grayscale(.12) contrast(1.02);
+  }
+  .detail-copy .cartel-no{
+    font-family:var(--serif);font-style:italic;color:var(--accent);font-size:1.15rem;
+    letter-spacing:.05em;
+  }
+  .detail-copy h3{
+    font-family:var(--serif);font-weight:500;font-size:clamp(2rem,5.5vw,4rem);
+    line-height:1.02;margin:.1em 0 .4em;
+  }
+  .detail-copy .dl{
+    display:flex;gap:14px;border-top:1px solid var(--hair);
+    padding:14px 0;font-size:.96rem;
+  }
+  .detail-copy .dl dt{
+    flex:0 0 clamp(78px,12vw,128px);color:var(--ink-soft);
+    letter-spacing:.06em;font-size:.78rem;text-transform:uppercase;padding-top:.18em;
+  }
+  .detail-copy .dl dd{margin:0;font-family:var(--serif);font-size:1.18rem}
+  .detail-copy .essay{
+    margin-top:clamp(20px,3vw,36px);font-weight:300;color:var(--ink-soft);
+    max-width:52ch;font-size:1.05rem;
+  }
+  .detail-copy .essay::first-letter{
+    font-family:var(--serif);font-size:3.4em;float:left;line-height:.78;
+    padding:.06em .12em 0 0;color:var(--accent);font-weight:500;
+  }
+
+  /* ---------- COLOPHON ---------- */
+  footer.colophon{
+    padding:clamp(50px,8vw,110px) var(--gut) clamp(40px,6vw,72px);
+    border-top:1px solid var(--hair);
+    display:grid;gap:clamp(28px,4vw,52px);
+  }
+  .colophon .big{
+    font-family:var(--serif);font-style:italic;font-size:clamp(1.6rem,5vw,3.4rem);
+    max-width:20ch;line-height:1.12;
+  }
+  .colophon-cols{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+    gap:clamp(22px,3vw,44px);border-top:1px solid var(--hair);padding-top:clamp(22px,3vw,40px);
+  }
+  .colophon-cols h4{margin:0 0 .7em;font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;color:var(--accent)}
+  .colophon-cols p{margin:.2em 0;font-size:.92rem;color:var(--ink-soft);font-weight:300}
+  .colophon .fineprint{
+    font-size:.74rem;letter-spacing:.06em;color:var(--ink-soft);
+    border-top:1px solid var(--hair);padding-top:18px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .viewport{cursor:default}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="topbar">
+    <div class="wordmark">留白 LIUBAI <small>当代影像与版画典藏</small></div>
+    <nav class="topmeta" aria-label="展览信息">
+      <span>常设 · 第三展厅</span>
+      <span>2026 春</span>
+      <span>策展 · 林徐</span>
+    </nav>
+  </div>
+
+  <h1 class="hero-title display">
+    <span class="l1">白盒子</span>
+    <span class="l2">里的 <em>八件</em>沉默</span>
+  </h1>
+
+  <div class="hero-sub">
+    <p>一组关于凝视、肌理与缺席的纸上与影像作品。没有解说牌的喧哗，只有可被你亲手推动的画廊长廊——拖动、抛掷、停在某一件，让说明牌为你打开。</p>
+    <div class="credit">Eight Quiet Things, on a Single Wall</div>
+  </div>
+
+  <div class="scroll-cue" aria-hidden="true">
+    <span class="line"></span>向下进入展厅 · ENTER
+  </div>
+</header>
+
+<section class="gallery" aria-label="可拖动作品长廊">
+  <div class="gallery-head">
+    <h2 class="display">长 廊 <span style="font-family:var(--serif);font-style:italic;color:var(--accent-2);font-size:.5em;">The Long Wall</span></h2>
+    <p class="hint"><span class="dot" aria-hidden="true"></span>横向拖动 · 松手惯性滑行 · 自动停靠在最近的一件</p>
+  </div>
+
+  <div class="viewport" id="viewport">
+    <div class="track" id="track">
+      <!-- artwork data injected/decorated by JS; markup is authoritative -->
+      <figure class="artwork" data-no="I" data-year="2024">
+        <div class="frame"><div class="mat"><img src="/assets/portrait-1930s-fedora-oil.webp" alt="一位戴软呢帽的男子半身像，油画质感的暖褐色调"></div></div>
+        <figcaption class="plate"><div class="no">No. I</div><div class="t">软呢帽下的午后</div><div class="meta">油彩转印 · 数字微喷 · 2024</div></figcaption>
+      </figure>
+
+      <figure class="artwork" data-no="II" data-year="2023">
+        <div class="frame"><div class="mat"><img src="/assets/portrait-magnolia-redhead.webp" alt="红发女子在木兰花前的肖像，柔和侧光"></div></div>
+        <figcaption class="plate"><div class="no">No. II</div><div class="t">木兰与红发</div><div class="meta">银盐放大 · 手工上色 · 2023</div></figcaption>
+      </figure>
+
+      <figure class="artwork" data-no="III" data-year="2025">
+        <div class="frame"><div class="mat"><img src="/assets/editorial-fashion-mono.webp" alt="单色时装影像，硬朗剪影与高对比阴影"></div></div>
+        <figcaption class="plate"><div class="no">No. III</div><div class="t">无色之衣</div><div class="meta">黑白纤维基相纸 · 2025</div></figcaption>
+      </figure>
+
+      <figure class="artwork" data-no="IV" data-year="2022">
+        <div class="frame"><div class="mat"><img src="/assets/bw-portrait-closeup.webp" alt="黑白人像特写，皮肤与光影的细密肌理"></div></div>
+        <figcaption class="plate"><div class="no">No. IV</div><div class="t">近到只剩呼吸</div><div class="meta">铂钯印相 · 限量 12 版 · 2022</div></figcaption>
+      </figure>
+
+      <figure class="artwork" data-no="V" data-year="2021">
+        <div class="frame"><div class="mat"><img src="/assets/poster-deco-red-woman.webp" alt="装饰艺术风格的红色女子海报，几何线条"></div></div>
+        <figcaption class="plate"><div class="no">No. V</div><div class="t">朱红几何中的她</div><div class="meta">丝网套色版画 · 2021</div></figcaption>
+      </figure>
+
+      <figure class="artwork" data-no="VI" data-year="2020">
+        <div class="frame"><div class="mat"><img src="/assets/bw-man-river-bokeh.webp" alt="河边男子的黑白影像，背景化为柔焦光斑"></div></div>
+        <figcaption class="plate"><div class="no">No. VI</div><div class="t">河，与一个背影的散焦</div><div class="meta">明胶银盐 · 2020</div></figcaption>
+      </figure>
+
+      <figure class="artwork" data-no="VII" data-year="2024">
+        <div class="frame"><div class="mat"><img src="/assets/poster-bowie-king.webp" alt="国王般姿态的人物海报，浓烈色域与版画质感"></div></div>
+        <figcaption class="plate"><div class="no">No. VII</div><div class="t">加冕一场幻觉</div><div class="meta">六色丝网 · 手撕边 · 2024</div></figcaption>
+      </figure>
+
+      <figure class="artwork" data-no="VIII" data-year="2019">
+        <div class="frame"><div class="mat"><img src="/assets/landscape-solitary-bw.webp" alt="孤独身影立于辽阔黑白风景中"></div></div>
+        <figcaption class="plate"><div class="no">No. VIII</div><div class="t">辽阔里的一个人</div><div class="meta">大画幅接触印相 · 2019</div></figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="slider-row">
+      <div class="counter" aria-live="polite"><span class="cur" id="cur">01</span><span class="sep">/</span><span id="total">08</span></div>
+      <div class="rail" id="rail" role="slider" tabindex="0" aria-label="作品进度" aria-valuemin="1" aria-valuemax="8" aria-valuenow="1">
+        <div class="fill" id="fill"></div>
+        <div class="ticks" id="ticks" aria-hidden="true"></div>
+        <button class="knob" id="knob" aria-hidden="true" tabindex="-1"></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="detail" aria-label="选中作品说明牌" id="detail">
+  <div class="detail-grid">
+    <div class="detail-frame">
+      <div class="mat"><img id="d-img" src="/assets/portrait-1930s-fedora-oil.webp" alt="选中作品的放大显示"></div>
+    </div>
+    <div class="detail-copy">
+      <div class="cartel-no" id="d-no">No. I — 2024</div>
+      <h3 id="d-title">软呢帽下的午后</h3>
+      <dl class="dl-wrap">
+        <div class="dl"><dt>作者</dt><dd id="d-artist">沈 砚 / Shen Yan</dd></div>
+        <div class="dl"><dt>媒材</dt><dd id="d-media">油彩转印，数字微喷于无酸纸</dd></div>
+        <div class="dl"><dt>尺寸</dt><dd id="d-size">86 × 64 cm</dd></div>
+        <div class="dl"><dt>版数</dt><dd id="d-edition">限量 8 版 + 2 AP</dd></div>
+      </dl>
+      <p class="essay" id="d-essay">他没有看向镜头。帽檐压下的阴影里，午后的光像一层薄薄的灰被擦在脸上——不是为了被看清，而是为了被记住有过这样一个下午。</p>
+    </div>
+  </div>
+</section>
+
+<footer class="colophon">
+  <p class="big">“一面墙，八件沉默；<br>你推动它们，它们才开始说话。”</p>
+  <div class="colophon-cols">
+    <div>
+      <h4>展览</h4>
+      <p>留白 · 白盒子里的八件沉默</p>
+      <p>2026.03.07 — 06.29</p>
+      <p>第三展厅 · 常设侧厅</p>
+    </div>
+    <div>
+      <h4>策展与文本</h4>
+      <p>林徐 Lin Xu</p>
+      <p>助理策展 / 沈砚工作室</p>
+      <p>装裱 · 无酸宽边美术馆框</p>
+    </div>
+    <div>
+      <h4>典藏说明</h4>
+      <p>所有作品均为限量印相</p>
+      <p>恒温恒湿 · 低照度陈列</p>
+      <p>请勿触摸原作表面</p>
+    </div>
+    <div>
+      <h4>到访</h4>
+      <p>周二至周日 10:00–18:00</p>
+      <p>周四延长至 21:00</p>
+      <p>城南美术馆 · B1 长廊</p>
+    </div>
+  </div>
+  <p class="fineprint">© 2026 留白 LIUBAI 当代影像与版画典藏 · 本页所有影像为虚构展品，仅作设计示意。Drag · Throw · Snap — powered by GSAP Draggable & Inertia.</p>
+</footer>
+
+<!-- GSAP: core first, then plugins, then register -->
+<script src="/vendor/gsap/gsap.min.js"></script>
+<script src="/vendor/gsap/Draggable.min.js"></script>
+<script src="/vendor/gsap/InertiaPlugin.min.js"></script>
+<script>
+gsap.registerPlugin(Draggable, InertiaPlugin);
+
+(function(){
+  "use strict";
+
+  // ----- cartel (detail) data, indexed to the 8 figures -----
+  const DATA = [
+    {artist:"沈 砚 / Shen Yan", media:"油彩转印，数字微喷于无酸纸", size:"86 × 64 cm", edition:"限量 8 版 + 2 AP",
+     essay:"他没有看向镜头。帽檐压下的阴影里，午后的光像一层薄薄的灰被擦在脸上——不是为了被看清，而是为了被记住有过这样一个下午。"},
+    {artist:"何 知 / He Zhi", media:"银盐放大，手工玫瑰色上色", size:"70 × 55 cm", edition:"限量 15 版",
+     essay:"红发在木兰前几乎要燃起来。她偏过头去的那一瞬，整株花都成了她的余光，而我们成了被余光遗漏的人。"},
+    {artist:"沈 砚 / Shen Yan", media:"黑白纤维基相纸，无框直裱", size:"100 × 70 cm", edition:"唯一版 1/1",
+     essay:"衣服没有颜色，于是身体有了重量。阴影沿着褶皱往下走，像一段被反复折叠又摊开的旧誓言。"},
+    {artist:"程 砾 / Cheng Li", media:"铂钯接触印相，棉纸", size:"40 × 50 cm", edition:"限量 12 版",
+     essay:"近到只剩呼吸的距离，毛孔与光成了同一种语言。它不再是一张脸，而是一整片被照亮的、活着的地形。"},
+    {artist:"姚 朱 / Yao Zhu", media:"丝网套色版画，五色叠印", size:"90 × 60 cm", edition:"限量 25 版",
+     essay:"朱红把她切成了几块平面，几何不冷酷，反而像一种克制的拥抱——把人收进直线与圆弧的、温柔的牢里。"},
+    {artist:"何 知 / He Zhi", media:"明胶银盐，柔焦镜放大", size:"60 × 60 cm", edition:"限量 18 版",
+     essay:"河流在他身后散成了无数颗光。背影从不解释什么，它只是把焦点让给了世界，自己甘心成为一团温柔的模糊。"},
+    {artist:"姚 朱 / Yao Zhu", media:"六色丝网，手撕毛边", size:"110 × 78 cm", edition:"限量 20 版 + 3 AP",
+     essay:"加冕的是一场幻觉。浓烈的色域像旗帜也像舞台幕布，而被加冕者神情漠然——王座之上，最先空掉的总是眼神。"},
+    {artist:"程 砾 / Cheng Li", media:"大画幅接触印相，原作底片", size:"50 × 120 cm", edition:"唯一版 1/1",
+     essay:"辽阔可以很残忍。一个人站在那里，不是渺小，而是被允许独自占有这么大一片寂静——这是风景能给的，最奢侈的礼物。"}
+  ];
+
+  const viewport = document.getElementById("viewport");
+  const track    = document.getElementById("track");
+  const items    = gsap.utils.toArray(".artwork");
+  const N         = items.length;
+  const rail      = document.getElementById("rail");
+  const fill      = document.getElementById("fill");
+  const knob      = document.getElementById("knob");
+  const ticks     = document.getElementById("ticks");
+  const curEl     = document.getElementById("cur");
+  document.getElementById("total").textContent = String(N).padStart(2,"0");
+
+  // detail elements
+  const dImg=document.getElementById("d-img"), dNo=document.getElementById("d-no"),
+        dTitle=document.getElementById("d-title"), dArtist=document.getElementById("d-artist"),
+        dMedia=document.getElementById("d-media"), dSize=document.getElementById("d-size"),
+        dEdition=document.getElementById("d-edition"), dEssay=document.getElementById("d-essay");
+
+  // build slider ticks
+  for(let i=0;i<N;i++){ ticks.appendChild(document.createElement("i")); }
+
+  let current = -1;
+
+  // compute x-offset that centers item i under the viewport center
+  function centerOffsetFor(i){
+    const vpRect = viewport.getBoundingClientRect();
+    const center = vpRect.left + vpRect.width/2;
+    const r = items[i].getBoundingClientRect();
+    const itemCenterNow = r.left + r.width/2;
+    return gsap.getProperty(track,"x") + (center - itemCenterNow);
+  }
+
+  // build an array of snap target x positions, one per item
+  let snapPoints = [];
+  function buildSnapPoints(){
+    const baseX = gsap.getProperty(track,"x");
+    const vpRect = viewport.getBoundingClientRect();
+    const center = vpRect.left + vpRect.width/2;
+    snapPoints = items.map(it=>{
+      const r = it.getBoundingClientRect();
+      const itemCenterNow = r.left + r.width/2;
+      return baseX + (center - itemCenterNow);
+    });
+  }
+
+  function nearestIndex(x){
+    let best=0, bestD=Infinity;
+    snapPoints.forEach((p,i)=>{ const d=Math.abs(p-x); if(d<bestD){bestD=d;best=i;} });
+    return best;
+  }
+
+  // bounds: from first centered (max x) to last centered (min x)
+  function dragBounds(){
+    if(!snapPoints.length) buildSnapPoints();
+    const maxX = snapPoints[0];
+    const minX = snapPoints[N-1];
+    return {minX:minX, maxX:maxX, minY:0, maxY:0};
+  }
+
+  function setActive(i, fromSlider){
+    i = gsap.utils.clamp(0,N-1,Math.round(i));
+    if(i===current) return;
+    const prev=current; current=i;
+    items.forEach((it,idx)=>it.classList.toggle("is-active", idx===i));
+    curEl.textContent = String(i+1).padStart(2,"0");
+    rail.setAttribute("aria-valuenow", String(i+1));
+    updateSliderUI(i);
+    updateDetail(i, prev!==-1);
+  }
+
+  function updateSliderUI(i){
+    const p = N>1 ? i/(N-1) : 0;
+    gsap.to(fill,{width:(p*100)+"%",duration:.4,ease:"power2.out",overwrite:true});
+    gsap.to(knob,{left:(p*100)+"%",duration:.4,ease:"power3.out",overwrite:true});
+  }
+
+  function updateDetail(i, animate){
+    const d=DATA[i], fig=items[i];
+    const img=fig.querySelector("img");
+    const title=fig.querySelector(".t").textContent;
+    const year=fig.getAttribute("data-year");
+    const no=fig.getAttribute("data-no");
+
+    const apply=()=>{
+      dImg.src=img.getAttribute("src"); dImg.alt=img.getAttribute("alt");
+      dNo.textContent=`No. ${no} — ${year}`;
+      dTitle.textContent=title;
+      dArtist.textContent=d.artist; dMedia.textContent=d.media;
+      dSize.textContent=d.size; dEdition.textContent=d.edition;
+      dEssay.textContent=d.essay;
+    };
+
+    if(!animate || reduced){ apply(); return; }
+
+    // cross-fade + lift the cartel text
+    gsap.timeline()
+      .to(".detail-frame",{autoAlpha:0,xPercent:-2,duration:.28,ease:"power2.in"},0)
+      .to(".detail-copy > *",{autoAlpha:0,y:10,duration:.28,ease:"power2.in",stagger:.02},0)
+      .add(apply)
+      .fromTo(".detail-frame",{autoAlpha:0,xPercent:2,scale:.985},{autoAlpha:1,xPercent:0,scale:1,duration:.5,ease:"power3.out"})
+      .fromTo(".detail-copy > *",{autoAlpha:0,y:18},{autoAlpha:1,y:0,duration:.5,ease:"power3.out",stagger:.05},"-=.4");
+  }
+
+  // glide track to a given snap index
+  function gotoIndex(i, dur){
+    i=gsap.utils.clamp(0,N-1,Math.round(i));
+    buildSnapPoints();
+    gsap.to(track,{x:snapPoints[i],duration:dur==null?0.7:dur,ease:"power3.out",
+      onUpdate:()=>{ if(draggable) draggable.update(); },
+      overwrite:true});
+    setActive(i);
+  }
+
+  // depth/scale on the items relative to viewport center (called on drag/throw update)
+  function styleItems(){
+    const vpRect=viewport.getBoundingClientRect();
+    const center=vpRect.left+vpRect.width/2;
+    const half=vpRect.width/2 + 80;
+    items.forEach(it=>{
+      const r=it.getBoundingClientRect();
+      const c=r.left+r.width/2;
+      const dist=Math.abs(c-center);
+      const t=gsap.utils.clamp(0,1,dist/half);            // 0 center -> 1 edge
+      const scale=gsap.utils.interpolate(1.06,0.86,t);
+      const op   =gsap.utils.interpolate(1,0.42,t);
+      const rotY =gsap.utils.mapRange(-half,half,18,-18,c-center);
+      gsap.set(it,{scale:scale,opacity:op,rotationY:rotY,transformPerspective:900,transformOrigin:"center center"});
+    });
+  }
+
+  let draggable=null;
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // ---------- reveal / intro ----------
+  function intro(){
+    gsap.set(".track",{xPercent:0});
+    buildSnapPoints();
+    // start centered on first
+    gsap.set(track,{x:snapPoints[0]});
+    styleItems();
+
+    if(reduced){
+      gsap.set(items,{opacity:1});
+      setActive(0,false);
+      return;
+    }
+
+    gsap.from(".hero-title .l1",{yPercent:115,duration:1.1,ease:"power4.out"});
+    gsap.from(".hero-title .l2",{yPercent:115,duration:1.1,ease:"power4.out",delay:.08});
+    gsap.from(".hero-sub p, .hero-sub .credit",{autoAlpha:0,y:24,duration:.9,ease:"power3.out",stagger:.12,delay:.3});
+    gsap.from(".topbar > *",{autoAlpha:0,y:-14,duration:.8,ease:"power2.out",stagger:.08});
+    gsap.fromTo(".scroll-cue .line",{scaleX:0},{scaleX:1,duration:1,ease:"power2.inOut",delay:.6});
+
+    // frames swing in
+    gsap.from(items,{
+      autoAlpha:0,yPercent:14,rotationX:-8,transformOrigin:"50% 100%",
+      duration:1,ease:"power3.out",stagger:.09,delay:.35,
+      onComplete:()=>{ styleItems(); }
+    });
+
+    setActive(0,false);
+  }
+
+  // ---------- Draggable + Inertia on the track ----------
+  function buildDraggable(){
+    if(draggable){ draggable[0].kill(); draggable=null; }
+    buildSnapPoints();
+    draggable = Draggable.create(track,{
+      type:"x",
+      inertia:!reduced,
+      bounds:dragBounds(),
+      edgeResistance:0.82,
+      dragResistance:0.06,
+      cursor:"grab",
+      activeCursor:"grabbing",
+      allowContextMenu:true,
+      snap: reduced ? null : { x:(value)=>{ // snap throw end to nearest artwork
+        let best=snapPoints[0],bestD=Infinity;
+        snapPoints.forEach(p=>{const d=Math.abs(p-value);if(d<bestD){bestD=d;best=p;}});
+        return best;
+      }},
+      onPress(){ viewport.classList.add("is-grabbing"); },
+      onRelease(){ viewport.classList.remove("is-grabbing"); },
+      onDrag(){ styleItems(); setActive(nearestIndex(this.x)); },
+      onThrowUpdate(){ styleItems(); setActive(nearestIndex(this.x)); },
+      onThrowComplete(){ styleItems(); setActive(nearestIndex(this.x)); },
+      onDragEnd(){ if(reduced){ gotoIndex(nearestIndex(this.x),.5); } }
+    });
+  }
+
+  // ---------- progress slider (Draggable knob, type:x along rail) ----------
+  function buildSlider(){
+    function railWidth(){ return rail.getBoundingClientRect().width; }
+    Draggable.create(knob,{
+      type:"x",
+      bounds:rail,
+      cursor:"grab",
+      activeCursor:"grabbing",
+      onPress(){ knob.classList.add("is-drag"); },
+      onRelease(){ knob.classList.remove("is-drag"); },
+      onDrag(){
+        const w=railWidth();
+        const p=gsap.utils.clamp(0,1,this.x/w);
+        fill.style.width=(p*100)+"%";
+        const idx=Math.round(p*(N-1));
+        if(idx!==current){ setActive(idx); gotoIndex(idx,.45); }
+      },
+      onDragEnd(){
+        const w=railWidth();
+        const idx=Math.round(gsap.utils.clamp(0,1,this.x/w)*(N-1));
+        gotoIndex(idx,.5);
+      }
+    });
+
+    // click anywhere on the rail to jump
+    rail.addEventListener("pointerdown",(e)=>{
+      if(e.target===knob) return;
+      const r=rail.getBoundingClientRect();
+      const p=gsap.utils.clamp(0,1,(e.clientX-r.left)/r.width);
+      gotoIndex(Math.round(p*(N-1)),.55);
+    });
+
+    // keyboard on the rail
+    rail.addEventListener("keydown",(e)=>{
+      if(e.key==="ArrowRight"||e.key==="ArrowDown"){ e.preventDefault(); gotoIndex(current+1,.5); }
+      else if(e.key==="ArrowLeft"||e.key==="ArrowUp"){ e.preventDefault(); gotoIndex(current-1,.5); }
+      else if(e.key==="Home"){ e.preventDefault(); gotoIndex(0,.5); }
+      else if(e.key==="End"){ e.preventDefault(); gotoIndex(N-1,.5); }
+    });
+  }
+
+  // ---------- click an artwork to select + center it ----------
+  items.forEach((it,i)=>{
+    it.addEventListener("click",(e)=>{
+      // if it was a drag, Draggable suppresses; this fires only on a clean click
+      if(draggable && draggable[0].isThrowing) return;
+      gotoIndex(i,.6);
+    });
+    // keyboard focusability
+    it.setAttribute("tabindex","0");
+    it.setAttribute("role","button");
+    it.setAttribute("aria-label", it.querySelector(".t").textContent + "，按 Enter 查看说明");
+    it.addEventListener("keydown",(e)=>{
+      if(e.key==="Enter"||e.key===" "){ e.preventDefault(); gotoIndex(i,.6);
+        document.getElementById("detail").scrollIntoView({behavior:reduced?"auto":"smooth",block:"center"}); }
+    });
+  });
+
+  // ---------- subtle parallax breathing on detail frame ----------
+  function detailParallax(){
+    if(reduced) return;
+    const frame=document.querySelector(".detail-frame");
+    window.addEventListener("pointermove",(e)=>{
+      const cx=(e.clientX/window.innerWidth-0.5);
+      const cy=(e.clientY/window.innerHeight-0.5);
+      gsap.to(frame,{rotationY:cx*5,rotationX:-cy*5,transformPerspective:1200,
+        transformOrigin:"center",duration:.8,ease:"power2.out"});
+    },{passive:true});
+  }
+
+  // ---------- matchMedia: motion vs reduced ----------
+  const mm=gsap.matchMedia();
+  mm.add({
+    motion:"(prefers-reduced-motion: no-preference)",
+    reduce:"(prefers-reduced-motion: reduce)"
+  },(ctx)=>{
+    intro();
+    buildDraggable();
+    buildSlider();
+    if(ctx.conditions.motion){ detailParallax(); }
+    return ()=>{ if(draggable){draggable[0].kill();draggable=null;} };
+  });
+
+  // ---------- rebuild geometry on resize ----------
+  let rT;
+  window.addEventListener("resize",()=>{
+    clearTimeout(rT);
+    rT=setTimeout(()=>{
+      const keep=current<0?0:current;
+      buildSnapPoints();
+      gsap.set(track,{x:snapPoints[keep]});
+      if(draggable){ draggable[0].applyBounds(dragBounds()); }
+      styleItems();
+      updateSliderUI(keep);
+    },150);
+  });
+
+})();
+</script>
+</body>
+</html>

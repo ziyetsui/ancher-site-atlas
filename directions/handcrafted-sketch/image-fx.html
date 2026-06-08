@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>handcrafted-sketch — framed photo specimen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    /* direction page background: --paper #faf4e6 + faint warm grain */
+    background-color:#faf4e6;
+    background-image:
+      radial-gradient(circle at 20% 12%, rgba(210,84,47,.04), transparent 40%),
+      radial-gradient(circle at 85% 60%, rgba(167,196,160,.05), transparent 45%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+    min-height:100vh;
+    display:grid;
+    place-items:center;
+    padding:28px;
+  }
+
+  /* ---- the taped polaroid frame, copied from .frame in index.html ---- */
+  .frame{
+    position:relative;
+    background:#fffdf6;                 /* white photo-paper mat */
+    padding:11px 11px 34px;             /* scaled from 14/14/44; bottom mat for caption */
+    box-shadow:4px 10px 26px -10px rgba(43,38,32,.5);
+    transform:rotate(1.6deg);           /* the tilt */
+    width:260px;
+    border:1px solid #e0d4ba;           /* --hairline */
+  }
+  .frame .photo-inner{
+    position:relative;
+    background:#f1e7d0;                 /* --paper-shade, the photo well */
+    border-radius:2px;
+    overflow:hidden;
+  }
+  .frame img.u-photo{
+    display:block;
+    width:100%;
+    height:auto;
+    border-radius:2px;
+  }
+  .frame figcaption{
+    font-family:'Caveat',cursive;font-weight:700;font-size:20px;
+    color:#5f574a;                      /* --ink-soft */
+    text-align:center;margin-top:9px;
+    transform:rotate(-1deg);            /* handwritten caption tilt */
+  }
+
+  /* ---- washi tape strips, copied from .washi ---- */
+  .washi{
+    position:absolute;width:90px;height:26px;     /* scaled from 104x30 */
+    background:repeating-linear-gradient(45deg, rgba(255,255,255,.25) 0 7px, transparent 7px 14px), #f2a48b; /* --washi-coral */
+    opacity:.9;box-shadow:0 2px 5px -2px rgba(0,0,0,.25);
+    border-left:1px dashed rgba(255,255,255,.4);border-right:1px dashed rgba(255,255,255,.4);
+  }
+  .washi.mint{background:repeating-linear-gradient(45deg, rgba(255,255,255,.25) 0 7px, transparent 7px 14px), #a7c4a0;}
+  .frame .washi{top:-13px}
+  .frame .washi.tl{left:-16px;transform:rotate(-32deg)}
+  .frame .washi.tr{right:-16px;transform:rotate(32deg)}
+</style>
+</head>
+<body>
+
+  <figure class="frame">
+    <span class="washi tl" aria-hidden="true"></span>
+    <span class="washi tr mint" aria-hidden="true"></span>
+    <div class="photo-inner">
+      <img class="u-photo" src="portrait.webp" alt="Hand-drawn watercolour illustration, taped into the page." width="900" height="900">
+    </div>
+    <figcaption>“Otters in the Post Office” — endpaper sketch</figcaption>
+  </figure>
+
+</body>
+</html>

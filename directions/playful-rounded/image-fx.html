@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>playful-rounded — photo specimen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:#fffaf5;
+    background-image:
+      radial-gradient(circle at 12% 8%, rgba(184,166,255,.18), transparent 42%),
+      radial-gradient(circle at 88% 4%, rgba(255,179,138,.16), transparent 38%),
+      radial-gradient(circle at 78% 92%, rgba(159,230,196,.18), transparent 40%);
+    min-height:100vh;
+    display:grid;
+    place-items:center;
+    padding:28px;
+  }
+  img{max-width:100%;display:block}
+
+  /* the framed photo composition — copied from index.html .art / .art-card / .sticker */
+  .art{position:relative;width:200px}
+
+  .art-card{
+    border-radius:40px;
+    overflow:hidden;
+    background:linear-gradient(150deg,#b8a6ff 0%, #ffb38a 100%);
+    box-shadow:0 22px 50px -24px rgba(99,71,180,.30);
+    rotate:2deg;
+    aspect-ratio:4/5;
+    display:grid;
+  }
+  .art-card img{width:100%;height:100%;object-fit:cover}
+
+  .sticker{
+    position:absolute;
+    font-family:'Fredoka',system-ui,sans-serif;font-weight:600;font-size:11px;
+    background:#fff;color:#2b2440;padding:8px 12px;border-radius:999px;
+    box-shadow:0 12px 26px -12px rgba(43,36,64,.5);
+    display:inline-flex;align-items:center;gap:6px;white-space:nowrap;
+  }
+  .sticker .emo{font-size:13px}
+  .sticker.s1{top:-12px;left:-10px;rotate:-9deg;background:#9fe6c4}
+  .sticker.s2{bottom:30px;right:-14px;rotate:7deg}
+  .sticker.s3{bottom:-10px;left:26px;rotate:-4deg;background:#ffb38a}
+</style>
+</head>
+<body>
+  <div class="art">
+    <div class="art-card">
+      <img src="portrait.webp" alt="Lola Benitez illustrated as a friendly 3D character waving hello">
+    </div>
+    <span class="sticker s1"><span class="emo">🎉</span> 40k members</span>
+    <span class="sticker s2"><span class="emo">📚</span> 2 bestsellers</span>
+    <span class="sticker s3"><span class="emo">🔴</span> live weekly</span>
+  </div>
+</body>
+</html>

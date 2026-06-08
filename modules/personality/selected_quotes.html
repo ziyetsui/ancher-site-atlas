@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>selected_quotes · personality — specimen sheet</title>
+<style>
+:root{--bg:#ffffff;--surface:#f6f6f4;--surface-2:#efefea;--ink:#191917;--muted:#6b6b67;--subtle:#9a9a94;--accent:#2f56ff;--accent-soft:#e9eefc;--hairline:#e7e7e2;--ink-line:#191917;--ok:#1f7a44;--radius:12px;--pad:24px}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+.mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+
+/* ---------- specimen sheet shell ---------- */
+.sheet{max-width:1120px;margin:0 auto;padding:clamp(20px,4vw,48px)}
+
+.sheet-header{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px;
+  padding-bottom:18px;margin-bottom:32px;
+  border-bottom:1px solid var(--hairline);
+}
+.sheet-header h1{
+  margin:0;font-size:18px;font-weight:650;letter-spacing:-.01em;
+}
+.sheet-header h1 .zh{color:var(--muted);font-weight:500}
+.sheet-meta{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-left:auto}
+.chip{
+  font-size:12px;line-height:1;padding:6px 10px;border-radius:999px;
+  background:var(--surface);color:var(--muted);border:1px solid var(--hairline);
+  white-space:nowrap;
+}
+.chip strong{color:var(--ink);font-weight:600}
+
+/* ---------- variant block ---------- */
+.variant{margin-bottom:40px}
+.variant:last-child{margin-bottom:0}
+.variant-label{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;
+  margin-bottom:12px;
+}
+.variant-id{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:13px;color:var(--accent);
+  background:var(--accent-soft);
+  padding:3px 8px;border-radius:6px;letter-spacing:-.01em;
+}
+.variant-hint{font-size:13px;color:var(--muted)}
+
+.stage{
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  background:var(--surface);
+  padding:clamp(20px,4vw,48px);
+}
+
+/* ---------- large_type quote component ---------- */
+.lt-quote{
+  max-width:760px;margin:0 auto;
+}
+.lt-eyebrow{
+  display:flex;align-items:center;gap:10px;
+  margin:0 0 20px;
+  font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--subtle);font-weight:600;
+}
+.lt-eyebrow::before{
+  content:"";width:28px;height:1px;background:var(--ink-line);opacity:.4;
+}
+.lt-figure{margin:0}
+.lt-blockquote{
+  margin:0;position:relative;
+  font-family:Georgia,"Times New Roman",serif;
+  font-weight:400;
+  letter-spacing:-.02em;
+  line-height:1.08;
+  color:var(--ink);
+  font-size:clamp(2rem,6.5vw,4.25rem);
+  text-wrap:balance;
+}
+.lt-mark{
+  color:var(--accent);
+  font-style:normal;
+}
+/* oversized opening quote glyph as decorative accent */
+.lt-blockquote::before{
+  content:"\201C";
+  position:absolute;
+  left:-.06em;top:-.34em;
+  font-size:1.5em;line-height:1;
+  color:var(--accent);
+  opacity:.16;
+  pointer-events:none;
+}
+.lt-blockquote .lt-inner{position:relative}
+
+.lt-footer{
+  display:flex;align-items:center;gap:16px;
+  margin-top:36px;padding-top:24px;
+  border-top:1px solid var(--hairline);
+}
+/* photo slot = neutral placeholder with initials */
+.lt-avatar{
+  flex:none;width:52px;height:52px;border-radius:999px;
+  background:var(--surface-2);
+  border:1px solid var(--hairline);
+  display:grid;place-items:center;
+  font-size:15px;font-weight:650;letter-spacing:.02em;color:var(--muted);
+  position:relative;
+}
+.lt-avatar::after{
+  content:"photo";
+  position:absolute;bottom:-17px;left:50%;transform:translateX(-50%);
+  font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--subtle);
+}
+.lt-cite{font-style:normal;min-width:0}
+.lt-name{font-weight:600;font-size:15px;color:var(--ink);letter-spacing:-.01em}
+.lt-role{font-size:13px;color:var(--muted)}
+.lt-source{
+  margin-left:auto;text-align:right;font-size:12px;color:var(--subtle);
+  line-height:1.35;flex:none;
+}
+.lt-source a{
+  color:var(--accent);text-decoration:none;
+  border-bottom:1px solid transparent;
+}
+.lt-source a:hover{border-bottom-color:currentColor}
+
+/* focus visibility */
+a:focus-visible,button:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:3px;border-radius:4px;
+}
+
+@media (max-width:560px){
+  .lt-footer{flex-wrap:wrap;gap:14px}
+  .lt-source{margin-left:0;text-align:left;width:100%;
+    padding-top:12px;border-top:1px solid var(--hairline)}
+  .lt-avatar::after{display:none}
+}
+
+@media (prefers-reduced-motion:no-preference){
+  .lt-quote{animation:lt-rise .5s ease both}
+  @keyframes lt-rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+}
+</style>
+</head>
+<body>
+<main class="sheet">
+  <header class="sheet-header">
+    <h1>selected_quotes <span class="zh">/ 金句</span></h1>
+    <div class="sheet-meta">
+      <span class="chip">category · <strong>personality</strong></span>
+      <span class="chip"><strong>1</strong> variant</span>
+    </div>
+  </header>
+
+  <!-- variant: large_type -->
+  <section class="variant" aria-labelledby="v-large_type">
+    <div class="variant-label">
+      <span class="variant-id" id="v-large_type">large_type</span>
+      <span class="variant-hint">巨号引言 — one quote set at display scale, attribution beneath a hairline</span>
+    </div>
+    <div class="stage">
+      <div class="lt-quote">
+        <p class="lt-eyebrow">Selected quote</p>
+        <figure class="lt-figure">
+          <blockquote class="lt-blockquote">
+            <span class="lt-inner">The best interface is the one that gets out of the way, then quietly <span class="lt-mark">earns your trust</span> back.</span>
+          </blockquote>
+          <figcaption class="lt-footer">
+            <span class="lt-avatar" aria-hidden="true">MC</span>
+            <span class="lt-cite">
+              <span class="lt-name">Maya Chen</span><br>
+              <span class="lt-role">Product designer · Oakland</span>
+            </span>
+            <span class="lt-source">
+              from a talk at<br>
+              <a href="#">Config 2025</a>
+            </span>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+</main>
+</body>
+</html>

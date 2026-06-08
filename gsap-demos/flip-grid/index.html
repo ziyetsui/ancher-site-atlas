@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>方格製作所 — STUDIO QUADRA / Flip Grid Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14130f;
+    --paper:#f4f0e6;
+    --paper-2:#ece5d4;
+    --line:#14130f;
+    --acid:#d8ff3e;
+    --tomato:#ff5436;
+    --cobalt:#2b4cff;
+    --grape:#7b3cff;
+    --clay:#ff8a3d;
+    --card-r:18px;
+    --gut:clamp(10px,2.4vw,26px);
+    --pad:clamp(16px,4vw,56px);
+    --max:1320px;
+    --shadow:6px 6px 0 var(--ink);
+    --ease:cubic-bezier(.16,1,.3,1);
+    --t-display:"Archivo Black","Noto Sans SC",sans-serif;
+    --t-zh:"Noto Sans SC",sans-serif;
+    --t-mono:"Space Grotesk","Noto Sans SC",sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--t-zh);font-weight:400;line-height:1.5;
+    overflow-x:hidden;
+    background-image:
+      radial-gradient(var(--paper-2) 1.1px,transparent 1.1px);
+    background-size:18px 18px;
+  }
+  a{color:inherit}
+  img{display:block;max-width:100%}
+  ::selection{background:var(--acid);color:var(--ink)}
+  :focus-visible{outline:3px solid var(--cobalt);outline-offset:3px;border-radius:4px}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 var(--pad)}
+  .mono{font-family:var(--t-mono);font-variant-numeric:tabular-nums}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+  /* ===== top bar ===== */
+  .bar{position:sticky;top:0;z-index:40;background:var(--paper);
+    border-bottom:2px solid var(--ink);}
+  .bar .wrap{display:flex;align-items:center;justify-content:space-between;
+    gap:16px;height:62px}
+  .brand{display:flex;align-items:center;gap:12px;font-family:var(--t-display);
+    font-size:clamp(15px,2.2vw,19px);letter-spacing:.02em}
+  .brand .mk{width:26px;height:26px;border:2px solid var(--ink);border-radius:6px;
+    display:grid;place-items:center;background:var(--acid);overflow:hidden}
+  .brand .mk i{display:block;width:9px;height:9px;background:var(--ink);
+    border-radius:2px}
+  .bar nav{display:flex;gap:18px;font-family:var(--t-mono);font-size:13px;
+    font-weight:500}
+  .bar nav a{text-decoration:none;opacity:.8}
+  .bar nav a:hover{opacity:1;text-decoration:underline;text-underline-offset:4px}
+  @media(max-width:680px){.bar nav{display:none}}
+
+  /* ===== hero ===== */
+  .hero{position:relative;padding:clamp(36px,7vw,84px) 0 clamp(22px,4vw,40px)}
+  .kick{font-family:var(--t-mono);font-size:12px;letter-spacing:.32em;
+    text-transform:uppercase;display:flex;align-items:center;gap:10px;
+    margin:0 0 18px;color:#5a564a}
+  .kick .dot{width:9px;height:9px;border-radius:50%;background:var(--tomato);
+    box-shadow:0 0 0 0 rgba(255,84,54,.6)}
+  h1.title{font-family:var(--t-display);margin:0;line-height:.92;
+    font-size:clamp(48px,12vw,148px);letter-spacing:-.01em;
+    text-transform:uppercase}
+  h1.title .ln{display:block;overflow:hidden}
+  h1.title .ln span{display:inline-block;will-change:transform}
+  h1.title em{font-style:normal;color:var(--paper);
+    -webkit-text-stroke:2px var(--ink);text-stroke:2px var(--ink)}
+  .hero-sub{display:flex;flex-wrap:wrap;gap:18px 40px;align-items:flex-end;
+    justify-content:space-between;margin-top:clamp(20px,4vw,42px)}
+  .hero-sub p{max-width:46ch;margin:0;font-size:clamp(15px,1.7vw,18px);
+    color:#3a372e}
+  .stats{display:flex;gap:26px;font-family:var(--t-mono)}
+  .stats b{display:block;font-size:clamp(26px,4vw,40px);line-height:1;
+    font-weight:700}
+  .stats small{font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:#6b6658}
+  .marquee-strip{margin-top:clamp(26px,5vw,48px);border-top:2px solid var(--ink);
+    border-bottom:2px solid var(--ink);background:var(--ink);color:var(--paper);
+    overflow:hidden;white-space:nowrap}
+  .marquee-strip .track{display:inline-flex;gap:34px;padding:11px 0;
+    font-family:var(--t-mono);font-size:13px;letter-spacing:.18em;
+    text-transform:uppercase;will-change:transform}
+  .marquee-strip .track span{display:inline-flex;gap:34px}
+  .marquee-strip i{color:var(--acid);font-style:normal}
+
+  /* ===== controls ===== */
+  .controls{position:sticky;top:62px;z-index:30;background:var(--paper);
+    padding:16px 0 14px;border-bottom:2px solid var(--ink)}
+  .controls .wrap{display:flex;flex-wrap:wrap;gap:12px;align-items:center;
+    justify-content:space-between}
+  .filters{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{font-family:var(--t-mono);font-size:13px;font-weight:500;
+    border:2px solid var(--ink);background:var(--paper);color:var(--ink);
+    padding:8px 15px;border-radius:999px;cursor:pointer;
+    transition:transform .18s var(--ease),background .18s,color .18s,box-shadow .18s;
+    display:inline-flex;align-items:center;gap:8px}
+  .chip .n{font-size:11px;opacity:.55}
+  .chip:hover{transform:translateY(-2px);box-shadow:3px 3px 0 var(--ink)}
+  .chip[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+  .chip[aria-pressed="true"] .n{opacity:.7}
+  .chip[data-cat="brand"][aria-pressed="true"]{background:var(--tomato);color:#fff}
+  .chip[data-cat="motion"][aria-pressed="true"]{background:var(--cobalt);color:#fff}
+  .chip[data-cat="space"][aria-pressed="true"]{background:var(--grape);color:#fff}
+  .chip[data-cat="type"][aria-pressed="true"]{background:var(--clay);color:#fff}
+  .ctrl-right{display:flex;gap:10px;align-items:center}
+  .view-toggle{display:flex;border:2px solid var(--ink);border-radius:999px;
+    overflow:hidden;font-family:var(--t-mono);font-size:12px;font-weight:500}
+  .view-toggle button{appearance:none;border:0;background:transparent;
+    color:var(--ink);padding:8px 14px;cursor:pointer}
+  .view-toggle button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+
+  /* ===== grid ===== */
+  .gallery{padding:clamp(20px,4vw,40px) 0 clamp(60px,9vw,120px)}
+  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--gut)}
+  @media(max-width:900px){.grid{grid-template-columns:repeat(6,1fr)}}
+  @media(max-width:560px){.grid{grid-template-columns:repeat(2,1fr);--gut:12px}}
+
+  .card{grid-column:span 4;border:2px solid var(--ink);border-radius:var(--card-r);
+    background:var(--paper);overflow:hidden;position:relative;cursor:pointer;
+    box-shadow:var(--shadow);will-change:transform;
+    display:flex;flex-direction:column;isolation:isolate}
+  .card.w6{grid-column:span 6}
+  .card.w8{grid-column:span 8}
+  @media(max-width:900px){
+    .card{grid-column:span 3}.card.w6,.card.w8{grid-column:span 6}
+  }
+  @media(max-width:560px){
+    .card,.card.w6,.card.w8{grid-column:span 2}
+  }
+  .card:hover{box-shadow:9px 9px 0 var(--ink)}
+  .card .thumb{position:relative;aspect-ratio:4/3;overflow:hidden;
+    background:var(--paper-2);border-bottom:2px solid var(--ink)}
+  .card.w8 .thumb,.card.w6 .thumb{aspect-ratio:16/9}
+  .card .thumb img{width:100%;height:100%;object-fit:cover;
+    transition:transform .6s var(--ease),filter .5s;filter:saturate(1.02)}
+  .card:hover .thumb img{transform:scale(1.05)}
+  .card .tag{position:absolute;top:10px;left:10px;z-index:2;
+    font-family:var(--t-mono);font-size:11px;font-weight:700;
+    letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;
+    border-radius:999px;border:2px solid var(--ink);background:var(--paper)}
+  .card[data-cat="brand"] .tag{background:var(--tomato);color:#fff;border-color:var(--ink)}
+  .card[data-cat="motion"] .tag{background:var(--cobalt);color:#fff}
+  .card[data-cat="space"] .tag{background:var(--grape);color:#fff}
+  .card[data-cat="type"] .tag{background:var(--clay);color:#fff}
+  .card .yr{position:absolute;top:10px;right:10px;z-index:2;
+    font-family:var(--t-mono);font-size:12px;font-weight:700;
+    background:var(--ink);color:var(--paper);padding:4px 9px;border-radius:6px}
+  .card .meta{padding:14px 16px 16px;flex:1;display:flex;flex-direction:column;gap:6px}
+  .card .meta h3{margin:0;font-size:clamp(17px,2vw,21px);font-weight:900;
+    line-height:1.12}
+  .card .meta .en{font-family:var(--t-mono);font-size:12px;color:#6b6658;
+    letter-spacing:.04em}
+  .card .meta .ex{margin:6px 0 0;font-size:13.5px;color:#3a372e;line-height:1.45}
+  .card .meta .foot{margin-top:auto;padding-top:10px;display:flex;
+    align-items:center;justify-content:space-between;font-family:var(--t-mono);
+    font-size:11px;color:#6b6658;letter-spacing:.06em;text-transform:uppercase}
+  .card .meta .foot .open{display:inline-flex;align-items:center;gap:6px;
+    color:var(--ink);font-weight:700}
+  .card .meta .foot .open svg{width:13px;height:13px}
+  /* hide the in-card body text by default; shown only when expanded */
+  .card .detail-body{display:none}
+
+  .empty{grid-column:1/-1;text-align:center;padding:60px 0;
+    font-family:var(--t-mono);color:#6b6658}
+
+  /* ===== expanded detail (shared-element via Flip) ===== */
+  .scrim{position:fixed;inset:0;z-index:60;background:rgba(20,19,15,.42);
+    backdrop-filter:blur(3px);opacity:0;pointer-events:none;
+    transition:opacity .35s ease}
+  .scrim.on{opacity:1;pointer-events:auto}
+  body.detail-open{overflow:hidden}
+  .card.is-detail{position:fixed;z-index:70;cursor:default;
+    grid-column:auto!important;box-shadow:14px 14px 0 var(--ink);
+    inset:max(16px,4vh) max(16px,5vw);max-width:980px;margin:0 auto;
+    display:flex;flex-direction:column;overflow:auto}
+  .card.is-detail .thumb{aspect-ratio:auto;height:min(46vh,380px);flex:none}
+  .card.is-detail:hover .thumb img{transform:none}
+  .card.is-detail .meta{padding:clamp(20px,3vw,34px)}
+  .card.is-detail .meta h3{font-size:clamp(26px,4vw,42px)}
+  .card.is-detail .meta .ex{font-size:15px}
+  .card.is-detail .detail-body{display:block;margin-top:18px;
+    border-top:2px solid var(--ink);padding-top:20px;
+    display:grid;grid-template-columns:1.4fr 1fr;gap:26px}
+  @media(max-width:640px){.card.is-detail .detail-body{grid-template-columns:1fr}}
+  .detail-body .lede{font-size:16px;line-height:1.6;color:#26241d;margin:0}
+  .detail-body .facts{font-family:var(--t-mono);font-size:13px;
+    display:flex;flex-direction:column;gap:0}
+  .detail-body .facts div{display:flex;justify-content:space-between;gap:14px;
+    padding:9px 0;border-bottom:1px dashed #c9c2af}
+  .detail-body .facts dt{color:#6b6658;text-transform:uppercase;letter-spacing:.08em;
+    font-size:11px}
+  .detail-body .facts dd{margin:0;font-weight:700;text-align:right}
+  .detail-body .swatches{display:flex;gap:8px;margin-top:14px}
+  .detail-body .swatches i{width:30px;height:30px;border-radius:7px;
+    border:2px solid var(--ink);display:block}
+  .close-x{position:absolute;top:14px;right:14px;z-index:5;width:42px;height:42px;
+    border-radius:50%;border:2px solid var(--ink);background:var(--paper);
+    cursor:pointer;display:grid;place-items:center;font-size:20px;line-height:1;
+    transition:transform .2s var(--ease),background .2s}
+  .card.is-detail .close-x{display:grid}
+  .card:not(.is-detail) .close-x{display:none}
+  .close-x:hover{transform:rotate(90deg);background:var(--tomato);color:#fff}
+
+  /* reveal helper */
+  .reveal{opacity:0}
+
+  /* ===== footer ===== */
+  footer{border-top:2px solid var(--ink);background:var(--ink);color:var(--paper);
+    padding:clamp(40px,7vw,80px) 0}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:30px;justify-content:space-between;
+    align-items:flex-end}
+  footer h2{font-family:var(--t-display);font-size:clamp(30px,7vw,82px);
+    margin:0;line-height:.95;text-transform:uppercase}
+  footer h2 em{font-style:normal;color:var(--acid)}
+  footer .info{font-family:var(--t-mono);font-size:13px;line-height:1.9;
+    text-align:right;opacity:.86}
+  footer a{color:var(--acid)}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap">
+    <div class="brand"><span class="mk"><i></i></span>方格製作所 <span class="mono" style="opacity:.5;font-size:12px">STUDIO&nbsp;QUADRA</span></div>
+    <nav aria-label="主导航">
+      <a href="#work">作品</a>
+      <a href="#work">工作室</a>
+      <a href="#contact">联系</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- ============ HERO ============ -->
+  <section class="hero" aria-labelledby="h1">
+    <div class="wrap">
+      <p class="kick"><span class="dot" id="pulse"></span>独立设计工作室 · 上海 / 东京 · 自 2016</p>
+      <h1 class="title" id="h1">
+        <span class="ln"><span>我们把</span></span>
+        <span class="ln"><span><em>方块</em>排成</span></span>
+        <span class="ln"><span>故事。</span></span>
+      </h1>
+      <div class="hero-sub">
+        <p>方格製作所是一间小而执拗的设计工作室。我们用网格做骨架、用色块做语气，替品牌、文化机构与初创团队做视觉识别、动态系统与排版。点标签可重排作品；点卡片会展开成完整案例。</p>
+        <div class="stats" aria-hidden="false">
+          <div><b class="mono">62</b><small>已交付项目</small></div>
+          <div><b class="mono">9</b><small>合作国家 / 地区</small></div>
+          <div><b class="mono">5</b><small>核心成员</small></div>
+        </div>
+      </div>
+    </div>
+    <div class="marquee-strip" aria-hidden="true">
+      <div class="track">
+        <span>品牌识别 <i>◆</i> 动态系统 <i>◆</i> 字体定制 <i>◆</i> 展览空间 <i>◆</i> 网格实验 <i>◆</i> 编辑设计 <i>◆</i></span>
+        <span>品牌识别 <i>◆</i> 动态系统 <i>◆</i> 字体定制 <i>◆</i> 展览空间 <i>◆</i> 网格实验 <i>◆</i> 编辑设计 <i>◆</i></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTROLS ============ -->
+  <section class="controls" id="work" aria-label="作品筛选">
+    <div class="wrap">
+      <div class="filters" role="group" aria-label="按类别筛选作品">
+        <button class="chip" data-filter="all" aria-pressed="true">全部 <span class="n mono">12</span></button>
+        <button class="chip" data-cat="brand" data-filter="brand" aria-pressed="false">品牌识别 <span class="n mono">04</span></button>
+        <button class="chip" data-cat="motion" data-filter="motion" aria-pressed="false">动态系统 <span class="n mono">03</span></button>
+        <button class="chip" data-cat="space" data-filter="space" aria-pressed="false">空间 / 展览 <span class="n mono">03</span></button>
+        <button class="chip" data-cat="type" data-filter="type" aria-pressed="false">字体 / 排版 <span class="n mono">02</span></button>
+      </div>
+      <div class="ctrl-right">
+        <div class="view-toggle" role="group" aria-label="布局密度">
+          <button data-view="comfy" aria-pressed="true">舒展</button>
+          <button data-view="dense" aria-pressed="false">紧凑</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ GRID ============ -->
+  <section class="gallery" aria-label="作品网格">
+    <div class="wrap">
+      <div class="grid" id="grid" aria-live="polite"></div>
+    </div>
+  </section>
+</main>
+
+<div class="scrim" id="scrim" hidden></div>
+
+<footer id="contact">
+  <div class="wrap">
+    <h2>一起<br>排个<em>方块</em>?</h2>
+    <div class="info">
+      hello@quadra.studio<br>
+      上海市 静安区 · 东京都 渋谷区<br>
+      <a href="#work">查看完整作品集 →</a><br>
+      © 2016–2026 STUDIO QUADRA
+    </div>
+  </div>
+</footer>
+
+<!-- ===== GSAP: core first, then plugins, then register ===== -->
+<script src="/vendor/gsap/gsap.min.js"></script>
+<script src="/vendor/gsap/Flip.min.js"></script>
+<script>
+gsap.registerPlugin(Flip);
+
+/* ---------- project data ---------- */
+const PROJECTS = [
+  {id:"meridian", cat:"brand", size:"w8", yr:"2025", zh:"子午线咖啡焙煎所", en:"MERIDIAN ROASTERS — full identity",
+   img:"editorial-motel-car-night", ex:"为精品咖啡品牌打造的一套以经纬刻度为母题的识别系统。",
+   lede:"我们把一杯咖啡的「产地—海拔—烘焙曲线」抽象成一组可生长的子午线网格，封套、杯标、官网共用同一套坐标。三色油墨在牛皮纸上印出地图等高线般的层次。",
+   client:"子午线焙煎所", role:"品牌识别 · 包装", team:"5 人 / 11 周", sw:["#ff5436","#14130f","#f4f0e6"]},
+  {id:"tide", cat:"motion", size:"w4", yr:"2024", zh:"潮汐美术馆动态导视", en:"TIDE MUSEUM — motion system",
+   img:"editorial-dusk-cityscape", ex:"一套随展期涨落、会呼吸的屏幕导视语言。",
+   lede:"为一家海滨美术馆设计的动态导视：标题文字像潮水一样推进、退去，开闭馆时间驱动一条贯穿全馆屏幕的波形。我们交付了一份可被前端复现的动效规范。",
+   client:"潮汐美术馆", role:"动态系统 · 导视", team:"4 人 / 8 周", sw:["#2b4cff","#d8ff3e","#14130f"]},
+  {id:"folio", cat:"type", size:"w4", yr:"2025", zh:"对开本中文字体定制", en:"FOLIO HAN — type design",
+   img:"editorial-fashion-mono", ex:"一款给长文阅读用的、骨架硬朗的中文标题字。",
+   lede:"「对开本」是为一家独立出版社定制的标题字族，横竖对比克制、转角带一点版画刀感。我们交付了 4 个字重与一套排版网格。",
+   client:"对开本出版", role:"字体设计 · 排版", team:"2 人 / 16 周", sw:["#ff8a3d","#14130f","#ece5d4"]},
+  {id:"orchard", cat:"space", size:"w4", yr:"2023", zh:"果园美术馆开幕展", en:"ORCHARD — exhibition design",
+   img:"illustration-orchard-apple-tree", ex:"把一座旧仓库改造成可漫游的插画果园。",
+   lede:"开幕展「会结果的房间」的空间与平面一体化设计。我们用 1.2 米见方的色块墙把展线切成果园的格子，观众沿网格采摘故事。",
+   client:"果园美术馆", role:"展览 · 空间图形", team:"5 人 / 14 周", sw:["#7b3cff","#d8ff3e","#f4f0e6"]},
+  {id:"signal", cat:"brand", size:"w4", yr:"2024", zh:"信号实验室科技品牌", en:"SIGNAL LABS — startup brand",
+   img:"editorial-pink-sunglasses", ex:"给一家做边缘计算的初创公司的鲜明视觉。",
+   lede:"信号实验室需要一个「不像科技公司」的科技品牌。我们用荧光黄与墨黑的高反差、加一套会跳动的脉冲标记，做出一种实验室便签的手感。",
+   client:"信号实验室", role:"品牌识别", team:"4 人 / 7 周", sw:["#d8ff3e","#14130f","#ff5436"]},
+  {id:"riso", cat:"motion", size:"w4", yr:"2025", zh:"柏林孔版印刷节", en:"RISO BERLIN — festival motion",
+   img:"illustration-berlin-riso", ex:"为孔版印刷节做的会「错位」的动态主视觉。",
+   lede:"我们刻意把两层油墨的套印误差变成动效语言：标题在加载时短暂错色、再合一。整套 KV 在大屏、社媒、票根上保持同一种印刷脾气。",
+   client:"RISO BERLIN", role:"动态系统 · KV", team:"3 人 / 6 周", sw:["#ff5436","#2b4cff","#f4f0e6"]},
+  {id:"pavilion", cat:"space", size:"w6", yr:"2022", zh:"别墅艺术驻留导览", en:"VILLA PAVILION — wayfinding",
+   img:"landscape-modern-villa", ex:"为一处现代别墅驻留地设计的极简导览体系。",
+   lede:"一处坡地别墅驻留项目的室外导视。我们让指示牌的几何形状直接呼应建筑的混凝土网格，材料只用阳极氧化铝与丝印，远看像建筑本身长出的标识。",
+   client:"留白驻留", role:"展览 · 导视", team:"5 人 / 10 周", sw:["#14130f","#ece5d4","#ff8a3d"]},
+  {id:"popart", cat:"brand", size:"w4", yr:"2023", zh:"波普少女唱片厂牌", en:"POP GIRL — record label",
+   img:"illustration-popart-girl", ex:"一家独立流行厂牌从 0 到 1 的视觉。",
+   lede:"厂牌「波普少女」要的是「能贴满整面墙也不腻」的识别。我们做了一套可无限拼贴的网格贴纸系统，每张专辑是网格里的一格颜色。",
+   client:"Pop Girl Records", role:"品牌识别 · 包装", team:"4 人 / 9 周", sw:["#ff5436","#d8ff3e","#7b3cff"]},
+  {id:"meadow", cat:"type", size:"w4", yr:"2024", zh:"草甸童书排版系统", en:"MEADOW — book typesetting",
+   img:"illustration-storybook-meadow", ex:"一套让插画与正文和睦相处的童书网格。",
+   lede:"为一个童书品牌建立的可复用排版系统：基线网格收紧到 6 毫米，让大幅插画与短句正文落在同一节奏里。我们交付了模板与样式指南。",
+   client:"草甸童书", role:"排版系统", team:"2 人 / 12 周", sw:["#ff8a3d","#2b4cff","#f4f0e6"]},
+  {id:"yacht", cat:"brand", size:"w4", yr:"2025", zh:"粉色游艇生活方式", en:"PINK YACHT — lifestyle brand",
+   img:"editorial-pink-yacht", ex:"一个海上俱乐部的高饱和度生活方式品牌。",
+   lede:"我们给一家会员制海上俱乐部做了「日落色卡」识别——粉、橘、墨黑随一天时段轮换，会员卡、APP 与码头导视共享同一组渐层。",
+   client:"PINK YACHT CLUB", role:"品牌识别", team:"4 人 / 9 周", sw:["#ff8a3d","#ff5436","#2b4cff"]},
+  {id:"runner", cat:"motion", size:"w6", yr:"2023", zh:"晨跑社运动 APP 动效", en:"DAYBREAK RUN — app motion",
+   img:"editorial-street-running", ex:"为城市晨跑社群 APP 写的一整套界面动效。",
+   lede:"晨跑社的 APP 需要让数据「跑起来」。我们做了一套以配速曲线为母题的转场与微交互，里程数像跑道一样在卡片间滑入，全部基于位移与透明度。",
+   client:"晨跑社 DAYBREAK", role:"动态系统 · UI", team:"4 人 / 10 周", sw:["#2b4cff","#d8ff3e","#14130f"]},
+  {id:"tower", cat:"space", size:"w4", yr:"2024", zh:"海边灯塔市集视觉", en:"SEASIDE TOWER — fair identity",
+   img:"illustration-seaside-tower-girl", ex:"一场海边创意市集的空间与平面一体设计。",
+   lede:"海边创意市集「灯塔」的整套视觉：从地图、摊位编号到旗帜，全用一套海洋蓝与日光黄的方格语言，让一片散乱的摊位读起来像一张统一的网格。",
+   client:"灯塔市集", role:"展览 · 空间图形", team:"5 人 / 6 周", sw:["#2b4cff","#d8ff3e","#ff5436"]},
+];
+
+const grid = document.getElementById("grid");
+
+/* build cards */
+const cardHTML = (p) => `
+  <article class="card ${p.size} reveal" data-id="${p.id}" data-cat="${p.cat}"
+           tabindex="0" role="button"
+           aria-label="${p.zh} — 展开案例">
+    <div class="thumb">
+      <span class="tag">${labelOf(p.cat)}</span>
+      <span class="yr mono">${p.yr}</span>
+      <img src="/assets/${p.img}.webp" alt="${p.zh} 项目视觉" loading="lazy">
+    </div>
+    <div class="meta">
+      <h3>${p.zh}</h3>
+      <span class="en mono">${p.en}</span>
+      <p class="ex">${p.ex}</p>
+      <div class="foot">
+        <span>${labelOf(p.cat)} · ${p.yr}</span>
+        <span class="open">展开 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </div>
+      <div class="detail-body">
+        <p class="lede">${p.lede}</p>
+        <div>
+          <dl class="facts">
+            <div><dt>客户</dt><dd>${p.client}</dd></div>
+            <div><dt>职责</dt><dd>${p.role}</dd></div>
+            <div><dt>团队 / 周期</dt><dd>${p.team}</dd></div>
+            <div><dt>年份</dt><dd>${p.yr}</dd></div>
+          </dl>
+          <div class="swatches" aria-hidden="true">
+            ${p.sw.map(c=>`<i style="background:${c}"></i>`).join("")}
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="close-x" aria-label="关闭案例">×</button>
+  </article>`;
+
+function labelOf(c){return {brand:"品牌识别",motion:"动态系统",space:"空间展览",type:"字体排版"}[c]||c;}
+
+grid.innerHTML = PROJECTS.map(cardHTML).join("");
+const cards = () => gsap.utils.toArray(".card");
+
+/* ===================================================================
+   prefers-reduced-motion aware behaviour via matchMedia
+=================================================================== */
+let RM = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const FLIP_DUR = () => (RM ? 0 : 0.62);
+const FLIP_EASE = "power3.inOut";
+
+/* ---------- intro: reveal cards (skipped under reduced motion) ---------- */
+gsap.matchMedia().add({
+  motion: "(prefers-reduced-motion: no-preference)",
+  reduced: "(prefers-reduced-motion: reduce)"
+}, (ctx) => {
+  const {motion, reduced} = ctx.conditions;
+  RM = reduced;
+
+  if (reduced) {
+    gsap.set(".reveal", {opacity: 1, clearProps: "transform"});
+    gsap.set("h1.title .ln span", {y: 0});
+    return;
+  }
+
+  /* hero title lines rise in */
+  gsap.from("h1.title .ln span", {
+    yPercent: 115, duration: 1.0, ease: "power4.out",
+    stagger: 0.09, delay: 0.12
+  });
+  gsap.from(".kick", {opacity: 0, y: 10, duration: 0.7, delay: 0.1});
+  gsap.from(".hero-sub p, .stats > div", {
+    opacity: 0, y: 18, duration: 0.7, stagger: 0.08, delay: 0.5
+  });
+
+  /* pulsing dot */
+  gsap.to("#pulse", {
+    boxShadow: "0 0 0 10px rgba(255,84,54,0)",
+    duration: 1.4, repeat: -1, ease: "power2.out"
+  });
+
+  /* infinite marquee */
+  const track = document.querySelector(".marquee-strip .track");
+  gsap.to(track, {xPercent: -50, duration: 18, ease: "none", repeat: -1});
+
+  /* cards reveal once on load, staggered */
+  gsap.to(".reveal", {
+    opacity: 1, y: 0, duration: 0.6, ease: "power2.out",
+    stagger: {each: 0.05, from: "start"},
+    startAt: {y: 26},
+    delay: 0.35,
+    onComplete: () => gsap.set(".reveal", {clearProps: "transform"})
+  });
+
+  return () => {}; // ctx auto-reverts
+});
+if (RM) gsap.set(".reveal", {opacity: 1});
+
+/* ===================================================================
+   FILTERING — Flip layout transition
+   record state -> hide/show cards -> Flip.from
+=================================================================== */
+const chips = gsap.utils.toArray(".chip");
+let activeFilter = "all";
+
+function applyFilter(filter){
+  if (filter === activeFilter) return;
+  activeFilter = filter;
+
+  chips.forEach(c => c.setAttribute("aria-pressed", String(c.dataset.filter === filter)));
+
+  // 1. FIRST — capture current geometry of every card
+  const state = Flip.getState(cards(), {props: "borderRadius"});
+
+  // 2. mutate DOM — toggle display:none on non-matching cards
+  let shown = 0;
+  cards().forEach(card => {
+    const match = filter === "all" || card.dataset.cat === filter;
+    card.style.display = match ? "" : "none";
+    if (match) shown++;
+  });
+  toggleEmpty(shown);
+
+  // 3. LAST + INVERT + PLAY — animate from the captured state
+  Flip.from(state, {
+    duration: FLIP_DUR(),
+    ease: FLIP_EASE,
+    scale: true,
+    absolute: true,
+    stagger: RM ? 0 : 0.035,
+    onEnter: els => RM ? gsap.set(els,{opacity:1}) :
+      gsap.fromTo(els, {opacity:0, scale:.85}, {opacity:1, scale:1, duration:.5, ease:"power2.out", delay:.08}),
+    onLeave: els => RM ? gsap.set(els,{opacity:0}) :
+      gsap.to(els, {opacity:0, scale:.85, duration:.32, ease:"power2.in"})
+  });
+}
+
+function toggleEmpty(shown){
+  let e = grid.querySelector(".empty");
+  if (shown === 0 && !e){
+    e = document.createElement("p");
+    e.className = "empty mono";
+    e.textContent = "// 该类别暂无作品";
+    grid.appendChild(e);
+  } else if (shown > 0 && e){ e.remove(); }
+}
+
+chips.forEach(chip =>
+  chip.addEventListener("click", () => applyFilter(chip.dataset.filter)));
+
+/* ===================================================================
+   DENSITY TOGGLE — Flip reflow between comfy / dense column spans
+=================================================================== */
+const viewBtns = gsap.utils.toArray(".view-toggle button");
+let dense = false;
+viewBtns.forEach(b => b.addEventListener("click", () => {
+  const wantDense = b.dataset.view === "dense";
+  if (wantDense === dense) return;
+  dense = wantDense;
+  viewBtns.forEach(x => x.setAttribute("aria-pressed", String(x.dataset.view === b.dataset.view)));
+
+  const state = Flip.getState(cards(), {props:"borderRadius"});
+  cards().forEach(card => {
+    // remember the original wide span the first time we go dense
+    if (!card.dataset.size){
+      card.dataset.size = [...card.classList].find(c => /^w\d/.test(c)) || "w4";
+    }
+    if (dense){
+      // dense mode: every card collapses to a uniform 4-col tile
+      card.classList.remove("w6","w8");
+    } else if (card.dataset.size !== "w4"){
+      card.classList.add(card.dataset.size);
+    }
+  });
+  Flip.from(state, {
+    duration: FLIP_DUR(), ease: FLIP_EASE, scale:true, absolute:true,
+    stagger: RM ? 0 : 0.025
+  });
+}));
+
+/* ===================================================================
+   EXPAND CARD — shared-element Flip into a fixed detail panel
+=================================================================== */
+const scrim = document.getElementById("scrim");
+let openCard = null;
+
+function expand(card){
+  if (openCard) return;
+  openCard = card;
+
+  // capture the card's grid position/size
+  const state = Flip.getState(card, {props:"borderRadius,boxShadow"});
+
+  document.body.classList.add("detail-open");
+  card.classList.add("is-detail");
+  card.setAttribute("aria-expanded","true");
+  scrim.hidden = false;
+  requestAnimationFrame(()=>scrim.classList.add("on"));
+
+  Flip.from(state, {
+    duration: RM ? 0 : 0.6,
+    ease: "power3.inOut",
+    scale: false,
+    absolute: true,
+    onComplete(){
+      if (RM) return;
+      // stagger the detail body in after the shared element lands
+      gsap.from(card.querySelectorAll(".detail-body .lede, .facts div, .swatches i"), {
+        opacity:0, y:14, duration:.45, stagger:.04, ease:"power2.out"
+      });
+    }
+  });
+  // give it a focus target
+  card.querySelector(".close-x").focus();
+}
+
+function collapse(){
+  if (!openCard) return;
+  const card = openCard;
+  const state = Flip.getState(card, {props:"borderRadius,boxShadow"});
+
+  card.classList.remove("is-detail");
+  card.setAttribute("aria-expanded","false");
+  document.body.classList.remove("detail-open");
+  scrim.classList.remove("on");
+
+  Flip.from(state, {
+    duration: RM ? 0 : 0.55,
+    ease: "power3.inOut",
+    scale: false,
+    absolute: true,
+    onComplete(){
+      scrim.hidden = true;
+      card.focus();
+    }
+  });
+  openCard = null;
+}
+
+/* event delegation on the grid */
+grid.addEventListener("click", (e) => {
+  const closeBtn = e.target.closest(".close-x");
+  if (closeBtn){ e.stopPropagation(); collapse(); return; }
+  const card = e.target.closest(".card");
+  if (!card) return;
+  if (card.classList.contains("is-detail")) return; // clicks inside open card do nothing
+  expand(card);
+});
+grid.addEventListener("keydown", (e) => {
+  if (e.target.classList.contains("card") && (e.key === "Enter" || e.key === " ")){
+    e.preventDefault();
+    if (!e.target.classList.contains("is-detail")) expand(e.target);
+  }
+});
+scrim.addEventListener("click", collapse);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") collapse(); });
+</script>
+</body>
+</html>

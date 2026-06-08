@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Adaeze Okonkwo — Board Advisor &amp; Former Operator</title>
+<meta name="description" content="Adaeze Okonkwo — board advisor and former operator. I sit on the hard side of the table so founders do not have to." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --canvas:#0a0a0a;
+    --surface:#121110;
+    --surface-raised:#181613;
+    --ink:#efe9dd;
+    --ink-muted:#b6ae9e;
+    --ink-subtle:#7e776a;
+    --accent:#c8a24a;
+    --accent-hover:#dcb863;
+    --hairline:#2a2620;
+    --hairline-gold:#5a4a24;
+    --serif:'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:'Inter', system-ui, -apple-system, sans-serif;
+    --section:132px;
+    --block:44px;
+    --tight:18px;
+    --maxw:1200px;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--canvas);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:17px;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--accent);color:#0a0a0a}
+
+  a{color:var(--accent);text-decoration:none;transition:color .25s ease}
+  a:hover{color:var(--accent-hover)}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:2px}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px}
+
+  .eyebrow{
+    font-family:var(--sans);
+    font-size:12px;font-weight:600;line-height:1.3;
+    letter-spacing:3px;text-transform:uppercase;
+    color:var(--accent);
+  }
+  .ink-muted{color:var(--ink-muted)}
+  .ink-subtle{color:var(--ink-subtle)}
+
+  /* ---- hairline gold rule, draws in on reveal ---- */
+  .rule{
+    height:1px;width:100%;
+    background:linear-gradient(90deg,var(--hairline-gold),var(--accent) 40%,var(--hairline-gold));
+    transform-origin:left center;
+    transform:scaleX(0);
+    transition:transform 1.1s cubic-bezier(.2,.7,.2,1);
+  }
+  .rule.shown{transform:scaleX(1)}
+  .rule--thin{background:var(--hairline)}
+
+  /* ---- reveal ---- */
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
+  .reveal.shown{opacity:1;transform:none}
+
+  /* ================= HERO ================= */
+  header.hero{padding:96px 0 var(--section)}
+  .topbar{display:flex;justify-content:space-between;align-items:baseline;gap:24px;margin-bottom:84px}
+  .brand{font-family:var(--serif);font-weight:600;font-size:22px;letter-spacing:.5px}
+  .brand .dot{color:var(--accent)}
+  .topnav{display:flex;gap:28px}
+  .topnav a{font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--ink-muted)}
+  .topnav a:hover{color:var(--accent)}
+
+  .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:72px;align-items:center}
+
+  .hero-name{margin-bottom:26px;display:flex;align-items:center;gap:16px}
+  .hero-name .line{flex:1;height:1px;background:var(--hairline-gold);max-width:64px}
+
+  h1.hero-title{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:clamp(44px,7.2vw,88px);
+    line-height:1.02;
+    letter-spacing:-1.5px;
+    color:var(--ink);
+    margin-bottom:30px;
+  }
+  h1.hero-title em{font-style:italic;color:var(--accent)}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--ink-muted);max-width:30em;margin-bottom:38px}
+  .hero-cta{
+    display:inline-flex;align-items:center;gap:10px;
+    font-family:var(--sans);font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
+    color:var(--accent);padding-bottom:6px;border-bottom:1px solid var(--hairline-gold);
+    transition:border-color .25s ease,gap .25s ease;
+  }
+  .hero-cta:hover{border-color:var(--accent);gap:16px}
+
+  /* portrait */
+  .portrait-frame{
+    position:relative;
+    padding:14px;
+    border:1px solid var(--hairline-gold);
+  }
+  .portrait-frame::before{
+    content:"";position:absolute;inset:5px;border:1px solid var(--hairline);pointer-events:none;
+  }
+  .portrait-frame img.u-photo{
+    display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;
+    filter:grayscale(100%) contrast(1.04);
+  }
+  .portrait-corner{position:absolute;width:18px;height:18px;border:1px solid var(--accent)}
+  .pc-tl{top:-1px;left:-1px;border-right:0;border-bottom:0}
+  .pc-br{bottom:-1px;right:-1px;border-left:0;border-top:0}
+
+  /* fallback monogram */
+  .u-fallback.mono{
+    width:100%;aspect-ratio:4/5;
+    background:
+      radial-gradient(120% 90% at 50% 0%, #1a1712 0%, var(--surface) 60%, #0d0c0a 100%);
+    place-items:center;
+    text-align:center;
+  }
+  .mono .glyph{font-family:var(--serif);font-weight:600;font-size:clamp(72px,12vw,128px);color:var(--accent);letter-spacing:2px;line-height:1}
+  .mono .sub{font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--ink-subtle);margin-top:18px}
+
+  /* ================= SECTION SHELL ================= */
+  section{padding:var(--section) 0}
+  .sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:var(--block)}
+  .sec-head .num{font-family:var(--serif);font-style:italic;font-size:20px;color:var(--accent)}
+
+  /* ---- credentials ---- */
+  .cred-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:64px;align-items:start}
+  .cred-statement{font-family:var(--serif);font-weight:500;font-size:clamp(26px,3.4vw,40px);line-height:1.28;letter-spacing:-.4px;color:var(--ink)}
+  .cred-statement strong{font-weight:600;color:var(--accent);font-style:italic}
+  .focus-list{margin-top:8px}
+  .focus-list .eyebrow{margin-bottom:22px}
+  .focus-list ul{list-style:none}
+  .focus-list li{padding:16px 0;border-top:1px solid var(--hairline);font-size:16px;color:var(--ink-muted);display:flex;gap:14px;align-items:baseline}
+  .focus-list li:last-child{border-bottom:1px solid var(--hairline)}
+  .focus-list li .mk{color:var(--accent);font-family:var(--serif);font-size:18px;line-height:1}
+  .focus-list li b{color:var(--ink);font-weight:500}
+
+  /* ---- metrics ---- */
+  .metrics{display:grid;grid-template-columns:repeat(4,1fr)}
+  .metric{padding:8px 32px;border-left:1px solid var(--hairline)}
+  .metric:first-child{padding-left:0;border-left:0}
+  .metric .fig{font-family:var(--serif);font-weight:600;font-size:clamp(48px,6vw,64px);line-height:1;letter-spacing:-1px;color:var(--ink)}
+  .metric .fig .u{color:var(--accent);font-style:italic;font-size:.55em;margin-left:4px}
+  .metric .lab{margin-top:14px;font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--ink-subtle)}
+
+  /* ---- testimonials ---- */
+  .quotes{display:grid;gap:0}
+  .quote{padding:var(--block) 0;border-top:1px solid var(--hairline);display:grid;grid-template-columns:auto 1fr;gap:28px}
+  .quote:last-child{border-bottom:1px solid var(--hairline)}
+  .quote .mark{font-family:var(--serif);font-size:88px;line-height:.7;color:var(--accent);font-weight:600}
+  .quote blockquote{font-family:var(--serif);font-style:italic;font-weight:500;font-size:clamp(24px,3vw,34px);line-height:1.3;letter-spacing:-.3px;color:var(--ink)}
+  .quote .attr{margin-top:22px;font-family:var(--sans);font-size:13px;letter-spacing:1px}
+  .quote .attr b{color:var(--ink);font-weight:600}
+  .quote .attr span{color:var(--ink-subtle)}
+
+  /* ---- experience (timeline) ---- */
+  .timeline{display:grid;gap:0}
+  .tl-row{
+    display:grid;grid-template-columns:160px 1fr;gap:40px;
+    padding:var(--block) 0;border-top:1px solid var(--hairline);align-items:start;
+  }
+  .tl-row:last-child{border-bottom:1px solid var(--hairline)}
+  .tl-when{font-family:var(--serif);font-style:italic;font-size:20px;color:var(--accent);line-height:1.2}
+  .tl-when .place{display:block;font-family:var(--sans);font-style:normal;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--ink-subtle);margin-top:10px}
+  .tl-body h3{font-family:var(--serif);font-weight:600;font-size:clamp(22px,2.6vw,30px);line-height:1.2;letter-spacing:-.4px;color:var(--ink);margin-bottom:12px}
+  .tl-body p{font-size:16px;color:var(--ink-muted);max-width:42em}
+
+  /* ---- beliefs (numbered) ---- */
+  .principles{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--hairline)}
+  .principle{background:var(--canvas);padding:var(--block) 36px var(--block) 0}
+  .principle .pn{font-family:var(--serif);font-style:italic;font-size:22px;color:var(--accent);display:block;margin-bottom:16px}
+  .principle h3{font-family:var(--serif);font-weight:600;font-size:clamp(22px,2.6vw,28px);line-height:1.2;letter-spacing:-.4px;color:var(--ink);margin-bottom:12px}
+  .principle p{font-size:16px;color:var(--ink-muted)}
+
+  /* ---- services (list) ---- */
+  .services{display:grid;gap:0}
+  .service{
+    display:grid;grid-template-columns:auto 1fr auto;gap:32px;align-items:baseline;
+    padding:var(--block) 0;border-top:1px solid var(--hairline);
+  }
+  .service:last-child{border-bottom:1px solid var(--hairline)}
+  .service .sn{font-family:var(--serif);font-style:italic;font-size:18px;color:var(--accent)}
+  .service .sbody h3{font-family:var(--serif);font-weight:600;font-size:clamp(22px,2.8vw,32px);line-height:1.15;letter-spacing:-.4px;color:var(--ink);margin-bottom:10px}
+  .service .sbody p{font-size:16px;color:var(--ink-muted);max-width:40em}
+  .service .smeta{font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--ink-subtle);text-align:right;white-space:nowrap}
+
+  /* ---- selected quotes (large type) ---- */
+  .pull{
+    font-family:var(--serif);font-weight:500;font-style:italic;
+    font-size:clamp(30px,5vw,58px);line-height:1.16;letter-spacing:-.6px;color:var(--ink);
+    max-width:18em;
+  }
+  .pull em{font-style:normal;color:var(--accent)}
+  .pull-attr{margin-top:30px;font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--ink-subtle)}
+
+  /* ---- now page (list) ---- */
+  .now-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+  .now-list{list-style:none}
+  .now-list li{padding:16px 0;border-top:1px solid var(--hairline);display:grid;grid-template-columns:120px 1fr;gap:20px;align-items:baseline}
+  .now-list li:last-child{border-bottom:1px solid var(--hairline)}
+  .now-list .nk{font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--accent)}
+  .now-list .nv{font-size:16px;color:var(--ink-muted)}
+  .now-list .nv b{color:var(--ink);font-weight:500}
+  .now-note{font-family:var(--serif);font-style:italic;font-size:clamp(20px,2.6vw,28px);line-height:1.32;color:var(--ink);align-self:center}
+  .now-note .stamp{display:block;margin-top:18px;font-family:var(--sans);font-style:normal;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--ink-subtle)}
+
+  /* ---- faq (two column) ---- */
+  .faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 64px}
+  .faq-item{padding:var(--block) 0;border-top:1px solid var(--hairline)}
+  .faq-item h3{font-family:var(--serif);font-weight:600;font-size:clamp(20px,2.4vw,26px);line-height:1.2;letter-spacing:-.3px;color:var(--ink);margin-bottom:12px}
+  .faq-item h3 .q{color:var(--accent);font-style:italic;margin-right:10px}
+  .faq-item p{font-size:16px;color:var(--ink-muted);max-width:34em}
+
+  /* ---- contact card ---- */
+  .contact-card{
+    background:var(--surface);
+    border:1px solid var(--hairline);
+    padding:64px clamp(28px,6vw,80px);
+    position:relative;
+    overflow:hidden;
+  }
+  .contact-card::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent)}
+  .contact-card .eyebrow{margin-bottom:24px}
+  .contact-card h2{font-family:var(--serif);font-weight:600;font-size:clamp(32px,5vw,56px);line-height:1.08;letter-spacing:-.8px;color:var(--ink);max-width:14em}
+  .contact-card h2 em{font-style:italic;color:var(--accent)}
+  .contact-actions{margin-top:42px;display:flex;flex-wrap:wrap;align-items:center;gap:14px 36px}
+  .mail-link{font-family:var(--serif);font-size:clamp(22px,3vw,30px);font-weight:500;color:var(--accent);border-bottom:1px solid var(--hairline-gold);padding-bottom:4px}
+  .mail-link:hover{border-color:var(--accent)}
+  .alt-links{display:flex;gap:28px;flex-wrap:wrap}
+  .alt-links a{font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--ink-muted)}
+  .alt-links a:hover{color:var(--accent)}
+  .availability{margin-top:34px;font-size:14px;color:var(--ink-subtle);display:flex;align-items:center;gap:10px}
+  .availability .pip{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px rgba(200,162,74,.18)}
+
+  /* ---- footer ---- */
+  footer{padding:54px 0 72px;border-top:1px solid var(--hairline);margin-top:var(--section)}
+  .foot{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+  .foot .sig{font-family:var(--serif);font-style:italic;font-size:18px;color:var(--ink-muted)}
+  .foot .sig b{color:var(--accent);font-style:normal;font-weight:600}
+  .foot small{font-family:var(--sans);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-subtle)}
+
+  /* ================= RESPONSIVE ================= */
+  @media (max-width:880px){
+    :root{--section:96px;--block:36px}
+    .hero-grid{grid-template-columns:1fr;gap:52px}
+    .hero-grid .hero-portrait{order:-1;max-width:420px}
+    .cred-grid{grid-template-columns:1fr;gap:44px}
+    .metrics{grid-template-columns:1fr 1fr}
+    .metric{border-left:0;border-top:1px solid var(--hairline);padding:28px 0}
+    .metric:first-child,.metric:nth-child(2){border-top:0}
+    .topnav{display:none}
+    .tl-row{grid-template-columns:1fr;gap:16px}
+    .principles{grid-template-columns:1fr}
+    .principle{padding:36px 0}
+    .service{grid-template-columns:auto 1fr;gap:18px 24px}
+    .service .smeta{grid-column:1 / -1;text-align:left}
+    .now-grid{grid-template-columns:1fr;gap:44px}
+    .faq-grid{grid-template-columns:1fr;gap:0}
+  }
+  @media (max-width:560px){
+    .wrap{padding:0 22px}
+    .topbar{margin-bottom:56px}
+    header.hero{padding:64px 0 96px}
+    .metrics{grid-template-columns:1fr 1fr}
+    .quote{grid-template-columns:1fr;gap:8px}
+    .quote .mark{font-size:60px}
+    .now-list li{grid-template-columns:1fr;gap:4px}
+    .contact-card{padding:44px 26px}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{scroll-behavior:auto !important}
+    .reveal{opacity:1 !important;transform:none !important;transition:none !important}
+    .rule{transform:none !important;transition:none !important}
+    .hero-cta{transition:none}
+  }
+
+  /* ===== photo toggle contract ===== */
+  .u-fallback{display:none !important}
+  body.no-photos .u-photo{display:none !important}
+  body.no-photos .u-fallback{display:revert !important}
+  body.no-photos .u-fallback.mono{display:grid !important}
+
+  .atlas-photo-toggle{position:fixed;right:16px;bottom:16px;z-index:99999;display:flex;align-items:center;gap:8px;background:rgba(20,20,22,.88);color:#fff;border-radius:999px;padding:6px 6px 6px 14px;font:600 12px/1 -apple-system,system-ui,sans-serif;box-shadow:0 8px 28px -10px rgba(0,0,0,.55)}
+  .atlas-photo-toggle button{appearance:none;border:0;cursor:pointer;font:inherit;color:#16161a;background:#fff;border-radius:999px;padding:6px 14px;min-width:46px}
+  .atlas-photo-toggle button[aria-pressed="false"]{background:#3a3a42;color:#fff}
+</style>
+</head>
+<body>
+
+  <div class="wrap">
+    <!-- ================= HERO ================= -->
+    <header class="hero" data-module="hero" data-variant="split_portrait">
+      <div class="topbar">
+        <div class="brand">Adaeze Okonkwo<span class="dot">.</span></div>
+        <nav class="topnav" aria-label="Primary">
+          <a href="#credentials">Standing</a>
+          <a href="#metrics">Record</a>
+          <a href="#experience">Path</a>
+          <a href="#principles">Principles</a>
+          <a href="#services">Engagement</a>
+          <a href="#voices">Voices</a>
+          <a href="#contact">Inquire</a>
+        </nav>
+      </div>
+
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <div class="hero-name reveal">
+            <span class="eyebrow">Board Advisor &amp; Former Operator</span>
+            <span class="line"></span>
+          </div>
+          <h1 class="hero-title reveal">I sit on the <em>hard side</em> of the table so founders do not have to.</h1>
+          <p class="hero-sub reveal">Governance, succession, and the conversations boards postpone — for scale-up leadership teams and the founders who answer to them.</p>
+          <a class="hero-cta reveal" href="#contact">Request an introduction <span aria-hidden="true">&rarr;</span></a>
+        </div>
+
+        <div class="hero-portrait reveal">
+          <div class="portrait-frame">
+            <span class="portrait-corner pc-tl" aria-hidden="true"></span>
+            <span class="portrait-corner pc-br" aria-hidden="true"></span>
+            <img class="u-photo" src="portrait.webp" width="800" height="1000"
+                 alt="Adaeze Okonkwo, board advisor and former operator, in a black-and-white editorial portrait." />
+            <div class="u-fallback mono" role="img" aria-label="Adaeze Okonkwo monogram">
+              <div>
+                <div class="glyph">AO</div>
+                <div class="sub">Board Advisor</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ================= CREDENTIALS ================= -->
+    <section id="credentials" data-module="credentials" data-variant="list">
+      <div class="rule" data-rule></div>
+      <div class="sec-head reveal" style="margin-top:var(--block)">
+        <span class="num">I</span><span class="eyebrow">Standing</span>
+      </div>
+      <div class="cred-grid">
+        <p class="cred-statement reveal">
+          Twenty years inside the operating room and the boardroom — three of them
+          carried <strong>all the way through IPO</strong>. Today I hold board seats at
+          two scale-ups, where my job is to ask the question everyone in the room is
+          avoiding, and to make the hard call survivable for the people who have to live with it.
+        </p>
+        <div class="focus-list reveal">
+          <span class="eyebrow">Where I'm useful</span>
+          <ul>
+            <li><span class="mk">&#9670;</span><span><b>Governance</b> — building a board that sharpens decisions instead of slowing them.</span></li>
+            <li><span class="mk">&#9670;</span><span><b>CEO succession</b> — planning it before it becomes a crisis.</span></li>
+            <li><span class="mk">&#9670;</span><span><b>The hard conversation</b> — naming the thing, on the record, in the room.</span></li>
+            <li><span class="mk">&#9670;</span><span><b>Scale-up operating</b> — translating ambition into a structure that holds.</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= METRICS ================= -->
+    <section id="metrics" data-module="metrics" data-variant="stat_row">
+      <div class="rule" data-rule></div>
+      <div class="sec-head reveal" style="margin-top:var(--block)">
+        <span class="num">II</span><span class="eyebrow">The Record</span>
+      </div>
+      <div class="metrics">
+        <div class="metric reveal"><div class="fig">20<span class="u">yrs</span></div><div class="lab">Operator &amp; Advisor</div></div>
+        <div class="metric reveal"><div class="fig">3<span class="u">IPOs</span></div><div class="lab">Taken Public</div></div>
+        <div class="metric reveal"><div class="fig">2<span class="u">seats</span></div><div class="lab">Current Boards</div></div>
+        <div class="metric reveal"><div class="fig">1<span class="u">side</span></div><div class="lab">The Hard One</div></div>
+      </div>
+    </section>
+
+    <!-- ================= EXPERIENCE ================= -->
+    <section id="experience" data-module="experience" data-variant="timeline">
+      <div class="rule" data-rule></div>
+      <div class="sec-head reveal" style="margin-top:var(--block)">
+        <span class="num">III</span><span class="eyebrow">The Path Here</span>
+      </div>
+      <div class="timeline">
+        <div class="tl-row reveal">
+          <div class="tl-when">2019&ndash;<span aria-hidden="true">&nbsp;</span>now<span class="place">Independent Advisory</span></div>
+          <div class="tl-body">
+            <h3>Board Advisor &amp; Non-Executive Director</h3>
+            <p>Two current board seats at venture-backed scale-ups, plus a small roster of founder-CEOs I sit across from in the moments that decide whether a company survives its own growth.</p>
+          </div>
+        </div>
+        <div class="tl-row reveal">
+          <div class="tl-when">2012&ndash;2019<span class="place">Meridian Logistics</span></div>
+          <div class="tl-body">
+            <h3>Chief Operating Officer</h3>
+            <p>Took a regional operator from 400 to 3,100 people and through a public listing. Built the operating cadence that let a founder-led culture survive becoming a quarterly-reporting one.</p>
+          </div>
+        </div>
+        <div class="tl-row reveal">
+          <div class="tl-when">2005&ndash;2012<span class="place">Halford &amp; Vane</span></div>
+          <div class="tl-body">
+            <h3>Partner, Operations Practice</h3>
+            <p>Led restructuring and succession engagements for boards in crisis. Learned that the hard call is almost never about the numbers, and almost always about who will say it out loud.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= BELIEFS ================= -->
+    <section id="principles" data-module="beliefs" data-variant="numbered">
+      <div class="rule" data-rule></div>
+      <div class="sec-head reveal" style="margin-top:var(--block)">
+        <span class="num">IV</span><span class="eyebrow">How I Work</span>
+      </div>
+      <div class="principles">
+        <div class="principle reveal">
+          <span class="pn">01</span>
+          <h3>Name it in the room.</h3>
+          <p>The conversation a board avoids compounds quietly until it is the only conversation. My job is to say the thing first, on the record, while it is still cheap.</p>
+        </div>
+        <div class="principle reveal">
+          <span class="pn">02</span>
+          <h3>Govern for decisions, not minutes.</h3>
+          <p>A board exists to sharpen the few calls that matter, not to ratify what already happened. If the meeting could have been a memo, the governance has already failed.</p>
+        </div>
+        <div class="principle reveal">
+          <span class="pn">03</span>
+          <h3>Plan the exit before the crisis.</h3>
+          <p>CEO succession is a process, not an obituary. The healthiest companies rehearse it years early, calmly, while everyone still has the luxury of disagreeing.</p>
+        </div>
+        <div class="principle reveal">
+          <span class="pn">04</span>
+          <h3>Make the hard call survivable.</h3>
+          <p>I am not there to soften the decision. I am there so the people who must live with it walk out of the room stronger than they walked in.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SERVICES ================= -->
+    <section id="services" data-module="services" data-variant="list">
+      <div class="rule" data-rule></div>
+      <div class="sec-head reveal" style="margin-top:var(--block)">
+        <span class="num">V</span><span class="eyebrow">Forms of Engagement</span>
+      </div>
+      <div class="services">
+        <div class="service reveal">
+          <span class="sn">i</span>
+          <div class="sbody">
+            <h3>Board Seat</h3>
+            <p>A standing non-executive role on a scale-up board, with the governance, audit, and succession work that comes with it. One or two new relationships a year.</p>
+          </div>
+          <div class="smeta">Ongoing &middot; By introduction</div>
+        </div>
+        <div class="service reveal">
+          <span class="sn">ii</span>
+          <div class="sbody">
+            <h3>Founder Counsel</h3>
+            <p>A private line for the CEO between meetings — the unstructured conversation about the decision you cannot yet say out loud to your own board.</p>
+          </div>
+          <div class="smeta">Retainer &middot; Confidential</div>
+        </div>
+        <div class="service reveal">
+          <span class="sn">iii</span>
+          <div class="sbody">
+            <h3>Succession Engagement</h3>
+            <p>A defined six-to-nine-month mandate to design and de-risk a CEO or chair transition before it becomes a headline.</p>
+          </div>
+          <div class="smeta">Fixed term &middot; Scoped</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TESTIMONIALS ================= -->
+    <section id="voices" data-module="testimonials" data-variant="quote_led">
+      <div class="rule" data-rule></div>
+      <div class="sec-head reveal" style="margin-top:var(--block)">
+        <span class="num">VI</span><span class="eyebrow">Voices</span>
+      </div>
+      <div class="quotes">
+        <figure class="quote reveal">
+          <span class="mark" aria-hidden="true">&ldquo;</span>
+          <div>
+            <blockquote>Adaeze said the thing the rest of us had been circling for three meetings. The company is still standing because of it.</blockquote>
+            <figcaption class="attr"><b>Chair</b> <span>— public-company board, post-IPO</span></figcaption>
+          </div>
+        </figure>
+        <figure class="quote reveal">
+          <span class="mark" aria-hidden="true">&ldquo;</span>
+          <div>
+            <blockquote>She does not soften the hard call. She makes you strong enough to make it. That is a different kind of advisor.</blockquote>
+            <figcaption class="attr"><b>Founder &amp; CEO</b> <span>— Series C scale-up</span></figcaption>
+          </div>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ================= SELECTED QUOTE ================= -->
+    <section id="creed" data-module="selected_quotes" data-variant="large_type">
+      <div class="rule" data-rule></div>
+      <div class="sec-head reveal" style="margin-top:var(--block)">
+        <span class="num">VII</span><span class="eyebrow">A Working Belief</span>
+      </div>
+      <p class="pull reveal">&ldquo;Authority is not the right to give the order. It is the willingness to <em>name the cost</em> before anyone has to pay it.&rdquo;</p>
+      <p class="pull-attr reveal">A line I keep over my desk</p>
+    </section>
+
+    <!-- ================= NOW ================= -->
+    <section id="now" data-module="now_page" data-variant="list">
+      <div class="rule" data-rule></div>
+      <div class="sec-head reveal" style="margin-top:var(--block)">
+        <span class="num">VIII</span><span class="eyebrow">Now</span>
+      </div>
+      <div class="now-grid">
+        <ul class="now-list reveal">
+          <li><span class="nk">Boards</span><span class="nv">Holding <b>two seats</b>; chairing one audit committee through its first post-IPO cycle.</span></li>
+          <li><span class="nk">Reading</span><span class="nv"><b>The Founder&rsquo;s Dilemmas</b> — again, with margins for the CEOs I work with.</span></li>
+          <li><span class="nk">Writing</span><span class="nv">A short essay on <b>why succession plans fail in calm weather</b>.</span></li>
+          <li><span class="nk">Based</span><span class="nv">London &mdash; in the room wherever the hard call is.</span></li>
+        </ul>
+        <p class="now-note reveal">
+          Deliberately keeping the roster small this year. The work only does what it should
+          when there is room to answer the phone the day the call gets hard.
+          <span class="stamp">Updated &middot; Spring 2026</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- ================= FAQ ================= -->
+    <section id="faq" data-module="faq" data-variant="two_column">
+      <div class="rule" data-rule></div>
+      <div class="sec-head reveal" style="margin-top:var(--block)">
+        <span class="num">IX</span><span class="eyebrow">Before You Write</span>
+      </div>
+      <div class="faq-grid">
+        <div class="faq-item reveal">
+          <h3><span class="q" aria-hidden="true">Q.</span>Do you take operating or interim roles?</h3>
+          <p>No. I left the operating room on purpose. I am most useful on the other side of the table, where the job is to govern and to counsel, not to run.</p>
+        </div>
+        <div class="faq-item reveal">
+          <h3><span class="q" aria-hidden="true">Q.</span>What stage of company fits best?</h3>
+          <p>Series B through public — the years when ambition outpaces structure and the board stops being a formality. Earlier than that, I am usually the wrong tool.</p>
+        </div>
+        <div class="faq-item reveal">
+          <h3><span class="q" aria-hidden="true">Q.</span>How do engagements usually begin?</h3>
+          <p>By introduction, with a single unhurried conversation and no deck. If we are a fit, the shape of the work becomes obvious within the hour.</p>
+        </div>
+        <div class="faq-item reveal">
+          <h3><span class="q" aria-hidden="true">Q.</span>Will you sit on competing boards?</h3>
+          <p>Never knowingly. I hold a hard line on conflicts and will tell you the moment one appears — including when it costs me the engagement.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CONTACT ================= -->
+    <section id="contact" data-module="contact" data-variant="card">
+      <div class="contact-card reveal">
+        <span class="eyebrow">An Invitation</span>
+        <h2>If your board is approaching the conversation it keeps postponing, <em>let us talk before it does.</em></h2>
+        <div class="contact-actions">
+          <a class="mail-link" href="mailto:advisory@adaezeokonkwo.com">advisory@adaezeokonkwo.com</a>
+          <div class="alt-links">
+            <a href="mailto:advisory@adaezeokonkwo.com?subject=Board%20availability">Board Availability</a>
+            <a href="https://www.linkedin.com/" rel="me noopener" target="_blank">LinkedIn</a>
+          </div>
+        </div>
+        <p class="availability"><span class="pip" aria-hidden="true"></span> Taking a limited number of new advisory and board relationships this year.</p>
+      </div>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+    <footer>
+      <div class="foot">
+        <div class="sig">&mdash; <b>Adaeze Okonkwo</b>, on the hard side of the table.</div>
+        <small>&copy; 2026 · Board Advisory · By Introduction</small>
+      </div>
+    </footer>
+  </div>
+
+  <div class="atlas-photo-toggle" role="group" aria-label="示例照片 / Demo photos"><span>照片 Photos</span><button id="atlasPhotoBtn" type="button" aria-pressed="true">On</button></div>
+  <script>(function(){var b=document.getElementById('atlasPhotoBtn');if(!b)return;function set(on){document.body.classList.toggle('no-photos',!on);b.setAttribute('aria-pressed',on?'true':'false');b.textContent=on?'On':'Off';}b.addEventListener('click',function(){set(document.body.classList.contains('no-photos'));});set(true);})();</script>
+
+  <script>
+    (function(){
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var reveals = document.querySelectorAll('.reveal');
+      var rules = document.querySelectorAll('[data-rule]');
+      if(reduce || !('IntersectionObserver' in window)){
+        reveals.forEach(function(el){el.classList.add('shown');});
+        rules.forEach(function(el){el.classList.add('shown');});
+        return;
+      }
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){ e.target.classList.add('shown'); io.unobserve(e.target); }
+        });
+      }, {threshold:0.16, rootMargin:'0px 0px -8% 0px'});
+      reveals.forEach(function(el){io.observe(el);});
+      rules.forEach(function(el){io.observe(el);});
+    })();
+  </script>
+</body>
+</html>

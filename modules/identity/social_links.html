@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>social_links — identity · specimen sheet</title>
+<style>
+:root{--bg:#ffffff;--surface:#f6f6f4;--surface-2:#efefea;--ink:#191917;--muted:#6b6b67;--subtle:#9a9a94;--accent:#2f56ff;--accent-soft:#e9eefc;--hairline:#e7e7e2;--ink-line:#191917;--ok:#1f7a44;--radius:12px;--pad:24px}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:16px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+.mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace}
+
+/* ---- sheet shell ---- */
+.sheet{max-width:880px;margin:0 auto;padding:48px 24px 96px}
+
+/* ---- header ---- */
+.sheet-head{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:12px 16px;
+  padding-bottom:20px;
+  border-bottom:1px solid var(--ink-line);
+}
+.sheet-head h1{
+  margin:0;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(22px,4.4vw,30px);
+  font-weight:600;
+  letter-spacing:-.01em;
+}
+.sheet-head .cn{color:var(--muted);font-weight:400}
+.sheet-meta{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-left:auto;
+  font-size:12.5px;
+  color:var(--muted);
+}
+.sheet-meta .dot{width:3px;height:3px;border-radius:50%;background:var(--subtle)}
+.sheet-meta .count{
+  color:var(--ink);
+  background:var(--surface);
+  border:1px solid var(--hairline);
+  border-radius:999px;
+  padding:3px 10px;
+  font-weight:500;
+}
+
+/* ---- variant block ---- */
+.variant{margin-top:44px}
+.variant-label{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:8px 12px;
+  margin-bottom:12px;
+}
+.variant-id{
+  font-size:13px;
+  font-weight:600;
+  color:var(--ink);
+  background:var(--accent-soft);
+  border-radius:6px;
+  padding:3px 8px;
+  letter-spacing:.01em;
+}
+.variant-hint{font-size:13.5px;color:var(--muted)}
+
+/* ---- stage ---- */
+.stage{
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  background:var(--surface);
+  padding:var(--pad);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:120px;
+}
+
+/* ============ shared link card scaffolding ============ */
+.persona-strip{
+  width:100%;
+  max-width:520px;
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+  align-items:center;
+  text-align:center;
+}
+.persona-id{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.avatar{
+  width:44px;height:44px;
+  border-radius:50%;
+  background:var(--surface-2);
+  border:1px solid var(--hairline);
+  display:flex;align-items:center;justify-content:center;
+  font-family:Georgia,serif;
+  font-size:15px;font-weight:600;
+  color:var(--muted);
+  flex:0 0 auto;
+}
+.persona-name{font-weight:600;font-size:15px;line-height:1.2}
+.persona-role{font-size:13px;color:var(--muted);line-height:1.2}
+.persona-text{text-align:left}
+
+/* ---- text_row ---- */
+.link-row{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:center;
+  gap:0;
+  font-size:15px;
+}
+.link-row a{
+  color:var(--ink);
+  text-decoration:none;
+  padding:4px 14px;
+  border-radius:6px;
+  position:relative;
+  transition:color .15s ease,background .15s ease;
+}
+.link-row a .u{
+  border-bottom:1.5px solid transparent;
+  padding-bottom:1px;
+  transition:border-color .15s ease;
+}
+.link-row a:hover,.link-row a:focus-visible{color:var(--accent)}
+.link-row a:hover .u,.link-row a:focus-visible .u{border-color:var(--accent)}
+.link-row .sep{
+  color:var(--subtle);
+  font-size:13px;
+  user-select:none;
+  align-self:center;
+}
+
+/* ---- icon_row ---- */
+.icon-row{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+.icon-link{
+  width:42px;height:42px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:10px;
+  background:var(--bg);
+  border:1px solid var(--hairline);
+  color:var(--muted);
+  transition:color .15s ease,border-color .15s ease,transform .15s ease,background .15s ease;
+}
+.icon-link svg{width:20px;height:20px;display:block}
+.icon-link:hover,.icon-link:focus-visible{
+  color:var(--accent);
+  border-color:var(--accent);
+  background:var(--accent-soft);
+  transform:translateY(-2px);
+}
+
+/* ---- focus + a11y ---- */
+a:focus-visible,.icon-link:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:2px;
+}
+.visually-hidden{
+  position:absolute;width:1px;height:1px;
+  padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;border:0;
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none !important;animation:none !important}
+}
+
+@media (max-width:480px){
+  .sheet{padding:32px 18px 72px}
+  .stage{padding:18px}
+  .sheet-meta{margin-left:0;width:100%}
+}
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header class="sheet-head">
+    <h1>social_links <span class="cn">· 社交链接</span></h1>
+    <div class="sheet-meta">
+      <span>identity</span>
+      <span class="dot" aria-hidden="true"></span>
+      <span class="count">2 variants</span>
+    </div>
+  </header>
+
+  <!-- ============ VARIANT 1: text_row ============ -->
+  <section class="variant" aria-labelledby="v1-id">
+    <div class="variant-label">
+      <span class="variant-id mono" id="v1-id">text_row</span>
+      <span class="variant-hint">文字行：Twitter · GitHub · Email</span>
+    </div>
+    <div class="stage">
+      <div class="persona-strip">
+        <div class="persona-id">
+          <!-- photo slot: neutral CSS placeholder with initials -->
+          <span class="avatar" role="img" aria-label="Photo slot — Maya Chen">MC</span>
+          <span class="persona-text">
+            <span class="persona-name">Maya Chen</span><br>
+            <span class="persona-role">Product designer · 产品设计师</span>
+          </span>
+        </div>
+        <nav class="link-row" aria-label="Social links">
+          <a href="https://twitter.com/mayachen"><span class="u">Twitter</span></a>
+          <span class="sep" aria-hidden="true">·</span>
+          <a href="https://github.com/mayachen"><span class="u">GitHub</span></a>
+          <span class="sep" aria-hidden="true">·</span>
+          <a href="mailto:maya@mayachen.studio"><span class="u">Email</span></a>
+        </nav>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VARIANT 2: icon_row ============ -->
+  <section class="variant" aria-labelledby="v2-id">
+    <div class="variant-label">
+      <span class="variant-id mono" id="v2-id">icon_row</span>
+      <span class="variant-hint">图标行（inline SVG 图标）</span>
+    </div>
+    <div class="stage">
+      <div class="persona-strip">
+        <div class="persona-id">
+          <span class="avatar" role="img" aria-label="Photo slot — Maya Chen">MC</span>
+          <span class="persona-text">
+            <span class="persona-name">Maya Chen</span><br>
+            <span class="persona-role">Product designer · 产品设计师</span>
+          </span>
+        </div>
+        <nav class="icon-row" aria-label="Social links">
+          <a class="icon-link" href="https://twitter.com/mayachen">
+            <span class="visually-hidden">Twitter</span>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.66l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+          </a>
+          <a class="icon-link" href="https://github.com/mayachen">
+            <span class="visually-hidden">GitHub</span>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.438 9.8 8.205 11.387.6.113.82-.26.82-.577 0-.285-.01-1.04-.016-2.04-3.338.726-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.73.083-.73 1.205.085 1.84 1.237 1.84 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.762-1.605-2.665-.305-5.467-1.332-5.467-5.93 0-1.31.468-2.38 1.236-3.22-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.3 1.23a11.5 11.5 0 0 1 3.003-.404c1.02.005 2.047.138 3.006.404 2.29-1.552 3.297-1.23 3.297-1.23.653 1.652.242 2.873.118 3.176.77.84 1.235 1.91 1.235 3.22 0 4.61-2.806 5.62-5.48 5.92.43.37.814 1.102.814 2.222 0 1.605-.015 2.898-.015 3.293 0 .32.216.694.825.576C20.565 22.296 24 17.797 24 12.5 24 5.87 18.627.5 12 .5z"/>
+            </svg>
+          </a>
+          <a class="icon-link" href="mailto:maya@mayachen.studio">
+            <span class="visually-hidden">Email</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/>
+              <path d="M3 6.5l9 6.5 9-6.5"/>
+            </svg>
+          </a>
+        </nav>
+      </div>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Testimonials / 证言 — Module Specimen</title>
+<style>
+:root{--bg:#ffffff;--surface:#f6f6f4;--surface-2:#efefea;--ink:#191917;--muted:#6b6b67;--subtle:#9a9a94;--accent:#2f56ff;--accent-soft:#e9eefc;--hairline:#e7e7e2;--ink-line:#191917;--ok:#1f7a44;--radius:12px;--pad:24px}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+html{-webkit-text-size-adjust:100%}
+
+body{
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+.sheet{
+  max-width:1080px;
+  margin:0 auto;
+  padding:40px 24px 80px;
+}
+
+/* ---- specimen header ---- */
+.sheet-header{
+  border-bottom:1px solid var(--ink-line);
+  padding-bottom:18px;
+  margin-bottom:40px;
+}
+.sheet-header h1{
+  font-size:clamp(20px,3.5vw,28px);
+  font-weight:600;
+  letter-spacing:-0.01em;
+}
+.sheet-meta{
+  margin-top:8px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px 14px;
+  align-items:center;
+  font-size:13px;
+  color:var(--muted);
+}
+.sheet-meta .dot{color:var(--subtle)}
+.sheet-meta .pill{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:12px;
+  background:var(--surface-2);
+  color:var(--ink);
+  padding:2px 9px;
+  border-radius:999px;
+}
+
+/* ---- variant block ---- */
+.variant{margin-top:48px}
+.variant:first-of-type{margin-top:0}
+
+.variant-label{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:6px 12px;
+  margin-bottom:12px;
+}
+.variant-id{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:13px;
+  font-weight:600;
+  color:var(--accent);
+  background:var(--accent-soft);
+  padding:3px 9px;
+  border-radius:6px;
+}
+.variant-hint{
+  font-size:13px;
+  color:var(--muted);
+}
+
+.stage{
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  background:var(--surface);
+  padding:clamp(20px,4vw,40px);
+}
+
+/* photo slot label helper */
+.slot-note{
+  font-size:11px;
+  color:var(--subtle);
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+}
+
+/* ===== shared avatar placeholder ===== */
+.avatar{
+  flex:0 0 auto;
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  background:var(--surface-2);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:15px;
+  font-weight:600;
+  color:var(--muted);
+  letter-spacing:0.02em;
+  border:1px solid var(--hairline);
+  position:relative;
+}
+.avatar::after{
+  content:"photo";
+  position:absolute;
+  bottom:-15px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:9px;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  color:var(--subtle);
+  white-space:nowrap;
+}
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  border-radius:50%;
+}
+
+/* =====================================================
+   VARIANT 1 — cards
+   ===================================================== */
+.cards-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:18px;
+}
+.tcard{
+  background:var(--bg);
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  padding:var(--pad);
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+.tcard .mark{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:40px;
+  line-height:0.6;
+  color:var(--accent);
+  height:22px;
+}
+.tcard blockquote{
+  font-size:15px;
+  color:var(--ink);
+  line-height:1.6;
+}
+.tcard .byline{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-top:auto;
+  padding-top:6px;
+}
+.tcard .byline .meta{display:flex;flex-direction:column}
+.tcard .byline .name{font-size:14px;font-weight:600}
+.tcard .byline .role{font-size:13px;color:var(--muted)}
+
+/* =====================================================
+   VARIANT 2 — quote_led
+   ===================================================== */
+.quote-led{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:28px;
+  max-width:760px;
+  margin:0 auto;
+}
+.quote-led .big-quote{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(22px,3.6vw,34px);
+  line-height:1.32;
+  letter-spacing:-0.01em;
+  color:var(--ink);
+  text-wrap:balance;
+}
+.quote-led .big-quote .em{
+  color:var(--accent);
+  font-style:italic;
+}
+.quote-led .lead-mark{
+  font-family:Georgia,serif;
+  font-size:64px;
+  line-height:0.5;
+  color:var(--accent);
+  height:34px;
+}
+.quote-led .attribution{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding-top:8px;
+  border-top:1px solid var(--hairline);
+}
+.quote-led .attribution .avatar{width:54px;height:54px;font-size:17px}
+.quote-led .attribution .meta{display:flex;flex-direction:column}
+.quote-led .attribution .name{font-size:15px;font-weight:600}
+.quote-led .attribution .role{font-size:14px;color:var(--muted)}
+.quote-led .attribution .name .ext{
+  color:var(--muted);
+  font-weight:400;
+}
+
+/* ---- focus visibility ---- */
+a:focus-visible,
+blockquote:focus-visible,
+[tabindex]:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:3px;
+  border-radius:4px;
+}
+
+@media (max-width:480px){
+  .sheet{padding:28px 16px 56px}
+  .quote-led .attribution{flex-wrap:wrap}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header class="sheet-header">
+    <h1>Testimonials / 证言</h1>
+    <p class="sheet-meta">
+      <span class="pill">trust</span>
+      <span class="dot">·</span>
+      <span>module specimen</span>
+      <span class="dot">·</span>
+      <span>2 variants</span>
+    </p>
+  </header>
+
+  <!-- ============ VARIANT 1: cards ============ -->
+  <section class="variant" aria-labelledby="v-cards">
+    <div class="variant-label">
+      <span class="variant-id" id="v-cards">cards</span>
+      <span class="variant-hint">卡片：引言 + 头像灰块 + 署名</span>
+    </div>
+
+    <div class="stage">
+      <ul class="cards-grid" role="list" aria-label="Customer testimonial cards">
+
+        <li class="tcard">
+          <div class="mark" aria-hidden="true">&ldquo;</div>
+          <blockquote tabindex="0">
+            We shipped our onboarding flow in three days instead of the usual two
+            weeks. The component handoff was clean enough that no one filed a single
+            redline ticket.
+          </blockquote>
+          <div class="byline">
+            <span class="avatar"><img src="../../assets/portrait-woman-editorial.webp" alt="Portrait of Maya Chen" loading="lazy"></span>
+            <span class="meta">
+              <span class="name">Maya Chen</span>
+              <span class="role">Product Designer · Cadence</span>
+            </span>
+          </div>
+        </li>
+
+        <li class="tcard">
+          <div class="mark" aria-hidden="true">&ldquo;</div>
+          <blockquote tabindex="0">
+            I came in expecting another dashboard I&rsquo;d have to fight. Instead the
+            defaults were already what I would have configured. That never happens.
+          </blockquote>
+          <div class="byline">
+            <span class="avatar"><img src="../../assets/portrait-asian-man-editorial.webp" alt="Portrait of Devon Park" loading="lazy"></span>
+            <span class="meta">
+              <span class="name">Devon Park</span>
+              <span class="role">Eng Lead · Northwind Labs</span>
+            </span>
+          </div>
+        </li>
+
+        <li class="tcard">
+          <div class="mark" aria-hidden="true">&ldquo;</div>
+          <blockquote tabindex="0">
+            Support replied in eleven minutes with an actual fix, not a link to the
+            docs. We renewed the annual plan the same afternoon.
+          </blockquote>
+          <div class="byline">
+            <span class="avatar"><img src="../../assets/portrait-woman-paparazzi-bw.webp" alt="Portrait of Lena Okafor" loading="lazy"></span>
+            <span class="meta">
+              <span class="name">Lena Okafor</span>
+              <span class="role">Ops Manager · Tideline</span>
+            </span>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ VARIANT 2: quote_led ============ -->
+  <section class="variant" aria-labelledby="v-quote">
+    <div class="variant-label">
+      <span class="variant-id" id="v-quote">quote_led</span>
+      <span class="variant-hint">大引言主导</span>
+    </div>
+
+    <div class="stage">
+      <figure class="quote-led">
+        <div class="lead-mark" aria-hidden="true">&ldquo;</div>
+        <blockquote class="big-quote" tabindex="0">
+          The first version of our site took a contractor six weeks. This time
+          I rebuilt the whole thing over a weekend &mdash; and it came out
+          <span class="em">noticeably better</span> than what we paid for.
+        </blockquote>
+        <figcaption class="attribution">
+          <span class="avatar"><img src="../../assets/portrait-man-vintage.webp" alt="Portrait of Ravi Menon" loading="lazy"></span>
+          <span class="meta">
+            <span class="name">Ravi Menon <span class="ext">— Founder</span></span>
+            <span class="role">Solo founder · Halflight Studio</span>
+          </span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>

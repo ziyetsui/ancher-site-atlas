@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Nia Okafor — Brand & Content Creator</title>
+<meta name="description" content="Nia Okafor helps brands sound like humans and grow like crazy. 3 brands past 1M followers, 50M+ views, ex-Head of Social." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --canvas:#ffffff;
+    --surface:#fbfaff;
+    --glass:rgba(255,255,255,0.62);
+    --glass-border:rgba(255,255,255,0.7);
+    --ink:#16121f;
+    --ink-muted:#5a5470;
+    --ink-subtle:#8e88a6;
+    --indigo:#5b5bff;
+    --magenta:#d633ff;
+    --coral:#ff6b5b;
+    --accent:#d633ff;
+    --accent-hover:#b81fe0;
+    --hairline:rgba(91,91,255,0.12);
+    --grad:linear-gradient(120deg,#5b5bff,#d633ff,#ff6b5b);
+    --rs:14px; --rm:24px; --rl:36px; --rp:999px;
+    --section:112px; --block:36px; --tight:14px;
+    --shadow:0 24px 60px -24px rgba(91,91,255,0.30), 0 8px 24px -16px rgba(214,51,255,0.22);
+    --font-d:'Sora',system-ui,sans-serif;
+    --font-b:'Plus Jakarta Sans',system-ui,sans-serif;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--font-b);
+    color:var(--ink);
+    background:var(--canvas);
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  /* ---- aurora blobs ---- */
+  .aurora{position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none}
+  .blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;will-change:transform}
+  .blob.b1{width:48vw;height:48vw;top:-14vw;left:-10vw;background:radial-gradient(circle at 30% 30%,#5b5bff,transparent 70%);animation:drift1 22s ease-in-out infinite}
+  .blob.b2{width:42vw;height:42vw;top:8vw;right:-12vw;background:radial-gradient(circle at 50% 50%,#d633ff,transparent 70%);animation:drift2 26s ease-in-out infinite}
+  .blob.b3{width:40vw;height:40vw;bottom:-16vw;left:18vw;background:radial-gradient(circle at 50% 50%,#ff6b5b,transparent 70%);animation:drift3 30s ease-in-out infinite;opacity:.4}
+  .grain{position:fixed;inset:0;z-index:-1;pointer-events:none;background:
+    radial-gradient(120% 60% at 50% -10%, rgba(255,255,255,0) 40%, rgba(255,255,255,.7) 100%);}
+  @keyframes drift1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(6vw,5vw) scale(1.12)}}
+  @keyframes drift2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-5vw,7vw) scale(1.08)}}
+  @keyframes drift3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(4vw,-5vw) scale(1.15)}}
+
+  .wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+
+  /* ---- shared ---- */
+  .eyebrow{font-family:var(--font-b);font-weight:700;font-size:13px;letter-spacing:1.4px;text-transform:uppercase;color:var(--magenta)}
+  .grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+
+  .glass{
+    background:var(--glass);
+    backdrop-filter:blur(18px) saturate(140%);
+    -webkit-backdrop-filter:blur(18px) saturate(140%);
+    border:1px solid var(--glass-border);
+    border-radius:var(--rl);
+    box-shadow:var(--shadow);
+  }
+
+  a{color:inherit}
+  a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--indigo);outline-offset:3px;border-radius:6px}
+
+  .btn{
+    display:inline-flex;align-items:center;gap:.5em;
+    font-family:var(--font-d);font-weight:700;font-size:16px;
+    padding:14px 26px;border-radius:var(--rp);cursor:pointer;border:0;
+    text-decoration:none;transition:transform .18s ease, box-shadow .18s ease, background .2s ease;
+  }
+  .btn-primary{color:#fff;background:var(--grad);background-size:160% 160%;box-shadow:0 12px 30px -10px rgba(214,51,255,.55)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 18px 38px -10px rgba(214,51,255,.6)}
+  .btn-ghost{color:var(--ink);background:var(--glass);border:1px solid var(--hairline);backdrop-filter:blur(10px)}
+  .btn-ghost:hover{transform:translateY(-2px);border-color:var(--magenta)}
+
+  /* ---- nav ---- */
+  nav.top{position:sticky;top:14px;z-index:50;margin:18px auto 0;max-width:1160px;padding:0 24px}
+  nav.top .bar{display:flex;align-items:center;justify-content:space-between;padding:10px 12px 10px 20px;border-radius:var(--rp)}
+  nav.top .brand{font-family:var(--font-d);font-weight:800;font-size:18px;letter-spacing:-.5px}
+  nav.top .brand .dot{color:var(--magenta)}
+  nav.top .links{display:flex;gap:8px;align-items:center}
+  nav.top .links a.lk{font-weight:500;font-size:14px;color:var(--ink-muted);text-decoration:none;padding:8px 12px;border-radius:var(--rp)}
+  nav.top .links a.lk:hover{color:var(--ink)}
+  @media(max-width:680px){nav.top .links a.lk{display:none}}
+
+  /* ---- hero ---- */
+  .hero{padding:64px 0 var(--section)}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+  .hero h1{font-family:var(--font-d);font-weight:800;font-size:clamp(44px,7vw,80px);line-height:1.02;letter-spacing:-2.5px;margin:18px 0 22px}
+  .hero .lede{font-size:22px;font-weight:500;line-height:1.5;color:var(--ink-muted);max-width:30ch;margin-bottom:32px}
+  .hero .cta{display:flex;gap:14px;flex-wrap:wrap}
+
+  .photo-frame{position:relative;border-radius:var(--rl);padding:14px}
+  .photo-frame::before{content:"";position:absolute;inset:-2px;border-radius:calc(var(--rl) + 2px);background:var(--grad);z-index:-1;opacity:.9}
+  .photo-frame .u-photo{display:block;width:100%;height:clamp(360px,46vw,520px);object-fit:cover;border-radius:calc(var(--rl) - 4px)}
+  .photo-frame .badge{position:absolute;bottom:26px;left:26px;right:26px;display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:var(--rm)}
+  .photo-frame .badge .avi{width:38px;height:38px;border-radius:var(--rp);background:var(--grad);flex:0 0 auto;display:grid;place-items:center;color:#fff;font-family:var(--font-d);font-weight:800;font-size:15px}
+  .photo-frame .badge b{font-family:var(--font-d);font-size:15px;display:block;line-height:1.2}
+  .photo-frame .badge span{font-size:13px;color:var(--ink-muted)}
+
+  /* typographic fallback hero (no photo) */
+  .u-fallback.hero-fallback{
+    position:relative;border-radius:var(--rl);min-height:clamp(360px,46vw,520px);
+    background:var(--grad);background-size:180% 180%;color:#fff;
+    padding:38px;overflow:hidden;
+    flex-direction:column;justify-content:space-between;
+  }
+  .u-fallback.hero-fallback .mono{font-family:var(--font-d);font-weight:800;font-size:clamp(40px,6vw,68px);line-height:.96;letter-spacing:-2px;text-shadow:0 6px 24px rgba(0,0,0,.18)}
+  .u-fallback.hero-fallback .tagrow{display:flex;gap:8px;flex-wrap:wrap}
+  .u-fallback.hero-fallback .tag{font-family:var(--font-b);font-weight:700;font-size:13px;background:rgba(255,255,255,.22);padding:7px 13px;border-radius:var(--rp);backdrop-filter:blur(6px)}
+  .u-fallback.hero-fallback::after{content:"";position:absolute;width:60%;height:60%;right:-12%;top:-18%;background:radial-gradient(circle,rgba(255,255,255,.5),transparent 70%);border-radius:50%}
+
+  @media(max-width:840px){
+    .hero-grid{grid-template-columns:1fr;gap:32px}
+    .hero{padding:40px 0 80px}
+  }
+
+  /* ---- section heads ---- */
+  section{padding:var(--section) 0}
+  .sec-head{margin-bottom:48px;max-width:42ch}
+  .sec-head h2{font-family:var(--font-d);font-weight:700;font-size:clamp(30px,4.4vw,40px);line-height:1.1;letter-spacing:-1px;margin-top:12px}
+
+  /* ---- metrics ---- */
+  .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .metric{padding:30px 24px;text-align:left;border-radius:var(--rm)}
+  .metric .num{font-family:var(--font-d);font-weight:800;font-size:clamp(40px,5vw,64px);line-height:1;letter-spacing:-2px}
+  .metric .lbl{margin-top:10px;font-size:15px;color:var(--ink-muted);font-weight:500}
+  @media(max-width:760px){.metrics{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:380px){.metrics{grid-template-columns:1fr}}
+
+  /* ---- work grid ---- */
+  .work{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+  .work-card{position:relative;padding:30px;border-radius:var(--rm);overflow:hidden;transition:transform .2s ease}
+  .work-card::after{content:"";position:absolute;width:160px;height:160px;right:-50px;top:-50px;background:var(--grad);filter:blur(36px);opacity:.28;border-radius:50%;transition:opacity .25s ease}
+  .work-card:hover{transform:translateY(-4px)}
+  .work-card:hover::after{opacity:.5}
+  .work-card .k{font-family:var(--font-b);font-weight:700;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:var(--indigo)}
+  .work-card h3{font-family:var(--font-d);font-weight:700;font-size:24px;letter-spacing:-.6px;margin:8px 0 10px}
+  .work-card p{color:var(--ink-muted);font-size:16px}
+  .work-card .res{margin-top:18px;font-family:var(--font-d);font-weight:800;font-size:18px;letter-spacing:-.4px}
+  @media(max-width:680px){.work{grid-template-columns:1fr}}
+
+  /* ---- testimonials ---- */
+  .quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .quote{padding:30px;border-radius:var(--rm);display:flex;flex-direction:column}
+  .quote .mark{font-family:var(--font-d);font-weight:800;font-size:44px;line-height:.6;height:26px}
+  .quote blockquote{font-size:17px;line-height:1.55;color:var(--ink);font-weight:500;margin:10px 0 22px}
+  .quote .who{margin-top:auto;display:flex;align-items:center;gap:12px}
+  .quote .who .avi{width:40px;height:40px;border-radius:var(--rp);background:var(--grad);display:grid;place-items:center;color:#fff;font-family:var(--font-d);font-weight:800;font-size:15px;flex:0 0 auto}
+  .quote .who b{font-family:var(--font-d);font-size:15px;display:block}
+  .quote .who span{font-size:13px;color:var(--ink-subtle)}
+  @media(max-width:880px){.quotes{grid-template-columns:1fr}}
+
+  /* ---- logos / press ---- */
+  .press{display:flex;flex-wrap:wrap;gap:14px 12px;align-items:stretch}
+  .press .chip{display:inline-flex;align-items:center;gap:10px;padding:14px 20px;border-radius:var(--rp);font-family:var(--font-d);font-weight:700;font-size:16px;letter-spacing:-.3px}
+  .press .chip .dot{width:9px;height:9px;border-radius:50%;background:var(--grad);flex:0 0 auto}
+  .press .chip span{font-family:var(--font-b);font-weight:500;font-size:13px;color:var(--ink-subtle)}
+
+  /* ---- services ---- */
+  .services{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .svc{position:relative;padding:32px 28px;border-radius:var(--rm);overflow:hidden;display:flex;flex-direction:column;transition:transform .2s ease}
+  .svc::after{content:"";position:absolute;width:150px;height:150px;left:-50px;bottom:-50px;background:var(--grad);filter:blur(40px);opacity:.22;border-radius:50%;transition:opacity .25s ease}
+  .svc:hover{transform:translateY(-4px)}
+  .svc:hover::after{opacity:.45}
+  .svc .step{font-family:var(--font-d);font-weight:800;font-size:18px;width:42px;height:42px;border-radius:var(--rp);background:var(--grad);color:#fff;display:grid;place-items:center;margin-bottom:18px}
+  .svc h3{font-family:var(--font-d);font-weight:700;font-size:22px;letter-spacing:-.5px;margin-bottom:10px}
+  .svc p{color:var(--ink-muted);font-size:16px}
+  .svc .price{margin-top:18px;font-family:var(--font-d);font-weight:800;font-size:16px;letter-spacing:-.3px}
+  .svc .price b{font-size:22px}
+  @media(max-width:880px){.services{grid-template-columns:1fr}}
+
+  /* ---- beliefs ---- */
+  .beliefs{display:grid;grid-template-columns:repeat(2,1fr);gap:18px 28px}
+  .belief{display:flex;gap:18px;padding:26px 24px;border-radius:var(--rm)}
+  .belief .no{font-family:var(--font-d);font-weight:800;font-size:34px;line-height:1;letter-spacing:-1.5px;flex:0 0 auto}
+  .belief h3{font-family:var(--font-d);font-weight:700;font-size:19px;letter-spacing:-.4px;margin-bottom:6px}
+  .belief p{color:var(--ink-muted);font-size:15.5px;line-height:1.55}
+  @media(max-width:720px){.beliefs{grid-template-columns:1fr}}
+
+  /* ---- now / currently building ---- */
+  .now-card{padding:clamp(30px,5vw,48px);border-radius:var(--rl)}
+  .now-card .now-head{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+  .now-card .pulse{width:11px;height:11px;border-radius:50%;background:var(--coral);box-shadow:0 0 0 0 rgba(255,107,91,.6);animation:pulse 2.4s ease-out infinite;flex:0 0 auto}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,107,91,.55)}70%{box-shadow:0 0 0 14px rgba(255,107,91,0)}100%{box-shadow:0 0 0 0 rgba(255,107,91,0)}}
+  .now-card .stamp{font-family:var(--font-b);font-weight:700;font-size:13px;letter-spacing:1.4px;text-transform:uppercase;color:var(--ink-subtle)}
+  .now-list{list-style:none;display:grid;gap:16px;margin-top:22px}
+  .now-list li{display:flex;gap:14px;align-items:flex-start;font-size:17px;color:var(--ink)}
+  .now-list li .tag{font-family:var(--font-d);font-weight:800;font-size:12px;letter-spacing:.6px;text-transform:uppercase;color:#fff;background:var(--grad);padding:5px 12px;border-radius:var(--rp);flex:0 0 auto;margin-top:2px}
+  .now-list li b{font-family:var(--font-d);font-weight:700}
+
+  /* ---- selected quote (large type) ---- */
+  .bigquote{padding:clamp(30px,5vw,56px);border-radius:var(--rl);position:relative;overflow:hidden}
+  .bigquote::before{content:"";position:absolute;inset:0;background:var(--grad);opacity:.08;z-index:-1}
+  .bigquote blockquote{font-family:var(--font-d);font-weight:800;font-size:clamp(26px,4.2vw,44px);line-height:1.12;letter-spacing:-1.4px;max-width:24ch}
+  .bigquote cite{display:block;margin-top:24px;font-style:normal;font-weight:600;font-size:16px;color:var(--ink-muted)}
+
+  /* ---- faq ---- */
+  .faq{display:grid;gap:14px;max-width:820px}
+  .faq details{border-radius:var(--rm);padding:6px 4px;overflow:hidden}
+  .faq summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 22px;font-family:var(--font-d);font-weight:700;font-size:18px;letter-spacing:-.3px}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary .pm{width:30px;height:30px;flex:0 0 auto;border-radius:var(--rp);background:var(--glass);border:1px solid var(--hairline);display:grid;place-items:center;font-weight:800;color:var(--magenta);transition:transform .25s ease}
+  .faq details[open] summary .pm{transform:rotate(45deg)}
+  .faq details p{padding:0 22px 22px;color:var(--ink-muted);font-size:16px;line-height:1.6;max-width:62ch}
+
+  /* ---- subscribe ---- */
+  .subscribe{padding-bottom:64px}
+  .sub-card{position:relative;overflow:hidden;padding:clamp(36px,6vw,64px);border-radius:var(--rl);text-align:center}
+  .sub-card::before{content:"";position:absolute;inset:0;background:var(--grad);opacity:.10;z-index:-1}
+  .sub-card h2{font-family:var(--font-d);font-weight:800;font-size:clamp(30px,5vw,48px);letter-spacing:-1.4px;line-height:1.05}
+  .sub-card p{color:var(--ink-muted);font-size:18px;max-width:46ch;margin:16px auto 0}
+  .sub-form{display:flex;gap:10px;justify-content:center;max-width:480px;margin:30px auto 0;flex-wrap:wrap}
+  .sub-form input{flex:1 1 240px;min-width:0;padding:14px 18px;border-radius:var(--rp);border:1px solid var(--hairline);background:#fff;font-family:var(--font-b);font-size:16px;color:var(--ink)}
+  .sub-form input::placeholder{color:var(--ink-subtle)}
+  .sub-foot{margin-top:34px;display:flex;gap:10px 26px;justify-content:center;flex-wrap:wrap;font-size:15px;font-weight:500}
+  .sub-foot a{color:var(--ink-muted);text-decoration:none}
+  .sub-foot a:hover{color:var(--magenta)}
+  .sub-foot a b{color:var(--ink)}
+
+  footer{padding:40px 0 56px;text-align:center;color:var(--ink-subtle);font-size:14px}
+  footer .brand{font-family:var(--font-d);font-weight:800;color:var(--ink);letter-spacing:-.5px}
+
+  /* ---- scroll reveal ---- */
+  .rise{opacity:0;transform:translateY(24px);transition:opacity .7s ease, transform .7s cubic-bezier(.22,1,.36,1)}
+  .rise.in{opacity:1;transform:none}
+
+  /* ---- photo toggle contract ---- */
+  .u-fallback{display:none !important}
+  body.no-photos .u-photo{display:none !important}
+  body.no-photos .u-fallback{display:revert !important}
+  body.no-photos .u-fallback.hero-fallback{display:flex !important}
+
+  .atlas-photo-toggle{position:fixed;right:16px;bottom:16px;z-index:99999;display:flex;align-items:center;gap:8px;background:rgba(20,20,22,.88);color:#fff;border-radius:999px;padding:6px 6px 6px 14px;font:600 12px/1 -apple-system,system-ui,sans-serif;box-shadow:0 8px 28px -10px rgba(0,0,0,.55)}
+  .atlas-photo-toggle button{appearance:none;border:0;cursor:pointer;font:inherit;color:#16161a;background:#fff;border-radius:999px;padding:6px 14px;min-width:46px}
+  .atlas-photo-toggle button[aria-pressed="false"]{background:#3a3a42;color:#fff}
+
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none !important;scroll-behavior:auto !important}
+    .rise{opacity:1 !important;transform:none !important;transition:none !important}
+  }
+</style>
+</head>
+<body>
+  <div class="aurora" aria-hidden="true">
+    <span class="blob b1"></span>
+    <span class="blob b2"></span>
+    <span class="blob b3"></span>
+  </div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <nav class="top">
+    <div class="bar glass">
+      <span class="brand">Nia Okafor<span class="dot">.</span></span>
+      <div class="links">
+        <a class="lk" href="#work">Work</a>
+        <a class="lk" href="#services">Services</a>
+        <a class="lk" href="#words">Words</a>
+        <a class="lk" href="#faq">FAQ</a>
+        <a class="lk" href="#subscribe">Newsletter</a>
+        <a class="btn btn-primary" href="mailto:hello@niaokafor.com" style="font-size:14px;padding:10px 18px">Work with me →</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero" data-module="hero" data-variant="bold_statement">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div>
+          <span class="eyebrow">Brand &amp; content creator</span>
+          <h1>I help brands sound like <span class="grad-text">humans</span> &amp; grow like <span class="grad-text">crazy</span>.</h1>
+          <p class="lede">Voice, content, and growth for brands and founders who'd rather be screenshotted than scrolled past.</p>
+          <div class="cta">
+            <a class="btn btn-primary" href="mailto:hello@niaokafor.com">Work with me →</a>
+            <a class="btn btn-ghost" href="#work">See the work</a>
+          </div>
+        </div>
+
+        <div>
+          <!-- PHOTO ON (default) -->
+          <figure class="photo-frame u-photo">
+            <img class="u-photo" src="portrait.webp" alt="Bright editorial arrangement of blooming flowers, representing Nia Okafor's vivid, growth-focused brand work" />
+            <figcaption class="badge glass">
+              <span class="avi">NO</span>
+              <span><b>Nia Okafor</b><span>Ex-Head of Social, DTC</span></span>
+            </figcaption>
+          </figure>
+
+          <!-- PHOTO OFF fallback (typographic / gradient) -->
+          <div class="u-fallback hero-fallback" aria-hidden="true">
+            <div class="mono">grow<br>like<br>crazy.</div>
+            <div class="tagrow">
+              <span class="tag">1M+ followers ×3</span>
+              <span class="tag">50M+ views</span>
+              <span class="tag">Brand voice</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section id="metrics" data-module="metrics" data-variant="big_numerals" style="padding-top:0">
+    <div class="wrap">
+      <div class="metrics">
+        <div class="metric glass rise"><div class="num grad-text">3</div><div class="lbl">brands grown past 1M followers</div></div>
+        <div class="metric glass rise"><div class="num grad-text">50M+</div><div class="lbl">views generated across launches</div></div>
+        <div class="metric glass rise"><div class="num grad-text">1M+</div><div class="lbl">followers on the biggest account</div></div>
+        <div class="metric glass rise"><div class="num grad-text">DTC</div><div class="lbl">ex-Head of Social, in-house</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="work" data-module="selected_work" data-variant="grid">
+    <div class="wrap">
+      <div class="sec-head rise">
+        <span class="eyebrow">Selected work</span>
+        <h2>Brand voices people actually share.</h2>
+      </div>
+      <div class="work">
+        <article class="work-card glass rise">
+          <span class="k">DTC · Beauty</span>
+          <h3>Hue Lab</h3>
+          <p>Rebuilt the social voice from "salesy" to "best-friend-with-great-taste," then ran the launch calendar end to end.</p>
+          <div class="res grad-text">0 → 1.2M followers in 14 months</div>
+        </article>
+        <article class="work-card glass rise">
+          <span class="k">Wellness · App</span>
+          <h3>Stillwell</h3>
+          <p>Turned a meditation app into a personality. Scripted, filmed, and edited the short-form engine.</p>
+          <div class="res grad-text">28M views, 4.1% CTR to install</div>
+        </article>
+        <article class="work-card glass rise">
+          <span class="k">Food · CPG</span>
+          <h3>Crumb &amp; Co.</h3>
+          <p>Built a snackable content system the in-house team could keep running after handoff.</p>
+          <div class="res grad-text">1M+ followers, 3× UGC volume</div>
+        </article>
+        <article class="work-card glass rise">
+          <span class="k">B2B · Founder</span>
+          <h3>Founder voice — Ravel</h3>
+          <p>Ghost-built a founder's POV across launches: hooks, threads, and a voice that didn't sound like a press release.</p>
+          <div class="res grad-text">9M views, inbound from 40+ brands</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="words" data-module="testimonials" data-variant="cards" class="quotes-sec">
+    <div class="wrap">
+      <div class="sec-head rise">
+        <span class="eyebrow">In their words</span>
+        <h2>What founders say after.</h2>
+      </div>
+      <div class="quotes">
+        <figure class="quote glass rise">
+          <div class="mark grad-text">"</div>
+          <blockquote>Nia found our voice in week one. Comments went from crickets to people tagging their friends. It actually felt like us — just braver.</blockquote>
+          <figcaption class="who"><span class="avi">JM</span><span><b>Jordan Mensah</b><span>Founder, Hue Lab</span></span></figcaption>
+        </figure>
+        <figure class="quote glass rise">
+          <div class="mark grad-text">"</div>
+          <blockquote>We'd burned through two agencies. Nia shipped more in a month than both did in a quarter — and the numbers backed it up.</blockquote>
+          <figcaption class="who"><span class="avi">PR</span><span><b>Priya Raman</b><span>Head of Growth, Stillwell</span></span></figcaption>
+        </figure>
+        <figure class="quote glass rise">
+          <div class="mark grad-text">"</div>
+          <blockquote>She made me sound like the best version of myself online. People DM me about posts she wrote like I wrote them at 2am.</blockquote>
+          <figcaption class="who"><span class="avi">DK</span><span><b>Devon Kerr</b><span>Founder, Ravel</span></span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="press" data-module="logos_press" data-variant="mentioned_in">
+    <div class="wrap">
+      <div class="sec-head rise">
+        <span class="eyebrow">Mentioned in</span>
+        <h2>Where the work showed up.</h2>
+      </div>
+      <div class="press">
+        <span class="chip glass rise"><span class="dot"></span>Modern Retail<span>Feature</span></span>
+        <span class="chip glass rise"><span class="dot"></span>The Goods<span>Profile</span></span>
+        <span class="chip glass rise"><span class="dot"></span>Later Blog<span>Guest essay</span></span>
+        <span class="chip glass rise"><span class="dot"></span>Creator Science<span>Podcast</span></span>
+        <span class="chip glass rise"><span class="dot"></span>DTC Newsletter<span>Top voice</span></span>
+        <span class="chip glass rise"><span class="dot"></span>Glossy<span>Quoted</span></span>
+      </div>
+    </div>
+  </section>
+
+  <section id="services" data-module="services" data-variant="cards">
+    <div class="wrap">
+      <div class="sec-head rise">
+        <span class="eyebrow">How we work together</span>
+        <h2>Three ways to grow like crazy.</h2>
+      </div>
+      <div class="services">
+        <article class="svc glass rise">
+          <div class="step">1</div>
+          <h3>Voice Sprint</h3>
+          <p>A focused two weeks to find your brand voice, build a tone guide, and ship a starter content engine your team can run.</p>
+          <div class="price grad-text">from <b>$6k</b> · 2 weeks</div>
+        </article>
+        <article class="svc glass rise">
+          <div class="step">2</div>
+          <h3>Growth Retainer</h3>
+          <p>I run the whole short-form engine — strategy, scripts, hooks, and the launch calendar — as an embedded part of your team.</p>
+          <div class="price grad-text">from <b>$9k</b> / mo</div>
+        </article>
+        <article class="svc glass rise">
+          <div class="step">3</div>
+          <h3>Founder Ghost</h3>
+          <p>Your POV, in your voice, without the 2am drafting. Hooks, threads, and posts that sound like you on your best day.</p>
+          <div class="price grad-text">from <b>$4k</b> / mo</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="beliefs" data-module="beliefs" data-variant="numbered">
+    <div class="wrap">
+      <div class="sec-head rise">
+        <span class="eyebrow">How I think</span>
+        <h2>What I believe about growth.</h2>
+      </div>
+      <div class="beliefs">
+        <div class="belief glass rise">
+          <span class="no grad-text">01</span>
+          <div><h3>Sound human or get scrolled past.</h3><p>Brands don't have followers — people do. The fastest growth comes from sounding like a person worth following, not a press release.</p></div>
+        </div>
+        <div class="belief glass rise">
+          <span class="no grad-text">02</span>
+          <div><h3>Hooks are 80% of the job.</h3><p>The best post nobody sees does nothing. I obsess over the first three seconds because that's where attention is won or lost.</p></div>
+        </div>
+        <div class="belief glass rise">
+          <span class="no grad-text">03</span>
+          <div><h3>Build the engine, not one viral post.</h3><p>Luck isn't a strategy. I build repeatable systems your in-house team can keep running long after I hand it off.</p></div>
+        </div>
+        <div class="belief glass rise">
+          <span class="no grad-text">04</span>
+          <div><h3>Numbers without taste age badly.</h3><p>Chasing the algorithm gets you views you regret. Brave, on-brand content compounds — it's the stuff people still share next year.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="quote" data-module="selected_quotes" data-variant="large_type" style="padding-top:0">
+    <div class="wrap">
+      <figure class="bigquote glass rise">
+        <blockquote>If your brand wouldn't get screenshotted, it's getting scrolled past. The whole game is being worth the share.</blockquote>
+        <cite>— my one rule, taped above the desk</cite>
+      </figure>
+    </div>
+  </section>
+
+  <section id="now" data-module="currently_building" data-variant="now_block">
+    <div class="wrap">
+      <div class="now-card glass rise">
+        <div class="now-head">
+          <span class="pulse" aria-hidden="true"></span>
+          <span class="stamp">Now · Updated May 2026</span>
+        </div>
+        <h2 class="grad-text" style="font-family:var(--font-d);font-weight:800;font-size:clamp(26px,4vw,38px);letter-spacing:-1px;line-height:1.1">What I'm building right now.</h2>
+        <ul class="now-list">
+          <li><span class="tag">Client</span><span>Launching <b>Hue Lab's</b> first creator collab series — scripting and running the whole rollout.</span></li>
+          <li><span class="tag">Writing</span><span>Drafting <b>The Brandwagon</b> weekly — teardowns of brands doing social right (and wrong).</span></li>
+          <li><span class="tag">Learning</span><span>Going deep on <b>vertical video editing</b> and AI-assisted scripting workflows.</span></li>
+          <li><span class="tag">Open to</span><span>One more <b>Growth Retainer</b> slot for Q3 — DTC or founder-led brands preferred.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" data-module="faq" data-variant="accordion">
+    <div class="wrap">
+      <div class="sec-head rise">
+        <span class="eyebrow">Before you ask</span>
+        <h2>Questions I get a lot.</h2>
+      </div>
+      <div class="faq rise">
+        <details class="glass">
+          <summary>Do you work with brands outside DTC?<span class="pm" aria-hidden="true">+</span></summary>
+          <p>Mostly DTC, wellness, and founder-led brands — that's where my playbooks hit hardest. If you're B2B with a real personality, I'm open to it. If you want corporate-safe and beige, I'm probably not your person.</p>
+        </details>
+        <details class="glass">
+          <summary>What does a typical engagement look like?<span class="pm" aria-hidden="true">+</span></summary>
+          <p>Most start with a Voice Sprint to lock the foundation, then roll into a Growth Retainer where I run the short-form engine. Founders often add a Ghost track on top. We figure out the right shape on a quick intro call.</p>
+        </details>
+        <details class="glass">
+          <summary>Will my team be able to keep this going?<span class="pm" aria-hidden="true">+</span></summary>
+          <p>That's the whole point. Every engagement ships a tone guide, hook library, and a content system documented well enough for an in-house team to run it without me. I'd rather make myself optional than indispensable.</p>
+        </details>
+        <details class="glass">
+          <summary>Can you guarantee a follower number?<span class="pm" aria-hidden="true">+</span></summary>
+          <p>No honest person can. What I guarantee is a sharper voice, a repeatable engine, and content people actually want to share. The numbers — like 3 brands past 1M — follow from doing the work right.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section id="subscribe" data-module="subscribe" data-variant="cta_band" class="subscribe">
+    <div class="wrap">
+      <div class="sub-card glass rise">
+        <span class="eyebrow">The Brandwagon</span>
+        <h2>Grow like crazy, <span class="grad-text">in your inbox.</span></h2>
+        <p>Weekly teardowns of brands doing social right (and the ones fumbling it). Hooks, voice notes, and the playbooks I use with clients.</p>
+        <form class="sub-form" onsubmit="return false;" aria-label="Subscribe to The Brandwagon">
+          <label for="email" class="eyebrow" style="position:absolute;left:-9999px">Email address</label>
+          <input id="email" type="email" inputmode="email" placeholder="you@brand.com" autocomplete="email" />
+          <button class="btn btn-primary" type="submit">Subscribe</button>
+        </form>
+        <div class="sub-foot">
+          <a href="mailto:hello@niaokafor.com">Work with me → <b>hello@niaokafor.com</b></a>
+          <a href="https://instagram.com/niaokafor" rel="noopener">Instagram <b>@niaokafor</b></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <span class="brand">Nia Okafor<span style="color:var(--magenta)">.</span></span> — brand &amp; content creator · helping brands sound like humans &amp; grow like crazy.
+    </div>
+  </footer>
+
+  <div class="atlas-photo-toggle" role="group" aria-label="示例照片 / Demo photos"><span>照片 Photos</span><button id="atlasPhotoBtn" type="button" aria-pressed="true">On</button></div>
+  <script>(function(){var b=document.getElementById('atlasPhotoBtn');if(!b)return;function set(on){document.body.classList.toggle('no-photos',!on);b.setAttribute('aria-pressed',on?'true':'false');b.textContent=on?'On':'Off';}b.addEventListener('click',function(){set(document.body.classList.contains('no-photos'));});set(true);})();</script>
+
+  <script>
+    (function(){
+      if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+        document.querySelectorAll('.rise').forEach(function(el){el.classList.add('in');});
+        return;
+      }
+      var io=new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}
+        });
+      },{threshold:.14,rootMargin:'0px 0px -8% 0px'});
+      document.querySelectorAll('.rise').forEach(function(el){io.observe(el);});
+    })();
+  </script>
+</body>
+</html>

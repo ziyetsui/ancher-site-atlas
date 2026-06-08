@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>illustration-brand — photo specimen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  body{
+    margin:0;
+    background:#fffdf9; /* --canvas: direction page background */
+    color:#1f1b24;      /* --ink */
+    font-family:'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    min-height:100vh;
+    display:grid;
+    place-items:center;
+    padding:28px;
+  }
+  img{max-width:100%; display:block}
+
+  /* stage holds the framed photo + its surrounding decorations */
+  .hero-art{
+    position:relative;
+    isolation:isolate;
+    width:260px;        /* whole composition fits ~360x300 */
+  }
+
+  /* gradient blob behind the card (--surface-warm / --accent-soft / --surface-lilac) */
+  .blob{
+    position:absolute; inset:6% -4% -6% 4%; z-index:-1;
+    border-radius:46% 54% 58% 42%/52% 44% 56% 48%;
+    background:linear-gradient(150deg, #fff4ec, #ffe3e0 55%, #f2effd);
+    filter:saturate(1.05);
+  }
+
+  /* the framed photo: white 6px border, 32px radius (--r-lg), mint bg, card shadow */
+  .hero-photo-card{
+    position:relative;
+    border-radius:32px;
+    overflow:hidden;
+    background:#ecfbf3;                                  /* --surface-mint */
+    box-shadow:0 18px 40px -22px rgba(40,30,30,.32);    /* --shadow-card */
+    border:6px solid #fff;
+  }
+  .hero-photo-card img{
+    width:100%; height:auto;
+    aspect-ratio:4/4.6;
+    object-fit:cover;
+    object-position:50% 18%;
+  }
+
+  /* floating sticker pills (--pill radius, white, soft shadow) */
+  .sticker{
+    position:absolute; z-index:2; background:#fff; border-radius:999px;
+    box-shadow:0 10px 30px -16px rgba(40,30,30,.22);     /* --shadow-soft */
+    font-weight:800; font-size:11px; display:flex; align-items:center; gap:6px;
+    padding:7px 11px; color:#1f1b24;
+  }
+  .sticker .dot{width:9px;height:9px;border-radius:50%}
+  .st-1{top:8%; left:-20px}
+  .st-2{bottom:13%; right:-16px}
+
+  /* floating SVG doodles */
+  .float-svg{position:absolute; z-index:2}
+  .fs-star{top:-12px; right:14%; width:38px; color:#ff5a5f}      /* --accent */
+  .fs-squig{bottom:-9px; left:6%; width:60px; color:#7c6cf0}
+  .fs-ring{top:40%; right:-24px; width:33px; color:#19b87a}
+</style>
+</head>
+<body>
+  <div class="hero-art">
+    <div class="blob" aria-hidden="true"></div>
+
+    <div class="hero-photo-card">
+      <img src="portrait.webp" alt="Illustration of Tara Nguyen">
+    </div>
+
+    <div class="sticker st-1"><span class="dot" style="background:#19b87a"></span> 30k sold</div>
+    <div class="sticker st-2"><span class="dot" style="background:#ff5a5f"></span> 4.9★ rated</div>
+
+    <svg class="float-svg fs-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1.5l2.6 6.3 6.8.5-5.2 4.4 1.7 6.6L12 16.9l-5.9 3.4 1.7-6.6L2.6 8.3l6.8-.5z"/></svg>
+    <svg class="float-svg fs-squig" viewBox="0 0 80 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" aria-hidden="true"><path d="M3 14c8-13 16 13 24 0s16 13 24 0 16 13 24 0"/></svg>
+    <svg class="float-svg fs-ring" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg>
+  </div>
+</body>
+</html>

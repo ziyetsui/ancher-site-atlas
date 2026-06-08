@@ -1,0 +1,9 @@
+{
+  "id": "marquee-poster",
+  "name_cn": "跑马灯海报",
+  "name_en": "Marquee Poster",
+  "style": "野兽派 riso 撞色演出海报：超大无衬线字、荧光粉/电光蓝/亮黄叠印、纸张颗粒，吵闹高对比。",
+  "plugins": ["ScrollTrigger", "Observer", "ScrollTrigger.getVelocity", "ScrollTrigger.batch", "Observer velocity skew", "gsap.matchMedia", "gsap.ticker", "gsap.utils.wrap / quickSetter", "scrub parallax"],
+  "focus": "演示多条无缝无限跑马灯（不同方向/速度）+ 滚动速度驱动的 velocity-skew：滚得越快，字带越快、倾斜越狠。",
+  "prompt": "做一个独立音乐厂牌「裂帛之声 RIPCORD」的整页演出/海报站，野兽派 riso 海报风：暖纸底 (#f2ead4)、近黑墨色，三种荧光叠印色——荧光粉、电光蓝、亮黄；全站铺一层细密的 riso 网点/纸张颗粒纹理 (multiply 混合)。字体用超大号无衬线展示字 (Anton / Archivo Black) 配中文黑体，标题大到顶天立地，高对比、吵闹。顶部细导航条 + 三行叠在一起的巨型跑马灯标题（一行实心、一行荧光粉、一行只描边 outline），三条以不同方向和速度无缝无限滚动。区块顺序：英雄区(三行跑马灯标题+厂牌简介+巡演日期)、深色速度跑马灯条、演出日程列表(日期/乐队名/场地/购票按钮，含售罄态)、第二条荧光粉跑马灯条、海报档案横向画廊(riso 海报卡片，硬黑描边+实心投影)、乐迷/媒体回声引语网格、入会邮箱表单(描边巨标题)、深色页脚。动效全部 GSAP：① 多条无缝无限跑马灯，用 gsap.utils.wrap + quickSetter 在 ticker 里手动推进、克隆内容铺满两屏避免接缝，不同 data-speed/data-dir；② 核心——用 Observer 与 ScrollTrigger.getVelocity() 读滚动速度，映射成跑马灯额外速度（滚得快字带飞）和对所有字带的 skewX 倾斜，停止滚动时缓动回 0；③ 英雄三行做 scrub 视差错位；④ 演出名随滚动速度做 velocity-skew 抖动；⑤ 海报卡片用 ScrollTrigger.batch 带随机旋转 back.out 弹入，整条画廊随竖向滚动横向漂移(scrub)；⑥ 引语和大标题 batch/clip 错峰揭示。响应式 360–1440，语义化、可访问(对比、可见 focus、img alt)，用 gsap.matchMedia 处理 prefers-reduced-motion：reduced 时渲染终态、关闭无限循环与 velocity-skew。"
+}

@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sienna Marchetti — Fashion Stylist & Creative Director</title>
+<meta name="description" content="Sienna Marchetti dresses brands and people to be looked at — and remembered. Editorial & campaign styling. Vogue Italia, Elle, LVMH.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --canvas:#f7f3ee;
+    --surface:#efe9e1;
+    --ink:#0d0d0f;
+    --ink-muted:#4a4a52;
+    --ink-subtle:#8c8a92;
+    --cream:#fbf8f3;
+    --accent:#e0218a;
+    --accent-hover:#b71872;
+    --hairline:#ddd5c9;
+    --overlay:rgba(13,13,15,0.42);
+    --serif:'Playfair Display', Georgia, 'Times New Roman', serif;
+    --sans:'Inter', system-ui, -apple-system, sans-serif;
+    --section:132px;
+    --block:44px;
+    --tight:14px;
+  }
+
+  *,*::before,*::after{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--canvas);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+  }
+  img{max-width:100%;display:block}
+  a{color:inherit}
+
+  :focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:3px;
+  }
+
+  .wrap{
+    width:100%;
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 24px;
+  }
+
+  .eyebrow{
+    font-family:var(--sans);
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    line-height:1.3;
+    margin:0;
+  }
+  .accent{color:var(--accent)}
+  .caption{
+    font-size:12px;
+    font-weight:500;
+    letter-spacing:.5px;
+    color:var(--ink-subtle);
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:100svh;
+    display:grid;
+    grid-template-columns:1fr;
+    grid-template-rows:minmax(46svh,1fr) auto;
+    background:var(--ink);
+  }
+  .hero__media{
+    position:relative;
+    overflow:hidden;
+    background:#1a1418;
+  }
+  .hero__media .u-photo{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:50% 28%;
+    filter:grayscale(100%) contrast(1.06);
+    transform:scale(1.08);
+    clip-path:inset(0 0 100% 0);
+    animation:reveal 1.5s cubic-bezier(.16,.84,.44,1) .15s forwards;
+  }
+  @keyframes reveal{
+    to{ clip-path:inset(0 0 0 0); transform:scale(1.02); }
+  }
+  .hero__media::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg,rgba(13,13,15,.25) 0%,rgba(13,13,15,0) 30%,rgba(13,13,15,.55) 100%);
+    pointer-events:none;
+  }
+  /* the magenta corner tab on the image */
+  .hero__tag{
+    position:absolute;
+    top:0;left:0;
+    z-index:3;
+    background:var(--accent);
+    color:#fff;
+    font-family:var(--sans);
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:2.5px;
+    text-transform:uppercase;
+    padding:9px 16px;
+  }
+  .hero__caption{
+    position:absolute;
+    right:16px;bottom:14px;
+    z-index:3;
+    color:rgba(255,255,255,.82);
+    text-align:right;
+    text-shadow:0 1px 8px rgba(0,0,0,.5);
+  }
+
+  .hero__panel{
+    background:var(--cream);
+    padding:38px 24px 46px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:22px;
+    border-top:3px solid var(--accent);
+  }
+  .hero__masthead{
+    font-family:var(--serif);
+    font-weight:900;
+    text-transform:uppercase;
+    line-height:.92;
+    letter-spacing:-1px;
+    margin:0;
+    font-size:clamp(44px,12vw,116px);
+  }
+  .hero__masthead .line2{display:block}
+  .hero__role{
+    color:var(--ink-muted);
+    margin:0;
+  }
+  .hero__lede{
+    font-family:var(--serif);
+    font-style:italic;
+    font-weight:400;
+    font-size:clamp(19px,2.4vw,23px);
+    line-height:1.5;
+    color:var(--ink);
+    margin:0;
+    max-width:30ch;
+  }
+  .cta-row{display:flex;flex-wrap:wrap;gap:18px;align-items:center}
+  .cta{
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:14px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    text-decoration:none;
+    color:var(--cream);
+    background:var(--ink);
+    padding:15px 26px;
+    border:0;
+    border-radius:0;
+    transition:background .25s ease, transform .25s ease;
+  }
+  .cta:hover{background:var(--accent);transform:translateY(-1px)}
+  .cta--ghost{
+    background:transparent;
+    color:var(--ink);
+    padding:15px 0;
+    text-decoration:none;
+    position:relative;
+  }
+  .cta--ghost::after{
+    content:"";position:absolute;left:0;bottom:8px;height:2px;width:100%;
+    background:var(--ink);transition:background .25s;
+  }
+  .cta--ghost:hover{color:var(--accent-hover)}
+  .cta--ghost:hover::after{background:var(--accent)}
+
+  @media (min-width:880px){
+    .hero{
+      grid-template-columns:1.02fr .98fr;
+      grid-template-rows:1fr;
+    }
+    .hero__panel{
+      padding:64px 56px;
+      gap:30px;
+      border-top:0;
+      border-left:4px solid var(--accent);
+    }
+  }
+
+  /* ---------- SECTION SCAFFOLD ---------- */
+  section{padding:clamp(72px,11vw,var(--section)) 0}
+  .sec-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:18px;
+    flex-wrap:wrap;
+    padding-bottom:26px;
+    margin-bottom:46px;
+    border-bottom:1px solid var(--hairline);
+  }
+  .sec-head h2{
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:clamp(28px,4.5vw,44px);
+    line-height:1.06;
+    letter-spacing:-.5px;
+    margin:0;
+  }
+
+  /* ---------- FEATURED ---------- */
+  .featured{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:26px;
+    align-items:stretch;
+  }
+  .featured__img{
+    position:relative;
+    aspect-ratio:4/5;
+    overflow:hidden;
+    background:var(--ink);
+  }
+  .featured__img .u-photo{
+    width:100%;height:100%;object-fit:cover;object-position:50% 22%;
+    filter:grayscale(100%) contrast(1.05);
+    transition:filter .5s ease, transform .9s ease;
+  }
+  .featured__img:hover .u-photo{filter:grayscale(0%) contrast(1.02);transform:scale(1.03)}
+  .featured__num{
+    position:absolute;left:0;top:0;
+    background:var(--accent);color:#fff;
+    font-family:var(--sans);font-weight:600;font-size:11px;letter-spacing:2.5px;
+    text-transform:uppercase;padding:8px 14px;
+  }
+  .featured__body{
+    display:flex;flex-direction:column;justify-content:center;gap:16px;
+  }
+  .featured__title{
+    font-family:var(--serif);font-weight:700;
+    font-size:clamp(26px,4vw,40px);line-height:1.05;letter-spacing:-.5px;margin:0;
+  }
+  .featured__meta{
+    font-family:var(--sans);font-weight:600;font-size:13px;letter-spacing:2px;
+    text-transform:uppercase;color:var(--ink-muted);margin:0;
+  }
+  .featured__meta b{color:var(--accent);font-weight:600}
+  .featured__note{color:var(--ink-muted);margin:0;max-width:42ch}
+
+  @media (min-width:820px){
+    .featured{grid-template-columns:1fr 1fr;gap:46px}
+  }
+
+  /* ---------- EDITORIAL GRID ---------- */
+  .grid{
+    margin-top:64px;
+    display:grid;
+    grid-template-columns:1fr;
+    gap:1px;
+    background:var(--hairline);
+    border:1px solid var(--hairline);
+  }
+  @media (min-width:560px){ .grid{grid-template-columns:1fr 1fr} }
+  @media (min-width:920px){ .grid{grid-template-columns:1fr 1fr 1fr} }
+
+  .tile{
+    background:var(--cream);
+    text-decoration:none;
+    color:var(--ink);
+    padding:26px 24px 30px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    min-height:148px;
+    position:relative;
+    transition:background .3s ease;
+  }
+  .tile::before{
+    content:"";position:absolute;left:0;top:0;height:3px;width:0;
+    background:var(--accent);transition:width .35s cubic-bezier(.2,.7,.3,1);
+  }
+  .tile:hover,.tile:focus-visible{background:var(--surface)}
+  .tile:hover::before,.tile:focus-visible::before{width:100%}
+  .tile__idx{
+    font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:2px;
+    color:var(--ink-subtle);
+  }
+  .tile__title{
+    font-family:var(--serif);font-weight:700;font-size:23px;line-height:1.1;
+    letter-spacing:-.3px;margin:0;margin-top:auto;
+  }
+  .tile__meta{
+    font-family:var(--sans);font-size:12px;font-weight:500;letter-spacing:.6px;
+    color:var(--ink-muted);
+  }
+  .tile__arrow{
+    position:absolute;right:22px;bottom:26px;color:var(--accent);
+    opacity:0;transform:translateX(-4px);transition:opacity .3s,transform .3s;
+    font-size:18px;
+  }
+  .tile:hover .tile__arrow,.tile:focus-visible .tile__arrow{opacity:1;transform:translateX(0)}
+
+  /* ---------- PRESS ---------- */
+  .press{background:var(--ink);color:var(--cream)}
+  .press .eyebrow{color:var(--accent)}
+  .press__row{
+    margin-top:34px;
+    display:flex;flex-wrap:wrap;align-items:center;
+    gap:clamp(22px,4vw,52px);
+  }
+  .press__row span{
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:clamp(17px,2.4vw,24px);
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:rgba(251,248,243,.74);
+    white-space:nowrap;
+  }
+  .press__row span:hover{color:var(--cream)}
+
+  /* ---------- METRICS ---------- */
+  .metrics-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:1px;
+    background:var(--hairline);
+    border:1px solid var(--hairline);
+  }
+  @media (min-width:760px){ .metrics-grid{grid-template-columns:repeat(4,1fr)} }
+  .metric{
+    background:var(--canvas);
+    padding:38px 22px;
+    text-align:center;
+  }
+  .metric__num{
+    font-family:var(--serif);
+    font-weight:900;
+    font-size:clamp(40px,6vw,62px);
+    line-height:1;
+    letter-spacing:-1px;
+  }
+  .metric__num::after{
+    content:"";display:block;width:26px;height:3px;background:var(--accent);
+    margin:14px auto 0;
+  }
+  .metric__label{
+    margin-top:14px;
+    font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:1.5px;
+    text-transform:uppercase;color:var(--ink-muted);
+  }
+
+  /* ---------- APPROACH / BELIEFS ---------- */
+  .beliefs-list{
+    list-style:none;
+    margin:0;padding:0;
+    display:grid;
+    grid-template-columns:1fr;
+    gap:1px;
+    background:var(--hairline);
+    border:1px solid var(--hairline);
+  }
+  @media (min-width:760px){ .beliefs-list{grid-template-columns:1fr 1fr} }
+  .belief{
+    background:var(--cream);
+    padding:30px 26px 34px;
+    display:flex;flex-direction:column;gap:12px;
+    position:relative;
+  }
+  .belief__num{
+    font-family:var(--serif);font-weight:900;
+    font-size:clamp(30px,4vw,44px);line-height:1;letter-spacing:-1px;
+    color:var(--accent);
+  }
+  .belief__title{
+    font-family:var(--serif);font-weight:700;font-size:23px;line-height:1.12;
+    letter-spacing:-.3px;margin:0;
+  }
+  .belief__body{color:var(--ink-muted);margin:0;max-width:44ch}
+
+  /* ---------- SERVICES ---------- */
+  .svc-list{
+    margin-top:8px;
+    border-top:1px solid var(--hairline);
+  }
+  .svc{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:8px 28px;
+    padding:30px 2px;
+    border-bottom:1px solid var(--hairline);
+    align-items:baseline;
+  }
+  @media (min-width:760px){
+    .svc{grid-template-columns:minmax(0,.42fr) minmax(0,1fr) auto}
+  }
+  .svc__name{
+    font-family:var(--serif);font-weight:700;font-size:clamp(22px,3vw,30px);
+    line-height:1.1;letter-spacing:-.4px;margin:0;
+  }
+  .svc__desc{color:var(--ink-muted);margin:0;max-width:46ch}
+  .svc__price{
+    font-family:var(--sans);font-weight:600;font-size:12px;letter-spacing:2px;
+    text-transform:uppercase;color:var(--accent);white-space:nowrap;
+  }
+
+  /* ---------- TESTIMONIALS ---------- */
+  .testi{background:var(--ink);color:var(--cream)}
+  .testi .sec-head{border-bottom-color:rgba(251,248,243,.18)}
+  .testi .eyebrow{color:var(--accent)}
+  .testi-quote{
+    font-family:var(--serif);font-style:italic;font-weight:400;
+    font-size:clamp(24px,4.4vw,40px);line-height:1.32;
+    letter-spacing:-.4px;margin:0;max-width:22ch;
+  }
+  .testi-quote .accent{color:var(--accent);font-style:normal}
+  .testi__attr{
+    margin-top:34px;
+    font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:2px;
+    text-transform:uppercase;color:rgba(251,248,243,.7);
+    padding-left:18px;border-left:3px solid var(--accent);
+  }
+  .testi__attr b{color:var(--cream);font-weight:600}
+
+  /* ---------- CREDENTIALS (pills) ---------- */
+  .pills{
+    display:flex;flex-wrap:wrap;gap:12px;margin-top:6px;
+  }
+  .pill{
+    font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:1.5px;
+    text-transform:uppercase;color:var(--ink-muted);
+    background:var(--cream);
+    border:1px solid var(--hairline);
+    padding:11px 18px;
+  }
+  .pill b{color:var(--accent);font-weight:600}
+
+  /* ---------- SELECTED QUOTE ---------- */
+  .pullquote{background:var(--ink);color:var(--cream);text-align:center}
+  .pullquote__mark{
+    font-family:var(--serif);font-weight:900;font-size:clamp(60px,12vw,120px);
+    line-height:.6;color:var(--accent);margin:0 0 6px;
+  }
+  .pullquote__text{
+    font-family:var(--serif);font-weight:700;
+    font-size:clamp(28px,5.4vw,56px);line-height:1.1;letter-spacing:-1px;
+    text-transform:uppercase;margin:0 auto;max-width:16ch;
+  }
+  .pullquote__text .accent{color:var(--accent)}
+  .pullquote__cite{
+    margin-top:30px;
+    font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:2px;
+    text-transform:uppercase;color:rgba(251,248,243,.6);
+  }
+
+  /* ---------- CONTACT ---------- */
+  .contact{padding-bottom:0}
+  .contact__lede{
+    font-family:var(--serif);font-style:italic;font-weight:400;
+    font-size:clamp(22px,3.4vw,32px);line-height:1.4;
+    max-width:24ch;margin:0 0 36px;
+  }
+  .contact__links{
+    display:flex;flex-direction:column;gap:2px;
+    border-top:1px solid var(--hairline);
+  }
+  .clink{
+    display:flex;align-items:baseline;justify-content:space-between;gap:16px;
+    padding:22px 2px;
+    border-bottom:1px solid var(--hairline);
+    text-decoration:none;color:var(--ink);
+    transition:padding-left .3s ease,color .3s ease;
+  }
+  .clink:hover,.clink:focus-visible{padding-left:14px;color:var(--accent-hover)}
+  .clink__k{
+    font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:2px;
+    text-transform:uppercase;color:var(--ink-subtle);
+  }
+  .clink__v{
+    font-family:var(--serif);font-weight:700;font-size:clamp(18px,2.6vw,26px);
+    letter-spacing:-.3px;
+  }
+
+  .signoff{
+    background:var(--ink);
+    color:var(--cream);
+    margin-top:clamp(72px,11vw,var(--section));
+    padding:clamp(54px,9vw,96px) 0 clamp(40px,6vw,60px);
+    text-align:center;
+    overflow:hidden;
+  }
+  .signoff__name{
+    font-family:var(--serif);font-weight:900;text-transform:uppercase;
+    font-size:clamp(40px,13vw,128px);line-height:.9;letter-spacing:-2px;
+    margin:0;
+  }
+  .signoff__name .accent{color:var(--accent)}
+  .signoff__foot{
+    margin-top:34px;
+    font-family:var(--sans);font-size:12px;letter-spacing:1.5px;
+    color:rgba(251,248,243,.55);
+  }
+
+  /* ---------- FALLBACK (no-photo) ---------- */
+  .cover-fallback{
+    position:absolute;inset:0;
+    background:
+      radial-gradient(120% 90% at 50% 0%, #15131a 0%, #0d0d0f 60%);
+    color:var(--cream);
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    padding:30px 26px;
+  }
+  .cover-fallback__top{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
+  .cover-fallback__big{
+    font-family:var(--serif);font-weight:900;text-transform:uppercase;
+    font-size:clamp(54px,15vw,150px);line-height:.86;letter-spacing:-2px;
+    margin:auto 0;
+  }
+  .cover-fallback__big em{font-style:normal;color:var(--accent)}
+  .cover-fallback__rule{height:3px;background:var(--accent);width:100%;margin:18px 0}
+  .cover-fallback__bottom{
+    font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:2px;
+    text-transform:uppercase;color:rgba(251,248,243,.7);
+    display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  }
+  /* featured fallback */
+  .featured__img .cover-fallback{padding:24px 22px}
+  .featured__img .cover-fallback__big{font-size:clamp(36px,9vw,72px)}
+
+  /* photo/fallback contract */
+  .u-fallback{display:none !important}
+  body.no-photos .u-photo{display:none !important}
+  body.no-photos .u-fallback{display:revert !important}
+  body.no-photos .cover-fallback{display:flex !important}
+
+  /* ---------- TOGGLE ---------- */
+  .atlas-photo-toggle{position:fixed;right:16px;bottom:16px;z-index:99999;display:flex;align-items:center;gap:8px;background:rgba(20,20,22,.88);color:#fff;border-radius:999px;padding:6px 6px 6px 14px;font:600 12px/1 -apple-system,system-ui,sans-serif;box-shadow:0 8px 28px -10px rgba(0,0,0,.55)}
+  .atlas-photo-toggle button{appearance:none;border:0;cursor:pointer;font:inherit;color:#16161a;background:#fff;border-radius:999px;padding:6px 14px;min-width:46px}
+  .atlas-photo-toggle button[aria-pressed="false"]{background:#3a3a42;color:#fff}
+
+  /* ---------- SCROLL REVEAL ---------- */
+  .fade{opacity:0;transform:translateY(22px);transition:opacity .7s ease, transform .7s cubic-bezier(.16,.84,.44,1)}
+  .fade.in{opacity:1;transform:none}
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none !important;transition:none !important}
+    .hero__media .u-photo{clip-path:none;transform:none}
+    .fade{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero" data-module="hero" data-variant="split_portrait">
+    <div class="hero__media">
+      <span class="hero__tag">Poolside Mirage · Vogue Italia</span>
+      <img class="u-photo"
+           src="portrait.webp"
+           alt="Sienna Marchetti styling — Poolside Mirage editorial for Vogue Italia: model in oversized pink sunglasses and statement earrings against a poolside scene">
+      <div class="u-fallback cover-fallback" aria-hidden="true">
+        <div class="cover-fallback__top">
+          <span>VOL. XII</span><span>EDITORIAL · CAMPAIGN</span>
+        </div>
+        <div>
+          <div class="cover-fallback__big">Looked<br><em>at</em>.</div>
+          <div class="cover-fallback__rule"></div>
+        </div>
+        <div class="cover-fallback__bottom">
+          <span>Sienna Marchetti</span><span>Styling · Direction</span>
+        </div>
+      </div>
+      <p class="hero__caption caption">Cover + 14-page story<br>Photographed in Palm Springs</p>
+    </div>
+
+    <div class="hero__panel">
+      <p class="eyebrow">Fashion Stylist · Creative Direction · <span class="accent">Milan / NYC</span></p>
+      <h1 class="hero__masthead">Sienna<span class="line2">Marchetti</span></h1>
+      <p class="hero__lede">&ldquo;I dress brands and people to be looked at — and <span class="accent">remembered</span>.&rdquo;</p>
+      <p class="hero__role">Editorial &amp; campaign styling for fashion houses, magazines, and brands.</p>
+      <div class="cta-row">
+        <a class="cta" href="mailto:book@siennamarchetti.com?subject=Booking%20enquiry">Book Sienna →</a>
+        <a class="cta--ghost" href="#work">See selected work</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============ SELECTED WORK ============ -->
+    <section id="work" class="wrap" data-module="selected_work" data-variant="featured_case">
+      <div class="sec-head fade">
+        <h2>Selected Work</h2>
+        <p class="eyebrow">200+ Editorials · Featured Spread</p>
+      </div>
+
+      <article class="featured fade">
+        <div class="featured__img">
+          <span class="featured__num">Featured</span>
+          <img class="u-photo"
+               src="portrait.webp"
+               alt="Poolside Mirage editorial spread — styling by Sienna Marchetti for Vogue Italia">
+          <div class="u-fallback cover-fallback" aria-hidden="true">
+            <div class="cover-fallback__top"><span>Vogue Italia</span><span>2024</span></div>
+            <div class="cover-fallback__big">Poolside<br><em>Mirage</em></div>
+            <div class="cover-fallback__bottom"><span>Cover + 14 pp.</span><span>Styling</span></div>
+          </div>
+        </div>
+        <div class="featured__body">
+          <p class="featured__meta"><b>Vogue Italia</b> · Cover Story · 2024</p>
+          <h3 class="featured__title">Poolside Mirage</h3>
+          <p class="featured__note">A chrome-and-candy story built around a single pair of sunglasses: mirrored lenses, lacquer reds, and couture-scale earrings shot against desert water. Cover plus a fourteen-page editorial — concept, styling, and on-set direction.</p>
+          <a class="cta--ghost" href="#contact" style="align-self:flex-start">Commission a story like this →</a>
+        </div>
+      </article>
+
+      <div class="grid fade" role="list">
+        <a class="tile" href="#contact" role="listitem">
+          <span class="tile__idx">01</span>
+          <h4 class="tile__title">Chrome Bloom</h4>
+          <span class="tile__meta">Elle · Beauty · 2024</span>
+          <span class="tile__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="tile" href="#contact" role="listitem">
+          <span class="tile__idx">02</span>
+          <h4 class="tile__title">Riviera Noir</h4>
+          <span class="tile__meta">Harper's Bazaar · 2023</span>
+          <span class="tile__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="tile" href="#contact" role="listitem">
+          <span class="tile__idx">03</span>
+          <h4 class="tile__title">Maison Lumière</h4>
+          <span class="tile__meta">LVMH · Campaign · 2023</span>
+          <span class="tile__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="tile" href="#contact" role="listitem">
+          <span class="tile__idx">04</span>
+          <h4 class="tile__title">Concrete Couture</h4>
+          <span class="tile__meta">i-D · 2022</span>
+          <span class="tile__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="tile" href="#contact" role="listitem">
+          <span class="tile__idx">05</span>
+          <h4 class="tile__title">After Hours</h4>
+          <span class="tile__meta">Numéro · 2022</span>
+          <span class="tile__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="tile" href="#contact" role="listitem">
+          <span class="tile__idx">06</span>
+          <h4 class="tile__title">Salt &amp; Silk</h4>
+          <span class="tile__meta">Editorial · 2021</span>
+          <span class="tile__arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ============ PRESS ============ -->
+    <section class="press" data-module="logos_press" data-variant="inline">
+      <div class="wrap fade">
+        <p class="eyebrow">As Seen In</p>
+        <div class="press__row">
+          <span>Vogue Italia</span>
+          <span>Elle</span>
+          <span>LVMH</span>
+          <span>Harper's Bazaar</span>
+          <span>i-D</span>
+          <span>Numéro</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ METRICS ============ -->
+    <section class="wrap" data-module="metrics" data-variant="stat_row">
+      <div class="sec-head fade">
+        <h2>By the Numbers</h2>
+        <p class="eyebrow">Twelve Years on Set</p>
+      </div>
+      <div class="metrics-grid fade">
+        <div class="metric">
+          <div class="metric__num">12</div>
+          <div class="metric__label">Years styling</div>
+        </div>
+        <div class="metric">
+          <div class="metric__num">200+</div>
+          <div class="metric__label">Published editorials</div>
+        </div>
+        <div class="metric">
+          <div class="metric__num">2</div>
+          <div class="metric__label">Magazine covers</div>
+        </div>
+        <div class="metric">
+          <div class="metric__num">1</div>
+          <div class="metric__label">LVMH campaign</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ APPROACH / BELIEFS ============ -->
+    <section id="approach" class="wrap" data-module="beliefs" data-variant="numbered">
+      <div class="sec-head fade">
+        <h2>How I Style</h2>
+        <p class="eyebrow">Four Rules · On & Off Set</p>
+      </div>
+      <ol class="beliefs-list fade">
+        <li class="belief">
+          <span class="belief__num">01</span>
+          <h3 class="belief__title">One idea, dressed to the teeth.</h3>
+          <p class="belief__body">A story earns one hook — a colour, a silhouette, a single object. Everything else exists to make that one thing unforgettable.</p>
+        </li>
+        <li class="belief">
+          <span class="belief__num">02</span>
+          <h3 class="belief__title">The fitting room is the studio.</h3>
+          <p class="belief__body">The look is decided before the first frame. I over-prepare so the set can stay loose, fast, and a little dangerous.</p>
+        </li>
+        <li class="belief">
+          <span class="belief__num">03</span>
+          <h3 class="belief__title">Restraint is the luxury.</h3>
+          <p class="belief__body">Anyone can add. I subtract until only the pieces that have to be there remain — then push one of them too far on purpose.</p>
+        </li>
+        <li class="belief">
+          <span class="belief__num">04</span>
+          <h3 class="belief__title">Dress the person, not the trend.</h3>
+          <p class="belief__body">Clothes should make the subject more themselves, not more current. Trends date; presence doesn't.</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ============ SERVICES ============ -->
+    <section id="services" class="wrap" data-module="services" data-variant="list">
+      <div class="sec-head fade">
+        <h2>What I Do</h2>
+        <p class="eyebrow">Concept → Final Fitting</p>
+      </div>
+      <div class="svc-list fade">
+        <div class="svc">
+          <h3 class="svc__name">Editorial Styling</h3>
+          <p class="svc__desc">Concept, mood, and styling for magazine stories — from references and sample pulls to on-set direction and final edit.</p>
+          <span class="svc__price">Day &amp; Story Rates</span>
+        </div>
+        <div class="svc">
+          <h3 class="svc__name">Campaign &amp; Brand</h3>
+          <p class="svc__desc">Seasonal campaigns and lookbooks for houses and brands — wardrobe architecture across a full set of looks and channels.</p>
+          <span class="svc__price">Project</span>
+        </div>
+        <div class="svc">
+          <h3 class="svc__name">Creative Direction</h3>
+          <p class="svc__desc">Owning the visual world end to end: casting, location, set, and styling pulled into a single, coherent image.</p>
+          <span class="svc__price">Retainer</span>
+        </div>
+        <div class="svc">
+          <h3 class="svc__name">Personal &amp; Red Carpet</h3>
+          <p class="svc__desc">Dressing talent for press moments and the carpet — a small, discreet client list, by referral only.</p>
+          <span class="svc__price">By Referral</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TESTIMONIAL ============ -->
+    <section class="testi" data-module="testimonials" data-variant="quote_led">
+      <div class="wrap">
+        <div class="sec-head fade">
+          <p class="eyebrow">In Their Words</p>
+        </div>
+        <blockquote class="testi-quote fade">Sienna doesn't follow the moodboard — she <span class="accent">becomes</span> it. The Poolside story shot itself because every look was already a frame.</blockquote>
+        <p class="testi__attr fade"><b>Giulia Ferri</b> — Fashion Director, Vogue Italia</p>
+      </div>
+    </section>
+
+    <!-- ============ CREDENTIALS ============ -->
+    <section class="wrap" data-module="credentials" data-variant="pills">
+      <div class="sec-head fade">
+        <h2>Recognition</h2>
+        <p class="eyebrow">Awards · Memberships</p>
+      </div>
+      <div class="pills fade">
+        <span class="pill"><b>CFDA</b> · Emerging Stylist Nominee 2023</span>
+        <span class="pill">British Fashion Council · Member</span>
+        <span class="pill">Central Saint Martins · BA Fashion</span>
+        <span class="pill"><b>Vogue Italia</b> · Cover, 2024</span>
+        <span class="pill">LVMH Prize · Styling Mentor</span>
+        <span class="pill">Hyères Festival · Jury, 2022</span>
+      </div>
+    </section>
+
+    <!-- ============ SELECTED QUOTE ============ -->
+    <section class="pullquote" data-module="selected_quotes" data-variant="large_type">
+      <div class="wrap fade">
+        <p class="pullquote__mark" aria-hidden="true">&ldquo;</p>
+        <p class="pullquote__text">Make it <span class="accent">looked at</span> — and remembered.</p>
+        <p class="pullquote__cite">Studio motto, taped to the rack since 2014</p>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section id="contact" class="wrap contact" data-module="contact" data-variant="cta_band">
+      <div class="sec-head fade">
+        <h2>Let's Make<br>Something Looked At</h2>
+        <p class="eyebrow">Booking · 2026 Season</p>
+      </div>
+      <p class="contact__lede fade">Editorials, covers, and campaigns — concept through final fitting. Tell me the brand, the story, the date.</p>
+      <div class="contact__links fade">
+        <a class="clink" href="mailto:book@siennamarchetti.com?subject=Booking%20enquiry">
+          <span class="clink__k">Email · Booking</span>
+          <span class="clink__v">book@siennamarchetti.com</span>
+        </a>
+        <a class="clink" href="https://instagram.com/sienna.styles" target="_blank" rel="noopener">
+          <span class="clink__k">Instagram</span>
+          <span class="clink__v">@sienna.styles</span>
+        </a>
+        <a class="clink" href="#" >
+          <span class="clink__k">Portfolio</span>
+          <span class="clink__v">Lookbook PDF →</span>
+        </a>
+      </div>
+    </section>
+
+    <div class="signoff">
+      <p class="signoff__name">Sienna<span class="accent">.</span></p>
+      <p class="signoff__foot">Fashion Stylist &amp; Creative Director · Milan / New York · © 2026</p>
+    </div>
+
+  </main>
+
+  <div class="atlas-photo-toggle" role="group" aria-label="示例照片 / Demo photos"><span>照片 Photos</span><button id="atlasPhotoBtn" type="button" aria-pressed="true">On</button></div>
+  <script>(function(){var b=document.getElementById('atlasPhotoBtn');if(!b)return;function set(on){document.body.classList.toggle('no-photos',!on);b.setAttribute('aria-pressed',on?'true':'false');b.textContent=on?'On':'Off';}b.addEventListener('click',function(){set(document.body.classList.contains('no-photos'));});set(true);})();</script>
+
+  <script>
+    (function(){
+      var els=document.querySelectorAll('.fade');
+      if(!('IntersectionObserver' in window)||window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+        els.forEach(function(e){e.classList.add('in')});
+        return;
+      }
+      var io=new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}
+        });
+      },{threshold:0.16,rootMargin:'0px 0px -8% 0px'});
+      els.forEach(function(e){io.observe(e)});
+    })();
+  </script>
+
+</body>
+</html>

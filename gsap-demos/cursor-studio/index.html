@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>游标 CURSOR — 创意工作室 / Creative Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#f4f1e8;          /* 鲜亮浅墨 */
+    --bg:#0a0a0c;           /* 暗底 */
+    --bg-2:#111014;
+    --panel:#16151b;
+    --line:rgba(244,241,232,.14);
+    --accent:#d9ff1e;       /* 强调:酸性黄绿 */
+    --accent-2:#ff3d6e;     /* 副强调:荧光玫红 */
+    --accent-3:#4d6bff;     /* 三级:电光蓝 */
+    --muted:rgba(244,241,232,.55);
+    --maxw:1320px;
+    --gut:clamp(18px,4vw,64px);
+    --font-d:"Space Grotesk","Noto Sans SC",system-ui,sans-serif;
+    --font-c:"Noto Sans SC",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:var(--font-c);line-height:1.5;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+    cursor:auto;
+  }
+  /* 自定义光标(指针设备才显示) */
+  @media (hover:hover) and (pointer:fine){
+    body{cursor:none}
+    a,button,.magnetic,[data-cursor]{cursor:none}
+  }
+  img{max-width:100%;display:block}
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3{margin:0;font-family:var(--font-d);font-weight:700;line-height:.95}
+  ::selection{background:var(--accent);color:#000}
+  :focus-visible{outline:3px solid var(--accent-3);outline-offset:3px;border-radius:2px}
+
+  .wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:var(--gut)}
+
+  /* ============ 自定义光标 ============ */
+  .cursor,.cursor-dot{
+    position:fixed;top:0;left:0;z-index:9999;pointer-events:none;
+    will-change:transform;
+  }
+  .cursor{
+    width:42px;height:42px;margin:-21px 0 0 -21px;border-radius:50%;
+    border:1.5px solid var(--accent);
+    mix-blend-mode:difference;
+  }
+  .cursor-dot{
+    width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%;
+    background:var(--accent);
+  }
+  .cursor__label{
+    position:absolute;inset:0;display:grid;place-items:center;
+    font-family:var(--font-d);font-size:9px;font-weight:700;letter-spacing:.08em;
+    color:var(--accent);opacity:0;transform:scale(.6);
+  }
+  @media (hover:none),(pointer:coarse){ .cursor,.cursor-dot{display:none} body{cursor:auto} }
+
+  /* ============ 图片拖尾 ============ */
+  .trail{position:fixed;inset:0;z-index:50;pointer-events:none}
+  .trail__img{
+    position:absolute;top:0;left:0;width:160px;aspect-ratio:4/5;
+    margin:-100px 0 0 -80px;border-radius:6px;object-fit:cover;
+    opacity:0;will-change:transform,opacity;
+    box-shadow:0 24px 60px rgba(0,0,0,.5);
+    border:1px solid rgba(255,255,255,.1);
+  }
+
+  /* ============ 顶栏 ============ */
+  .top{
+    position:fixed;top:0;left:0;right:0;z-index:200;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px var(--gut);
+    mix-blend-mode:difference;
+  }
+  .top__brand{font-family:var(--font-d);font-weight:700;font-size:16px;letter-spacing:.14em}
+  .top__brand b{color:var(--accent)}
+  .top__nav{display:flex;gap:clamp(12px,2vw,30px);font-size:13px;font-weight:500;letter-spacing:.04em}
+  .top__nav a{position:relative}
+  @media(max-width:640px){ .top__nav a:nth-child(n+3){display:none} }
+
+  /* ============ HERO ============ */
+  .hero{
+    position:relative;min-height:100svh;
+    display:flex;flex-direction:column;justify-content:center;
+    padding-block:120px 60px;overflow:hidden;
+  }
+  .hero__kicker{
+    font-family:var(--font-d);font-size:13px;font-weight:500;letter-spacing:.28em;
+    text-transform:uppercase;color:var(--accent);margin-bottom:clamp(20px,4vh,46px);
+    display:flex;align-items:center;gap:14px;
+  }
+  .hero__kicker::before{content:"";width:46px;height:1.5px;background:var(--accent)}
+  .hero__title{
+    font-size:clamp(58px,15vw,224px);font-weight:700;letter-spacing:-.03em;
+    text-transform:uppercase;
+  }
+  .hero__title .ln{display:block;overflow:hidden}
+  .hero__title .ln span{display:inline-block;will-change:transform}
+  .hero__title .o{color:var(--bg);-webkit-text-stroke:2px var(--accent)}
+  .hero__sub{
+    margin-top:clamp(26px,5vh,52px);max-width:560px;
+    font-size:clamp(15px,2vw,19px);color:var(--muted);
+  }
+  .hero__sub b{color:var(--ink);font-weight:500}
+  .hero__meta{
+    margin-top:clamp(34px,6vh,64px);display:flex;flex-wrap:wrap;gap:clamp(20px,5vw,72px);
+    font-size:13px;letter-spacing:.05em;
+  }
+  .hero__meta div span{display:block;color:var(--muted);font-size:11px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:5px}
+  .hero__meta div b{font-family:var(--font-d);font-size:clamp(20px,3vw,32px);font-weight:700}
+  .hero__scroll{
+    position:absolute;bottom:26px;left:var(--gut);
+    font-family:var(--font-d);font-size:11px;letter-spacing:.2em;color:var(--muted);
+    display:flex;align-items:center;gap:10px;
+  }
+  .hero__scroll i{width:1px;height:34px;background:var(--accent);transform-origin:top;display:block}
+  /* hero 漂浮的强调光斑 */
+  .hero__blob{
+    position:absolute;border-radius:50%;filter:blur(70px);opacity:.5;z-index:-1;
+    will-change:transform;
+  }
+  .hero__blob.a{width:38vw;height:38vw;background:var(--accent-3);top:-8%;right:-6%}
+  .hero__blob.b{width:26vw;height:26vw;background:var(--accent-2);bottom:4%;left:8%;opacity:.35}
+
+  /* ============ 磁吸 CTA ============ */
+  .cta-row{margin-top:clamp(30px,5vh,56px);display:flex;flex-wrap:wrap;gap:18px}
+  .magnetic{
+    position:relative;display:inline-flex;align-items:center;gap:12px;
+    padding:18px 30px;border-radius:100px;border:1.5px solid var(--line);
+    font-family:var(--font-d);font-weight:500;font-size:15px;letter-spacing:.02em;
+    background:transparent;color:var(--ink);
+    will-change:transform;
+  }
+  .magnetic span{display:inline-block;will-change:transform}
+  .magnetic--solid{background:var(--accent);color:#000;border-color:var(--accent)}
+  .magnetic .dot{width:8px;height:8px;border-radius:50%;background:var(--accent-2)}
+  .magnetic--solid .dot{background:#000}
+
+  /* ============ 区头 ============ */
+  .sec{padding-block:clamp(80px,12vh,160px);position:relative}
+  .sec__head{display:flex;align-items:baseline;justify-content:space-between;gap:20px;margin-bottom:clamp(40px,7vh,84px);flex-wrap:wrap}
+  .sec__no{font-family:var(--font-d);font-size:13px;font-weight:700;color:var(--accent);letter-spacing:.1em}
+  .sec__title{font-size:clamp(34px,7vw,92px);letter-spacing:-.02em;text-transform:uppercase}
+  .sec__title em{font-style:normal;color:var(--accent)}
+
+  /* ============ 项目列表(hover 揭示) ============ */
+  .projects{border-top:1px solid var(--line)}
+  .proj{
+    position:relative;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:18px;
+    padding:clamp(20px,3.5vh,38px) 4px;border-bottom:1px solid var(--line);
+    cursor:none;
+  }
+  @media(hover:none){.proj{cursor:pointer}}
+  .proj__idx{font-family:var(--font-d);font-size:13px;color:var(--muted)}
+  .proj__name{font-family:var(--font-d);font-weight:700;font-size:clamp(24px,5vw,58px);letter-spacing:-.02em;transition:color .35s,transform .45s cubic-bezier(.2,.8,.2,1)}
+  .proj__tags{font-size:12px;color:var(--muted);text-align:right;letter-spacing:.04em;line-height:1.7}
+  @media(max-width:640px){ .proj{grid-template-columns:auto 1fr}.proj__tags{display:none} }
+  .proj::after{
+    content:"";position:absolute;left:0;bottom:-1px;height:2px;width:0;background:var(--accent);
+    transition:width .5s cubic-bezier(.2,.8,.2,1);
+  }
+  .proj:hover .proj__name,.proj:focus-visible .proj__name{color:var(--accent);transform:translateX(18px)}
+  .proj:hover::after,.proj:focus-visible::after{width:100%}
+  .proj__year{position:absolute;right:0;top:50%;transform:translateY(-50%);font-family:var(--font-d);font-size:11px;color:var(--accent-2);opacity:0;transition:opacity .35s}
+  .proj:hover .proj__year{opacity:1}
+  /* 跟随光标的揭示预览 */
+  .reveal{
+    position:fixed;top:0;left:0;z-index:80;width:300px;aspect-ratio:5/4;
+    margin:-130px 0 0 -150px;border-radius:8px;overflow:hidden;pointer-events:none;
+    opacity:0;will-change:transform,opacity;
+    box-shadow:0 30px 70px rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.12);
+  }
+  .reveal img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0}
+  .reveal img.on{opacity:1}
+
+  /* ============ 服务/能力 ============ */
+  .caps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+  .cap{background:var(--bg);padding:clamp(26px,4vw,44px);min-height:240px;display:flex;flex-direction:column;justify-content:space-between;will-change:transform,opacity}
+  .cap__no{font-family:var(--font-d);font-size:12px;color:var(--accent)}
+  .cap h3{font-size:clamp(20px,2.6vw,28px);margin-top:10px}
+  .cap p{color:var(--muted);font-size:14px;margin:14px 0 0}
+  .cap ul{list-style:none;padding:0;margin:18px 0 0;font-size:12px;color:var(--muted);line-height:2;letter-spacing:.03em}
+  .cap li::before{content:"→ ";color:var(--accent)}
+
+  /* ============ 滚动跑马灯 ============ */
+  .marquee{padding-block:clamp(60px,10vh,120px);overflow:hidden;border-block:1px solid var(--line)}
+  .marquee__track{display:flex;gap:.4em;white-space:nowrap;will-change:transform}
+  .marquee__track span{
+    font-family:var(--font-d);font-weight:700;font-size:clamp(48px,12vw,150px);
+    letter-spacing:-.02em;text-transform:uppercase;
+  }
+  .marquee__track span:nth-child(even){color:var(--bg);-webkit-text-stroke:1.5px var(--accent-2)}
+
+  /* ============ 团队 ============ */
+  .team{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:clamp(16px,2vw,28px)}
+  .mate{will-change:transform,opacity}
+  .mate__ph{position:relative;aspect-ratio:3/4;overflow:hidden;border-radius:6px;background:var(--bg-2)}
+  .mate__ph img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05);transition:filter .5s,transform .8s cubic-bezier(.2,.8,.2,1)}
+  .mate:hover .mate__ph img{filter:grayscale(0);transform:scale(1.05)}
+  .mate__name{margin-top:14px;font-family:var(--font-d);font-weight:700;font-size:18px}
+  .mate__role{color:var(--muted);font-size:12px;letter-spacing:.06em;margin-top:3px}
+
+  /* ============ 数字统计 ============ */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(160px,100%),1fr));gap:clamp(20px,3vw,40px);border-top:1px solid var(--line);padding-top:clamp(40px,6vh,70px);margin-top:clamp(50px,8vh,100px)}
+  .stat b{display:block;font-family:var(--font-d);font-weight:700;font-size:clamp(44px,8vw,92px);letter-spacing:-.03em;line-height:1}
+  .stat b i{font-style:normal;color:var(--accent)}
+  .stat span{display:block;color:var(--muted);font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-top:12px}
+
+  /* ============ 末尾 CTA ============ */
+  .end{text-align:center;padding-block:clamp(90px,16vh,200px);position:relative}
+  .end h2{font-size:clamp(44px,12vw,180px);letter-spacing:-.03em;text-transform:uppercase}
+  .end h2 .o{color:var(--bg);-webkit-text-stroke:2px var(--accent-2)}
+  .end p{color:var(--muted);max-width:480px;margin:24px auto 0;font-size:16px}
+
+  /* ============ 页脚 ============ */
+  .foot{border-top:1px solid var(--line);padding-block:40px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;font-size:12px;color:var(--muted);letter-spacing:.05em}
+  .foot a:hover{color:var(--accent)}
+</style>
+</head>
+<body>
+
+<!-- 自定义光标 -->
+<div class="cursor" aria-hidden="true"><span class="cursor__label" id="curLabel">VIEW</span></div>
+<div class="cursor-dot" aria-hidden="true"></div>
+
+<!-- 图片拖尾层 -->
+<div class="trail" aria-hidden="true" id="trail"></div>
+
+<!-- 项目揭示预览 -->
+<figure class="reveal" aria-hidden="true" id="reveal">
+  <img src="/assets/editorial-pink-yacht.webp" alt="" data-i="0">
+  <img src="/assets/editorial-streetwear-trio.webp" alt="" data-i="1">
+  <img src="/assets/poster-joymonger.webp" alt="" data-i="2">
+  <img src="/assets/editorial-dusk-cityscape.webp" alt="" data-i="3">
+  <img src="/assets/illustration-popart-girl.webp" alt="" data-i="4">
+  <img src="/assets/editorial-fashion-mono.webp" alt="" data-i="5">
+</figure>
+
+<header class="top">
+  <div class="top__brand">游标 <b>CURSOR°</b></div>
+  <nav class="top__nav" aria-label="主导航">
+    <a href="#work" class="magnetic-s">作品</a>
+    <a href="#caps" class="magnetic-s">能力</a>
+    <a href="#team" class="magnetic-s">团队</a>
+    <a href="#contact" class="magnetic-s">联系</a>
+  </nav>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero wrap" id="top" aria-label="首屏">
+    <span class="hero__blob a" aria-hidden="true"></span>
+    <span class="hero__blob b" aria-hidden="true"></span>
+    <p class="hero__kicker">上海 / 数字创意工作室 — EST. 2017</p>
+    <h1 class="hero__title">
+      <span class="ln"><span>我们让</span></span>
+      <span class="ln"><span>品牌<span class="o">动</span>起来</span></span>
+    </h1>
+    <p class="hero__sub"><b>游标 CURSOR°</b> 是一支由设计师、动效工程师与策略人组成的小队。我们把抽象的品牌主张，翻译成可被指尖触碰、会回应、有节奏感的数字体验。</p>
+    <div class="cta-row">
+      <a href="#work" class="magnetic magnetic--solid"><span>看看我们做了什么</span><span class="dot" aria-hidden="true"></span></a>
+      <a href="#contact" class="magnetic"><span>开始一个项目</span></a>
+    </div>
+    <div class="hero__meta">
+      <div><span>聚焦</span><b>品牌·动效·交互</b></div>
+      <div><span>已交付</span><b>148 个项目</b></div>
+      <div><span>合作方</span><b>11 国客户</b></div>
+    </div>
+    <div class="hero__scroll" aria-hidden="true"><i></i>滚动探索 SCROLL</div>
+  </section>
+
+  <!-- 跑马灯 -->
+  <section class="marquee" aria-hidden="true">
+    <div class="marquee__track" id="mq">
+      <span>品牌识别</span><span>BRANDING</span><span>动效设计</span><span>MOTION</span><span>交互体验</span><span>INTERACTION</span><span>品牌识别</span><span>BRANDING</span><span>动效设计</span><span>MOTION</span><span>交互体验</span><span>INTERACTION</span>
+    </div>
+  </section>
+
+  <!-- 精选项目 -->
+  <section class="sec wrap" id="work" aria-label="精选项目">
+    <div class="sec__head">
+      <h2 class="sec__title">精选<em>作品</em></h2>
+      <span class="sec__no">/ 01 — SELECTED WORK</span>
+    </div>
+    <div class="projects" id="projects">
+      <a class="proj" href="#" data-img="0" tabindex="0">
+        <span class="proj__idx">01</span>
+        <span class="proj__name">蔚蓝远航</span>
+        <span class="proj__tags">品牌系统 / 网站<br>游艇生活方式</span>
+        <span class="proj__year" aria-hidden="true">2024</span>
+      </a>
+      <a class="proj" href="#" data-img="1" tabindex="0">
+        <span class="proj__idx">02</span>
+        <span class="proj__name">街头档案 03</span>
+        <span class="proj__tags">视觉识别 / 拍摄<br>潮流服饰</span>
+        <span class="proj__year" aria-hidden="true">2024</span>
+      </a>
+      <a class="proj" href="#" data-img="2" tabindex="0">
+        <span class="proj__idx">03</span>
+        <span class="proj__name">乐之贩 JOYMONGER</span>
+        <span class="proj__tags">海报系统 / 字体<br>音乐厂牌</span>
+        <span class="proj__year" aria-hidden="true">2023</span>
+      </a>
+      <a class="proj" href="#" data-img="3" tabindex="0">
+        <span class="proj__idx">04</span>
+        <span class="proj__name">暮色都市</span>
+        <span class="proj__tags">交互装置 / 动效<br>城市文旅</span>
+        <span class="proj__year" aria-hidden="true">2023</span>
+      </a>
+      <a class="proj" href="#" data-img="4" tabindex="0">
+        <span class="proj__idx">05</span>
+        <span class="proj__name">波普女孩</span>
+        <span class="proj__tags">数字插画 / IP<br>美妆品牌</span>
+        <span class="proj__year" aria-hidden="true">2022</span>
+      </a>
+      <a class="proj" href="#" data-img="5" tabindex="0">
+        <span class="proj__idx">06</span>
+        <span class="proj__name">黑白时装志</span>
+        <span class="proj__tags">编辑设计 / 排版<br>时尚刊物</span>
+        <span class="proj__year" aria-hidden="true">2022</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- 能力 -->
+  <section class="sec wrap" id="caps" aria-label="我们能做什么">
+    <div class="sec__head">
+      <h2 class="sec__title">我们<em>能做</em></h2>
+      <span class="sec__no">/ 02 — CAPABILITIES</span>
+    </div>
+    <div class="caps">
+      <article class="cap">
+        <div class="cap__no">A.</div>
+        <h3>品牌识别<br>Brand Identity</h3>
+        <p>从命名到标志、从色彩到声音，搭一套能长大的视觉系统。</p>
+        <ul><li>标志与字体</li><li>视觉规范</li><li>品牌指南</li></ul>
+      </article>
+      <article class="cap">
+        <div class="cap__no">B.</div>
+        <h3>动效设计<br>Motion Design</h3>
+        <p>让界面里的每一次过渡都有重量、有弹性、有性格。</p>
+        <ul><li>界面动效</li><li>品牌动画</li><li>动态海报</li></ul>
+      </article>
+      <article class="cap">
+        <div class="cap__no">C.</div>
+        <h3>交互体验<br>Interaction</h3>
+        <p>把光标、滚动与手势变成叙事的一部分，体验即产品。</p>
+        <ul><li>沉浸式官网</li><li>互动装置</li><li>原型与开发</li></ul>
+      </article>
+    </div>
+
+    <div class="stats" id="stats" aria-label="工作室数据">
+      <div class="stat"><b data-to="148"><i>0</i></b><span>交付项目</span></div>
+      <div class="stat"><b data-to="11"><i>0</i></b><span>合作国家</span></div>
+      <div class="stat"><b data-to="29"><i>0</i></b><span>设计奖项</span></div>
+      <div class="stat"><b data-to="8"><i>0</i></b><span>核心成员</span></div>
+    </div>
+  </section>
+
+  <!-- 团队 -->
+  <section class="sec wrap" id="team" aria-label="团队">
+    <div class="sec__head">
+      <h2 class="sec__title">这群<em>人</em></h2>
+      <span class="sec__no">/ 03 — THE STUDIO</span>
+    </div>
+    <div class="team" id="team-grid">
+      <figure class="mate">
+        <div class="mate__ph"><img src="/assets/portrait-woman-studio.webp" alt="创意总监 林见微的肖像"></div>
+        <figcaption><div class="mate__name">林见微</div><div class="mate__role">创意总监 / Creative Director</div></figcaption>
+      </figure>
+      <figure class="mate">
+        <div class="mate__ph"><img src="/assets/portrait-asian-man-editorial.webp" alt="动效负责人 周也行的肖像"></div>
+        <figcaption><div class="mate__name">周也行</div><div class="mate__role">动效负责人 / Head of Motion</div></figcaption>
+      </figure>
+      <figure class="mate">
+        <div class="mate__ph"><img src="/assets/portrait-film-woman-standing.webp" alt="设计主管 苏砚的肖像"></div>
+        <figcaption><div class="mate__name">苏砚</div><div class="mate__role">设计主管 / Design Lead</div></figcaption>
+      </figure>
+      <figure class="mate">
+        <div class="mate__ph"><img src="/assets/portrait-man-vintage.webp" alt="技术合伙人 何川的肖像"></div>
+        <figcaption><div class="mate__name">何川</div><div class="mate__role">技术合伙人 / Tech Partner</div></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 末尾 CTA -->
+  <section class="end wrap" id="contact" aria-label="联系我们">
+    <h2 class="end-h">来聊聊<br>你的<span class="o">下一步</span></h2>
+    <p>无论是一次彻底的品牌焕新，还是一个让人会心一笑的微交互——把想法丢给我们。</p>
+    <div class="cta-row" style="justify-content:center">
+      <a href="mailto:hi@cursor.studio" class="magnetic magnetic--solid"><span>hi@cursor.studio</span><span class="dot" aria-hidden="true"></span></a>
+    </div>
+  </section>
+</main>
+
+<footer class="foot wrap">
+  <span>© 2026 游标 CURSOR° STUDIO · 上海市静安区江宁路 808 号</span>
+  <span><a href="#">Instagram</a> · <a href="#">Behance</a> · <a href="#">微信公众号</a></span>
+</footer>
+
+<!-- ===== GSAP：先 core，再插件，最后 register ===== -->
+<script src="/vendor/gsap/gsap.min.js"></script>
+<script src="/vendor/gsap/Observer.min.js"></script>
+<script src="/vendor/gsap/InertiaPlugin.min.js"></script>
+<script>
+gsap.registerPlugin(Observer, InertiaPlugin);
+
+const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const fine   = window.matchMedia("(hover:hover) and (pointer:fine)").matches;
+
+/* ---------- HERO 入场 ---------- */
+(function heroIntro(){
+  const lines = gsap.utils.toArray(".hero__title .ln span");
+  if(reduce){
+    gsap.set([lines, ".hero__kicker", ".hero__sub", ".cta-row", ".hero__meta div"], {opacity:1, y:0});
+    return;
+  }
+  const tl = gsap.timeline({defaults:{ease:"power3.out"}, delay:.15});
+  tl.from(".hero__kicker", {opacity:0, y:14, duration:.6})
+    .from(lines, {yPercent:115, duration:1, stagger:.12, ease:"power4.out"}, "-=.3")
+    .from(".hero__sub", {opacity:0, y:20, duration:.7}, "-=.5")
+    .from(".cta-row .magnetic", {opacity:0, y:18, duration:.6, stagger:.1}, "-=.4")
+    .from(".hero__meta div", {opacity:0, y:18, duration:.6, stagger:.1}, "-=.4")
+    .from(".hero__scroll", {opacity:0, duration:.6}, "-=.2");
+  // scroll 提示线脉动
+  gsap.to(".hero__scroll i", {scaleY:.3, transformOrigin:"top", repeat:-1, yoyo:true, duration:.9, ease:"power1.inOut"});
+})();
+
+const mm = gsap.matchMedia();
+
+/* =====================================================================
+   指针设备 + 非 reduced：自定义光标 / 磁吸 / 拖尾 / 揭示 / 视差
+   ===================================================================== */
+mm.add("(hover:hover) and (pointer:fine) and (prefers-reduced-motion: no-preference)", () => {
+  const cursor = document.querySelector(".cursor");
+  const dot    = document.querySelector(".cursor-dot");
+  const label  = document.getElementById("curLabel");
+
+  // 用 quickTo 平滑跟随
+  const cx = gsap.quickTo(cursor, "x", {duration:.5, ease:"power3"});
+  const cy = gsap.quickTo(cursor, "y", {duration:.5, ease:"power3"});
+  const dx = gsap.quickTo(dot, "x", {duration:.12, ease:"power3"});
+  const dy = gsap.quickTo(dot, "y", {duration:.12, ease:"power3"});
+
+  let px = window.innerWidth/2, py = window.innerHeight/2;
+  const lx = gsap.quickSetter(label, "opacity");
+  const ls = gsap.quickTo(label, "scale", {duration:.3, ease:"back.out(2)"});
+
+  /* ---- 图片拖尾 ---- */
+  const trailEl = document.getElementById("trail");
+  const TRAIL_SRC = [
+    "editorial-pink-sunglasses","illustration-travel-woman","portrait-magnolia-redhead",
+    "editorial-streetwear-trio-sky","illustration-aviator-girl","portrait-film-woman-tee",
+    "editorial-bloom-flowers","illustration-popart-girl"
+  ];
+  const trailImgs = TRAIL_SRC.map((n,i)=>{
+    const im = document.createElement("img");
+    im.className="trail__img"; im.src=`/assets/${n}.webp`; im.alt="";
+    trailEl.appendChild(im); return im;
+  });
+  let lastDrop = 0, dropIdx = 0, moveDist = 0, lastX = px, lastY = py;
+  let velX = 0, velY = 0; // 指针瞬时速度(px/帧 → 用于惯性抛掷)
+
+  // 每个拖尾图被丢下后，按当前指针速度用 InertiaPlugin 抛出去并滑停
+  function dropTrail(x,y){
+    const im = trailImgs[dropIdx % trailImgs.length];
+    dropIdx++;
+    gsap.killTweensOf(im);
+    gsap.set(im, {x, y, scale:.55, rotation: gsap.utils.random(-14,14), opacity:0});
+    gsap.to(im, {opacity:1, scale:1, duration:.4, ease:"power3.out"});
+    gsap.to(im, {opacity:0, scale:.92, duration:.7, delay:.45, ease:"power2.in"});
+    // 惯性抛掷：沿指针运动方向以当前速度滑行并自然减速到停
+    const vx = gsap.utils.clamp(-2600, 2600, velX * 60);
+    const vy = gsap.utils.clamp(-2600, 2600, velY * 60);
+    gsap.to(im, {
+      inertia:{ x:{velocity:vx}, y:{velocity:vy}, resistance: 420 },
+      rotation:`+=${gsap.utils.random(-40,40)}`,
+      duration: .9
+    });
+  }
+
+  /* ---- 项目揭示 ---- */
+  const reveal = document.getElementById("reveal");
+  const revImgs = gsap.utils.toArray("#reveal img");
+  const rx = gsap.quickTo(reveal, "x", {duration:.5, ease:"power3"});
+  const ry = gsap.quickTo(reveal, "y", {duration:.5, ease:"power3"});
+  const rrot = gsap.quickTo(reveal, "rotation", {duration:.6, ease:"power3"});
+  let revealOn = false;
+
+  document.querySelectorAll(".proj").forEach(p=>{
+    const idx = +p.dataset.img;
+    p.addEventListener("mouseenter", ()=>{
+      revealOn = true;
+      revImgs.forEach(im=>im.classList.toggle("on", +im.dataset.i===idx));
+      gsap.to(reveal, {opacity:1, scale:1, duration:.4, ease:"power3.out"});
+      gsap.fromTo(reveal, {scale:.85}, {scale:1, duration:.5, ease:"power3.out"});
+      gsap.to(cursor, {scale:1.6, duration:.3});
+      ls(1); lx(1);
+    });
+    p.addEventListener("mouseleave", ()=>{
+      revealOn = false;
+      gsap.to(reveal, {opacity:0, duration:.3, ease:"power2.in"});
+      gsap.to(cursor, {scale:1, duration:.3});
+      ls(.6); lx(0);
+    });
+    p.addEventListener("mousemove", ()=>{
+      rrot(gsap.utils.clamp(-8,8,(px - lastX)*0.6));
+    });
+  });
+
+  /* ---- Observer：统一指针输入，驱动光标/拖尾/揭示 ---- */
+  const obs = Observer.create({
+    target: window,
+    type: "pointer,touch",
+    onMove(self){
+      px = self.x; py = self.y;
+      cx(px); cy(py); dx(px); dy(py);
+      rx(px); ry(py);
+      // 瞬时速度(供 InertiaPlugin 抛掷拖尾用)，做一点平滑
+      velX = velX*0.4 + (px-lastX)*0.6;
+      velY = velY*0.4 + (py-lastY)*0.6;
+      // 累积移动距离 → 定时撒图片拖尾
+      moveDist += Math.hypot(px-lastX, py-lastY);
+      const now = performance.now();
+      if(moveDist > 90 && now - lastDrop > 70){
+        dropTrail(px, py); lastDrop = now; moveDist = 0;
+      }
+      lastX = px; lastY = py;
+    },
+    onHover(){ gsap.to([cursor,dot], {opacity:1, duration:.3}); },
+    onHoverEnd(){ gsap.to([cursor,dot], {opacity:0, duration:.3}); }
+  });
+  gsap.set([cursor,dot], {x:px, y:py, opacity:0});
+
+  /* ---- 磁吸按钮 ---- */
+  const RADIUS = 90;
+  document.querySelectorAll(".magnetic").forEach(btn=>{
+    const inner = btn.querySelector("span");
+    const qx = gsap.quickTo(btn,"x",{duration:.4, ease:"power3"});
+    const qy = gsap.quickTo(btn,"y",{duration:.4, ease:"power3"});
+    const ix = inner ? gsap.quickTo(inner,"x",{duration:.5, ease:"power3"}) : null;
+    const iy = inner ? gsap.quickTo(inner,"y",{duration:.5, ease:"power3"}) : null;
+    function onMove(e){
+      const r = btn.getBoundingClientRect();
+      const mx = e.clientX - (r.left + r.width/2);
+      const my = e.clientY - (r.top + r.height/2);
+      const dist = Math.hypot(mx,my);
+      const pull = gsap.utils.clamp(0,1, 1 - dist/(RADIUS+r.width/2));
+      qx(mx*0.4*pull); qy(my*0.5*pull);
+      if(ix){ ix(mx*0.18*pull); iy(my*0.22*pull); }
+    }
+    btn.addEventListener("pointermove", onMove);
+    btn.addEventListener("pointerenter", ()=>{ gsap.to(cursor,{scale:2.1, borderColor:"var(--accent-2)", duration:.3}); });
+    btn.addEventListener("pointerleave", ()=>{
+      qx(0); qy(0); if(ix){ix(0);iy(0);}
+      gsap.to(cursor,{scale:1, borderColor:"var(--accent)", duration:.35});
+    });
+  });
+  // 顶栏小链接的轻磁吸（仅光标态变化）
+  document.querySelectorAll(".magnetic-s").forEach(a=>{
+    a.addEventListener("pointerenter", ()=> gsap.to(cursor,{scale:1.5,duration:.3}));
+    a.addEventListener("pointerleave", ()=> gsap.to(cursor,{scale:1,duration:.3}));
+  });
+
+  /* ---- HERO 光斑随指针视差 + 慢漂浮 ---- */
+  const blobA = document.querySelector(".hero__blob.a");
+  const blobB = document.querySelector(".hero__blob.b");
+  gsap.to(blobA, {x:"+=40", y:"+=30", duration:9, repeat:-1, yoyo:true, ease:"sine.inOut"});
+  gsap.to(blobB, {x:"-=50", y:"-=24", duration:11, repeat:-1, yoyo:true, ease:"sine.inOut"});
+  const baX = gsap.quickTo(blobA,"xPercent",{duration:1.4,ease:"power2"});
+  const baY = gsap.quickTo(blobA,"yPercent",{duration:1.4,ease:"power2"});
+  window.addEventListener("pointermove", e=>{
+    const nx = (e.clientX/window.innerWidth - .5);
+    const ny = (e.clientY/window.innerHeight - .5);
+    baX(nx*-6); baY(ny*-6);
+  });
+
+  return () => { obs && obs.kill(); trailEl.innerHTML=""; };
+});
+
+/* =====================================================================
+   滚动驱动效果（自写 scroll 监听 + viewport 判定，无 ScrollTrigger）
+   reduced 时直接渲染终态
+   ===================================================================== */
+mm.add("(prefers-reduced-motion: no-preference)", () => {
+
+  /* ---- 跑马灯：滚动方向影响速度，基础匀速 ---- */
+  const mq = document.getElementById("mq");
+  let mqX = 0, mqSpeed = 0.6, dir = 1, last = 0;
+  const half = () => mq.scrollWidth/2;
+  const mqTick = (t)=>{
+    const dt = Math.min(40, t - last) || 16; last = t;
+    mqX -= mqSpeed * dir * dt/16;
+    const h = half();
+    if(mqX <= -h) mqX += h;
+    if(mqX > 0) mqX -= h;
+    gsap.set(mq, {x:mqX});
+  };
+  gsap.ticker.add(mqTick);
+
+  // Observer：滚动方向改变跑马灯方向（演示 Observer 的 onUp/onDown）
+  const scrollObs = Observer.create({
+    type:"wheel,touch,pointer",
+    onChangeY(self){ dir = self.deltaY < 0 ? -1 : 1; },
+  });
+
+  /* ---- 通用入场：进视口时 reveal ---- */
+  const groups = [
+    {sel:".sec__head", v:{y:40, opacity:0, duration:.8}},
+    {sel:".proj",      v:{y:30, opacity:0, duration:.7, stagger:.06}},
+    {sel:".cap",       v:{y:50, opacity:0, duration:.8, stagger:.1}},
+    {sel:".mate",      v:{y:50, opacity:0, duration:.8, stagger:.1}},
+    {sel:".end-h",     v:{y:60, opacity:0, duration:1}},
+  ];
+  const watched = [];
+  groups.forEach(g=>{
+    gsap.utils.toArray(g.sel).forEach(el=>{
+      gsap.set(el, {opacity:0});
+      watched.push({el, v:g.v, done:false});
+    });
+  });
+  function inView(el){
+    const r = el.getBoundingClientRect();
+    return r.top < window.innerHeight*0.88 && r.bottom > 0;
+  }
+  function checkReveals(){
+    watched.forEach(w=>{
+      if(!w.done && inView(w.el)){
+        w.done = true;
+        gsap.to(w.el, {...w.v, opacity:1, y:0, ease:"power3.out"});
+      }
+    });
+    // 末尾大标题入场后清单完成则可减少检查；保持简单
+  }
+
+  /* ---- 数字滚动计数 ---- */
+  let statsDone = false;
+  function checkStats(){
+    if(statsDone) return;
+    const box = document.getElementById("stats");
+    if(!box) return;
+    const r = box.getBoundingClientRect();
+    if(r.top < window.innerHeight*0.85){
+      statsDone = true;
+      document.querySelectorAll("#stats .stat b").forEach(b=>{
+        const i = b.querySelector("i");
+        const to = +b.dataset.to;
+        const o = {v:0};
+        gsap.to(o, {v:to, duration:1.6, ease:"power2.out",
+          onUpdate(){ i.textContent = Math.round(o.v); }});
+      });
+    }
+  }
+
+  /* ---- 团队肖像视差 ---- */
+  const mates = gsap.utils.toArray(".mate__ph img");
+  function parallax(){
+    mates.forEach(m=>{
+      const r = m.parentElement.getBoundingClientRect();
+      const c = (r.top + r.height/2) - window.innerHeight/2;
+      gsap.set(m, {y: gsap.utils.clamp(-26,26, c*-0.05)});
+    });
+  }
+
+  let raf=false;
+  function onScroll(){
+    if(raf) return; raf=true;
+    requestAnimationFrame(()=>{
+      checkReveals(); checkStats(); parallax(); raf=false;
+    });
+  }
+  window.addEventListener("scroll", onScroll, {passive:true});
+  window.addEventListener("resize", onScroll, {passive:true});
+  // 初始
+  checkReveals(); checkStats(); parallax();
+
+  return () => {
+    gsap.ticker.remove(mqTick);
+    scrollObs && scrollObs.kill();
+    window.removeEventListener("scroll", onScroll);
+    window.removeEventListener("resize", onScroll);
+  };
+});
+
+/* ---- reduced：渲染终态 ---- */
+mm.add("(prefers-reduced-motion: reduce)", () => {
+  gsap.set(".sec__head,.proj,.cap,.mate,.end-h", {opacity:1, y:0});
+  document.querySelectorAll("#stats .stat b").forEach(b=>{
+    b.querySelector("i").textContent = b.dataset.to;
+  });
+});
+</script>
+</body>
+</html>

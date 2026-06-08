@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>download_resume · specimen sheet</title>
+<style>
+:root{--bg:#ffffff;--surface:#f6f6f4;--surface-2:#efefea;--ink:#191917;--muted:#6b6b67;--subtle:#9a9a94;--accent:#2f56ff;--accent-soft:#e9eefc;--hairline:#e7e7e2;--ink-line:#191917;--ok:#1f7a44;--radius:12px;--pad:24px}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:15px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+.mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+
+/* ---------- page shell ---------- */
+.sheet{
+  max-width:920px;
+  margin:0 auto;
+  padding:40px 24px 80px;
+}
+
+/* ---------- header ---------- */
+.sheet-head{
+  border-bottom:1px solid var(--hairline);
+  padding-bottom:20px;
+  margin-bottom:40px;
+}
+.sheet-head h1{
+  font-family:Georgia,"Times New Roman",serif;
+  font-weight:600;
+  font-size:26px;
+  letter-spacing:-0.01em;
+  margin:0 0 10px;
+}
+.sheet-meta{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:10px;
+  font-size:13px;
+  color:var(--muted);
+}
+.sheet-meta .dot{color:var(--subtle)}
+.sheet-meta .cat{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:12px;
+  color:var(--ink);
+  background:var(--surface-2);
+  border-radius:6px;
+  padding:2px 8px;
+}
+.sheet-meta .count{
+  color:var(--muted);
+}
+
+/* ---------- variant block ---------- */
+.variant{margin-bottom:44px}
+.variant:last-child{margin-bottom:0}
+.variant-label{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:12px;
+  margin-bottom:12px;
+}
+.variant-id{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:12.5px;
+  color:var(--ink);
+  background:var(--surface-2);
+  border:1px solid var(--hairline);
+  border-radius:6px;
+  padding:3px 9px;
+}
+.variant-hint{
+  font-size:13px;
+  color:var(--muted);
+}
+
+/* ---------- stage ---------- */
+.stage{
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  background:var(--surface);
+  padding:48px var(--pad);
+  display:flex;
+  justify-content:center;
+}
+
+/* ===================================================
+   VARIANT: button — download CTA w/ format + updated date
+   =================================================== */
+.dl{
+  display:inline-flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:9px;
+  max-width:340px;
+}
+.dl-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:12px;
+  font:inherit;
+  font-weight:550;
+  font-size:15px;
+  color:#fff;
+  background:var(--accent);
+  border:1px solid var(--accent);
+  border-radius:10px;
+  padding:13px 20px 13px 16px;
+  cursor:pointer;
+  text-decoration:none;
+  box-shadow:0 1px 2px rgba(25,25,23,.10), 0 4px 12px rgba(47,86,255,.16);
+  transition:transform .16s ease, box-shadow .16s ease, background-color .16s ease;
+}
+.dl-btn:hover{
+  background:#2547e6;
+  box-shadow:0 1px 2px rgba(25,25,23,.12), 0 8px 22px rgba(47,86,255,.26);
+  transform:translateY(-1px);
+}
+.dl-btn:active{
+  transform:translateY(0);
+  box-shadow:0 1px 2px rgba(25,25,23,.14);
+}
+.dl-btn:focus-visible{
+  outline:2px solid var(--ink-line);
+  outline-offset:3px;
+}
+.dl-ico{
+  flex:none;
+  display:grid;
+  place-items:center;
+  width:30px;
+  height:30px;
+  border-radius:7px;
+  background:rgba(255,255,255,.16);
+}
+.dl-ico svg{display:block}
+.dl-btn-text{display:flex;flex-direction:column;line-height:1.2;text-align:left}
+.dl-btn-text .t1{font-size:15px}
+.dl-btn-text .t2{font-size:11.5px;font-weight:450;opacity:.82;margin-top:2px}
+
+/* meta line: format · size · updated */
+.dl-meta{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:7px;
+  padding-left:2px;
+  font-size:12.5px;
+  color:var(--muted);
+}
+.dl-meta .fmt{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.02em;
+  color:var(--ink);
+  background:var(--surface-2);
+  border:1px solid var(--hairline);
+  border-radius:5px;
+  padding:1px 6px;
+}
+.dl-meta .sep{color:var(--subtle)}
+.dl-meta .updated{display:inline-flex;align-items:center;gap:5px}
+.dl-meta .updated .ok{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--ok);
+  flex:none;
+}
+
+@media (max-width:420px){
+  .stage{padding:36px 16px}
+  .dl{max-width:100%}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none !important}
+  .dl-btn:hover{transform:none}
+}
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header class="sheet-head">
+    <h1>Download resume / 下载简历</h1>
+    <div class="sheet-meta">
+      <span class="cat mono">conversion</span>
+      <span class="dot">·</span>
+      <span>module <span class="mono">download_resume</span></span>
+      <span class="dot">·</span>
+      <span class="count">1 variant</span>
+    </div>
+  </header>
+
+  <!-- VARIANT 1 -->
+  <section class="variant" aria-labelledby="v-button">
+    <div class="variant-label">
+      <span class="variant-id" id="v-button">button</span>
+      <span class="variant-hint">按钮（含格式 + 更新日期）</span>
+    </div>
+
+    <div class="stage">
+      <div class="dl">
+        <a class="dl-btn" href="#" download="maya-chen-resume.pdf" aria-describedby="dl-meta-1">
+          <span class="dl-ico" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 2v7.4" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M4.8 7.2 8 10.4l3.2-3.2" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M3 12.6h10" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span class="dl-btn-text">
+            <span class="t1">Download résumé</span>
+            <span class="t2">Maya Chen · Product Designer</span>
+          </span>
+        </a>
+
+        <p class="dl-meta" id="dl-meta-1">
+          <span class="fmt">PDF</span>
+          <span class="sep" aria-hidden="true">·</span>
+          <span>248&nbsp;KB</span>
+          <span class="sep" aria-hidden="true">·</span>
+          <span class="updated">
+            <span class="ok" aria-hidden="true"></span>
+            Updated <time datetime="2026-05-21">May 21, 2026</time>
+          </span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>

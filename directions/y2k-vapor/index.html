@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Vex Romero — DJ &amp; Electronic Producer</title>
+<meta name="description" content="Vex Romero — DJ &amp; producer. Sound for 3am rooms and neon highways. 3 EPs, 2M+ streams, residencies in Berlin and Tokyo." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --base:#06060c; --base-2:#0c0a18;
+    --panel:rgba(18,16,34,0.55);
+    --chrome-hi:#f4f7ff; --chrome-lo:#7e87a8;
+    --ink:#e8ecff; --ink-muted:#9aa0c7; --ink-subtle:#5b5f86;
+    --cyan:#00e5ff; --magenta:#ff2bd6;
+    --grid:rgba(0,229,255,0.22);
+    --hairline:rgba(120,130,200,0.18);
+    --section:128px; --block:44px; --tight:16px;
+    --r-sm:6px; --r-md:16px; --r-lg:28px;
+    --font-display:'Orbitron','Space Grotesk',sans-serif;
+    --font-body:'Space Grotesk',system-ui,sans-serif;
+    --font-mono:'Space Mono',ui-monospace,monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--base);
+    color:var(--ink);
+    font-family:var(--font-body);
+    font-size:17px; line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  /* ---------- Background stack: gradient + perspective grid + blobs + scanlines ---------- */
+  .bg{position:fixed;inset:0;z-index:-3;pointer-events:none;overflow:hidden;
+    background:
+      radial-gradient(120% 80% at 50% -10%, #14102e 0%, var(--base-2) 42%, var(--base) 78%);
+  }
+  .grid-floor{
+    position:fixed;left:-20%;right:-20%;bottom:-12%;height:62vh;z-index:-2;pointer-events:none;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size:46px 46px;
+    transform:perspective(420px) rotateX(70deg);
+    transform-origin:50% 100%;
+    -webkit-mask-image:linear-gradient(to top, #000 0%, rgba(0,0,0,.5) 36%, transparent 78%);
+    mask-image:linear-gradient(to top, #000 0%, rgba(0,0,0,.5) 36%, transparent 78%);
+    opacity:.9;
+  }
+  .grid-floor::after{ /* horizon glow line */
+    content:"";position:absolute;left:30%;right:30%;top:-2px;height:2px;
+    background:linear-gradient(90deg,transparent,var(--cyan),var(--magenta),transparent);
+    filter:blur(2px);opacity:.8;
+  }
+  .blob{position:fixed;z-index:-2;border-radius:50%;filter:blur(70px);opacity:.5;pointer-events:none;
+    will-change:transform;}
+  .blob.b1{width:46vw;height:46vw;left:-8vw;top:-6vw;
+    background:radial-gradient(circle at 40% 40%, var(--magenta), transparent 62%);
+    animation:drift1 22s ease-in-out infinite;}
+  .blob.b2{width:40vw;height:40vw;right:-10vw;top:8vh;
+    background:radial-gradient(circle at 60% 40%, var(--cyan), transparent 62%);
+    animation:drift2 26s ease-in-out infinite;}
+  .blob.b3{width:34vw;height:34vw;left:30vw;bottom:-12vw;
+    background:radial-gradient(circle at 50% 50%, #6a2bff, transparent 64%);
+    opacity:.35;animation:drift1 30s ease-in-out infinite reverse;}
+  @keyframes drift1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(6vw,4vh) scale(1.12)}}
+  @keyframes drift2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-7vw,5vh) scale(1.08)}}
+  .scanlines{position:fixed;inset:0;z-index:-1;pointer-events:none;mix-blend-mode:overlay;opacity:.5;
+    background:repeating-linear-gradient(to bottom, rgba(255,255,255,.05) 0 1px, transparent 1px 3px);
+    animation:scan 7s linear infinite;}
+  @keyframes scan{from{background-position:0 0}to{background-position:0 120px}}
+  .noise{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.04;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+
+  /* ---------- Layout ---------- */
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+  section{padding-block:var(--section)}
+  .eyebrow{font-family:var(--font-mono);font-size:12px;font-weight:700;letter-spacing:4px;
+    text-transform:uppercase;color:var(--cyan);
+    text-shadow:0 0 12px rgba(0,229,255,.5);}
+  .section-label{display:flex;align-items:center;gap:14px;margin-bottom:var(--block)}
+  .section-label .num{font-family:var(--font-mono);font-size:12px;color:var(--ink-subtle);letter-spacing:2px}
+  .section-label h2{font-family:var(--font-display);font-weight:700;font-size:clamp(20px,3.4vw,30px);
+    letter-spacing:1px;text-transform:uppercase;}
+  .section-label .rule{flex:1;height:1px;background:linear-gradient(90deg,var(--hairline),transparent)}
+
+  /* ---------- Chrome text ---------- */
+  .chrome{
+    background:linear-gradient(180deg,#ffffff 0%,#cdd6f5 38%,#7e87a8 52%,#eef3ff 70%,#9fb6ff 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    -webkit-text-fill-color:transparent;
+    filter:drop-shadow(0 1px 0 rgba(0,0,0,.4));
+  }
+
+  /* ---------- Top nav ---------- */
+  header.nav{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;
+    padding:22px 24px;max-width:1180px;margin:0 auto}
+  .brand{font-family:var(--font-display);font-weight:900;letter-spacing:3px;font-size:15px;text-transform:uppercase}
+  .brand .dot{color:var(--magenta);text-shadow:0 0 10px var(--magenta)}
+  .nav nav{display:flex;gap:22px;font-family:var(--font-mono);font-size:12px;letter-spacing:2px;text-transform:uppercase}
+  .nav nav a{color:var(--ink-muted);text-decoration:none;transition:color .2s,text-shadow .2s}
+  .nav nav a:hover,.nav nav a:focus-visible{color:var(--cyan);text-shadow:0 0 10px rgba(0,229,255,.6)}
+
+  /* ---------- Hero ---------- */
+  .hero{padding-top:48px;padding-bottom:var(--section)}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+  .hero-copy .eyebrow{display:block;margin-bottom:20px}
+  .hero h1{font-family:var(--font-display);font-weight:800;text-transform:uppercase;
+    font-size:clamp(48px,9vw,92px);line-height:.9;letter-spacing:2px;margin-bottom:22px}
+  .glitch{position:relative;display:inline-block}
+  .glitch::before,.glitch::after{content:attr(data-text);position:absolute;left:0;top:0;width:100%;
+    background:inherit;-webkit-background-clip:text;background-clip:text;color:transparent;
+    -webkit-text-fill-color:transparent;clip-path:inset(0);pointer-events:none}
+  .glitch::before{color:var(--cyan);-webkit-text-fill-color:var(--cyan);text-shadow:0 0 8px var(--cyan);
+    animation:glitchA 3.6s steps(2,end) infinite;mix-blend-mode:screen;opacity:.55}
+  .glitch::after{color:var(--magenta);-webkit-text-fill-color:var(--magenta);text-shadow:0 0 8px var(--magenta);
+    animation:glitchB 3.6s steps(2,end) infinite;mix-blend-mode:screen;opacity:.55}
+  @keyframes glitchA{0%,72%,100%{transform:translate(0,0);clip-path:inset(0 0 0 0)}
+    74%{transform:translate(-3px,-1px);clip-path:inset(12% 0 58% 0)}
+    78%{transform:translate(2px,1px);clip-path:inset(62% 0 8% 0)}
+    82%{transform:translate(-2px,0);clip-path:inset(34% 0 40% 0)}}
+  @keyframes glitchB{0%,72%,100%{transform:translate(0,0);clip-path:inset(0 0 0 0)}
+    74%{transform:translate(3px,1px);clip-path:inset(50% 0 22% 0)}
+    78%{transform:translate(-2px,-1px);clip-path:inset(8% 0 70% 0)}
+    82%{transform:translate(2px,0);clip-path:inset(40% 0 28% 0)}}
+  .hero .lede{font-size:clamp(19px,2.3vw,22px);color:var(--ink-muted);max-width:30ch;
+    line-height:1.5;margin-bottom:14px;font-weight:400}
+  .hero .lede em{font-style:normal;color:var(--ink);
+    background:linear-gradient(90deg,var(--cyan),var(--magenta));-webkit-background-clip:text;
+    background-clip:text;-webkit-text-fill-color:transparent}
+  .hero .where{font-family:var(--font-mono);font-size:12px;letter-spacing:2px;color:var(--ink-subtle);
+    text-transform:uppercase;margin-bottom:34px}
+
+  .cta-row{display:flex;flex-wrap:wrap;gap:14px}
+  .btn{display:inline-flex;align-items:center;gap:9px;font-family:var(--font-mono);font-size:13px;
+    font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;
+    padding:14px 24px;border-radius:999px;cursor:pointer;border:1px solid transparent;
+    transition:transform .18s,box-shadow .25s,border-color .2s}
+  .btn:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+  .btn-primary{color:#06060c;
+    background:linear-gradient(180deg,#ffffff,#cdd6f5 45%,#9fb6ff);
+    box-shadow:0 0 0 1px rgba(255,255,255,.4),0 10px 30px -10px var(--cyan),0 0 24px -6px var(--cyan)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 0 1px #fff,0 14px 38px -10px var(--cyan),0 0 34px -4px var(--cyan)}
+  .btn-ghost{color:var(--ink);border-color:rgba(255,43,214,.4);background:rgba(255,43,214,.06)}
+  .btn-ghost:hover{transform:translateY(-2px);border-color:var(--magenta);
+    box-shadow:0 0 26px -8px var(--magenta);color:#fff}
+
+  /* ---------- Portrait (glass + scan + neon) ---------- */
+  .portrait-stage{position:relative;justify-self:end;width:100%;max-width:420px;aspect-ratio:4/5}
+  .portrait-frame{position:absolute;inset:0;border-radius:var(--r-lg);overflow:hidden;
+    border:1px solid rgba(255,255,255,.16);
+    box-shadow:
+      0 0 0 1px rgba(0,229,255,.25),
+      0 30px 80px -30px #000,
+      0 0 60px -12px var(--magenta),
+      inset 0 0 60px -20px rgba(0,229,255,.4);
+    background:var(--panel);backdrop-filter:blur(4px)}
+  .portrait-frame img.u-photo{width:100%;height:100%;object-fit:cover;display:block;
+    filter:grayscale(1) contrast(1.15) brightness(.95);
+    mix-blend-mode:luminosity}
+  .portrait-frame::after{ /* duotone + scan over photo */
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:
+      repeating-linear-gradient(to bottom, rgba(0,0,0,.0) 0 2px, rgba(0,0,0,.18) 2px 3px),
+      linear-gradient(150deg, rgba(0,229,255,.30), transparent 45%, rgba(255,43,214,.34));
+    mix-blend-mode:screen}
+  .portrait-frame::before{ /* sweeping glitch slice */
+    content:"";position:absolute;left:0;right:0;height:14%;top:-14%;z-index:2;pointer-events:none;
+    background:linear-gradient(180deg,transparent,rgba(0,229,255,.35),rgba(255,43,214,.35),transparent);
+    mix-blend-mode:screen;animation:sweep 5.5s linear infinite}
+  @keyframes sweep{0%{top:-14%}100%{top:114%}}
+  .portrait-tag{position:absolute;left:-10px;bottom:18px;z-index:3;font-family:var(--font-mono);
+    font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--ink);
+    padding:7px 12px;border-radius:6px;background:rgba(8,8,16,.78);
+    border:1px solid var(--hairline);box-shadow:0 0 18px -6px var(--cyan)}
+  .portrait-tag b{color:var(--cyan)}
+  /* fallback monogram */
+  .u-fallback.mono-portrait{position:absolute;inset:0;border-radius:var(--r-lg);
+    border:1px solid rgba(255,255,255,.16);
+    background:
+      radial-gradient(120% 120% at 30% 10%, rgba(0,229,255,.16), transparent 55%),
+      radial-gradient(120% 120% at 80% 90%, rgba(255,43,214,.2), transparent 55%),
+      linear-gradient(180deg,#0b0a18,#070611);
+    box-shadow:0 0 0 1px rgba(0,229,255,.25),0 30px 80px -30px #000,0 0 60px -12px var(--magenta);
+    place-items:center;text-align:center}
+  body.no-photos .portrait-stage .u-fallback.mono-portrait{display:grid !important}
+  .mono-portrait .mg{font-family:var(--font-display);font-weight:900;font-size:clamp(90px,16vw,150px);
+    letter-spacing:4px;line-height:.9}
+  .mono-portrait .cap{font-family:var(--font-mono);font-size:11px;letter-spacing:4px;
+    text-transform:uppercase;color:var(--ink-subtle);margin-top:14px}
+
+  /* ---------- Selected work (release grid) ---------- */
+  .releases{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .release{position:relative;border-radius:var(--r-md);overflow:hidden;
+    border:1px solid var(--hairline);background:var(--panel);backdrop-filter:blur(6px);
+    transition:transform .25s,box-shadow .3s,border-color .25s}
+  .release:hover{transform:translateY(-6px);border-color:rgba(0,229,255,.5);
+    box-shadow:0 0 0 1px rgba(0,229,255,.3),0 24px 54px -24px #000,0 0 40px -10px var(--cyan)}
+  .cover{aspect-ratio:1;position:relative;display:grid;place-items:center;overflow:hidden}
+  .cover .ring{position:absolute;width:62%;aspect-ratio:1;border-radius:50%;
+    border:1px solid rgba(255,255,255,.2);
+    box-shadow:0 0 30px -8px var(--cyan),inset 0 0 40px -16px var(--magenta)}
+  .cover .ring::after{content:"";position:absolute;inset:38%;border-radius:50%;
+    background:radial-gradient(circle,#11101f,#05050c);border:1px solid rgba(255,255,255,.12)}
+  .cover .num{position:relative;z-index:1;font-family:var(--font-display);font-weight:900;
+    font-size:54px;letter-spacing:2px}
+  .cover.c1{background:linear-gradient(150deg,#1a0e2e,#06121f)}
+  .cover.c2{background:linear-gradient(150deg,#06121f,#2a0a1f)}
+  .cover.c3{background:linear-gradient(150deg,#160b26,#04141a)}
+  .play{position:absolute;right:14px;bottom:14px;z-index:2;width:42px;height:42px;border-radius:50%;
+    display:grid;place-items:center;background:rgba(8,8,16,.7);border:1px solid rgba(0,229,255,.5);
+    box-shadow:0 0 18px -4px var(--cyan);transition:transform .2s,background .2s}
+  .release:hover .play{transform:scale(1.08);background:rgba(0,229,255,.16)}
+  .play svg{width:14px;height:14px;fill:var(--cyan)}
+  .release .meta{padding:18px 20px 22px}
+  .release h3{font-family:var(--font-display);font-weight:700;font-size:18px;letter-spacing:.5px;
+    text-transform:uppercase;margin-bottom:6px}
+  .release .sub{font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;color:var(--ink-muted);
+    text-transform:uppercase;margin-bottom:14px}
+  .release .listen{font-family:var(--font-mono);font-size:12px;letter-spacing:2px;text-transform:uppercase;
+    color:var(--cyan);text-decoration:none}
+  .release .listen:hover,.release .listen:focus-visible{text-shadow:0 0 10px rgba(0,229,255,.6)}
+  .release a.card-link{position:absolute;inset:0;z-index:3;text-indent:-9999px;overflow:hidden}
+  .release a.card-link:focus-visible{outline:2px solid var(--cyan);outline-offset:-2px;border-radius:var(--r-md)}
+
+  /* ---------- Metrics ---------- */
+  .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .stat{padding:30px 22px;border-radius:var(--r-md);text-align:center;
+    border:1px solid var(--hairline);background:var(--panel);backdrop-filter:blur(6px);
+    box-shadow:inset 0 0 40px -28px var(--cyan)}
+  .stat .big{font-family:var(--font-display);font-weight:800;font-size:clamp(34px,5vw,46px);
+    line-height:1;letter-spacing:1px}
+  .stat .big.c{ -webkit-text-fill-color:transparent;-webkit-background-clip:text;background-clip:text;
+    background:linear-gradient(180deg,#fff,#9fb6ff);text-shadow:0 0 26px rgba(0,229,255,.25)}
+  .stat .lbl{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;
+    color:var(--ink-muted);margin-top:12px}
+
+  /* ---------- Story (quote-led) ---------- */
+  .story-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:48px;align-items:start}
+  .story-quote{font-family:var(--font-display);font-weight:800;text-transform:uppercase;
+    font-size:clamp(24px,3.4vw,38px);line-height:1.08;letter-spacing:1px}
+  .story-quote .em{ -webkit-text-fill-color:transparent;-webkit-background-clip:text;background-clip:text;
+    background:linear-gradient(90deg,var(--cyan),var(--magenta))}
+  .story-body p{color:var(--ink-muted);margin-bottom:18px;max-width:54ch}
+  .story-body p:last-child{margin-bottom:0}
+  .story-body p strong{color:var(--ink);font-weight:500}
+
+  /* ---------- Beliefs (numbered) ---------- */
+  .beliefs{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  .belief{position:relative;padding:26px 24px 28px;border-radius:var(--r-md);
+    border:1px solid var(--hairline);background:var(--panel);backdrop-filter:blur(6px);
+    box-shadow:inset 0 0 40px -30px var(--magenta);transition:transform .25s,border-color .25s,box-shadow .3s}
+  .belief:hover{transform:translateY(-4px);border-color:rgba(255,43,214,.45);
+    box-shadow:0 0 0 1px rgba(255,43,214,.25),0 0 34px -12px var(--magenta)}
+  .belief .bn{font-family:var(--font-display);font-weight:900;font-size:20px;letter-spacing:2px;
+    -webkit-text-fill-color:transparent;-webkit-background-clip:text;background-clip:text;
+    background:linear-gradient(180deg,#fff,#9fb6ff);display:block;margin-bottom:10px}
+  .belief h3{font-family:var(--font-display);font-weight:700;font-size:15px;letter-spacing:.5px;
+    text-transform:uppercase;margin-bottom:8px}
+  .belief p{color:var(--ink-muted);font-size:15px;line-height:1.55}
+
+  /* ---------- Experience (timeline) ---------- */
+  .timeline{position:relative;margin-left:6px;padding-left:30px}
+  .timeline::before{content:"";position:absolute;left:0;top:6px;bottom:6px;width:1px;
+    background:linear-gradient(180deg,var(--cyan),var(--magenta),transparent)}
+  .tl-item{position:relative;padding-bottom:34px}
+  .tl-item:last-child{padding-bottom:0}
+  .tl-item::before{content:"";position:absolute;left:-34px;top:5px;width:10px;height:10px;border-radius:50%;
+    background:var(--base);border:1px solid var(--cyan);box-shadow:0 0 14px -2px var(--cyan)}
+  .tl-when{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;
+    color:var(--cyan);text-shadow:0 0 10px rgba(0,229,255,.4)}
+  .tl-item h3{font-family:var(--font-display);font-weight:700;font-size:17px;letter-spacing:.5px;
+    text-transform:uppercase;margin:8px 0 4px}
+  .tl-item .org{font-family:var(--font-mono);font-size:12px;letter-spacing:1px;color:var(--ink-muted);
+    text-transform:uppercase;margin-bottom:8px}
+  .tl-item p{color:var(--ink-muted);font-size:15px;max-width:60ch}
+
+  /* ---------- Tools (stack list) ---------- */
+  .stack{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 40px}
+  .stack-group h3{font-family:var(--font-mono);font-size:11px;letter-spacing:3px;text-transform:uppercase;
+    color:var(--ink-subtle);margin-bottom:14px}
+  .chips{display:flex;flex-wrap:wrap;gap:10px}
+  .chip{font-family:var(--font-mono);font-size:12px;letter-spacing:1px;text-transform:uppercase;
+    color:var(--ink);padding:8px 14px;border-radius:999px;border:1px solid var(--hairline);
+    background:rgba(0,229,255,.05);transition:border-color .2s,box-shadow .25s,color .2s}
+  .chip:hover{border-color:rgba(0,229,255,.5);color:var(--cyan);box-shadow:0 0 20px -8px var(--cyan)}
+
+  /* ---------- Testimonials (quote-led) ---------- */
+  .tposts{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+  .tpost{padding:28px 26px 26px;border-radius:var(--r-md);border:1px solid var(--hairline);
+    background:var(--panel);backdrop-filter:blur(6px);box-shadow:inset 0 0 50px -34px var(--cyan)}
+  .tpost blockquote{font-size:17px;line-height:1.55;color:var(--ink);margin-bottom:18px}
+  .tpost blockquote::before{content:"“";font-family:var(--font-display);color:var(--magenta);
+    margin-right:4px;text-shadow:0 0 14px rgba(255,43,214,.5)}
+  .tpost .who{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;
+    color:var(--cyan)}
+  .tpost .who span{color:var(--ink-subtle);display:block;margin-top:4px;letter-spacing:1px}
+
+  /* ---------- Selected quote (large type) ---------- */
+  .bigquote{text-align:center;max-width:24ch;margin:0 auto}
+  .bigquote q{font-family:var(--font-display);font-weight:800;text-transform:uppercase;quotes:none;
+    font-size:clamp(28px,5.4vw,56px);line-height:1.02;letter-spacing:1px}
+  .bigquote q .em{ -webkit-text-fill-color:transparent;-webkit-background-clip:text;background-clip:text;
+    background:linear-gradient(90deg,var(--cyan),var(--magenta));text-shadow:0 0 30px rgba(0,229,255,.2)}
+  .bigquote cite{display:block;margin-top:24px;font-family:var(--font-mono);font-size:12px;font-style:normal;
+    letter-spacing:3px;text-transform:uppercase;color:var(--ink-subtle)}
+
+  /* ---------- Contact ---------- */
+  .contact-card{position:relative;border-radius:var(--r-lg);padding:clamp(34px,6vw,64px);
+    text-align:center;overflow:hidden;border:1px solid rgba(0,229,255,.25);
+    background:var(--panel);backdrop-filter:blur(10px);
+    box-shadow:0 0 0 1px rgba(255,43,214,.12),0 40px 90px -40px #000,inset 0 0 80px -40px var(--magenta)}
+  .contact-card .eyebrow{display:block;margin-bottom:18px}
+  .contact-card h2{font-family:var(--font-display);font-weight:800;text-transform:uppercase;
+    font-size:clamp(28px,5vw,52px);line-height:1;letter-spacing:1px;margin-bottom:18px}
+  .contact-card p{color:var(--ink-muted);max-width:46ch;margin:0 auto 30px}
+  .contact-card .cta-row{justify-content:center}
+  .socials{margin-top:30px;font-family:var(--font-mono);font-size:12px;letter-spacing:2px;
+    text-transform:uppercase;color:var(--ink-subtle)}
+  .socials a{color:var(--ink-muted);text-decoration:none}
+  .socials a:hover,.socials a:focus-visible{color:var(--cyan);text-shadow:0 0 10px rgba(0,229,255,.5)}
+
+  footer{padding:48px 24px 64px;text-align:center;font-family:var(--font-mono);font-size:11px;
+    letter-spacing:2px;text-transform:uppercase;color:var(--ink-subtle)}
+
+  /* ---------- Reveal on scroll ---------- */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ---------- Photo toggle contract ---------- */
+  .u-fallback{display:none !important}
+  body.no-photos .u-photo{display:none !important}
+  body.no-photos .u-fallback{display:revert !important}
+  .atlas-photo-toggle{position:fixed;right:16px;bottom:16px;z-index:99999;display:flex;align-items:center;gap:8px;background:rgba(20,20,22,.88);color:#fff;border-radius:999px;padding:6px 6px 6px 14px;font:600 12px/1 -apple-system,system-ui,sans-serif;box-shadow:0 8px 28px -10px rgba(0,0,0,.55)}
+  .atlas-photo-toggle button{appearance:none;border:0;cursor:pointer;font:inherit;color:#16161a;background:#fff;border-radius:999px;padding:6px 14px;min-width:46px}
+  .atlas-photo-toggle button[aria-pressed="false"]{background:#3a3a42;color:#fff}
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:880px){
+    .hero-grid{grid-template-columns:1fr;gap:40px}
+    .portrait-stage{justify-self:center;max-width:340px}
+    .releases{grid-template-columns:1fr;max-width:420px;margin:0 auto}
+    .metrics{grid-template-columns:repeat(2,1fr)}
+    .story-grid{grid-template-columns:1fr;gap:28px}
+    .beliefs{grid-template-columns:1fr}
+    .stack{grid-template-columns:1fr;gap:26px}
+    .tposts{grid-template-columns:1fr}
+    .nav nav{display:none}
+    section{padding-block:88px}
+  }
+  @media (max-width:420px){
+    .metrics{grid-template-columns:1fr}
+    .cta-row{flex-direction:column;align-items:stretch}
+    .btn{justify-content:center}
+  }
+
+  /* ---------- Reduced motion ---------- */
+  @media (prefers-reduced-motion:reduce){
+    *{scroll-behavior:auto}
+    .blob,.scanlines,.glitch::before,.glitch::after,.portrait-frame::before{animation:none !important}
+    .glitch::before,.glitch::after{opacity:0}
+    .reveal{opacity:1;transform:none;transition:none}
+  }
+</style>
+</head>
+<body>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="blob b1" aria-hidden="true"></div>
+  <div class="blob b2" aria-hidden="true"></div>
+  <div class="blob b3" aria-hidden="true"></div>
+  <div class="grid-floor" aria-hidden="true"></div>
+  <div class="scanlines" aria-hidden="true"></div>
+  <div class="noise" aria-hidden="true"></div>
+
+  <header class="nav">
+    <span class="brand">VEX<span class="dot">·</span>ROMERO</span>
+    <nav aria-label="Primary">
+      <a href="#work">Releases</a>
+      <a href="#metrics">Numbers</a>
+      <a href="#story">Story</a>
+      <a href="#live">Live</a>
+      <a href="#contact">Book</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero" id="top" data-module="hero" data-variant="split_portrait">
+      <div class="wrap">
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <span class="eyebrow">DJ · Producer · Berlin ⇄ Tokyo</span>
+            <h1><span class="glitch chrome" data-text="VEX">VEX</span><br><span class="glitch chrome" data-text="ROMERO">ROMERO</span></h1>
+            <p class="lede"><em>Sound for 3am rooms and neon highways.</em></p>
+            <p class="where">Electronic · House · After-hours techno</p>
+            <div class="cta-row">
+              <a class="btn btn-primary" href="#work">▶ Listen now</a>
+              <a class="btn btn-ghost" href="#contact">Book a set</a>
+            </div>
+          </div>
+
+          <div class="portrait-stage">
+            <div class="portrait-frame u-photo">
+              <img class="u-photo" src="portrait.webp" alt="Vex Romero — high-contrast black-and-white mosaic portrait" loading="eager" />
+            </div>
+            <div class="u-fallback mono-portrait" aria-hidden="true">
+              <div>
+                <div class="mg chrome">VR</div>
+                <div class="cap">Vex Romero</div>
+              </div>
+            </div>
+            <span class="portrait-tag"><b>LIVE</b> · 3AM SET</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SELECTED WORK -->
+    <section id="work" data-module="selected_work" data-variant="grid">
+      <div class="wrap">
+        <div class="section-label reveal">
+          <span class="num">01</span>
+          <h2 class="chrome">Selected Releases</h2>
+          <span class="rule"></span>
+        </div>
+        <div class="releases">
+          <article class="release reveal">
+            <div class="cover c1"><span class="ring"></span><span class="num chrome">01</span>
+              <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+            </div>
+            <div class="meta">
+              <h3>Chrome Mirage</h3>
+              <p class="sub">EP · 2022 · 6 tracks</p>
+              <a class="listen" href="#contact">Listen →</a>
+            </div>
+            <a class="card-link" href="#contact">Listen to Chrome Mirage</a>
+          </article>
+
+          <article class="release reveal">
+            <div class="cover c2"><span class="ring"></span><span class="num chrome">02</span>
+              <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+            </div>
+            <div class="meta">
+              <h3>Neon Arterial</h3>
+              <p class="sub">EP · 2023 · 5 tracks</p>
+              <a class="listen" href="#contact">Listen →</a>
+            </div>
+            <a class="card-link" href="#contact">Listen to Neon Arterial</a>
+          </article>
+
+          <article class="release reveal">
+            <div class="cover c3"><span class="ring"></span><span class="num chrome">03</span>
+              <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+            </div>
+            <div class="meta">
+              <h3>3AM Protocol</h3>
+              <p class="sub">EP · 2024 · 7 tracks</p>
+              <a class="listen" href="#contact">Listen →</a>
+            </div>
+            <a class="card-link" href="#contact">Listen to 3AM Protocol</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- METRICS -->
+    <section id="metrics" data-module="metrics" data-variant="stat_row">
+      <div class="wrap">
+        <div class="section-label reveal">
+          <span class="num">02</span>
+          <h2 class="chrome">By the Numbers</h2>
+          <span class="rule"></span>
+        </div>
+        <div class="metrics">
+          <div class="stat reveal"><div class="big c">2M+</div><div class="lbl">Cumulative streams</div></div>
+          <div class="stat reveal"><div class="big c">3</div><div class="lbl">EPs released</div></div>
+          <div class="stat reveal"><div class="big c">2</div><div class="lbl">Residency cities</div></div>
+          <div class="stat reveal"><div class="big c">06+</div><div class="lbl">Years on the decks</div></div>
+        </div>
+        <p class="where" style="margin-top:28px;text-align:center">Residencies — Tresor, Berlin · Contact, Tokyo</p>
+      </div>
+    </section>
+
+    <!-- STORY -->
+    <section id="story" data-module="story" data-variant="quote_led">
+      <div class="wrap">
+        <div class="section-label reveal">
+          <span class="num">03</span>
+          <h2 class="chrome">The Origin Mix</h2>
+          <span class="rule"></span>
+        </div>
+        <div class="story-grid">
+          <p class="story-quote reveal">I learned the city <span class="em">by ear</span> — every overpass had a frequency.</p>
+          <div class="story-body reveal">
+            <p>Vex started on a cracked controller and a stolen copy of a tracker, looping basement field recordings against four-on-the-floor until 6am. The bedroom became a <strong>lab for the after-hours</strong> — chrome pads, tape hiss, and a refusal to let a record resolve too soon.</p>
+            <p>The first residency came from a flyer pinned to a Berlin laundromat wall. The second came from a recording that leaked off a USB stick in Tokyo. Somewhere between the two cities a sound settled: <strong>neon-lit, nocturnal, and built to be played loud at the wrong hour.</strong></p>
+            <p>Today the project is one person, three EPs, and a standing invitation to keep the room moving until the lights come up.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BELIEFS -->
+    <section id="ethos" data-module="beliefs" data-variant="numbered">
+      <div class="wrap">
+        <div class="section-label reveal">
+          <span class="num">04</span>
+          <h2 class="chrome">Booth Doctrine</h2>
+          <span class="rule"></span>
+        </div>
+        <div class="beliefs">
+          <article class="belief reveal">
+            <span class="bn">01</span>
+            <h3>Read the room, not the rider</h3>
+            <p>The crowd writes the set list. The plan is a starting key, never a cage.</p>
+          </article>
+          <article class="belief reveal">
+            <span class="bn">02</span>
+            <h3>Tension before release</h3>
+            <p>A drop only lands if the floor has been made to wait for it. Patience is the bassline.</p>
+          </article>
+          <article class="belief reveal">
+            <span class="bn">03</span>
+            <h3>Loud is a craft, not a crutch</h3>
+            <p>Volume earns its level. Every frequency has to justify the space it takes.</p>
+          </article>
+          <article class="belief reveal">
+            <span class="bn">04</span>
+            <h3>The night owns the records</h3>
+            <p>Tracks are made for 3am rooms first. If it works at noon, that's a bonus.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="live" data-module="experience" data-variant="timeline">
+      <div class="wrap">
+        <div class="section-label reveal">
+          <span class="num">05</span>
+          <h2 class="chrome">Live &amp; Residencies</h2>
+          <span class="rule"></span>
+        </div>
+        <div class="timeline">
+          <div class="tl-item reveal">
+            <span class="tl-when">2024 — Present</span>
+            <h3>3AM Protocol Tour</h3>
+            <p class="org">Europe · Asia · 22 cities</p>
+            <p>Headline all-night sets supporting the third EP, from warehouse rooms to rooftop closing slots.</p>
+          </div>
+          <div class="tl-item reveal">
+            <span class="tl-when">2023 — Present</span>
+            <h3>Monthly Resident</h3>
+            <p class="org">Contact · Tokyo</p>
+            <p>Last-Friday after-hours residency. Open-to-close on the back room rig, no support, no setlist.</p>
+          </div>
+          <div class="tl-item reveal">
+            <span class="tl-when">2022 — 2023</span>
+            <h3>Resident DJ</h3>
+            <p class="org">Tresor · Berlin</p>
+            <p>Held down the 4am slot for fourteen months and learned how a room breathes at sunrise.</p>
+          </div>
+          <div class="tl-item reveal">
+            <span class="tl-when">2020 — 2022</span>
+            <h3>Basement Sets</h3>
+            <p class="org">Underground · Berlin</p>
+            <p>Unlicensed parties and laundromat-flyer gigs. The lab years that defined the sound.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOOLS / RIG -->
+    <section id="rig" data-module="tools" data-variant="stack_list">
+      <div class="wrap">
+        <div class="section-label reveal">
+          <span class="num">06</span>
+          <h2 class="chrome">The Rig</h2>
+          <span class="rule"></span>
+        </div>
+        <div class="stack">
+          <div class="stack-group reveal">
+            <h3>Booth</h3>
+            <div class="chips">
+              <span class="chip">CDJ-3000 ×4</span>
+              <span class="chip">DJM-A9</span>
+              <span class="chip">Rotary V10</span>
+              <span class="chip">RMX-1000</span>
+            </div>
+          </div>
+          <div class="stack-group reveal">
+            <h3>Studio</h3>
+            <div class="chips">
+              <span class="chip">Ableton Live</span>
+              <span class="chip">TR-8S</span>
+              <span class="chip">Juno-106</span>
+              <span class="chip">Moog Sub 37</span>
+              <span class="chip">Eurorack</span>
+            </div>
+          </div>
+          <div class="stack-group reveal">
+            <h3>Color</h3>
+            <div class="chips">
+              <span class="chip">Tape saturation</span>
+              <span class="chip">Spring reverb</span>
+              <span class="chip">Field recordings</span>
+            </div>
+          </div>
+          <div class="stack-group reveal">
+            <h3>Distribution</h3>
+            <div class="chips">
+              <span class="chip">Spotify</span>
+              <span class="chip">SoundCloud</span>
+              <span class="chip">Bandcamp</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section id="press" data-module="testimonials" data-variant="quote_led">
+      <div class="wrap">
+        <div class="section-label reveal">
+          <span class="num">07</span>
+          <h2 class="chrome">From the Floor</h2>
+          <span class="rule"></span>
+        </div>
+        <div class="tposts">
+          <figure class="tpost reveal">
+            <blockquote>Vex doesn't play tracks, they play the room — by 4am nobody remembered the door, the coats, or what day it was.</blockquote>
+            <figcaption class="who">Mara Voss<span>Booker · Contact, Tokyo</span></figcaption>
+          </figure>
+          <figure class="tpost reveal">
+            <blockquote>One of the few residents who can hold a closing set for three hours and never let the tension drop. Chrome and patience.</blockquote>
+            <figcaption class="who">D. Keller<span>Floor Manager · Tresor, Berlin</span></figcaption>
+          </figure>
+          <figure class="tpost reveal">
+            <blockquote>3AM Protocol is the rare after-hours record that sounds like the city at the hour it was named for. Essential.</blockquote>
+            <figcaption class="who">Night Frequencies<span>Editorial · electronic press</span></figcaption>
+          </figure>
+          <figure class="tpost reveal">
+            <blockquote>Booked once on a whim from a leaked USB stick. Rebooked every quarter since. The floor asks for the date.</blockquote>
+            <figcaption class="who">Lukas R.<span>Promoter · Warehouse series</span></figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- SELECTED QUOTE -->
+    <section id="motto" data-module="selected_quotes" data-variant="large_type">
+      <div class="wrap">
+        <div class="bigquote reveal">
+          <q>Make them <span class="em">wait</span> for the drop, then make them <span class="em">forget</span> the clock.</q>
+          <cite>— Vex Romero</cite>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" data-module="contact" data-variant="cta_band">
+      <div class="wrap">
+        <div class="contact-card reveal">
+          <span class="eyebrow">Bookings open</span>
+          <h2 class="chrome">Let's light up<br>a 3am room.</h2>
+          <p>Labels, clubs, festivals — send the date and the city. Sets run 90 minutes to all-night. Press kit and rider on request.</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="mailto:booking@vexromero.com">Email bookings</a>
+            <a class="btn btn-ghost" href="#work">Hear the records</a>
+          </div>
+          <p class="socials">booking@vexromero.com &nbsp;·&nbsp; <a href="#top">Spotify / SoundCloud</a> &nbsp;·&nbsp; <a href="#top">@vexromero</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>© 2026 Vex Romero — Built for the after-hours.</footer>
+
+  <div class="atlas-photo-toggle" role="group" aria-label="示例照片 / Demo photos"><span>照片 Photos</span><button id="atlasPhotoBtn" type="button" aria-pressed="true">On</button></div>
+  <script>(function(){var b=document.getElementById('atlasPhotoBtn');if(!b)return;function set(on){document.body.classList.toggle('no-photos',!on);b.setAttribute('aria-pressed',on?'true':'false');b.textContent=on?'On':'Off';}b.addEventListener('click',function(){set(document.body.classList.contains('no-photos'));});set(true);})();</script>
+  <script>
+    (function(){
+      var els=document.querySelectorAll('.reveal');
+      if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in')});return;}
+      var io=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target);}});},{threshold:.16});
+      els.forEach(function(e){io.observe(e);});
+    })();
+  </script>
+</body>
+</html>

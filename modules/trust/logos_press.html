@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>logos_press — trust — specimen sheet</title>
+<style>
+:root{--bg:#ffffff;--surface:#f6f6f4;--surface-2:#efefea;--ink:#191917;--muted:#6b6b67;--subtle:#9a9a94;--accent:#2f56ff;--accent-soft:#e9eefc;--hairline:#e7e7e2;--ink-line:#191917;--ok:#1f7a44;--radius:12px;--pad:24px}
+
+*,*::before,*::after{box-sizing:border-box}
+
+html{-webkit-text-size-adjust:100%}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:16px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+
+.mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace}
+.serif{font-family:Georgia,"Times New Roman",serif}
+
+a{color:var(--accent)}
+
+:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:3px;
+  border-radius:4px;
+}
+
+/* ---------- specimen sheet scaffold ---------- */
+
+.sheet{
+  max-width:1200px;
+  margin:0 auto;
+  padding:clamp(20px,4vw,56px) clamp(16px,4vw,48px) 96px;
+}
+
+.sheet__header{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:10px 16px;
+  padding-bottom:18px;
+  border-bottom:1px solid var(--hairline);
+  margin-bottom:40px;
+}
+
+.sheet__title{
+  font-size:clamp(20px,3vw,27px);
+  font-weight:650;
+  letter-spacing:-.01em;
+  margin:0;
+}
+
+.sheet__dot{color:var(--subtle);margin:0 2px}
+
+.sheet__cat{
+  font-size:13px;
+  color:var(--muted);
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+
+.sheet__count{
+  margin-left:auto;
+  font-size:12px;
+  color:var(--muted);
+  background:var(--surface);
+  border:1px solid var(--hairline);
+  border-radius:999px;
+  padding:5px 12px;
+  white-space:nowrap;
+}
+
+.variant{margin-bottom:48px}
+.variant:last-child{margin-bottom:0}
+
+.variant__label{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:8px 14px;
+  margin-bottom:14px;
+}
+
+.variant__id{
+  font-size:12.5px;
+  color:var(--ink);
+  background:var(--surface-2);
+  border:1px solid var(--hairline);
+  border-radius:6px;
+  padding:3px 9px;
+}
+
+.variant__hint{
+  font-size:13.5px;
+  color:var(--muted);
+}
+
+.stage{
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  background:var(--surface);
+  padding:clamp(20px,4vw,48px) var(--pad);
+}
+
+/* ============================================================
+   VARIANT 1 — logo_row
+   ============================================================ */
+
+.logorow{
+  display:flex;
+  flex-direction:column;
+  gap:22px;
+  align-items:center;
+  text-align:center;
+}
+
+.logorow__eyebrow{
+  font-size:12px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--subtle);
+  margin:0;
+}
+
+.logorow__grid{
+  list-style:none;
+  margin:0;
+  padding:0;
+  width:100%;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+}
+
+@media(min-width:560px){
+  .logorow__grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(min-width:860px){
+  .logorow__grid{grid-template-columns:repeat(6,1fr)}
+}
+
+.logorow__cell{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:54px;
+  padding:0 8px;
+  border:1px dashed var(--hairline);
+  border-radius:8px;
+  background:var(--bg);
+}
+
+/* placeholder wordmark "logo" — grey, uppercase, tracked */
+.logorow__mark{
+  font-weight:600;
+  font-size:15px;
+  letter-spacing:.02em;
+  color:var(--subtle);
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+}
+
+.logorow__glyph{
+  width:18px;height:18px;
+  border-radius:5px;
+  background:var(--surface-2);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--muted);
+  flex:none;
+}
+.logorow__glyph svg{display:block}
+
+.logorow__note{
+  font-size:11.5px;
+  color:var(--subtle);
+}
+
+/* ============================================================
+   VARIANT 2 — mentioned_in
+   ============================================================ */
+
+.mentioned{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:center;
+  gap:10px 18px;
+  text-align:center;
+}
+
+.mentioned__label{
+  font-size:14px;
+  color:var(--muted);
+}
+
+.mentioned__label .serif{
+  font-style:italic;
+  color:var(--ink);
+}
+
+.mentioned__list{
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:center;
+  gap:8px 16px;
+}
+
+.mentioned__item{
+  display:inline-flex;
+  align-items:center;
+}
+
+.mentioned__name{
+  font-size:15px;
+  font-weight:600;
+  letter-spacing:.01em;
+  color:var(--ink);
+  text-decoration:none;
+  white-space:nowrap;
+  border-bottom:1px solid transparent;
+  transition:border-color .15s ease,color .15s ease;
+}
+
+.mentioned__name:hover{
+  color:var(--accent);
+  border-bottom-color:var(--accent);
+}
+
+.mentioned__sep{
+  color:var(--hairline);
+  font-size:14px;
+  user-select:none;
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none !important;animation:none !important}
+}
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header class="sheet__header">
+    <h1 class="sheet__title">logos_press <span class="sheet__dot">·</span> <span class="serif" style="font-weight:400">Logos / Press 露出</span></h1>
+    <span class="sheet__cat">trust</span>
+    <span class="sheet__count">2 variants</span>
+  </header>
+
+  <!-- ===================== VARIANT 1 ===================== -->
+  <section class="variant" aria-labelledby="v-logo_row">
+    <div class="variant__label">
+      <code class="variant__id mono" id="v-logo_row">logo_row</code>
+      <span class="variant__hint">logo 占位行（文字/灰块 logo）</span>
+    </div>
+
+    <div class="stage">
+      <div class="logorow">
+        <p class="logorow__eyebrow">Trusted by teams at</p>
+
+        <ul class="logorow__grid" aria-label="Client and partner logos">
+          <li class="logorow__cell">
+            <span class="logorow__mark">
+              <span class="logorow__glyph" aria-hidden="true">
+                <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><rect x="1" y="1" width="9" height="9" rx="2" stroke="currentColor" stroke-width="1.4"/></svg>
+              </span>NORTHWIND
+            </span>
+          </li>
+          <li class="logorow__cell">
+            <span class="logorow__mark">
+              <span class="logorow__glyph" aria-hidden="true">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.4"/></svg>
+              </span>Lumen Labs
+            </span>
+          </li>
+          <li class="logorow__cell">
+            <span class="logorow__mark">
+              <span class="logorow__glyph" aria-hidden="true">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1.2 11 10H1z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+              </span>Apex&nbsp;Mobility
+            </span>
+          </li>
+          <li class="logorow__cell">
+            <span class="logorow__mark">
+              <span class="logorow__glyph" aria-hidden="true">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2v8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+              </span>FERN&nbsp;&amp;&nbsp;CO
+            </span>
+          </li>
+          <li class="logorow__cell">
+            <span class="logorow__mark">
+              <span class="logorow__glyph" aria-hidden="true">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1.5 8.5 6 2l4.5 6.5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+              </span>Slate&nbsp;Studio
+            </span>
+          </li>
+          <li class="logorow__cell">
+            <span class="logorow__mark">
+              <span class="logorow__glyph" aria-hidden="true">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1.5" y="1.5" width="9" height="9" rx="4.5" stroke="currentColor" stroke-width="1.4"/></svg>
+              </span>OAKLINE
+            </span>
+          </li>
+        </ul>
+
+        <p class="logorow__note">Photo / logo slots — replace each grey wordmark with a client SVG logo (monochrome).</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== VARIANT 2 ===================== -->
+  <section class="variant" aria-labelledby="v-mentioned_in">
+    <div class="variant__label">
+      <code class="variant__id mono" id="v-mentioned_in">mentioned_in</code>
+      <span class="variant__hint">“Featured in …” 一行</span>
+    </div>
+
+    <div class="stage">
+      <div class="mentioned">
+        <span class="mentioned__label"><span class="serif">Featured in</span></span>
+        <ul class="mentioned__list">
+          <li class="mentioned__item"><a class="mentioned__name" href="#">Smashing&nbsp;Magazine</a></li>
+          <li class="mentioned__sep" aria-hidden="true">/</li>
+          <li class="mentioned__item"><a class="mentioned__name" href="#">A&nbsp;List&nbsp;Apart</a></li>
+          <li class="mentioned__sep" aria-hidden="true">/</li>
+          <li class="mentioned__item"><a class="mentioned__name" href="#">Sidebar.io</a></li>
+          <li class="mentioned__sep" aria-hidden="true">/</li>
+          <li class="mentioned__item"><a class="mentioned__name" href="#">Designer&nbsp;News</a></li>
+          <li class="mentioned__sep" aria-hidden="true">/</li>
+          <li class="mentioned__item"><a class="mentioned__name" href="#">The&nbsp;Verge</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>

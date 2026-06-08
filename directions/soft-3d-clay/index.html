@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Milo Park — Toy designer & 3D artist</title>
+<meta name="description" content="Milo Park makes squishy little vinyl characters that make people smile. Drops, collabs and 80k followers.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Baloo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --canvas:#f4ecff; --canvas-2:#ffe9f3;
+    --surface:#fef6ff; --surface-sky:#dcefff; --surface-mint:#dcfbef; --surface-butter:#fff4d6;
+    --ink:#4a3b63; --ink-muted:#8a7aa8; --ink-subtle:#b3a6cc;
+    --accent:#ff7eb3; --accent-2:#7cc7ff; --accent-3:#ffd166;
+    --highlight:#ffffff; --shadow-soft:#cdb8ea; --shadow-deep:#a98fd6;
+
+    --r-sm:16px; --r-md:28px; --r-lg:40px; --r-pill:999px;
+    --sec:96px; --block:32px; --tight:14px;
+
+    /* signature clay shadow */
+    --clay:0 18px 40px -16px var(--shadow-deep),
+           inset 0 2px 3px var(--highlight),
+           inset 0 -9px 16px -6px var(--shadow-soft);
+    --clay-press:0 8px 18px -12px var(--shadow-deep),
+           inset 0 2px 4px var(--highlight),
+           inset 0 -5px 12px -4px var(--shadow-soft);
+    --clay-inset:inset 0 6px 14px -4px var(--shadow-soft),
+           inset 0 -3px 6px var(--highlight),
+           0 1px 0 var(--highlight);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Baloo 2',system-ui,sans-serif;
+    font-size:17px;line-height:1.6;color:var(--ink);
+    background:
+      radial-gradient(1200px 700px at 12% -10%, var(--canvas-2), transparent 60%),
+      radial-gradient(1000px 800px at 100% 0%, #e7f3ff, transparent 55%),
+      linear-gradient(165deg, var(--canvas) 0%, #efe6ff 55%, #ffeaf4 100%);
+    background-attachment:fixed;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+  h1,h2,h3{font-family:'Fredoka',system-ui,sans-serif;letter-spacing:-.6px}
+
+  .eyebrow{
+    font-family:'Fredoka',sans-serif;font-size:13px;font-weight:600;
+    text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);
+  }
+
+  /* ---- shared clay pieces ---- */
+  .pill{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px;letter-spacing:.2px;
+    padding:11px 20px;border-radius:var(--r-pill);
+    color:var(--ink);background:linear-gradient(180deg,#fff,#f1e6ff);
+    box-shadow:var(--clay);border:0;cursor:default;text-decoration:none;
+    transition:transform .18s cubic-bezier(.34,1.56,.64,1), box-shadow .18s ease;
+  }
+  a.pill,button.pill{cursor:pointer}
+  a.pill:hover,button.pill:hover{transform:translateY(2px) scale(.985);box-shadow:var(--clay-press)}
+  .pill--pink{background:linear-gradient(180deg,#ffa6cd,var(--accent));color:#5a1f3c}
+  .pill--sky{background:linear-gradient(180deg,#a9dbff,var(--accent-2));color:#143b5e}
+  .pill--butter{background:linear-gradient(180deg,#ffe49a,var(--accent-3));color:#6a4d0a}
+  .pill--mint{background:linear-gradient(180deg,#bff2dd,#7fe0bb);color:#0f513a}
+
+  .clay-card{
+    background:linear-gradient(180deg,var(--surface),#f3e8ff);
+    border-radius:var(--r-lg);box-shadow:var(--clay);
+  }
+
+  /* ---- focus ---- */
+  a:focus-visible,button:focus-visible{
+    outline:3px solid var(--accent-2);outline-offset:3px;border-radius:var(--r-pill);
+  }
+
+  /* ===== HERO ===== */
+  header{padding:54px 0 0}
+  .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .brand{
+    display:inline-flex;align-items:center;gap:12px;
+    font-family:'Fredoka',sans-serif;font-weight:700;font-size:19px;color:var(--ink);
+  }
+  .brand .blob{
+    width:38px;height:38px;border-radius:14px 16px 15px 17px;flex:none;
+    background:radial-gradient(circle at 32% 28%, #fff 0 14%, transparent 16%),
+              linear-gradient(150deg,#ffb3d6,var(--accent) 70%);
+    box-shadow:var(--clay);
+  }
+
+  .hero{
+    display:grid;grid-template-columns:1.05fr .95fr;gap:46px;align-items:center;
+    padding:46px 0 var(--sec);
+  }
+  .hero-copy .eyebrow{display:inline-block;margin-bottom:14px}
+  .hero h1{
+    font-size:clamp(40px,7.4vw,72px);font-weight:700;line-height:.98;letter-spacing:-1.5px;
+    color:var(--ink);
+  }
+  .hero h1 em{font-style:normal;color:var(--accent);position:relative}
+  .hero .lede{
+    font-size:21px;font-weight:500;line-height:1.5;color:var(--ink-muted);
+    max-width:34ch;margin:22px 0 30px;
+  }
+  .hero .cta-row{display:flex;flex-wrap:wrap;gap:14px}
+
+  /* hero 3D scene / display case */
+  .scene{position:relative;animation:float 7s ease-in-out infinite}
+  .scene-case{
+    position:relative;border-radius:var(--r-lg);padding:18px;
+    background:linear-gradient(180deg,#fff7ff,#efdcff);
+    box-shadow:var(--clay);
+  }
+  .scene-window{
+    position:relative;border-radius:30px;overflow:hidden;aspect-ratio:1/1;
+    background:
+      radial-gradient(120% 90% at 50% 0%, #fff7e6 0%, #ffe0ef 42%, #d9ecff 100%);
+    box-shadow:var(--clay-inset);
+  }
+  .scene-window .u-photo{
+    display:block;width:100%;height:100%;object-fit:cover;
+    border-radius:30px;
+  }
+  /* little decorative clay dots floating in the case */
+  .dot{position:absolute;border-radius:50%;box-shadow:var(--clay);z-index:2}
+  .dot.d1{width:54px;height:54px;left:-16px;top:24px;background:linear-gradient(180deg,#ffe49a,var(--accent-3));animation:bob 5s ease-in-out infinite}
+  .dot.d2{width:38px;height:38px;right:-14px;top:64%;background:linear-gradient(180deg,#a9dbff,var(--accent-2));animation:bob 6s ease-in-out .6s infinite}
+  .dot.d3{width:30px;height:30px;right:34px;top:-14px;background:linear-gradient(180deg,#ffa6cd,var(--accent));animation:bob 4.4s ease-in-out .3s infinite}
+  .scene-tag{
+    position:absolute;left:50%;bottom:-18px;transform:translateX(-50%);
+    white-space:nowrap;z-index:3;
+  }
+
+  /* fallback: molded clay monogram */
+  .u-fallback.case-fallback{
+    width:100%;height:100%;border-radius:30px;
+    place-items:center;
+    background:radial-gradient(120% 100% at 50% 0%, #ffe7f3, #cfeaff 100%);
+  }
+  body.no-photos .scene-window .case-fallback{display:grid !important}
+  .mono{
+    width:60%;aspect-ratio:1/1;border-radius:32px;display:grid;place-items:center;
+    font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(56px,12vw,104px);
+    color:#fff;letter-spacing:-2px;
+    background:linear-gradient(160deg,#ffb3d6,var(--accent) 60%,#ff5fa0);
+    box-shadow:var(--clay), 0 0 0 10px rgba(255,255,255,.55);
+    text-shadow:0 3px 0 rgba(143,40,90,.35);
+  }
+
+  /* ===== SECTION HEADS ===== */
+  section{padding:var(--sec) 0}
+  .sec-head{margin-bottom:42px;max-width:40ch}
+  .sec-head .eyebrow{display:inline-block;margin-bottom:12px}
+  .sec-head h2{font-size:clamp(28px,4.6vw,40px);font-weight:600;color:var(--ink);line-height:1.06}
+  .sec-head p{color:var(--ink-muted);margin-top:12px;font-size:18px}
+
+  /* ===== DROPS GRID ===== */
+  .drops{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+  .drop{
+    border-radius:var(--r-md);padding:24px 22px 26px;position:relative;overflow:hidden;
+    box-shadow:var(--clay);
+    transition:transform .2s cubic-bezier(.34,1.56,.64,1),box-shadow .2s ease;
+  }
+  .drop:hover{transform:translateY(4px) scale(.985);box-shadow:var(--clay-press)}
+  .drop.pink{background:linear-gradient(180deg,#fff,#ffe2ee)}
+  .drop.sky{background:linear-gradient(180deg,#fff,#dcefff)}
+  .drop.mint{background:linear-gradient(180deg,#fff,#dcfbef)}
+  .drop .num{
+    font-family:'Fredoka',sans-serif;font-weight:700;font-size:14px;
+    color:var(--ink-subtle);letter-spacing:1px;
+  }
+  .drop .toy{
+    width:88px;height:88px;border-radius:26px;margin:14px 0 18px;
+    box-shadow:var(--clay);position:relative;
+  }
+  .drop.pink .toy{background:radial-gradient(circle at 34% 26%,#fff 0 12%,transparent 14%),linear-gradient(155deg,#ffb3d6,var(--accent))}
+  .drop.sky .toy{background:radial-gradient(circle at 34% 26%,#fff 0 12%,transparent 14%),linear-gradient(155deg,#a9dbff,var(--accent-2))}
+  .drop.mint .toy{background:radial-gradient(circle at 34% 26%,#fff 0 12%,transparent 14%),linear-gradient(155deg,#bff2dd,#6fdcb4)}
+  .drop h3{font-family:'Fredoka',sans-serif;font-weight:600;font-size:22px;color:var(--ink)}
+  .drop .edition{color:var(--ink-muted);font-size:14.5px;margin:2px 0 12px;font-weight:500}
+  .drop p{color:var(--ink-muted);font-size:15.5px;line-height:1.5}
+  .drop .status{
+    margin-top:18px;display:inline-flex;align-items:center;gap:7px;
+    font-family:'Fredoka',sans-serif;font-weight:600;font-size:13px;letter-spacing:.5px;
+    padding:8px 15px;border-radius:var(--r-pill);
+    background:linear-gradient(180deg,#5e4b7e,#4a3b63);color:#fff;
+    box-shadow:var(--clay-press);
+  }
+  .status .ok{width:8px;height:8px;border-radius:50%;background:var(--accent-3);box-shadow:0 0 0 3px rgba(255,209,102,.3)}
+
+  /* ===== METRICS PILLS ===== */
+  .metrics-wrap{
+    border-radius:var(--r-lg);padding:34px;
+    background:linear-gradient(180deg,#fff,#f0e6ff);box-shadow:var(--clay);
+    display:flex;flex-wrap:wrap;gap:18px;justify-content:center;
+  }
+  .stat{
+    border-radius:var(--r-md);padding:20px 26px;text-align:center;min-width:158px;flex:1 1 158px;
+    box-shadow:var(--clay);
+  }
+  .stat.a{background:linear-gradient(180deg,#ffd2e6,#ffb3d6)}
+  .stat.b{background:linear-gradient(180deg,#bfe2ff,#a9dbff)}
+  .stat.c{background:linear-gradient(180deg,#ffeab0,#ffe49a)}
+  .stat.d{background:linear-gradient(180deg,#c8f4e1,#a6ecce)}
+  .stat .big{font-family:'Fredoka',sans-serif;font-weight:700;font-size:34px;line-height:1;color:var(--ink);letter-spacing:-1px}
+  .stat .lbl{margin-top:7px;font-size:14.5px;font-weight:600;color:#6a577f}
+
+  /* ===== CONTACT ===== */
+  .contact-card{
+    border-radius:var(--r-lg);padding:clamp(34px,5vw,58px);text-align:center;
+    background:
+      radial-gradient(120% 100% at 50% 0%, #fff3fa 0%, #ffe1f0 45%, #e6d6ff 100%);
+    box-shadow:var(--clay);
+  }
+  .contact-card .eyebrow{display:inline-block;margin-bottom:14px}
+  .contact-card h2{font-size:clamp(30px,5vw,44px);font-weight:700;color:var(--ink);line-height:1.02}
+  .contact-card p{color:var(--ink-muted);font-size:19px;max-width:30ch;margin:16px auto 28px}
+  .contact-row{display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
+
+  footer{padding:40px 0 64px;text-align:center;color:var(--ink-subtle);font-size:14.5px}
+
+  /* ===== BELIEFS (numbered clay blocks) ===== */
+  .beliefs{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .belief{
+    border-radius:var(--r-md);padding:26px 24px;position:relative;
+    background:linear-gradient(180deg,var(--surface),#f3e8ff);box-shadow:var(--clay);
+  }
+  .belief .bnum{
+    display:grid;place-items:center;width:48px;height:48px;border-radius:18px;margin-bottom:16px;
+    font-family:'Fredoka',sans-serif;font-weight:700;font-size:20px;color:#5a1f3c;
+    background:linear-gradient(180deg,#ffa6cd,var(--accent));box-shadow:var(--clay);letter-spacing:-1px;
+  }
+  .belief:nth-child(2) .bnum{background:linear-gradient(180deg,#a9dbff,var(--accent-2));color:#143b5e}
+  .belief:nth-child(3) .bnum{background:linear-gradient(180deg,#ffe49a,var(--accent-3));color:#6a4d0a}
+  .belief h3{font-family:'Fredoka',sans-serif;font-weight:600;font-size:20px;color:var(--ink);margin-bottom:8px}
+  .belief p{color:var(--ink-muted);font-size:15.5px;line-height:1.5}
+
+  /* ===== TESTIMONIALS (cards) ===== */
+  .quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .quote-card{
+    border-radius:var(--r-md);padding:26px 24px;display:flex;flex-direction:column;
+    box-shadow:var(--clay);
+  }
+  .quote-card.pink{background:linear-gradient(180deg,#fff,#ffe2ee)}
+  .quote-card.sky{background:linear-gradient(180deg,#fff,#dcefff)}
+  .quote-card.mint{background:linear-gradient(180deg,#fff,#dcfbef)}
+  .quote-card .mark{
+    font-family:'Fredoka',sans-serif;font-weight:700;font-size:42px;line-height:.6;
+    color:var(--accent);margin-bottom:6px;
+  }
+  .quote-card.sky .mark{color:var(--accent-2)}
+  .quote-card.mint .mark{color:#6fdcb4}
+  .quote-card blockquote{font-size:16px;line-height:1.55;color:var(--ink);font-weight:500;flex:1}
+  .quote-card .who{
+    margin-top:18px;display:flex;align-items:center;gap:12px;
+  }
+  .quote-card .av{
+    width:42px;height:42px;border-radius:16px;flex:none;box-shadow:var(--clay);
+    display:grid;place-items:center;font-family:'Fredoka',sans-serif;font-weight:700;
+    font-size:17px;color:#fff;letter-spacing:-1px;text-shadow:0 2px 0 rgba(143,40,90,.3);
+  }
+  .quote-card.pink .av{background:linear-gradient(155deg,#ffb3d6,var(--accent))}
+  .quote-card.sky .av{background:linear-gradient(155deg,#a9dbff,var(--accent-2))}
+  .quote-card.mint .av{background:linear-gradient(155deg,#bff2dd,#6fdcb4)}
+  .quote-card .nm{font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px;color:var(--ink);line-height:1.1}
+  .quote-card .rl{font-size:13.5px;color:var(--ink-muted);font-weight:500}
+
+  /* ===== NOW (currently building) ===== */
+  .now-card{
+    border-radius:var(--r-lg);padding:clamp(28px,4vw,40px);box-shadow:var(--clay);
+    background:linear-gradient(180deg,#fff,#f0e6ff);
+  }
+  .now-list{list-style:none;display:grid;gap:16px}
+  .now-list li{display:flex;align-items:flex-start;gap:16px}
+  .now-list .chip{
+    flex:none;font-family:'Fredoka',sans-serif;font-weight:600;font-size:12px;letter-spacing:.5px;
+    padding:7px 14px;border-radius:var(--r-pill);box-shadow:var(--clay-press);
+    background:linear-gradient(180deg,#bff2dd,#7fe0bb);color:#0f513a;margin-top:2px;min-width:74px;text-align:center;
+  }
+  .now-list .nbody strong{font-family:'Fredoka',sans-serif;font-weight:600;color:var(--ink);font-size:17px}
+  .now-list .nbody span{display:block;color:var(--ink-muted);font-size:15px;line-height:1.5;margin-top:2px}
+
+  /* ===== TOOLS (grid) ===== */
+  .tools{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .tool{
+    border-radius:var(--r-md);padding:22px 16px;text-align:center;box-shadow:var(--clay);
+    background:linear-gradient(180deg,var(--surface),#f3e8ff);
+  }
+  .tool .blob-i{
+    width:48px;height:48px;margin:0 auto 12px;border-radius:18px 20px 17px 19px;box-shadow:var(--clay);
+    background:radial-gradient(circle at 32% 28%,#fff 0 16%,transparent 18%),linear-gradient(150deg,#ffb3d6,var(--accent));
+  }
+  .tool:nth-child(4n+2) .blob-i{background:radial-gradient(circle at 32% 28%,#fff 0 16%,transparent 18%),linear-gradient(150deg,#a9dbff,var(--accent-2))}
+  .tool:nth-child(4n+3) .blob-i{background:radial-gradient(circle at 32% 28%,#fff 0 16%,transparent 18%),linear-gradient(150deg,#ffe49a,var(--accent-3))}
+  .tool:nth-child(4n) .blob-i{background:radial-gradient(circle at 32% 28%,#fff 0 16%,transparent 18%),linear-gradient(150deg,#bff2dd,#6fdcb4)}
+  .tool .tn{font-family:'Fredoka',sans-serif;font-weight:600;font-size:16px;color:var(--ink)}
+  .tool .td{font-size:13px;color:var(--ink-muted);font-weight:500;margin-top:2px}
+
+  /* ===== CREDENTIALS (pills) ===== */
+  .creds{display:flex;flex-wrap:wrap;gap:14px}
+  .cred{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:12px 22px;border-radius:var(--r-pill);box-shadow:var(--clay);
+    background:linear-gradient(180deg,#fff,#f1e6ff);
+    font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px;color:var(--ink);
+  }
+  .cred .yr{
+    font-size:12.5px;font-weight:700;color:#5a1f3c;
+    padding:4px 10px;border-radius:var(--r-pill);
+    background:linear-gradient(180deg,#ffe49a,var(--accent-3));box-shadow:var(--clay-press);
+  }
+
+  /* ===== FAQ (two column) ===== */
+  .faq{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .faq-item{
+    border-radius:var(--r-md);padding:24px 26px;box-shadow:var(--clay);
+    background:linear-gradient(180deg,var(--surface),#f3e8ff);
+  }
+  .faq-item h3{font-family:'Fredoka',sans-serif;font-weight:600;font-size:18px;color:var(--ink);margin-bottom:10px;display:flex;gap:10px;align-items:baseline}
+  .faq-item h3::before{content:"Q";font-family:'Fredoka',sans-serif;font-weight:700;color:var(--accent);font-size:16px}
+  .faq-item p{color:var(--ink-muted);font-size:15.5px;line-height:1.55}
+
+  @media (max-width:860px){
+    .beliefs,.quotes{grid-template-columns:1fr;max-width:440px;margin:0 auto}
+    .tools{grid-template-columns:repeat(2,1fr)}
+    .faq{grid-template-columns:1fr}
+  }
+
+  /* ===== motion ===== */
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s cubic-bezier(.34,1.4,.64,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  @media (max-width:860px){
+    .hero{grid-template-columns:1fr;gap:40px;text-align:center}
+    .hero .lede{margin-left:auto;margin-right:auto}
+    .hero .cta-row{justify-content:center}
+    .scene{max-width:420px;margin:0 auto}
+    .drops{grid-template-columns:1fr;max-width:440px;margin:0 auto}
+    .sec-head{margin-left:auto;margin-right:auto;text-align:center}
+    :root{--sec:72px}
+  }
+  @media (max-width:420px){
+    .nav{justify-content:center}
+    .hero h1{font-size:40px}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .scene,.dot{animation:none !important}
+    .reveal{opacity:1;transform:none;transition:none}
+    .pill,.drop{transition:none}
+  }
+
+  /* ===== PHOTO + TOGGLE CONTRACT ===== */
+  .u-fallback{display:none !important}
+  body.no-photos .u-photo{display:none !important}
+  body.no-photos .u-fallback{display:revert !important}
+
+  .atlas-photo-toggle{position:fixed;right:16px;bottom:16px;z-index:99999;display:flex;align-items:center;gap:8px;background:rgba(20,20,22,.88);color:#fff;border-radius:999px;padding:6px 6px 6px 14px;font:600 12px/1 -apple-system,system-ui,sans-serif;box-shadow:0 8px 28px -10px rgba(0,0,0,.55)}
+  .atlas-photo-toggle button{appearance:none;border:0;cursor:pointer;font:inherit;color:#16161a;background:#fff;border-radius:999px;padding:6px 14px;min-width:46px}
+  .atlas-photo-toggle button[aria-pressed="false"]{background:#3a3a42;color:#fff}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <nav class="nav">
+      <span class="brand"><span class="blob" aria-hidden="true"></span>Milo Park</span>
+      <a class="pill pill--pink" href="#contact">Let's collab →</a>
+    </nav>
+
+    <section class="hero" data-module="hero" data-variant="bold_statement" aria-label="Intro">
+      <div class="hero-copy">
+        <span class="eyebrow">Toy designer &amp; 3D artist</span>
+        <h1>I make squishy little <em>characters</em> that make people smile.</h1>
+        <p class="lede">Vinyl toys, blind boxes and soft 3D worlds — designed for the brands and collectors who get the joke.</p>
+        <div class="cta-row">
+          <a class="pill pill--pink" href="#work">See the drops →</a>
+          <a class="pill" href="#contact">Say hi</a>
+        </div>
+      </div>
+
+      <div class="scene" aria-hidden="false">
+        <div class="scene-case">
+          <span class="dot d1" aria-hidden="true"></span>
+          <span class="dot d2" aria-hidden="true"></span>
+          <span class="dot d3" aria-hidden="true"></span>
+          <div class="scene-window">
+            <img class="u-photo" src="portrait.webp"
+                 alt="Milo Park's signature squishy seaside kitten toy character, posed in a soft pastel display case">
+            <div class="u-fallback case-fallback" role="img" aria-label="Milo Park monogram">
+              <div class="mono">M</div>
+            </div>
+          </div>
+          <span class="scene-tag pill pill--butter">★ shelf no.1</span>
+        </div>
+      </div>
+    </section>
+  </header>
+</div>
+
+<main>
+  <div class="wrap">
+    <section id="work" data-module="selected_work" data-variant="grid" aria-labelledby="work-h">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Selected work</span>
+        <h2 id="work-h">Three drops. All sold out.</h2>
+        <p>Small-batch vinyl figures, made to be poked, hugged and lined up on a shelf.</p>
+      </div>
+
+      <div class="drops">
+        <article class="drop pink reveal">
+          <span class="num">DROP 01</span>
+          <div class="toy" aria-hidden="true"></div>
+          <h3>Squish Bun</h3>
+          <div class="edition">Edition of 300</div>
+          <p>The original bun-shaped buddy that started it all — cheeks you can almost press.</p>
+          <span class="status"><span class="ok" aria-hidden="true"></span>SOLD OUT</span>
+        </article>
+
+        <article class="drop sky reveal">
+          <span class="num">DROP 02</span>
+          <div class="toy" aria-hidden="true"></div>
+          <h3>Tide Pool Pals</h3>
+          <div class="edition">Edition of 500</div>
+          <p>A seaside set of tiny tide-pool critters in glossy pastel resin. Gone in a day.</p>
+          <span class="status"><span class="ok" aria-hidden="true"></span>SOLD OUT</span>
+        </article>
+
+        <article class="drop mint reveal">
+          <span class="num">DROP 03</span>
+          <div class="toy" aria-hidden="true"></div>
+          <h3>Cloud Cadets</h3>
+          <div class="edition">Edition of 400</div>
+          <p>Blind-box marshmallow astronauts — chase figure included, naturally.</p>
+          <span class="status"><span class="ok" aria-hidden="true"></span>SOLD OUT</span>
+        </article>
+      </div>
+    </section>
+
+    <section id="metrics" data-module="metrics" data-variant="pills" aria-labelledby="metrics-h">
+      <div class="sec-head reveal" style="text-align:center;margin-left:auto;margin-right:auto">
+        <span class="eyebrow">By the numbers</span>
+        <h2 id="metrics-h">A little studio with a big shelf.</h2>
+      </div>
+      <div class="metrics-wrap reveal">
+        <div class="stat a"><div class="big">3</div><div class="lbl">vinyl drops</div></div>
+        <div class="stat b"><div class="big">100%</div><div class="lbl">sold out</div></div>
+        <div class="stat c"><div class="big">5+</div><div class="lbl">label collabs</div></div>
+        <div class="stat d"><div class="big">80k</div><div class="lbl">followers</div></div>
+      </div>
+    </section>
+
+    <section id="beliefs" data-module="beliefs" data-variant="numbered" aria-labelledby="beliefs-h">
+      <div class="sec-head reveal">
+        <span class="eyebrow">How I work</span>
+        <h2 id="beliefs-h">Three rules I squish everything through.</h2>
+        <p>A tiny studio runs on taste, not headcount — so the principles have to do the heavy lifting.</p>
+      </div>
+      <div class="beliefs">
+        <article class="belief reveal">
+          <div class="bnum" aria-hidden="true">1</div>
+          <h3>Squishy first</h3>
+          <p>If a character doesn't make you want to poke it, it's not finished. Personality beats polish, every time.</p>
+        </article>
+        <article class="belief reveal">
+          <div class="bnum" aria-hidden="true">2</div>
+          <h3>Small batches, real love</h3>
+          <p>Editions stay under 500 on purpose. I'd rather sell out a great drop than warehouse a mediocre one.</p>
+        </article>
+        <article class="belief reveal">
+          <div class="bnum" aria-hidden="true">3</div>
+          <h3>Make the joke land</h3>
+          <p>Every figure carries one small gag. Collectors get it in a glance — that shared wink is the whole point.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="now" data-module="currently_building" data-variant="now_block" aria-labelledby="now-h">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Now</span>
+        <h2 id="now-h">What's on the workbench.</h2>
+        <p>Updated whenever the resin sets. Last poke: May 2026.</p>
+      </div>
+      <div class="now-card reveal">
+        <ul class="now-list">
+          <li>
+            <span class="chip">Sculpting</span>
+            <span class="nbody"><strong>Drop 04 — Garden Goblins</strong><span>A blind-box set of mossy little plant-pals. Master sculpts done; resin tests this month.</span></span>
+          </li>
+          <li>
+            <span class="chip">Collab</span>
+            <span class="nbody"><strong>Capsule with a streetwear label</strong><span>Two co-designed vinyl keychains landing this autumn. Sworn to secrecy on the brand (for now).</span></span>
+          </li>
+          <li>
+            <span class="chip">Learning</span>
+            <span class="nbody"><strong>Soft-touch silicone casting</strong><span>Chasing that squeezable, actually-squishy finish at home so the next drop feels like the renders.</span></span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="testimonials" data-module="testimonials" data-variant="cards" aria-labelledby="tm-h">
+      <div class="sec-head reveal" style="text-align:center;margin-left:auto;margin-right:auto">
+        <span class="eyebrow">Kind words</span>
+        <h2 id="tm-h">People who lined up at the drop.</h2>
+      </div>
+      <div class="quotes">
+        <figure class="quote-card pink reveal">
+          <div class="mark" aria-hidden="true">&ldquo;</div>
+          <blockquote>Milo's figures sold out of our shop in under an hour. The cheeks alone are worth the wait.</blockquote>
+          <figcaption class="who">
+            <span class="av" aria-hidden="true">JC</span>
+            <span><span class="nm">Jules Cho</span><span class="rl">Buyer, Kawaii Corner</span></span>
+          </figcaption>
+        </figure>
+        <figure class="quote-card sky reveal">
+          <div class="mark" aria-hidden="true">&ldquo;</div>
+          <blockquote>Working with Milo on our capsule was pure joy — fast, funny, and the renders matched the toy exactly.</blockquote>
+          <figcaption class="who">
+            <span class="av" aria-hidden="true">RD</span>
+            <span><span class="nm">Remy Dalca</span><span class="rl">Founder, Driftwear</span></span>
+          </figcaption>
+        </figure>
+        <figure class="quote-card mint reveal">
+          <div class="mark" aria-hidden="true">&ldquo;</div>
+          <blockquote>I have all three drops on my desk. Squish Bun is the first thing visitors pick up — every single time.</blockquote>
+          <figcaption class="who">
+            <span class="av" aria-hidden="true">PT</span>
+            <span><span class="nm">Priya Tan</span><span class="rl">Collector &amp; super-fan</span></span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="tools" data-module="tools" data-variant="grid" aria-labelledby="tools-h">
+      <div class="sec-head reveal">
+        <span class="eyebrow">The studio kit</span>
+        <h2 id="tools-h">What clay gets made of.</h2>
+        <p>From first doodle to a figure on your shelf — these are the tools doing the work.</p>
+      </div>
+      <div class="tools">
+        <div class="tool reveal"><div class="blob-i" aria-hidden="true"></div><div class="tn">Blender</div><div class="td">sculpting &amp; render</div></div>
+        <div class="tool reveal"><div class="blob-i" aria-hidden="true"></div><div class="tn">ZBrush</div><div class="td">fine detailing</div></div>
+        <div class="tool reveal"><div class="blob-i" aria-hidden="true"></div><div class="tn">Procreate</div><div class="td">concept doodles</div></div>
+        <div class="tool reveal"><div class="blob-i" aria-hidden="true"></div><div class="tn">Resin &amp; silicone</div><div class="td">small-batch casting</div></div>
+        <div class="tool reveal"><div class="blob-i" aria-hidden="true"></div><div class="tn">Airbrush</div><div class="td">pastel finishing</div></div>
+        <div class="tool reveal"><div class="blob-i" aria-hidden="true"></div><div class="tn">Figma</div><div class="td">packaging design</div></div>
+        <div class="tool reveal"><div class="blob-i" aria-hidden="true"></div><div class="tn">Shopify</div><div class="td">drop store</div></div>
+        <div class="tool reveal"><div class="blob-i" aria-hidden="true"></div><div class="tn">3D resin printer</div><div class="td">masters &amp; tests</div></div>
+      </div>
+    </section>
+
+    <section id="credentials" data-module="credentials" data-variant="pills" aria-labelledby="cred-h">
+      <div class="sec-head reveal">
+        <span class="eyebrow">A few badges</span>
+        <h2 id="cred-h">Shows, features &amp; a little plastic glory.</h2>
+      </div>
+      <div class="creds reveal">
+        <span class="cred"><span class="yr">2026</span>Designer Toy Awards — finalist</span>
+        <span class="cred"><span class="yr">2025</span>Pop Art Toy Show, Tokyo — solo booth</span>
+        <span class="cred"><span class="yr">2025</span>Featured in It's Nice That</span>
+        <span class="cred"><span class="yr">2024</span>Vinyl Fair London — guest artist</span>
+        <span class="cred"><span class="yr">2023</span>BFA Industrial Design, RISD</span>
+      </div>
+    </section>
+
+    <section id="faq" data-module="faq" data-variant="two_column" aria-labelledby="faq-h">
+      <div class="sec-head reveal" style="text-align:center;margin-left:auto;margin-right:auto">
+        <span class="eyebrow">Good questions</span>
+        <h2 id="faq-h">Before you slide into the inbox.</h2>
+      </div>
+      <div class="faq">
+        <article class="faq-item reveal">
+          <h3>Do you take custom character commissions?</h3>
+          <p>Yes — one-off vinyl figures and mascot designs for brands and collectors. Lead time is usually 8–12 weeks from sketch to shelf.</p>
+        </article>
+        <article class="faq-item reveal">
+          <h3>Will the sold-out drops ever restock?</h3>
+          <p>Almost never — that's the deal with small editions. Occasionally a tiny artist-proof batch surfaces in the newsletter, so subscribe if you're chasing one.</p>
+        </article>
+        <article class="faq-item reveal">
+          <h3>What's a realistic budget for a collab?</h3>
+          <p>Capsule collabs typically start around the cost of a 500-piece run plus design. Tell me the idea and I'll send a friendly, no-pressure quote.</p>
+        </article>
+        <article class="faq-item reveal">
+          <h3>Do you ship worldwide?</h3>
+          <p>I do. Everything ships padded in recycled, fully recyclable packaging — your buddy arrives un-dented and ready to be poked.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact" data-module="contact" data-variant="cta_band" aria-labelledby="contact-h">
+      <div class="contact-card reveal">
+        <span class="eyebrow">Let's make something</span>
+        <h2 id="contact-h">Got a brand, a shelf, or a silly idea?</h2>
+        <p>I love streetwear collabs and one-off character commissions. Slide into the inbox.</p>
+        <div class="contact-row">
+          <a class="pill pill--pink" href="mailto:hi@milopark.studio">✉ hi@milopark.studio</a>
+          <a class="pill pill--sky" href="#" >Instagram</a>
+          <a class="pill pill--butter" href="#">TikTok</a>
+          <a class="pill pill--mint" href="#">Shop drops</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">Made with soft clay &amp; good vibes — Milo Park Studio © 2026</div>
+</footer>
+
+<div class="atlas-photo-toggle" role="group" aria-label="示例照片 / Demo photos"><span>照片 Photos</span><button id="atlasPhotoBtn" type="button" aria-pressed="true">On</button></div>
+<script>(function(){var b=document.getElementById('atlasPhotoBtn');if(!b)return;function set(on){document.body.classList.toggle('no-photos',!on);b.setAttribute('aria-pressed',on?'true':'false');b.textContent=on?'On':'Off';}b.addEventListener('click',function(){set(document.body.classList.contains('no-photos'));});set(true);})();</script>
+
+<script>
+(function(){
+  var io;
+  if('IntersectionObserver' in window){
+    io=new IntersectionObserver(function(es){
+      es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+    },{threshold:.14});
+    document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+  }else{
+    document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('in');});
+  }
+})();
+</script>
+</body>
+</html>

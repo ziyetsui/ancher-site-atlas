@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Posy Wren — Picture-book author & illustrator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#faf4e6; --paper-shade:#f1e7d0;
+    --ink:#2b2620; --ink-soft:#5f574a; --ink-faint:#9a8f7c;
+    --accent:#d2542f; --accent-deep:#b23c1c;
+    --washi-coral:#f2a48b; --washi-mint:#a7c4a0;
+    --sticky-yellow:#fbe89a; --sticky-blue:#bcd6e6;
+    --line:#2b2620; --hairline:#e0d4ba;
+    --section:104px; --block:36px; --tight:14px;
+    --r-sm:4px; --r-md:10px; --r-lg:18px;
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background-color:var(--paper);
+    color:var(--ink);
+    font-family:'Lora',Georgia,serif;
+    font-size:18px; line-height:1.7;
+    /* paper grain + the faint warm table edge */
+    background-image:
+      radial-gradient(circle at 20% 12%, rgba(210,84,47,.04), transparent 40%),
+      radial-gradient(circle at 85% 60%, rgba(167,196,160,.05), transparent 45%),
+      repeating-linear-gradient(0deg, transparent, transparent 31px, rgba(188,214,230,.18) 31px, rgba(188,214,230,.18) 32px),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  /* ---- photo + toggle contract ---- */
+  .u-fallback{display:none !important}
+  body.no-photos .u-photo{display:none !important}
+  body.no-photos .u-fallback{display:revert !important}
+  body.no-photos .frame .u-fallback{display:grid !important}
+
+  .atlas-photo-toggle{position:fixed;right:16px;bottom:16px;z-index:99999;display:flex;align-items:center;gap:8px;background:rgba(20,20,22,.88);color:#fff;border-radius:999px;padding:6px 6px 6px 14px;font:600 12px/1 -apple-system,system-ui,sans-serif;box-shadow:0 8px 28px -10px rgba(0,0,0,.55)}
+  .atlas-photo-toggle button{appearance:none;border:0;cursor:pointer;font:inherit;color:#16161a;background:#fff;border-radius:999px;padding:6px 14px;min-width:46px}
+  .atlas-photo-toggle button[aria-pressed="false"]{background:#3a3a42;color:#fff}
+
+  ::selection{background:var(--washi-coral);color:var(--ink)}
+
+  a{color:var(--accent-deep);text-underline-offset:3px;text-decoration-thickness:1.5px}
+  a:focus-visible, button:focus-visible{
+    outline:3px dashed var(--accent);
+    outline-offset:4px;border-radius:2px;
+  }
+
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+
+  /* ---- shared hand-made primitives ---- */
+  .eyebrow{
+    font-family:'Caveat',cursive;font-weight:700;font-size:22px;
+    color:var(--accent);letter-spacing:.5px;margin:0 0 6px;
+    display:inline-block;transform:rotate(-2deg);
+  }
+  .scrawl{font-family:'Caveat',cursive;font-weight:600;font-size:26px;line-height:1.2;color:var(--ink-soft)}
+
+  /* washi tape strip */
+  .washi{
+    position:absolute;width:104px;height:30px;
+    background:repeating-linear-gradient(45deg, rgba(255,255,255,.25) 0 7px, transparent 7px 14px), var(--washi-coral);
+    opacity:.9;box-shadow:0 2px 5px -2px rgba(0,0,0,.25);
+    border-left:1px dashed rgba(255,255,255,.4);border-right:1px dashed rgba(255,255,255,.4);
+  }
+  .washi.mint{background:repeating-linear-gradient(45deg, rgba(255,255,255,.25) 0 7px, transparent 7px 14px), var(--washi-mint)}
+
+  /* sticky note */
+  .sticky{
+    position:relative;display:inline-block;
+    background:var(--sticky-yellow);
+    font-family:'Caveat',cursive;font-weight:700;color:var(--ink);
+    padding:14px 18px 16px;line-height:1.15;
+    box-shadow:2px 5px 12px -5px rgba(43,38,32,.45);
+    transform:rotate(-2.5deg);
+  }
+  .sticky.blue{background:var(--sticky-blue)}
+  .sticky::after{ /* tape on a sticky */
+    content:"";position:absolute;top:-9px;left:50%;transform:translateX(-50%) rotate(2deg);
+    width:48px;height:16px;background:rgba(255,255,255,.55);
+    box-shadow:0 1px 3px -1px rgba(0,0,0,.2);
+  }
+
+  /* hand-drawn ink card / frame */
+  .ink-border{
+    position:relative;background:var(--paper);
+    border:2px solid var(--ink);
+    border-radius:255px 14px 225px 12px/14px 235px 12px 255px; /* wobbly */
+    box-shadow:3px 5px 0 -1px rgba(43,38,32,.18);
+  }
+
+  /* doodled arrow (SVG) */
+  .arrow{display:block;color:var(--accent)}
+
+  /* hand underline under a word */
+  .uline{position:relative;white-space:nowrap}
+  .uline svg{position:absolute;left:-4%;right:-4%;bottom:-.5em;width:108%;height:.7em;color:var(--accent);overflow:visible}
+
+  /* ---------- HERO ---------- */
+  .hero{padding:64px 0 var(--section)}
+  .hero-grid{display:grid;grid-template-columns:1fr;gap:40px;align-items:center}
+  .hero-name{font-family:'Caveat',cursive;font-weight:700;font-size:26px;color:var(--accent);transform:rotate(-1.5deg);display:inline-block;margin-bottom:4px}
+  h1{
+    font-family:'Caveat',cursive;font-weight:700;
+    font-size:clamp(54px,11vw,88px);line-height:.96;letter-spacing:-.5px;
+    margin:.1em 0 .35em;color:var(--ink);max-width:14ch;
+  }
+  h1 em{font-style:normal;color:var(--accent);position:relative}
+  .hero-sub{font-family:'Lora',serif;font-style:italic;font-size:clamp(18px,2.4vw,22px);color:var(--ink-soft);line-height:1.6;max-width:34ch;margin:0 0 28px}
+  .cta-row{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  a.cta{
+    text-decoration:none;background:var(--sticky-yellow);color:var(--ink);
+    font-family:'Caveat',cursive;font-weight:700;font-size:25px;
+    padding:12px 22px;display:inline-block;transform:rotate(-2deg);
+    box-shadow:2px 5px 12px -5px rgba(43,38,32,.45);transition:transform .18s ease,box-shadow .18s ease;
+  }
+  a.cta:hover{transform:rotate(-2deg) translateY(-3px);box-shadow:3px 9px 16px -6px rgba(43,38,32,.5)}
+  .cta-arrow{width:84px;height:46px;transform:rotate(4deg)}
+
+  /* taped illustration */
+  .frame{
+    position:relative;background:#fffdf6;padding:14px 14px 44px;
+    box-shadow:4px 10px 26px -10px rgba(43,38,32,.5);
+    transform:rotate(1.6deg);max-width:480px;margin:0 auto;
+    border:1px solid var(--hairline);
+  }
+  .frame .photo-inner{position:relative;background:var(--paper-shade);border-radius:2px;overflow:hidden}
+  .frame img.u-photo{display:block;width:100%;height:auto;border-radius:2px}
+  .frame figcaption{font-family:'Caveat',cursive;font-weight:700;font-size:22px;color:var(--ink-soft);text-align:center;margin-top:10px;transform:rotate(-1deg)}
+  .frame .washi{top:-13px}
+  .frame .washi.tl{left:-18px;transform:rotate(-32deg)}
+  .frame .washi.tr{right:-18px;transform:rotate(32deg)}
+  /* fallback empty frame */
+  .frame .u-fallback{
+    place-items:center;text-align:center;aspect-ratio:1/1.1;width:100%;
+    border:2px dashed var(--ink-faint);border-radius:3px;background:var(--paper);
+    padding:24px;gap:10px;
+  }
+  .frame .u-fallback .fb-scrawl{font-family:'Caveat',cursive;font-weight:700;font-size:30px;color:var(--ink-soft);max-width:18ch}
+  .frame .u-fallback svg{color:var(--accent);opacity:.85}
+
+  /* ---------- SECTION HEADER ---------- */
+  section{padding:var(--section) 0;position:relative}
+  .sec-head{margin-bottom:48px;max-width:40ch}
+  .sec-title{font-family:'Caveat',cursive;font-weight:700;font-size:clamp(40px,6vw,52px);line-height:1;margin:.1em 0 .2em;color:var(--ink)}
+
+  /* divider: a wobbly hand line */
+  .rule{width:100%;height:14px;color:var(--hairline);margin:8px 0 0}
+
+  /* ---------- BOOKS GRID ---------- */
+  .books{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:38px 30px}
+  .book{
+    position:relative;background:#fffdf6;padding:14px 14px 18px;
+    box-shadow:3px 7px 20px -10px rgba(43,38,32,.45);
+    border:1px solid var(--hairline);
+  }
+  .book:nth-child(2n){transform:rotate(1.4deg)}
+  .book:nth-child(3n){transform:rotate(-1.8deg)}
+  .book:nth-child(4n){transform:rotate(1deg)}
+  .book:nth-child(2n+1){transform:rotate(-1deg)}
+  .book .cover{
+    aspect-ratio:3/4;border-radius:3px;display:grid;place-items:center;text-align:center;
+    padding:18px;position:relative;overflow:hidden;
+    font-family:'Caveat',cursive;font-weight:700;line-height:1.05;color:var(--ink);
+  }
+  .book .cover span{font-size:27px;position:relative;z-index:1}
+  .book .cover small{display:block;font-family:'Lora',serif;font-style:italic;font-weight:400;font-size:13px;color:var(--ink-soft);margin-top:8px}
+  .cover.c1{background:linear-gradient(160deg,#f6c9b4,#eaa37f)}
+  .cover.c2{background:linear-gradient(160deg,#bcd6e6,#9cc0d8)}
+  .cover.c3{background:linear-gradient(160deg,#cfe3c4,#a7c4a0)}
+  .cover.c4{background:linear-gradient(160deg,#fbe89a,#f0d36a)}
+  .cover.c5{background:linear-gradient(160deg,#e6c4dd,#cfa3c4)}
+  .cover.c6{background:linear-gradient(160deg,#f2b0a4,#dd8a7e)}
+  .cover::before{ /* faint doodle ring */
+    content:"";position:absolute;inset:10px;border:1.5px solid rgba(43,38,32,.18);border-radius:60% 40% 55% 45%/50% 55% 45% 50%;
+  }
+  .book .meta{font-family:'Caveat',cursive;font-weight:700;font-size:24px;margin:12px 2px 2px;line-height:1.05}
+  .book .desc{font-size:14.5px;color:var(--ink-soft);line-height:1.5;margin:4px 2px 0}
+  .book .yr{font-family:'Caveat',cursive;font-weight:600;color:var(--ink-faint);font-size:19px;margin:6px 2px 0}
+  .book .washi{top:-12px;left:22px;width:78px;height:24px}
+  /* award sticker */
+  .award{
+    position:absolute;right:-16px;top:-18px;z-index:3;width:74px;height:74px;
+    background:radial-gradient(circle,#f6d24a,#e0a92a);
+    color:#5a3c0a;font-family:'Caveat',cursive;font-weight:700;font-size:14px;line-height:1.05;
+    display:grid;place-items:center;text-align:center;padding:6px;
+    clip-path:polygon(50% 0,61% 12%,77% 7%,79% 24%,95% 30%,86% 44%,99% 56%,84% 64%,89% 81%,72% 80%,64% 96%,50% 86%,36% 96%,28% 80%,11% 81%,16% 64%,1% 56%,14% 44%,5% 30%,21% 24%,23% 7%,39% 12%);
+    box-shadow:0 4px 10px -4px rgba(43,38,32,.5);transform:rotate(8deg);
+  }
+
+  /* ---------- STORY ---------- */
+  .story-wrap{max-width:740px;margin:0 auto;position:relative}
+  .pull{
+    font-family:'Lora',serif;font-style:italic;font-weight:400;
+    font-size:clamp(24px,4vw,32px);line-height:1.35;color:var(--ink);
+    margin:0 0 36px;padding-left:22px;border-left:4px solid var(--accent);
+  }
+  .story-wrap p{margin:0 0 22px;max-width:62ch}
+  .story-wrap p .uline{font-weight:600}
+  .margin-note{
+    position:absolute;right:-30px;top:120px;max-width:170px;
+  }
+  @media(max-width:1080px){.margin-note{position:static;max-width:none;margin:0 0 26px;display:inline-block}}
+  .margin-note .sticky{transform:rotate(3deg);font-size:21px}
+  .story-arrow{display:block;margin:30px 0 0;color:var(--accent)}
+
+  /* ---------- METRICS (tally marks) ---------- */
+  .tallies{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:30px}
+  .tally{
+    position:relative;background:#fffdf6;padding:26px 22px 24px;
+    border:1px solid var(--hairline);
+    box-shadow:3px 7px 20px -10px rgba(43,38,32,.45);
+  }
+  .tally:nth-child(2n){transform:rotate(1.2deg)}
+  .tally:nth-child(2n+1){transform:rotate(-1.4deg)}
+  .tally .num{font-family:'Caveat',cursive;font-weight:700;font-size:clamp(48px,7vw,64px);line-height:.9;color:var(--accent);display:block}
+  .tally .num .uline svg{bottom:-.18em}
+  .tally .lbl{font-family:'Lora',serif;font-style:italic;font-size:16px;color:var(--ink-soft);margin-top:8px;line-height:1.45}
+  .tally .washi{top:-12px;left:18px;width:64px;height:22px}
+
+  /* ---------- BELIEFS (numbered list) ---------- */
+  .creed{display:grid;gap:30px;max-width:760px;counter-reset:creed}
+  .creed li{
+    list-style:none;position:relative;padding-left:74px;counter-increment:creed;
+  }
+  .creed li::before{
+    content:counter(creed);position:absolute;left:0;top:-4px;
+    width:50px;height:50px;display:grid;place-items:center;
+    font-family:'Caveat',cursive;font-weight:700;font-size:30px;color:var(--ink);
+    background:var(--sticky-yellow);transform:rotate(-3deg);
+    box-shadow:2px 4px 10px -5px rgba(43,38,32,.45);
+  }
+  .creed li:nth-child(2n)::before{background:var(--sticky-blue);transform:rotate(3deg)}
+  .creed li h3{font-family:'Caveat',cursive;font-weight:700;font-size:27px;margin:0 0 4px;color:var(--ink);line-height:1.05}
+  .creed li p{margin:0;color:var(--ink-soft);font-size:16.5px;line-height:1.55;max-width:54ch}
+
+  /* ---------- NOW (currently building) ---------- */
+  .now-card{
+    position:relative;background:#fffdf6;max-width:680px;
+    padding:38px 36px 40px;border:2px solid var(--ink);
+    border-radius:225px 14px 255px 12px/14px 255px 12px 235px;
+    box-shadow:3px 6px 0 -1px rgba(43,38,32,.18);transform:rotate(-.8deg);
+  }
+  .now-card .nowtag{position:absolute;top:-18px;left:28px}
+  .now-list{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:18px}
+  .now-list li{display:flex;gap:14px;align-items:flex-start;font-size:17px;color:var(--ink-soft);line-height:1.55}
+  .now-list li b{color:var(--ink);font-weight:600}
+  .now-list .tick{flex:none;margin-top:3px;color:var(--accent)}
+
+  /* ---------- READING LIST ---------- */
+  .shelf{display:grid;gap:0;max-width:780px}
+  .shelf li{
+    list-style:none;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
+    padding:18px 4px;border-bottom:1px dashed var(--hairline);
+  }
+  .shelf li:last-child{border-bottom:0}
+  .shelf .bk{font-family:'Lora',serif;font-style:italic;font-weight:600;font-size:19px;color:var(--ink)}
+  .shelf .au{font-size:16px;color:var(--ink-faint)}
+  .shelf .why{flex:1 1 100%;font-size:15.5px;color:var(--ink-soft);margin:2px 0 0;line-height:1.5}
+  .shelf .tag{
+    font-family:'Caveat',cursive;font-weight:700;font-size:18px;color:var(--ink);
+    background:var(--sticky-yellow);padding:2px 10px;transform:rotate(-2deg);
+    box-shadow:1px 3px 8px -4px rgba(43,38,32,.4);
+  }
+  .shelf .tag.mint{background:var(--washi-mint)}
+  .shelf .tag.blue{background:var(--sticky-blue)}
+
+  /* ---------- TESTIMONIALS (quote-led notes) ---------- */
+  .notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:36px 30px}
+  .note{
+    position:relative;background:var(--sticky-yellow);
+    padding:26px 24px 22px;line-height:1.4;
+    box-shadow:2px 6px 14px -6px rgba(43,38,32,.45);
+  }
+  .note:nth-child(2n){background:var(--sticky-blue);transform:rotate(1.4deg)}
+  .note:nth-child(2n+1){transform:rotate(-1.6deg)}
+  .note::after{
+    content:"";position:absolute;top:-10px;left:50%;transform:translateX(-50%) rotate(-3deg);
+    width:60px;height:18px;background:rgba(255,255,255,.55);
+    box-shadow:0 1px 3px -1px rgba(0,0,0,.2);
+  }
+  .note blockquote{margin:0 0 16px;font-family:'Lora',serif;font-style:italic;font-size:18px;color:var(--ink)}
+  .note .who{font-family:'Caveat',cursive;font-weight:700;font-size:22px;color:var(--ink);line-height:1.05}
+  .note .who small{display:block;font-family:'Lora',serif;font-style:normal;font-weight:400;font-size:14px;color:var(--ink-soft);margin-top:2px}
+
+  /* ---------- CONTACT ---------- */
+  .contact{padding-bottom:140px}
+  .torn{
+    position:relative;background:#fffdf6;
+    padding:54px 40px 60px;max-width:720px;margin:0 auto;
+    box-shadow:3px 10px 30px -14px rgba(43,38,32,.5);
+    transform:rotate(-1deg);
+    /* torn top + bottom edges */
+    clip-path:polygon(0 4%,4% 1%,9% 5%,15% 1%,22% 4%,30% 0,38% 4%,46% 1%,54% 5%,62% 1%,70% 4%,78% 0,86% 4%,93% 1%,100% 4%,100% 96%,95% 99%,88% 95%,80% 100%,72% 96%,63% 100%,54% 96%,46% 99%,37% 95%,29% 100%,20% 96%,12% 99%,5% 95%,0 98%);
+  }
+  .contact h2{font-family:'Caveat',cursive;font-weight:700;font-size:clamp(40px,7vw,58px);margin:0 0 12px;line-height:1}
+  .contact p{font-size:19px;color:var(--ink-soft);max-width:44ch;margin:0 0 28px}
+  .links{display:flex;flex-wrap:wrap;gap:14px 22px;align-items:center}
+  .links a{
+    font-family:'Caveat',cursive;font-weight:700;font-size:26px;text-decoration:none;
+    color:var(--ink);position:relative;
+  }
+  .links a span{position:relative;z-index:1}
+  .links a svg{position:absolute;left:0;right:0;bottom:-7px;width:100%;height:9px;color:var(--accent)}
+  .links a:hover{color:var(--accent-deep)}
+  footer{text-align:center;font-family:'Caveat',cursive;font-size:21px;color:var(--ink-faint);padding:0 0 40px;margin-top:60px}
+
+  /* ---------- reveal motion ---------- */
+  .reveal{opacity:0;transform:translateY(18px) rotate(var(--tilt,0deg));transition:opacity .6s ease, transform .6s ease}
+  .reveal.in{opacity:1}
+  /* keep intentional tilts on framed elements after reveal handled per-element via JS removing transform offset */
+
+  @media (min-width:860px){
+    .hero{padding:80px 0 var(--section)}
+    .hero-grid{grid-template-columns:1.05fr .95fr;gap:56px}
+    .frame{margin:0 0 0 auto}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .reveal{opacity:1 !important;transform:none !important;transition:none}
+    a.cta:hover{transform:rotate(-2deg)}
+    *{transition:none !important}
+  }
+</style>
+</head>
+<body>
+
+<main>
+  <!-- ============ HERO ============ -->
+  <header class="hero" data-module="hero" data-variant="split_portrait">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div class="reveal" style="--tilt:0deg">
+          <span class="hero-name">Posy Wren · picture-book studio</span>
+          <h1>Small stories, drawn by <em>hand</em>.</h1>
+          <p class="hero-sub">For kids — and the grown-ups who read to them, one bedtime page at a time.</p>
+          <div class="cta-row">
+            <a class="cta" href="#books">See the books →</a>
+            <svg class="arrow cta-arrow" viewBox="0 0 84 46" fill="none" aria-hidden="true">
+              <path d="M2 12 C 22 4, 50 8, 74 30" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+              <path d="M74 30 L 63 27 M74 30 L 70 18" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- taped illustration -->
+        <figure class="frame reveal" style="--tilt:1.6deg">
+          <span class="washi tl" aria-hidden="true"></span>
+          <span class="washi tr mint" aria-hidden="true"></span>
+          <div class="photo-inner">
+            <img class="u-photo" src="portrait.webp" alt="A hand-drawn watercolour illustration of a couple reading a picture book together, taped into the page." width="900" height="900">
+            <div class="u-fallback" role="img" aria-label="Illustration placeholder — a hand-drawn frame">
+              <svg width="58" height="58" viewBox="0 0 58 58" fill="none" aria-hidden="true">
+                <rect x="4" y="6" width="50" height="40" rx="3" stroke="currentColor" stroke-width="2.4"/>
+                <path d="M9 38 L22 24 L31 33 L40 22 L49 34" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="20" cy="17" r="3.4" stroke="currentColor" stroke-width="2.4"/>
+              </svg>
+              <span class="fb-scrawl">a little drawing lives here</span>
+            </div>
+          </div>
+          <figcaption>“Otters in the Post Office” — endpaper sketch</figcaption>
+        </figure>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ SELECTED WORK ============ -->
+  <section id="books" aria-labelledby="books-title" data-module="selected_work" data-variant="grid">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">the bookshelf</span>
+        <h2 class="sec-title" id="books-title">Seven books, all hand-drawn</h2>
+        <p style="color:var(--ink-soft);margin:0;max-width:46ch">Ink, watercolour, and the occasional crayon stolen from my niece. Tap any cover to read more about it.</p>
+        <svg class="rule" viewBox="0 0 600 14" preserveAspectRatio="none" aria-hidden="true"><path d="M2 9 C 120 2, 240 12, 360 6 S 560 4, 598 8" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>
+      </div>
+
+      <div class="books">
+        <article class="book reveal">
+          <span class="award" aria-label="Winner, 2024 Golden Acorn Illustration Medal">Golden Acorn ’24</span>
+          <span class="washi" aria-hidden="true"></span>
+          <div class="cover c1"><span>The Moon Forgot to Set<small>a bedtime that wouldn’t end</small></span></div>
+          <p class="meta">The Moon Forgot to Set</p>
+          <p class="desc">A sleepy town learns to share the longest night of the year.</p>
+          <p class="yr">2024 · medal winner</p>
+        </article>
+
+        <article class="book reveal">
+          <span class="washi mint" aria-hidden="true"></span>
+          <div class="cover c2"><span>Otters in the Post Office<small>parcels, paws & puddles</small></span></div>
+          <p class="meta">Otters in the Post Office</p>
+          <p class="desc">What happens after hours when the river creeps indoors.</p>
+          <p class="yr">2023</p>
+        </article>
+
+        <article class="book reveal">
+          <span class="washi" aria-hidden="true"></span>
+          <div class="cover c3"><span>The Very Patient Pine<small>a tree that waited</small></span></div>
+          <p class="meta">The Very Patient Pine</p>
+          <p class="desc">On growing slowly, and why that is its own kind of brave.</p>
+          <p class="yr">2022</p>
+        </article>
+
+        <article class="book reveal">
+          <span class="washi mint" aria-hidden="true"></span>
+          <div class="cover c4"><span>Mabel Draws a Dragon<small>colour outside the lines</small></span></div>
+          <p class="meta">Mabel Draws a Dragon</p>
+          <p class="desc">The dragon Mabel drew got loose. Now everyone wants one.</p>
+          <p class="yr">2021</p>
+        </article>
+
+        <article class="book reveal">
+          <span class="washi" aria-hidden="true"></span>
+          <div class="cover c5"><span>Goodnight, Lamplighter<small>the last warm window</small></span></div>
+          <p class="meta">Goodnight, Lamplighter</p>
+          <p class="desc">A small girl walks her city to sleep, lamp by lamp.</p>
+          <p class="yr">2019</p>
+        </article>
+
+        <article class="book reveal">
+          <span class="washi mint" aria-hidden="true"></span>
+          <div class="cover c6"><span>The Button Sea<small>everything I lost, found</small></span></div>
+          <p class="meta">The Button Sea</p>
+          <p class="desc">A grandmother’s sewing tin becomes an ocean of small treasures.</p>
+          <p class="yr">2017 · debut</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STORY ============ -->
+  <section aria-labelledby="story-title" data-module="story" data-variant="magazine_longform" style="background:linear-gradient(180deg,transparent,rgba(241,231,208,.5),transparent)">
+    <div class="wrap">
+      <div class="story-wrap">
+        <div class="sec-head reveal" style="margin-bottom:32px">
+          <span class="eyebrow">at the drawing table</span>
+          <h2 class="sec-title" id="story-title">How I make a little book</h2>
+        </div>
+
+        <aside class="margin-note reveal" aria-hidden="false">
+          <span class="sticky blue">600+ kids drew their own animal with me — 3 cities, all sold out 🐙</span>
+        </aside>
+
+        <blockquote class="pull reveal">“A picture book is a tiny theatre you hold in two hands. I draw it slowly, so a child can stay a while.”</blockquote>
+
+        <p class="reveal">I have spent <span class="uline">twelve years drawing by hand<svg viewBox="0 0 200 12" preserveAspectRatio="none" aria-hidden="true"><path d="M2 8 C 60 2, 140 12, 198 5" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/></svg></span> — ink first, then watercolour, then the bits of crayon and coloured pencil that sneak in. Nothing on this page was made by a machine, and I’d like to keep it that way.</p>
+
+        <p class="reveal">Every story starts as a scribble in a battered sketchbook: an otter posting a letter, a pine tree that refuses to hurry. I let the drawing tell me what the words can’t. By the time a manuscript reaches a publisher, the characters already know how they walk.</p>
+
+        <p class="reveal">Between books I run <strong>“Draw Your Own Animal”</strong> workshops — three cities so far, every one sold out, 600-plus small illustrators and a heroic amount of glitter. Watching a six-year-old decide their creature has seven legs is the best research there is.</p>
+
+        <svg class="story-arrow reveal" width="120" height="54" viewBox="0 0 120 54" fill="none" aria-hidden="true">
+          <path d="M4 8 C 30 50, 80 50, 112 18" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M112 18 L 100 22 M112 18 L 108 30" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <p class="scrawl reveal" style="margin-top:6px">…so let’s make something together.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ METRICS ============ -->
+  <section id="tally" aria-labelledby="tally-title" data-module="metrics" data-variant="big_numerals">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">a quick tally</span>
+        <h2 class="sec-title" id="tally-title">Counted up, one mark at a time</h2>
+        <svg class="rule" viewBox="0 0 600 14" preserveAspectRatio="none" aria-hidden="true"><path d="M2 9 C 120 2, 240 12, 360 6 S 560 4, 598 8" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>
+      </div>
+      <div class="tallies">
+        <div class="tally reveal" style="--tilt:-1.4deg">
+          <span class="washi" aria-hidden="true"></span>
+          <span class="num">7</span>
+          <span class="lbl">picture books written &amp; illustrated, start to endpaper</span>
+        </div>
+        <div class="tally reveal" style="--tilt:1.2deg">
+          <span class="washi mint" aria-hidden="true"></span>
+          <span class="num">600<span aria-hidden="true">+</span></span>
+          <span class="lbl">small illustrators at my “Draw Your Own Animal” workshops</span>
+        </div>
+        <div class="tally reveal" style="--tilt:-1.4deg">
+          <span class="washi" aria-hidden="true"></span>
+          <span class="num">12</span>
+          <span class="lbl">years drawing by hand — ink, watercolour, the odd crayon</span>
+        </div>
+        <div class="tally reveal" style="--tilt:1.2deg">
+          <span class="washi mint" aria-hidden="true"></span>
+          <span class="num">9</span>
+          <span class="lbl">languages my little stories have been read aloud in</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BELIEFS ============ -->
+  <section id="creed" aria-labelledby="creed-title" data-module="beliefs" data-variant="numbered" style="background:linear-gradient(180deg,transparent,rgba(241,231,208,.5),transparent)">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">pinned above the table</span>
+        <h2 class="sec-title" id="creed-title">Four things I draw by</h2>
+      </div>
+      <ol class="creed">
+        <li class="reveal">
+          <h3>Leave the wobble in.</h3>
+          <p>A line that shakes a little is a line a hand actually made. I don’t straighten it out — that wobble is where the warmth lives.</p>
+        </li>
+        <li class="reveal">
+          <h3>Draw slowly, so a child can stay.</h3>
+          <p>A picture book is a tiny theatre held in two hands. I fill the corners, so there’s always one more thing to find on the fortieth bedtime.</p>
+        </li>
+        <li class="reveal">
+          <h3>Let the picture say what the words can’t.</h3>
+          <p>The best page leaves room. If the drawing already shows the sadness, the sentence doesn’t need to name it.</p>
+        </li>
+        <li class="reveal">
+          <h3>No machine on this page.</h3>
+          <p>Every mark here was inked or painted by hand. It’s slower, it’s messier, and I’d like to keep it exactly that way.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ NOW ============ -->
+  <section id="now" aria-labelledby="now-title" data-module="currently_building" data-variant="now_block">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">at the table this month</span>
+        <h2 class="sec-title" id="now-title">What I’m drawing right now</h2>
+      </div>
+      <div class="now-card reveal" style="--tilt:-.8deg">
+        <span class="sticky nowtag" aria-hidden="true">Now · June ’26</span>
+        <ul class="now-list">
+          <li>
+            <svg class="tick" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 11 L8 16 L17 4" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span><b>Inking book eight, “The Snail Who Mailed Herself.”</b> Spreads 1–14 painted; the post office scene is fighting me beautifully.</span>
+          </li>
+          <li>
+            <svg class="tick" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 11 L8 16 L17 4" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span><b>Packing crayons for three autumn workshops</b> — Bristol, Leeds, and a tiny island library off the coast.</span>
+          </li>
+          <li>
+            <svg class="tick" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 11 L8 16 L17 4" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span><b>Open to two commissions</b> for spring — picture-book covers and editorial spot drawings only, please.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TESTIMONIALS ============ -->
+  <section id="kind-words" aria-labelledby="words-title" data-module="testimonials" data-variant="quote_led">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">notes left on my desk</span>
+        <h2 class="sec-title" id="words-title">Kind words, mostly in crayon</h2>
+        <svg class="rule" viewBox="0 0 600 14" preserveAspectRatio="none" aria-hidden="true"><path d="M2 9 C 120 2, 240 12, 360 6 S 560 4, 598 8" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>
+      </div>
+      <div class="notes">
+        <figure class="note reveal" style="--tilt:-1.6deg">
+          <blockquote>“Posy hands you the manuscript already breathing. Her sketches know how the characters walk before we’ve agreed on the title.”</blockquote>
+          <figcaption class="who">Marian Holt<small>Editor, Lantern &amp; Loom Books</small></figcaption>
+        </figure>
+        <figure class="note reveal" style="--tilt:1.4deg">
+          <blockquote>“My daughter has asked for ‘the moon one’ 211 nights running. I have it memorised. I am not even a little bit sorry.”</blockquote>
+          <figcaption class="who">Devon Akeyo<small>Parent &amp; reluctant nightly narrator</small></figcaption>
+        </figure>
+        <figure class="note reveal" style="--tilt:-1.6deg">
+          <blockquote>“She let a room of six-year-olds give a dragon seven legs and treated every single one like a serious design decision.”</blockquote>
+          <figcaption class="who">Ife Castellano<small>Librarian, Greenfield Children’s Library</small></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ READING LIST ============ -->
+  <section id="reading" aria-labelledby="reading-title" data-module="reading_list" data-variant="list" style="background:linear-gradient(180deg,transparent,rgba(241,231,208,.5),transparent)">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">propped open near the kettle</span>
+        <h2 class="sec-title" id="reading-title">On the table this season</h2>
+      </div>
+      <ul class="shelf">
+        <li class="reveal">
+          <span class="bk">Beginning to End</span>
+          <span class="au">— Robert Frank</span>
+          <span class="tag" aria-label="status">re-reading</span>
+          <p class="why">For how he lets a photograph stay quiet. I keep stealing his patience for my endpapers.</p>
+        </li>
+        <li class="reveal">
+          <span class="bk">The Lost Words</span>
+          <span class="au">— Macfarlane &amp; Morris</span>
+          <span class="tag mint" aria-label="status">favourite</span>
+          <p class="why">Watercolour and word as one breath. The book I press into every young illustrator’s hands.</p>
+        </li>
+        <li class="reveal">
+          <span class="bk">Drawn from Paradise</span>
+          <span class="au">— David Attenborough</span>
+          <span class="tag blue" aria-label="status">research</span>
+          <p class="why">Birds-of-paradise for a feathered character in book eight. Mostly an excuse to draw ridiculous tails.</p>
+        </li>
+        <li class="reveal">
+          <span class="bk">The Creative Habit</span>
+          <span class="au">— Twyla Tharp</span>
+          <span class="tag" aria-label="status">dog-eared</span>
+          <p class="why">On showing up to the table before the idea does. My most-underlined spine.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section class="contact" aria-labelledby="contact-title" data-module="contact" data-variant="cta_band">
+    <div class="wrap">
+      <div class="torn reveal">
+        <span class="eyebrow">let’s talk</span>
+        <h2 id="contact-title">Got a story that needs a face?</h2>
+        <p>I take a few illustration commissions a year, and I love hearing from publishers and parents alike. Say hello — I read everything myself.</p>
+        <div class="links">
+          <a href="mailto:hello@posywren.studio"><span>hello@posywren.studio</span><svg viewBox="0 0 200 9" preserveAspectRatio="none" aria-hidden="true"><path d="M2 6 C 70 1, 140 9, 198 4" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/></svg></a>
+          <a href="#"><span>The Doodle Post ✉</span><svg viewBox="0 0 200 9" preserveAspectRatio="none" aria-hidden="true"><path d="M2 5 C 60 9, 150 1, 198 6" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/></svg></a>
+          <a href="#"><span>@posy.draws</span><svg viewBox="0 0 200 9" preserveAspectRatio="none" aria-hidden="true"><path d="M2 6 C 80 2, 130 10, 198 4" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/></svg></a>
+        </div>
+      </div>
+      <footer>drawn by hand in a slightly messy studio · Posy Wren 2026</footer>
+    </div>
+  </section>
+</main>
+
+<div class="atlas-photo-toggle" role="group" aria-label="示例照片 / Demo photos"><span>照片 Photos</span><button id="atlasPhotoBtn" type="button" aria-pressed="true">On</button></div>
+<script>(function(){var b=document.getElementById('atlasPhotoBtn');if(!b)return;function set(on){document.body.classList.toggle('no-photos',!on);b.setAttribute('aria-pressed',on?'true':'false');b.textContent=on?'On':'Off';}b.addEventListener('click',function(){set(document.body.classList.contains('no-photos'));});set(true);})();</script>
+
+<script>
+(function(){
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var els = document.querySelectorAll('.reveal');
+  if(reduce || !('IntersectionObserver' in window)){
+    els.forEach(function(e){e.classList.add('in');});
+    return;
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}
+    });
+  },{threshold:.12, rootMargin:'0px 0px -8% 0px'});
+  els.forEach(function(e){io.observe(e);});
+})();
+</script>
+</body>
+</html>

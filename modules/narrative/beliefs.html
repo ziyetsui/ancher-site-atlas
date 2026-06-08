@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Beliefs / 信条 — specimen sheet</title>
+<style>
+  :root{--bg:#ffffff;--surface:#f6f6f4;--surface-2:#efefea;--ink:#191917;--muted:#6b6b67;--subtle:#9a9a94;--accent:#2f56ff;--accent-soft:#e9eefc;--hairline:#e7e7e2;--ink-line:#191917;--ok:#1f7a44;--radius:12px;--pad:24px}
+
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .serif{font-family:Georgia,"Times New Roman",serif}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace}
+
+  /* ---------- page shell ---------- */
+  .sheet{max-width:980px;margin:0 auto;padding:40px 20px 80px}
+
+  .sheet-head{
+    border-bottom:1px solid var(--hairline);
+    padding-bottom:18px;
+    margin-bottom:36px;
+  }
+  .sheet-head h1{
+    font-size:clamp(22px,4vw,30px);
+    margin:0 0 8px;
+    letter-spacing:-.01em;
+    font-weight:650;
+  }
+  .sheet-meta{
+    display:flex;flex-wrap:wrap;gap:8px 14px;
+    align-items:center;
+    font-size:12.5px;color:var(--muted);
+  }
+  .sheet-meta .dot{width:3px;height:3px;border-radius:50%;background:var(--subtle);display:inline-block}
+  .sheet-meta .count{
+    color:var(--accent);
+    background:var(--accent-soft);
+    padding:2px 9px;border-radius:999px;
+    font-weight:600;font-size:11.5px;
+    letter-spacing:.02em;
+  }
+
+  /* ---------- variant blocks ---------- */
+  .variant{margin-bottom:44px}
+  .variant:last-child{margin-bottom:0}
+
+  .variant-label{
+    display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 12px;
+    margin-bottom:12px;
+  }
+  .variant-id{
+    font-size:12px;
+    color:var(--ink);
+    background:var(--surface-2);
+    border:1px solid var(--hairline);
+    padding:3px 8px;border-radius:6px;
+    letter-spacing:.01em;
+  }
+  .variant-hint{font-size:13px;color:var(--muted)}
+
+  .stage{
+    border:1px solid var(--hairline);
+    border-radius:var(--radius);
+    background:var(--surface);
+    padding:clamp(20px,4vw,40px);
+  }
+
+  /* ---------- shared component scaffolding ---------- */
+  .persona-tag{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:12px;color:var(--muted);
+    margin-bottom:6px;
+  }
+  .persona-tag .avatar{
+    width:22px;height:22px;border-radius:50%;
+    background:var(--surface-2);
+    border:1px solid var(--hairline);
+    display:grid;place-items:center;
+    font-size:9.5px;font-weight:700;color:var(--muted);
+    letter-spacing:.02em;
+  }
+  .eyebrow{
+    font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--subtle);font-weight:600;margin:0 0 6px;
+  }
+
+  /* ====== VARIANT 1: principles_list ====== */
+  .pl{max-width:680px}
+  .pl-head h2{
+    font-size:clamp(22px,3.4vw,30px);
+    line-height:1.15;letter-spacing:-.015em;
+    margin:0 0 10px;font-weight:600;
+  }
+  .pl-head p{
+    margin:0 0 4px;color:var(--muted);
+    font-size:15px;max-width:52ch;
+  }
+  .pl-list{
+    list-style:none;margin:28px 0 0;padding:0;
+    border-top:1px solid var(--hairline);
+  }
+  .pl-list li{
+    padding:20px 0 20px 26px;
+    border-bottom:1px solid var(--hairline);
+    position:relative;
+  }
+  .pl-list li::before{
+    content:"";position:absolute;left:0;top:27px;
+    width:7px;height:7px;border-radius:2px;
+    background:var(--accent);
+    transform:rotate(45deg);
+  }
+  .pl-list h3{
+    margin:0 0 4px;font-size:16.5px;font-weight:600;
+    letter-spacing:-.005em;
+  }
+  .pl-list p{
+    margin:0;color:var(--muted);font-size:14.5px;
+    max-width:58ch;
+  }
+  .pl-list .keyword{color:var(--ink);font-weight:600}
+
+  /* ====== VARIANT 2: numbered ====== */
+  .nm{max-width:760px}
+  .nm-head{margin-bottom:30px}
+  .nm-head h2{
+    font-size:clamp(22px,3.4vw,30px);
+    margin:0 0 8px;letter-spacing:-.015em;font-weight:600;
+  }
+  .nm-head p{margin:0;color:var(--muted);font-size:15px;max-width:54ch}
+
+  .nm-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:1px;
+    background:var(--hairline);
+    border:1px solid var(--hairline);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .nm-item{
+    background:var(--surface);
+    padding:24px clamp(18px,3vw,26px) 26px;
+    display:flex;flex-direction:column;
+    min-height:148px;
+  }
+  .nm-num{
+    font-size:13px;color:var(--accent);
+    font-weight:700;letter-spacing:.04em;
+    margin-bottom:14px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .nm-num::after{
+    content:"";flex:1;height:1px;
+    background:linear-gradient(90deg,var(--hairline),transparent);
+  }
+  .nm-item h3{
+    margin:0 0 6px;font-size:17px;font-weight:600;
+    letter-spacing:-.01em;line-height:1.25;
+  }
+  .nm-item p{
+    margin:0;color:var(--muted);font-size:14px;line-height:1.55;
+  }
+
+  /* ---------- a11y / focus ---------- */
+  a{color:var(--accent);text-decoration-thickness:1px;text-underline-offset:2px}
+  a:focus-visible,
+  .nm-item:focus-visible,
+  [tabindex]:focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:3px;
+    border-radius:4px;
+  }
+
+  /* photo-slot annotation chip */
+  .slot-note{
+    font-size:10.5px;color:var(--subtle);
+    letter-spacing:.04em;text-transform:uppercase;
+    margin-top:8px;
+  }
+
+  @media (max-width:560px){
+    .nm-grid{grid-template-columns:1fr}
+  }
+
+  @media (prefers-reduced-motion:no-preference){
+    .stage{transition:border-color .2s ease}
+  }
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header class="sheet-head">
+    <h1>Beliefs / 信条</h1>
+    <div class="sheet-meta">
+      <span>module: <span class="mono">beliefs</span></span>
+      <span class="dot" aria-hidden="true"></span>
+      <span>category: <span class="mono">narrative</span></span>
+      <span class="dot" aria-hidden="true"></span>
+      <span class="count">2 variants</span>
+    </div>
+  </header>
+
+  <!-- ============ VARIANT 1 ============ -->
+  <section class="variant" aria-labelledby="v1-label">
+    <div class="variant-label">
+      <code class="variant-id mono">principles_list</code>
+      <span class="variant-hint" id="v1-label">原则列表 — labeled statements with supporting detail</span>
+    </div>
+
+    <div class="stage">
+      <div class="pl">
+        <div class="pl-head">
+          <span class="persona-tag">
+            <span class="avatar" aria-hidden="true">MC</span>
+            Maya Chen · product designer
+          </span>
+          <p class="eyebrow">What I hold to</p>
+          <h2 class="serif">A short list of things I refuse to compromise on.</h2>
+          <p>After a decade shipping consumer software, these are the working beliefs that survived contact with real teams and real deadlines.</p>
+        </div>
+
+        <ul class="pl-list">
+          <li>
+            <h3>Start from the user's worst day, not their best.</h3>
+            <p>The flows people remember are the ones that <span class="keyword">failed gracefully</span>—the empty state, the lost connection, the accidental delete. I design those first.</p>
+          </li>
+          <li>
+            <h3>A demo is a promise; ship it or cut it.</h3>
+            <p>If a feature is good enough to show in a review, it's worth the work to make it real. <span class="keyword">Vaporware erodes trust</span> faster than a missed quarter.</p>
+          </li>
+          <li>
+            <h3>Defaults are the design.</h3>
+            <p>Most people never open settings. The choices baked into the <span class="keyword">out-of-box experience</span> are the ones that actually shape behavior.</p>
+          </li>
+          <li>
+            <h3>Critique the work, protect the person.</h3>
+            <p>Strong opinions about the artifact, generous assumptions about the maker. I've never seen <span class="keyword">harshness</span> produce better craft.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VARIANT 2 ============ -->
+  <section class="variant" aria-labelledby="v2-label">
+    <div class="variant-label">
+      <code class="variant-id mono">numbered</code>
+      <span class="variant-hint" id="v2-label">编号原则 — enumerated tenets in a tidy grid</span>
+    </div>
+
+    <div class="stage">
+      <div class="nm">
+        <div class="nm-head">
+          <p class="eyebrow">Operating principles</p>
+          <h2 class="serif">Five rules I run my practice by.</h2>
+          <p>Numbered so I can point to them in a 1:1 and so a new teammate knows what to expect on week one.</p>
+        </div>
+
+        <ol class="nm-grid" role="list">
+          <li class="nm-item" tabindex="0">
+            <span class="nm-num mono" aria-hidden="true">01</span>
+            <h3>Show the rough draft early</h3>
+            <p>I'd rather be wrong in week one than polished and wrong in week six. Early ugliness invites the feedback that matters.</p>
+          </li>
+          <li class="nm-item" tabindex="0">
+            <span class="nm-num mono" aria-hidden="true">02</span>
+            <h3>Name the trade-off out loud</h3>
+            <p>Every decision spends something—time, scope, or simplicity. I write down what we're paying so future me isn't confused.</p>
+          </li>
+          <li class="nm-item" tabindex="0">
+            <span class="nm-num mono" aria-hidden="true">03</span>
+            <h3>Measure twice, then trust the gut</h3>
+            <p>Data sets the boundaries of the room. Taste decides where the furniture goes. Both, in that order.</p>
+          </li>
+          <li class="nm-item" tabindex="0">
+            <span class="nm-num mono" aria-hidden="true">04</span>
+            <h3>Leave the campsite cleaner</h3>
+            <p>Every file I touch gets a little tidier—one renamed variable, one deleted dead path. Quality compounds quietly.</p>
+          </li>
+          <li class="nm-item" tabindex="0">
+            <span class="nm-num mono" aria-hidden="true">05</span>
+            <h3>Default to writing it down</h3>
+            <p>A decision that lives only in a meeting didn't happen. If it matters, it goes in a doc someone can find later.</p>
+          </li>
+          <li class="nm-item" aria-hidden="true" style="background:var(--surface-2)">
+            <span class="nm-num mono" style="color:var(--subtle)">—</span>
+            <h3 style="color:var(--subtle);font-weight:500">Portrait slot</h3>
+            <p class="slot-note">Photo placeholder · 1:1 · swap for real headshot</p>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>

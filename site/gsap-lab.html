@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>GSAP 动效实验室 · GSAP Motion Lab</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root{
+      --bg:#0b0d0c; --panel:#14171a; --stage-a:#171b1e; --stage-b:#0e1113;
+      --line:#262b30; --line-soft:#1d2226;
+      --ink:#f2f4f1; --muted:#9aa3a0; --subtle:#6a7470;
+      --accent:#0ae448; --accent-deep:#06b437; --on-accent:#04120a;   /* GSAP green */
+      --pink:#ff2e88; --cyan:#27e0ff; --gold:#d8b878;
+      --display:"Space Grotesk",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+      --ui:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+      --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--ui);line-height:1.55;-webkit-font-smoothing:antialiased}
+    a{color:inherit}
+
+    /* toolbar */
+    .toolbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+      padding:12px 18px;background:rgba(14,17,19,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+    .toolbar a.home{color:var(--ink);text-decoration:none;font-weight:600;font-size:13px;border:1px solid var(--line);border-radius:8px;padding:7px 11px}
+    .toolbar a.home:hover{background:#1d2226}
+    .toolbar .title{font-weight:700;font-size:15px;letter-spacing:-.01em}
+    .toolbar .title small{color:var(--muted);font-family:var(--mono);font-weight:400;font-size:11px;margin-left:6px}
+    .toolbar .spacer{margin-left:auto}
+    .seg{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+    .seg button{appearance:none;cursor:pointer;font:inherit;font-size:12.5px;font-weight:600;color:var(--muted);background:transparent;border:0;padding:8px 14px}
+    .seg button.on{background:var(--accent);color:var(--on-accent)}
+
+    /* intro */
+    .intro{max-width:1200px;margin:0 auto;padding:34px 24px 6px}
+    .intro h1{font-family:var(--display);font-size:clamp(26px,4vw,44px);font-weight:700;letter-spacing:-.02em;margin:0 0 14px;line-height:1.04}
+    .intro h1 .en{color:var(--muted);font-weight:500}
+    .intro h1 .dot{color:var(--accent)}
+    .intro p{max-width:780px;color:var(--muted);font-size:16px;margin:0 0 8px}
+    .intro p strong{color:var(--ink);font-weight:600}
+    .intro .note{font-size:13px;color:var(--subtle);margin-top:14px}
+    .intro .note code{font-family:var(--mono);background:#161a1d;border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:var(--muted)}
+
+    main{max-width:1200px;margin:0 auto;padding:8px 24px 90px}
+    .sectionhead{display:flex;align-items:baseline;gap:12px;margin:46px 0 18px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+    .sectionhead h2{font-family:var(--display);font-size:22px;font-weight:700;letter-spacing:-.01em;margin:0}
+    .sectionhead .cnt{font-family:var(--mono);font-size:12px;color:var(--accent)}
+    .sectionhead .sub{color:var(--subtle);font-size:13px;margin-left:auto}
+
+    /* ── Section A: demo gallery ── */
+    .demos{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+    @media(max-width:560px){.demos{grid-template-columns:1fr}}
+    .demo{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;
+      transition:border-color .18s,box-shadow .18s,transform .18s;cursor:pointer}
+    .demo:hover{border-color:#39413f;box-shadow:0 18px 50px -28px rgba(0,0,0,.9);transform:translateY(-2px)}
+    .demo .shot{position:relative;aspect-ratio:16/10;background:#0e1113 center/cover no-repeat;border-bottom:1px solid var(--line-soft);overflow:hidden}
+    .demo .shot img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
+    .demo .shot .play{position:absolute;inset:0;display:grid;place-items:center;opacity:0;transition:opacity .2s;background:rgba(8,10,9,.34)}
+    .demo:hover .shot .play{opacity:1}
+    .demo .shot .play b{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--on-accent);background:var(--accent);padding:8px 14px;border-radius:999px}
+    .demo .shot .ph{position:absolute;inset:0;display:grid;place-items:center;color:var(--subtle);font-family:var(--mono);font-size:12px}
+    .demo .body{padding:14px 15px 15px;display:flex;flex-direction:column;gap:9px;flex:1}
+    .demo .namerow{display:flex;align-items:baseline;gap:8px}
+    .demo .namerow h3{margin:0;font-size:15.5px;font-weight:700;letter-spacing:-.01em}
+    .demo .namerow .en{color:var(--muted);font-size:12px;font-weight:500}
+    .demo .style{font-size:12.5px;color:var(--gold)}
+    .demo .focus{font-size:12.5px;color:var(--muted);line-height:1.5}
+    .chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:1px}
+    .chips span{font-family:var(--mono);font-size:10.5px;color:var(--accent);background:rgba(10,228,72,.09);border:1px solid rgba(10,228,72,.22);border-radius:5px;padding:2px 6px}
+    .demo .acts{margin-top:auto;padding-top:6px;display:flex;gap:7px;flex-wrap:wrap}
+
+    .btn{appearance:none;cursor:pointer;font:inherit;font-size:12px;font-weight:600;color:var(--ink);background:#1b2024;border:1px solid var(--line);border-radius:7px;padding:6px 11px;text-decoration:none;transition:background .15s,border-color .15s}
+    .btn:hover{background:#242a2f;border-color:#39413f}
+    .btn.primary{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+    .btn.primary:hover{background:var(--accent-deep);border-color:var(--accent-deep)}
+    .btn.copied{background:#2fa86a;border-color:#2fa86a;color:#fff}
+
+    /* ── Section B: catalog ── */
+    .grouphead{margin:34px 0 14px;display:flex;align-items:baseline;gap:10px}
+    .grouphead h3{font-family:var(--display);font-size:16px;font-weight:700;margin:0}
+    .grouphead .gc{font-family:var(--mono);font-size:11px;color:var(--subtle)}
+    .grouphead .line{flex:1;height:1px;background:var(--line-soft)}
+    .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
+    @media(max-width:560px){.cards{grid-template-columns:1fr}}
+    .card{background:var(--panel);border:1px solid var(--line);border-radius:15px;overflow:hidden;display:flex;flex-direction:column;transition:border-color .18s,box-shadow .18s,transform .18s}
+    .card:hover{border-color:#39413f;box-shadow:0 18px 50px -28px rgba(0,0,0,.9);transform:translateY(-2px)}
+    .fx-stage{position:relative;min-height:176px;display:grid;place-items:center;padding:24px 20px;overflow:hidden;
+      background:radial-gradient(130% 150% at 50% 0%,var(--stage-a) 0%,var(--stage-b) 72%);border-bottom:1px solid var(--line-soft)}
+    .card .body{padding:15px 17px 17px;display:flex;flex-direction:column;gap:8px;flex:1}
+    .card .titlerow{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+    .card .titlerow .num{font-family:var(--mono);font-size:11px;color:var(--accent);font-weight:600}
+    .card .titlerow h4{margin:0;font-size:15px;font-weight:700;letter-spacing:-.01em}
+    .card .titlerow .en{color:var(--muted);font-family:var(--mono);font-size:11.5px;font-weight:400}
+    .card .skill{font-family:var(--mono);font-size:10px;color:var(--subtle);border:1px solid var(--line);border-radius:5px;padding:1px 5px;margin-left:auto}
+    .card .hint{margin:0;font-size:12.8px;color:var(--muted);line-height:1.5}
+    .card .acts{margin-top:auto;padding-top:6px;display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+    .card details{margin-top:2px}
+    .card details summary{cursor:pointer;font-family:var(--mono);font-size:11px;color:var(--subtle);list-style:none}
+    .card details summary::-webkit-details-marker{display:none}
+    .card details summary::before{content:"› ";color:var(--accent)}
+    .card details[open] summary::before{content:"⌄ "}
+    .card pre{margin:8px 0 0;background:#0c0f11;border:1px solid var(--line);border-radius:8px;padding:11px 12px;overflow:auto;
+      font-family:var(--mono);font-size:11.5px;line-height:1.55;color:#cdd6d2}
+    .badge-int{position:absolute;left:11px;top:10px;font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--on-accent);background:var(--accent);border-radius:999px;padding:2px 8px}
+
+    /* ── overlay viewer (frames a live demo) ── */
+    .overlay{position:fixed;inset:0;z-index:60;background:rgba(6,8,7,.82);backdrop-filter:blur(4px);display:flex;flex-direction:column}
+    .overlay[hidden]{display:none}
+    .vbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 14px;background:#0e1113;border-bottom:1px solid var(--line)}
+    .vbar .vtitle{font-weight:700;font-size:14px}
+    .vbar .vtitle small{color:var(--muted);font-family:var(--mono);font-weight:400;font-size:11px;margin-left:6px}
+    .vbar .spacer{margin-left:auto}
+    .vframe{flex:1;width:100%;border:0;background:#fff}
+
+    .foot{border-top:1px solid var(--line);padding:22px 24px;color:var(--subtle);font-size:13px;max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+    .foot a{color:var(--muted)}
+    .empty{color:var(--subtle);font-size:13.5px;border:1px dashed var(--line);border-radius:12px;padding:24px;text-align:center}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  </style>
+</head>
+<body>
+  <header class="toolbar">
+    <a class="home" href="index.html">← 图鉴首页</a>
+    <span class="title">GSAP 动效实验室 <small>GSAP Motion Lab · v3.13</small></span>
+    <span class="spacer"></span>
+    <div class="seg" id="seg">
+      <button data-jump="demo-gallery" class="on">完整演示页</button>
+      <button data-jump="catalog">特效图鉴</button>
+    </div>
+  </header>
+
+  <section class="intro">
+    <h1>GSAP 动效实验室<span class="dot">.</span><span class="en"> Motion Lab</span></h1>
+    <p>用 <strong>GSAP 3.13</strong>(已 100% 免费,含全部插件)系统性地铺开 JS 驱动的动效:
+      上半是 <strong>完整演示页</strong>——每页一种原创视觉风格 × 一组核心插件,点开看实时动效;
+      下半是 <strong>特效图鉴</strong>——每张卡一个聚焦技术,视口内自动循环,可<strong>复制自然语言 Prompt</strong> 交给前端 AI 复现,也可复制真实 GSAP 代码。</p>
+    <p class="note">本地 vendor 于 <code>/vendor/gsap/</code>,无 CDN 依赖。从仓库<strong>根目录</strong> serve:<code>python3 -m http.server 8799</code> → <code>/site/gsap-lab.html</code>。</p>
+  </section>
+
+  <main>
+    <div class="sectionhead" id="demo-gallery">
+      <h2>完整演示页</h2><span class="cnt" id="demo-cnt"></span>
+      <span class="sub">截图缩略 → 点开实时动效</span>
+    </div>
+    <div class="demos" id="demos"></div>
+
+    <div class="sectionhead" id="catalog">
+      <h2>特效图鉴</h2><span class="cnt" id="card-cnt"></span>
+      <span class="sub">视口内自动播放 · 离屏暂停</span>
+    </div>
+    <div id="catalog-body"></div>
+  </main>
+
+  <footer class="foot">
+    <span>Ancher · GSAP Motion Lab</span>
+    <span>GSAP 3.13 · vendored · 内部素材</span>
+  </footer>
+
+  <!-- live demo viewer -->
+  <div class="overlay" id="viewer" hidden>
+    <div class="vbar">
+      <button class="btn" id="v-close">✕ 关闭</button>
+      <button class="btn" id="v-prev">← 上一个</button>
+      <button class="btn" id="v-next">下一个 →</button>
+      <span class="vtitle" id="v-title"></span>
+      <span class="spacer"></span>
+      <button class="btn primary" id="v-prompt">复制 Prompt</button>
+      <button class="btn" id="v-source">复制源码</button>
+      <a class="btn" id="v-raw" target="_blank" rel="noopener">原始页 ↗</a>
+    </div>
+    <iframe class="vframe" id="v-frame" title="GSAP demo 实时预览"></iframe>
+  </div>
+
+  <!-- demo card template -->
+  <template id="demo-tpl">
+    <article class="demo">
+      <div class="shot"><img loading="lazy" alt="" /><div class="ph">动效预览</div><div class="play"><b>▶ 看实时动效</b></div></div>
+      <div class="body">
+        <div class="namerow"><h3 class="name-cn"></h3><span class="en"></span></div>
+        <div class="style"></div>
+        <div class="focus"></div>
+        <div class="chips"></div>
+        <div class="acts">
+          <button class="btn primary live">▶ 实时</button>
+          <button class="btn copyp">复制 Prompt</button>
+          <a class="btn raw" target="_blank" rel="noopener">原始页 ↗</a>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <!-- catalog card template -->
+  <template id="card-tpl">
+    <article class="card">
+      <div class="fx-stage"></div>
+      <div class="body">
+        <div class="titlerow"><span class="num"></span><h4></h4><span class="en"></span><span class="skill"></span></div>
+        <p class="hint"></p>
+        <details><summary>代码</summary><pre></pre></details>
+        <div class="acts">
+          <button class="btn replay">↺ 重播</button>
+          <button class="btn primary copyp">复制 Prompt</button>
+          <button class="btn copyc">复制代码</button>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <!-- vendored GSAP 3.13 (core + all bonus plugins, 100% free since Webflow).
+       Loaded at the END of <body> on purpose: Flip (and other plugins) run a
+       body-dependent _initCore at registerPlugin time — registering in <head>
+       (before <body> exists) leaves Flip half-initialized and Flip.getState throws. -->
+  <script src="/vendor/gsap/gsap.min.js"></script>
+  <script src="/vendor/gsap/ScrollTrigger.min.js"></script>
+  <script src="/vendor/gsap/ScrollSmoother.min.js"></script>
+  <script src="/vendor/gsap/SplitText.min.js"></script>
+  <script src="/vendor/gsap/ScrambleTextPlugin.min.js"></script>
+  <script src="/vendor/gsap/Flip.min.js"></script>
+  <script src="/vendor/gsap/Draggable.min.js"></script>
+  <script src="/vendor/gsap/InertiaPlugin.min.js"></script>
+  <script src="/vendor/gsap/Observer.min.js"></script>
+  <script src="/vendor/gsap/MotionPathPlugin.min.js"></script>
+  <script src="/vendor/gsap/DrawSVGPlugin.min.js"></script>
+  <script src="/vendor/gsap/MorphSVGPlugin.min.js"></script>
+  <script src="/vendor/gsap/Physics2DPlugin.min.js"></script>
+  <script src="/vendor/gsap/CustomEase.min.js"></script>
+  <script src="/vendor/gsap/CustomBounce.min.js"></script>
+  <script src="/vendor/gsap/CustomWiggle.min.js"></script>
+  <script src="/vendor/gsap/EasePack.min.js"></script>
+  <script src="/vendor/gsap/TextPlugin.min.js"></script>
+  <script>
+    gsap.registerPlugin(ScrollTrigger, ScrollSmoother, SplitText, ScrambleTextPlugin, Flip,
+      Draggable, InertiaPlugin, Observer, MotionPathPlugin, DrawSVGPlugin, MorphSVGPlugin,
+      Physics2DPlugin, CustomEase, CustomBounce, CustomWiggle, TextPlugin);
+  </script>
+
+  <script src="js/gsap-lab.js"></script>
+</body>
+</html>

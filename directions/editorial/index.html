@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mara Lindqvist — Essayist & Journalist</title>
+<meta name="description" content="Mara Lindqvist is an independent essayist and journalist. Technology's real story isn't the machines — it's what they're doing to our attention.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* colors */
+    --canvas: #faf8f4;
+    --surface: #f3efe7;
+    --ink: #1a1815;
+    --ink-muted: #5c574e;
+    --ink-subtle: #8a8377;
+    --accent: #9a3412;
+    --accent-hover: #7c2d12;
+    --hairline: #e3ddd0;
+
+    /* fonts */
+    --serif: 'Spectral', Georgia, 'Times New Roman', serif;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+    /* spacing */
+    --section: 120px;
+    --block: 40px;
+    --radius-sm: 2px;
+
+    /* layout */
+    --measure: 62ch;
+    --col-max: 1180px;
+    --gutter-r: clamp(1.5rem, 8vw, 12rem);
+    --gutter-l: clamp(1.5rem, 6vw, 7rem);
+  }
+
+  * { box-sizing: border-box; }
+
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--canvas);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 18px;
+    line-height: 1.65;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    /* faint paper grain */
+    background-image:
+      radial-gradient(circle at 18% 12%, rgba(154,52,18,0.025), transparent 40%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.018'/%3E%3C/svg%3E");
+  }
+
+  /* ---------- type scale ---------- */
+  .eyebrow {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--ink-subtle);
+    margin: 0;
+  }
+
+  .display-xl {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(2.85rem, 8.4vw, 76px);
+    line-height: 1.04;
+    letter-spacing: -2px;
+    margin: 0;
+    color: var(--ink);
+  }
+
+  .display-md {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(1.9rem, 4.6vw, 40px);
+    line-height: 1.12;
+    letter-spacing: -0.8px;
+    margin: 0;
+  }
+
+  .lede {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.25rem, 3.2vw, 24px);
+    line-height: 1.5;
+    color: var(--ink-muted);
+  }
+
+  p { margin: 0 0 1.15em; }
+  p:last-child { margin-bottom: 0; }
+
+  /* ---------- links ---------- */
+  a { color: inherit; }
+
+  .link {
+    color: var(--accent);
+    text-decoration: none;
+    background-image: linear-gradient(var(--accent), var(--accent));
+    background-repeat: no-repeat;
+    background-position: 0 92%;
+    background-size: 0% 1px;
+    transition: background-size 0.4s cubic-bezier(0.2, 0.7, 0.2, 1), color 0.25s ease;
+  }
+  .link:hover, .link:focus-visible {
+    color: var(--accent-hover);
+    background-size: 100% 1px;
+  }
+
+  /* visible focus everywhere */
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: var(--radius-sm);
+  }
+
+  .skip {
+    position: absolute;
+    left: -999px;
+    top: 0;
+    background: var(--ink);
+    color: var(--canvas);
+    padding: 0.6em 1em;
+    z-index: 50;
+    font-family: var(--sans);
+    font-size: 14px;
+    border-radius: var(--radius-sm);
+  }
+  .skip:focus { left: 1rem; top: 1rem; }
+
+  /* ---------- layout shell ---------- */
+  .shell {
+    max-width: var(--col-max);
+    margin: 0 auto;
+    padding-left: var(--gutter-l);
+    padding-right: var(--gutter-r);
+  }
+
+  section { padding-top: var(--section); }
+  section:first-of-type { padding-top: clamp(3.5rem, 9vw, 7rem); }
+
+  .measure { max-width: var(--measure); }
+
+  hr.rule {
+    border: 0;
+    border-top: 1px solid var(--hairline);
+    margin: 0;
+  }
+
+  /* ---------- top bar ---------- */
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-top: clamp(1.5rem, 3vw, 2.6rem);
+    gap: 1rem;
+  }
+  .wordmark {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 19px;
+    letter-spacing: -0.3px;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .wordmark .dot { color: var(--accent); }
+  .topnav {
+    display: flex;
+    gap: clamp(1rem, 2.5vw, 2rem);
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+  }
+  .topnav a {
+    text-decoration: none;
+    color: var(--ink-muted);
+    transition: color 0.25s ease;
+    padding-bottom: 2px;
+  }
+  .topnav a:hover, .topnav a:focus-visible { color: var(--accent); }
+  @media (max-width: 600px) {
+    .topnav { display: none; }
+  }
+
+  /* ---------- hero ---------- */
+  .hero { padding-top: clamp(3rem, 8vw, 6rem); }
+  /* two-column hero: lede text + author portrait. When the portrait is
+     removed (photos off), the grid collapses to a single text column and
+     reflows to the original text-only editorial layout — no empty gap. */
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) clamp(220px, 26vw, 320px);
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: end;
+  }
+  .hero-grid .hero-text { min-width: 0; }
+  /* portrait: tall magazine-style author crop, hairline frame + rust edge */
+  .hero-portrait {
+    position: relative;
+    margin: 0;
+    align-self: end;
+  }
+  .hero-portrait .u-photo {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--hairline);
+    box-shadow: -14px 14px 0 -1px var(--surface), -14px 14px 0 0 var(--hairline);
+    background: var(--surface);
+  }
+  .hero-portrait figcaption {
+    margin-top: 0.9rem;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--ink-subtle);
+    line-height: 1.4;
+  }
+  /* when photos are off, the empty portrait column should not reserve space */
+  body.no-photos .hero-grid { grid-template-columns: minmax(0, 1fr); }
+  body.no-photos .hero-portrait { display: none; }
+  @media (max-width: 760px) {
+    .hero-grid {
+      grid-template-columns: minmax(0, 1fr);
+      align-items: start;
+    }
+    .hero-portrait { max-width: 320px; margin-top: 0.5rem; }
+  }
+  .hero .eyebrow { margin-bottom: 1.6rem; }
+  .hero .display-xl { max-width: 16ch; }
+  .hero .display-xl em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent);
+  }
+  .hero-sub {
+    margin-top: 2.2rem;
+    max-width: 46ch;
+    font-size: 19px;
+    line-height: 1.6;
+    color: var(--ink-muted);
+  }
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    margin-top: 2.4rem;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .hero-cta .arrow { transition: transform 0.35s cubic-bezier(0.2,0.7,0.2,1); }
+  .hero-cta:hover .arrow, .hero-cta:focus-visible .arrow { transform: translateX(6px); }
+  .hero-cta span.label {
+    background-image: linear-gradient(var(--accent), var(--accent));
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 100% 1px;
+    transition: background-size 0.3s ease;
+  }
+
+  /* ---------- section heading pattern ---------- */
+  .sec-head {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: var(--block);
+  }
+  .sec-head .eyebrow { white-space: nowrap; }
+  .sec-head .sec-rule {
+    flex: 1;
+    height: 1px;
+    background: var(--hairline);
+    transform: translateY(-3px);
+  }
+
+  /* ---------- selected work ---------- */
+  .featured {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.2rem;
+    padding-bottom: 3rem;
+    margin-bottom: 2.6rem;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .featured .meta {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--ink-subtle);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.9rem;
+    align-items: center;
+  }
+  .featured .meta .tag {
+    color: var(--accent);
+    border: 1px solid var(--hairline);
+    padding: 0.2em 0.7em;
+    border-radius: 999px;
+    letter-spacing: 1px;
+  }
+  .featured .meta .pub { font-style: normal; color: var(--ink-muted); }
+  .featured a.featured-title { text-decoration: none; display: inline-block; }
+  .featured a.featured-title:hover .display-md,
+  .featured a.featured-title:focus-visible .display-md { color: var(--accent-hover); }
+  .featured .display-md {
+    max-width: 18ch;
+    transition: color 0.3s ease;
+  }
+  .featured .pull {
+    max-width: 50ch;
+    color: var(--ink-muted);
+    border-left: 2px solid var(--accent);
+    padding-left: 1.3rem;
+  }
+  .featured .pull p { margin: 0; }
+  .featured .read {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--accent);
+    display: inline-flex;
+    gap: 0.4em;
+    text-decoration: none;
+  }
+  .featured .read .arrow { transition: transform 0.35s cubic-bezier(0.2,0.7,0.2,1); }
+  .featured .read:hover .arrow, .featured .read:focus-visible .arrow { transform: translateX(5px); }
+
+  /* essay list */
+  .essay-list { list-style: none; margin: 0; padding: 0; }
+  .essay-list li { border-bottom: 1px solid var(--hairline); }
+  .essay-list li:first-child { border-top: 1px solid var(--hairline); }
+  .essay-list a {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    gap: 0.4rem 1.5rem;
+    padding: 1.25rem 0;
+    text-decoration: none;
+    color: var(--ink);
+    transition: padding-left 0.4s cubic-bezier(0.2,0.7,0.2,1), color 0.3s ease;
+  }
+  .essay-list a:hover, .essay-list a:focus-visible {
+    padding-left: 1.1rem;
+    color: var(--accent-hover);
+  }
+  .essay-list a::before {
+    content: "→";
+    position: absolute;
+    margin-left: -1.4rem;
+    color: var(--accent);
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  .essay-list a:hover::before, .essay-list a:focus-visible::before {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .essay-list .e-title {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(1.15rem, 2.5vw, 1.45rem);
+    line-height: 1.25;
+    letter-spacing: -0.3px;
+  }
+  .essay-list .e-pub { color: var(--ink-muted); font-size: 14.5px; }
+  .essay-list .e-when {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--ink-subtle);
+    text-align: right;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+  @media (max-width: 540px) {
+    .essay-list a { grid-template-columns: 1fr; }
+    .essay-list .e-when { text-align: left; }
+  }
+
+  /* ---------- story / quote-led ---------- */
+  .story .lede {
+    max-width: 22ch;
+    margin: 0 0 var(--block);
+    position: relative;
+  }
+  .story .lede::before {
+    content: "“";
+    position: absolute;
+    left: -0.62em;
+    top: -0.18em;
+    font-family: var(--serif);
+    font-style: normal;
+    font-size: 2.4em;
+    line-height: 1;
+    color: var(--accent);
+    opacity: 0.55;
+  }
+  .story-body { max-width: 56ch; color: var(--ink-muted); }
+  .story-body strong { color: var(--ink); font-weight: 600; }
+
+  /* ---------- now block ---------- */
+  .now {
+    background: var(--surface);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--hairline);
+  }
+  .now-inner {
+    padding: clamp(2rem, 5vw, 3.2rem) clamp(1.5rem, 5vw, 3.2rem);
+  }
+  .now .eyebrow { margin-bottom: 0.4rem; }
+  .now .now-stamp {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 15px;
+    color: var(--ink-subtle);
+    margin-bottom: 2rem;
+  }
+  .now-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.6rem; }
+  .now-list li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1rem;
+    align-items: start;
+  }
+  .now-list .marker {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 17px;
+    color: var(--accent);
+    line-height: 1.5;
+    width: 2.2ch;
+  }
+  .now-list .now-h {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 21px;
+    letter-spacing: -0.4px;
+    margin: 0 0 0.2rem;
+  }
+  .now-list .now-d { color: var(--ink-muted); font-size: 16.5px; line-height: 1.55; margin: 0; max-width: 52ch; }
+
+  /* ---------- metrics / big numerals ---------- */
+  .metrics-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 5vw, 4rem);
+    border-top: 1px solid var(--hairline);
+    padding-top: clamp(2.4rem, 5vw, 3.4rem);
+  }
+  .metrics-grid li { min-width: 0; }
+  .metric-num {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(2.6rem, 7vw, 4.4rem);
+    line-height: 1;
+    letter-spacing: -2px;
+    color: var(--ink);
+    margin: 0;
+  }
+  .metric-num .suffix { color: var(--accent); }
+  .metric-label {
+    margin: 0.7rem 0 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--ink-muted);
+    max-width: 26ch;
+  }
+  @media (max-width: 680px) {
+    .metrics-grid { grid-template-columns: minmax(0, 1fr); gap: 2.2rem; }
+  }
+
+  /* ---------- beliefs / principles ---------- */
+  .creed {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 2.4rem;
+    counter-reset: creed;
+  }
+  .creed li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: clamp(1rem, 3vw, 2rem);
+    align-items: baseline;
+    max-width: 64ch;
+    padding-bottom: 2.4rem;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .creed li:last-child { border-bottom: 0; padding-bottom: 0; }
+  .creed li::before {
+    counter-increment: creed;
+    content: counter(creed, decimal-leading-zero);
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 1px;
+    color: var(--accent);
+    transform: translateY(0.2em);
+  }
+  .creed .creed-h {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(1.4rem, 3.2vw, 1.9rem);
+    line-height: 1.18;
+    letter-spacing: -0.6px;
+    margin: 0 0 0.6rem;
+  }
+  .creed .creed-d { color: var(--ink-muted); font-size: 16.5px; line-height: 1.6; margin: 0; }
+
+  /* ---------- credentials / list ---------- */
+  .cred-list { list-style: none; margin: 0; padding: 0; }
+  .cred-list li {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    gap: 0.4rem 1.5rem;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .cred-list li:first-child { border-top: 1px solid var(--hairline); }
+  .cred-name {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(1.1rem, 2.4vw, 1.35rem);
+    line-height: 1.3;
+    letter-spacing: -0.3px;
+  }
+  .cred-org { color: var(--ink-muted); font-size: 14.5px; }
+  .cred-year {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--ink-subtle);
+    text-align: right;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+  @media (max-width: 540px) {
+    .cred-list li { grid-template-columns: 1fr; }
+    .cred-year { text-align: left; }
+  }
+
+  /* ---------- selected quotes / large type ---------- */
+  .quote-feature {
+    max-width: 24ch;
+    margin: 0;
+    position: relative;
+  }
+  .quote-feature blockquote {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(1.9rem, 5.2vw, 3.2rem);
+    line-height: 1.18;
+    letter-spacing: -1.2px;
+    margin: 0;
+    color: var(--ink);
+  }
+  .quote-feature blockquote em { font-style: italic; font-weight: 400; color: var(--accent); }
+  .quote-feature::before {
+    content: "“";
+    position: absolute;
+    left: -0.55em;
+    top: -0.32em;
+    font-family: var(--serif);
+    font-size: clamp(3rem, 8vw, 5rem);
+    line-height: 1;
+    color: var(--accent);
+    opacity: 0.5;
+  }
+  .quote-feature figcaption {
+    margin-top: 1.6rem;
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--ink-subtle);
+  }
+  .quote-feature figcaption .src { color: var(--ink-muted); text-transform: none; letter-spacing: 0; font-weight: 400; font-style: italic; font-family: var(--serif); }
+  @media (max-width: 600px) {
+    .quote-feature { max-width: none; }
+    .quote-feature::before { left: -0.1em; }
+  }
+
+  /* ---------- contact ---------- */
+  .contact { padding-bottom: clamp(4rem, 9vw, 7rem); }
+  .contact .display-md { max-width: 20ch; margin-bottom: 1.4rem; }
+  .contact .contact-sub {
+    max-width: 44ch;
+    color: var(--ink-muted);
+    font-size: 19px;
+    margin-bottom: 2.4rem;
+  }
+  .contact-email {
+    display: inline-block;
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(1.5rem, 4.5vw, 2.4rem);
+    letter-spacing: -1px;
+    color: var(--ink);
+    text-decoration: none;
+    background-image: linear-gradient(var(--accent), var(--accent));
+    background-repeat: no-repeat;
+    background-position: 0 96%;
+    background-size: 100% 1.5px;
+    transition: color 0.3s ease, background-size 0.4s cubic-bezier(0.2,0.7,0.2,1);
+  }
+  .contact-email:hover, .contact-email:focus-visible { color: var(--accent); }
+  .contact-links {
+    margin-top: 2.6rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 2rem;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+  }
+  .contact-links a {
+    color: var(--ink-muted);
+    text-decoration: none;
+    display: inline-flex;
+    gap: 0.45em;
+    align-items: center;
+    transition: color 0.25s ease;
+  }
+  .contact-links a:hover, .contact-links a:focus-visible { color: var(--accent); }
+  .contact-links a .dash { color: var(--ink-subtle); font-weight: 400; }
+
+  /* ---------- footer ---------- */
+  footer.shell {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    border-top: 1px solid var(--hairline);
+    margin-top: var(--section);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    font-size: 13px;
+    color: var(--ink-subtle);
+    font-family: var(--sans);
+  }
+  footer .colophon { font-style: normal; }
+  footer .colophon em { font-family: var(--serif); font-style: italic; color: var(--ink-muted); }
+
+  /* ---------- scroll reveal ---------- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.85s cubic-bezier(0.22, 0.61, 0.36, 1),
+                transform 0.85s cubic-bezier(0.22, 0.61, 0.36, 1);
+    will-change: opacity, transform;
+  }
+  .reveal.in { opacity: 1; transform: none; }
+  .reveal[data-delay="1"] { transition-delay: 0.08s; }
+  .reveal[data-delay="2"] { transition-delay: 0.16s; }
+  .reveal[data-delay="3"] { transition-delay: 0.24s; }
+  .reveal[data-delay="4"] { transition-delay: 0.32s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+    .link, .hero-cta .arrow, .essay-list a, .contact-email { transition: none; }
+  }
+
+  /* ---------- demo photo toggle ---------- */
+  .atlas-photo-toggle{position:fixed;right:16px;bottom:16px;z-index:99999;display:flex;align-items:center;gap:8px;background:rgba(20,20,22,.88);color:#fff;border-radius:999px;padding:6px 6px 6px 14px;font:600 12px/1 -apple-system,system-ui,sans-serif;box-shadow:0 8px 28px -10px rgba(0,0,0,.55)}
+  .atlas-photo-toggle button{appearance:none;border:0;cursor:pointer;font:inherit;color:#16161a;background:#fff;border-radius:999px;padding:6px 14px;min-width:46px}
+  .atlas-photo-toggle button[aria-pressed="false"]{background:#3a3a42;color:#fff}
+  body.no-photos .u-photo{display:none !important}
+</style>
+</head>
+<body>
+  <a class="skip" href="#work">Skip to selected work</a>
+
+  <header class="shell topbar" role="banner">
+    <a class="wordmark" href="#top" aria-label="Mara Lindqvist — home">Mara Lindqvist<span class="dot">.</span></a>
+    <nav class="topnav" aria-label="Primary">
+      <a href="#work">Work</a>
+      <a href="#story">Approach</a>
+      <a href="#creed">Creed</a>
+      <a href="#honors">Awards</a>
+      <a href="#now">Now</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="top">
+
+    <!-- HERO -->
+    <section class="shell hero" id="hero" data-module="hero" data-variant="bold_statement" aria-labelledby="thesis">
+      <div class="hero-grid">
+        <div class="hero-text">
+          <p class="eyebrow reveal">Mara Lindqvist — Essayist &amp; Journalist</p>
+          <h1 class="display-xl reveal" data-delay="1" id="thesis">
+            Technology's real story isn't the machines — it's what they're doing to our <em>attention</em>.
+          </h1>
+          <p class="hero-sub reveal" data-delay="2">
+            I write long-form essays and reporting on technology and culture for editors,
+            publications, and readers who want the slower, more exact version of the story.
+          </p>
+          <a class="hero-cta reveal" data-delay="3" href="#contact">
+            <span class="label">Commission a piece</span>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+        <figure class="hero-portrait reveal" data-delay="2">
+          <img class="u-photo" src="portrait.jpg" width="820" height="820"
+               alt="Portrait of essayist and journalist Mara Lindqvist">
+          <figcaption>Mara Lindqvist, photographed in 2026.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- SELECTED WORK -->
+    <section class="shell" id="work" data-module="selected_work" data-variant="featured_case" aria-labelledby="work-h">
+      <div class="sec-head reveal">
+        <h2 class="eyebrow" id="work-h">Selected Work</h2>
+        <span class="sec-rule" aria-hidden="true"></span>
+      </div>
+
+      <article class="featured reveal" data-delay="1">
+        <div class="meta">
+          <span class="tag">Most read</span>
+          <span class="pub">The Atlantic</span>
+          <span aria-hidden="true">·</span>
+          <span>2023</span>
+          <span aria-hidden="true">·</span>
+          <span>400k reads</span>
+        </div>
+        <a class="featured-title" href="#contact" aria-label="Read The Quiet Surrender">
+          <h3 class="display-md">The Quiet Surrender</h3>
+        </a>
+        <blockquote class="pull lede">
+          <p>“We didn't lose our attention in a war. We handed it over, a few minutes at a time, in exchange for nothing we can name.”</p>
+        </blockquote>
+        <p style="color:var(--ink-muted);max-width:52ch;margin:0;font-size:16.5px;line-height:1.6;">
+          An essay on the economics of distraction — later cited in a 2023 Senate hearing on attention markets.
+        </p>
+        <a class="read" href="#contact">Read the essay <span class="arrow" aria-hidden="true">→</span></a>
+      </article>
+
+      <ul class="essay-list reveal" data-delay="2">
+        <li>
+          <a href="#contact">
+            <span class="e-col">
+              <span class="e-title">The Machine Has Your Eyes</span>
+              <span class="e-pub"> &nbsp;·&nbsp; Wired</span>
+            </span>
+            <span class="e-when">2024</span>
+          </a>
+        </li>
+        <li>
+          <a href="#contact">
+            <span class="e-col">
+              <span class="e-title">Notes on a Quieter Internet</span>
+              <span class="e-pub"> &nbsp;·&nbsp; The Guardian</span>
+            </span>
+            <span class="e-when">2024</span>
+          </a>
+        </li>
+        <li>
+          <a href="#contact">
+            <span class="e-col">
+              <span class="e-title">The Feed Is Not Your Friend</span>
+              <span class="e-pub"> &nbsp;·&nbsp; The Atlantic</span>
+            </span>
+            <span class="e-when">2023</span>
+          </a>
+        </li>
+        <li>
+          <a href="#contact">
+            <span class="e-col">
+              <span class="e-title">What We Talk About When We Talk About Focus</span>
+              <span class="e-pub"> &nbsp;·&nbsp; Wired</span>
+            </span>
+            <span class="e-when">2022</span>
+          </a>
+        </li>
+        <li>
+          <a href="#contact">
+            <span class="e-col">
+              <span class="e-title">The Last Slow Hour</span>
+              <span class="e-pub"> &nbsp;·&nbsp; The Guardian</span>
+            </span>
+            <span class="e-when">2022</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <!-- STORY / QUOTE-LED -->
+    <section class="shell story" id="story" data-module="story" data-variant="quote_led" aria-labelledby="story-h">
+      <div class="sec-head reveal">
+        <h2 class="eyebrow" id="story-h">How I Work</h2>
+        <span class="sec-rule" aria-hidden="true"></span>
+      </div>
+      <p class="lede reveal" data-delay="1">
+        I'd rather be right and late than fast and loud.
+      </p>
+      <div class="story-body measure reveal" data-delay="2">
+        <p>
+          For eight years I've covered technology and culture — the way a new tool quietly
+          rewrites a habit, and the habit rewrites a person. I report slowly because the
+          interesting part is never the launch; it's what's left six months later, after the
+          novelty wears off and the behavior stays.
+        </p>
+        <p>
+          My work has run in <strong>The Atlantic</strong>, <strong>Wired</strong>, and
+          <strong>The Guardian</strong>, and in 2024 it was a finalist for the National
+          Magazine Award in Essays. But the byline I care about most is the one in a reader's
+          inbox at seven in the morning, read all the way to the end.
+        </p>
+      </div>
+    </section>
+
+    <!-- NOW -->
+    <section class="shell" id="now" data-module="currently_building" data-variant="now_block" aria-labelledby="now-h">
+      <div class="sec-head reveal">
+        <h2 class="eyebrow" id="now-h">Currently</h2>
+        <span class="sec-rule" aria-hidden="true"></span>
+      </div>
+      <div class="now reveal" data-delay="1">
+        <div class="now-inner">
+          <p class="eyebrow">Now — Summer 2026</p>
+          <p class="now-stamp">What's on the desk this season.</p>
+          <ul class="now-list">
+            <li>
+              <span class="marker" aria-hidden="true">01</span>
+              <div>
+                <p class="now-h"><em>Margins</em> — the newsletter</p>
+                <p class="now-d">
+                  A weekly letter on attention, technology, and the texture of ordinary life,
+                  read by 12,000 subscribers. This is where the essays start as questions.
+                </p>
+              </div>
+            </li>
+            <li>
+              <span class="marker" aria-hidden="true">02</span>
+              <div>
+                <p class="now-h">A book, in progress</p>
+                <p class="now-d">
+                  Expanding <em>The Quiet Surrender</em> into a longer argument about the
+                  economics of distraction — how attention became a market, and what it costs
+                  to opt out. Drafting through the year.
+                </p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- METRICS / BIG NUMERALS -->
+    <section class="shell" id="numbers" data-module="metrics" data-variant="big_numerals" aria-labelledby="numbers-h">
+      <div class="sec-head reveal">
+        <h2 class="eyebrow" id="numbers-h">By the Numbers</h2>
+        <span class="sec-rule" aria-hidden="true"></span>
+      </div>
+      <ul class="metrics-grid reveal" data-delay="1">
+        <li>
+          <p class="metric-num">8<span class="suffix">yrs</span></p>
+          <p class="metric-label">Reporting on technology, attention, and the texture of ordinary life.</p>
+        </li>
+        <li>
+          <p class="metric-num">140<span class="suffix">+</span></p>
+          <p class="metric-label">Essays and features published across national outlets since 2018.</p>
+        </li>
+        <li>
+          <p class="metric-num">12<span class="suffix">k</span></p>
+          <p class="metric-label">Readers of <em style="font-family:var(--serif);font-style:italic;">Margins</em>, the weekly letter where the essays begin.</p>
+        </li>
+      </ul>
+    </section>
+
+    <!-- BELIEFS / PRINCIPLES (a writing creed) -->
+    <section class="shell" id="creed" data-module="beliefs" data-variant="principles_list" aria-labelledby="creed-h">
+      <div class="sec-head reveal">
+        <h2 class="eyebrow" id="creed-h">A Writing Creed</h2>
+        <span class="sec-rule" aria-hidden="true"></span>
+      </div>
+      <ol class="creed reveal" data-delay="1">
+        <li>
+          <div>
+            <h3 class="creed-h">The story is in the aftermath, not the announcement.</h3>
+            <p class="creed-d">A launch is a press release. The piece worth writing is what's left six months later — the habit that stayed after the novelty wore off.</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3 class="creed-h">No metaphor I can't defend to the person it describes.</h3>
+            <p class="creed-d">If a sentence wouldn't survive being read aloud to its subject, it's decoration, not reporting. I cut it.</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3 class="creed-h">Slow is a method, not an apology.</h3>
+            <p class="creed-d">I'd rather be right and late than fast and loud. The deadline I keep is the one the truth sets.</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3 class="creed-h">The reader at seven in the morning is the only editor that matters.</h3>
+            <p class="creed-d">Every paragraph earns the next one, or it gets deleted. Attention is the thing I write about; I refuse to waste it.</p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- SELECTED QUOTES / LARGE TYPE -->
+    <section class="shell" id="quote" data-module="selected_quotes" data-variant="large_type" aria-labelledby="quote-h">
+      <div class="sec-head reveal">
+        <h2 class="eyebrow" id="quote-h">In the Margins</h2>
+        <span class="sec-rule" aria-hidden="true"></span>
+      </div>
+      <figure class="quote-feature reveal" data-delay="1">
+        <blockquote>
+          We didn't lose our attention in a war. We <em>handed it over</em>, a few minutes at a time, in exchange for nothing we can name.
+        </blockquote>
+        <figcaption>The Quiet Surrender <span class="src">— The Atlantic, 2023</span></figcaption>
+      </figure>
+    </section>
+
+    <!-- CREDENTIALS / LIST (awards & fellowships) -->
+    <section class="shell" id="honors" data-module="credentials" data-variant="list" aria-labelledby="honors-h">
+      <div class="sec-head reveal">
+        <h2 class="eyebrow" id="honors-h">Awards &amp; Fellowships</h2>
+        <span class="sec-rule" aria-hidden="true"></span>
+      </div>
+      <ul class="cred-list reveal" data-delay="1">
+        <li>
+          <span>
+            <span class="cred-name">National Magazine Award — Essays</span>
+            <span class="cred-org"> &nbsp;·&nbsp; Finalist</span>
+          </span>
+          <span class="cred-year">2024</span>
+        </li>
+        <li>
+          <span>
+            <span class="cred-name">Knight Visiting Fellowship</span>
+            <span class="cred-org"> &nbsp;·&nbsp; Nieman Foundation, Harvard</span>
+          </span>
+          <span class="cred-year">2023</span>
+        </li>
+        <li>
+          <span>
+            <span class="cred-name">Mirror Award for Technology Reporting</span>
+            <span class="cred-org"> &nbsp;·&nbsp; Shortlist</span>
+          </span>
+          <span class="cred-year">2022</span>
+        </li>
+        <li>
+          <span>
+            <span class="cred-name">Logan Nonfiction Fellowship</span>
+            <span class="cred-org"> &nbsp;·&nbsp; Carey Institute</span>
+          </span>
+          <span class="cred-year">2021</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="shell contact" id="contact" data-module="contact" data-variant="inline" aria-labelledby="contact-h">
+      <div class="sec-head reveal">
+        <h2 class="eyebrow" id="contact-h">Get in touch</h2>
+        <span class="sec-rule" aria-hidden="true"></span>
+      </div>
+      <h2 class="display-md reveal" data-delay="1" id="contact-head" style="letter-spacing:-1px;">
+        Have a story that deserves the slow version?
+      </h2>
+      <p class="contact-sub reveal" data-delay="1">
+        I take a small number of commissions each season. Tell me what you're working on —
+        I read every note.
+      </p>
+      <a class="contact-email reveal" data-delay="2" href="mailto:hello@maralindqvist.com">hello@maralindqvist.com</a>
+      <div class="contact-links reveal" data-delay="3">
+        <a href="mailto:hello@maralindqvist.com">Email <span class="dash" aria-hidden="true">→</span></a>
+        <a class="link" href="#now">Newsletter <span class="dash" aria-hidden="true">·</span> <em style="font-family:var(--serif);font-style:italic;text-transform:none;letter-spacing:0;">Margins</em></a>
+        <a href="https://x.com/maralindqvist" rel="me noopener">X <span class="dash" aria-hidden="true">·</span> @maralindqvist</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="shell">
+    <span class="colophon">© 2026 Mara Lindqvist. Set in <em>Spectral</em> &amp; Inter.</span>
+    <span>Words on technology, culture &amp; attention.</span>
+  </footer>
+
+  <script>
+    (function () {
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var nodes = document.querySelectorAll('.reveal');
+
+      if (reduce || !('IntersectionObserver' in window)) {
+        nodes.forEach(function (n) { n.classList.add('in'); });
+        return;
+      }
+
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+
+      nodes.forEach(function (n) { io.observe(n); });
+    })();
+  </script>
+<div class="atlas-photo-toggle" role="group" aria-label="示例照片 / Demo photos">
+  <span>照片 Photos</span>
+  <button id="atlasPhotoBtn" type="button" aria-pressed="true">On</button>
+</div>
+<script>
+(function(){var b=document.getElementById('atlasPhotoBtn');if(!b)return;function set(on){document.body.classList.toggle('no-photos',!on);b.setAttribute('aria-pressed',on?'true':'false');b.textContent=on?'On':'Off';}b.addEventListener('click',function(){set(document.body.classList.contains('no-photos'));});set(true);})();
+</script>
+</body>
+</html>

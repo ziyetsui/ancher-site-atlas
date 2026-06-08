@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>dark-luxe — photo specimen</title>
+<style>
+  body{
+    margin:0;
+    background:#0a0a0a; /* --canvas */
+    min-height:100vh;
+    display:grid;
+    place-items:center;
+    padding:28px;
+  }
+
+  /* ---- gold card-stock frame (copied from .portrait-frame) ---- */
+  .portrait-frame{
+    position:relative;
+    width:260px;
+    padding:14px;
+    border:1px solid #5a4a24; /* --hairline-gold */
+  }
+  /* inner inset hairline border (.portrait-frame::before) */
+  .portrait-frame::before{
+    content:"";
+    position:absolute;
+    inset:5px;
+    border:1px solid #2a2620; /* --hairline */
+    pointer-events:none;
+  }
+  .portrait-frame img.u-photo{
+    display:block;
+    width:100%;
+    height:auto;
+    aspect-ratio:4/5;
+    object-fit:cover;
+    filter:grayscale(100%) contrast(1.04);
+  }
+
+  /* gold corner brackets (.portrait-corner) */
+  .portrait-corner{
+    position:absolute;
+    width:18px;
+    height:18px;
+    border:1px solid #c8a24a; /* --accent */
+  }
+  .pc-tl{top:-1px;left:-1px;border-right:0;border-bottom:0}
+  .pc-br{bottom:-1px;right:-1px;border-left:0;border-top:0}
+</style>
+</head>
+<body>
+  <div class="portrait-frame">
+    <span class="portrait-corner pc-tl" aria-hidden="true"></span>
+    <span class="portrait-corner pc-br" aria-hidden="true"></span>
+    <img class="u-photo" src="portrait.webp" width="800" height="1000"
+         alt="Board advisor editorial portrait specimen." />
+  </div>
+</body>
+</html>

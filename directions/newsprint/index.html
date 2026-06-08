@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hannah Cole — Investigative Journalist</title>
+<meta name="description" content="Hannah Cole follows the money until it names a person. Investigative reporting, bylines in The Washington Post. Read a story, send a tip.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --canvas:#f5f2ea;
+    --surface:#efe9dd;
+    --ink:#1a1714;
+    --ink-muted:#4d4740;
+    --ink-subtle:#857d70;
+    --accent:#c0241f;
+    --accent-hover:#97160f;
+    --hairline:#cdc4b3;
+    --rule:#1a1714;
+    --serif:'Playfair Display', Georgia, 'Times New Roman', serif;
+    --body:'Spectral', Georgia, 'Times New Roman', serif;
+    --section:72px;
+    --block:32px;
+    --tight:14px;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+
+  html{-webkit-text-size-adjust:100%}
+
+  body{
+    background:var(--canvas);
+    color:var(--ink);
+    font-family:var(--body);
+    font-size:17px;
+    line-height:1.6;
+    /* faint paper grain via layered gradients */
+    background-image:
+      radial-gradient(rgba(26,23,20,.018) 1px, transparent 1.4px);
+    background-size:4px 4px;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 20px;
+  }
+
+  a{color:inherit;text-decoration:none}
+
+  ::selection{background:var(--accent);color:#fff}
+
+  :focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:3px;
+  }
+
+  /* ---------- masthead ---------- */
+  .topline{
+    border-bottom:1px solid var(--ink);
+    padding:8px 0;
+    font-family:var(--body);
+    font-size:11px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:var(--ink-muted);
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .topline .edition{color:var(--accent);font-weight:600}
+
+  .masthead{
+    text-align:center;
+    padding:22px 0 16px;
+    border-bottom:3px double var(--ink);
+  }
+  .masthead .nameplate{
+    font-family:var(--serif);
+    font-weight:900;
+    font-size:clamp(40px,11vw,86px);
+    line-height:.92;
+    letter-spacing:-1px;
+    text-transform:none;
+  }
+  .masthead .subnameplate{
+    font-family:var(--body);
+    font-style:italic;
+    font-size:clamp(13px,2.6vw,17px);
+    color:var(--ink-muted);
+    margin-top:8px;
+    letter-spacing:.3px;
+  }
+  .redrule{
+    height:3px;
+    background:var(--accent);
+    margin:0;
+  }
+
+  /* ---------- lead / hero ---------- */
+  .lead{
+    padding:var(--section) 0 56px;
+    border-bottom:2px solid var(--rule);
+    display:grid;
+    grid-template-columns:1fr;
+    gap:28px;
+  }
+  @media(min-width:820px){
+    .lead{
+      grid-template-columns:1.55fr 1fr;
+      gap:48px;
+      align-items:start;
+    }
+  }
+  .kicker{
+    font-family:var(--body);
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--accent);
+    display:inline-block;
+  }
+  .lead-headline{
+    font-family:var(--serif);
+    font-weight:800;
+    font-size:clamp(34px,7vw,58px);
+    line-height:1.02;
+    letter-spacing:-.5px;
+    margin:14px 0 0;
+  }
+  .lead-headline em{font-style:italic}
+  .deck{
+    font-family:var(--body);
+    font-style:italic;
+    font-size:clamp(18px,2.6vw,21px);
+    line-height:1.5;
+    color:var(--ink-muted);
+    margin-top:20px;
+    max-width:40ch;
+  }
+  .byline{
+    font-family:var(--body);
+    font-style:italic;
+    font-size:13px;
+    letter-spacing:.3px;
+    color:var(--ink-subtle);
+    margin-top:22px;
+    padding-top:14px;
+    border-top:1px solid var(--hairline);
+  }
+  .byline b{font-style:normal;font-weight:600;color:var(--ink);text-transform:uppercase;letter-spacing:1px;font-size:12px}
+  .refer{
+    display:inline-block;
+    margin-top:22px;
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:19px;
+    color:var(--accent);
+    border-bottom:2px solid var(--accent);
+    padding-bottom:2px;
+    transition:color .2s,border-color .2s;
+  }
+  .refer:hover{color:var(--accent-hover);border-color:var(--accent-hover)}
+
+  /* lead sidebar — credentials as a boxed "front page index" */
+  .creds{
+    border-top:1px solid var(--ink);
+    border-bottom:1px solid var(--ink);
+    padding:16px 0;
+  }
+  .creds h3{
+    font-family:var(--body);
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:12px;
+  }
+  .creds ul{list-style:none}
+  .creds li{
+    font-family:var(--body);
+    font-size:15px;
+    line-height:1.45;
+    padding:9px 0;
+    border-top:1px solid var(--hairline);
+    display:flex;
+    gap:10px;
+  }
+  .creds li:first-of-type{border-top:0}
+  .creds li .yr{
+    font-family:var(--serif);
+    font-weight:800;
+    color:var(--ink);
+    flex:0 0 auto;
+    min-width:2.6em;
+  }
+  .creds li b{font-weight:600}
+
+  /* ---------- section header ---------- */
+  .sec{padding:var(--section) 0;border-bottom:2px solid var(--rule)}
+  .sec-head{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    border-bottom:2px solid var(--rule);
+    padding-bottom:10px;
+    margin-bottom:var(--block);
+  }
+  .sec-head h2{
+    font-family:var(--serif);
+    font-weight:800;
+    font-size:clamp(22px,4vw,30px);
+    letter-spacing:-.2px;
+  }
+  .sec-head .tag{
+    font-family:var(--body);
+    font-size:12px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--ink-subtle);
+    margin-left:auto;
+  }
+
+  /* ---------- stories list ---------- */
+  .stories{display:grid;gap:0}
+  .story-item{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:6px;
+    padding:24px 0;
+    border-top:1px solid var(--hairline);
+    transition:background .2s;
+  }
+  .story-item:first-child{border-top:0}
+  @media(min-width:720px){
+    .story-item{grid-template-columns:auto 1fr;gap:0 32px;align-items:baseline}
+  }
+  .story-item .meta{
+    font-family:var(--body);
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--accent);
+    white-space:nowrap;
+    padding-top:6px;
+  }
+  .story-item .meta .outlet{color:var(--ink-subtle)}
+  .story-item h3{
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:clamp(22px,3.4vw,30px);
+    line-height:1.08;
+    letter-spacing:-.2px;
+  }
+  .story-item h3 a{
+    background-image:linear-gradient(var(--accent),var(--accent));
+    background-size:0% 2px;
+    background-repeat:no-repeat;
+    background-position:0 100%;
+    transition:background-size .25s ease;
+    padding-bottom:2px;
+  }
+  .story-item:hover h3 a,
+  .story-item h3 a:focus-visible{background-size:100% 2px;color:var(--accent)}
+  .story-item .sdek{
+    font-family:var(--body);
+    font-size:16px;
+    line-height:1.5;
+    color:var(--ink-muted);
+    margin-top:6px;
+    max-width:62ch;
+  }
+  .story-item .arr{font-family:var(--body);color:var(--ink-subtle);font-size:15px}
+
+  /* ---------- story / about — multi-column ---------- */
+  .report{padding:var(--section) 0;border-bottom:2px solid var(--rule)}
+  .report-body{
+    margin-top:var(--block);
+  }
+  @media(min-width:760px){
+    .report-body{
+      columns:2;
+      column-gap:42px;
+      column-rule:1px solid var(--hairline);
+    }
+  }
+  @media(min-width:1080px){
+    .report-body{columns:3}
+  }
+  .report-body p{
+    font-family:var(--body);
+    font-size:16px;
+    line-height:1.62;
+    text-align:justify;
+    hyphens:auto;
+    margin-bottom:1em;
+    -webkit-hyphens:auto;
+  }
+  .report-body p:first-of-type::first-letter{
+    font-family:var(--serif);
+    font-weight:900;
+    float:left;
+    font-size:4.6em;
+    line-height:.74;
+    padding:6px 10px 0 0;
+    color:var(--accent);
+  }
+  .report-body p.subhead-p{
+    text-align:left;
+  }
+  .report-body .subhead{
+    display:block;
+    font-family:var(--body);
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin:0 0 4px;
+  }
+
+  /* documentary figure inside column flow */
+  figure.cut{
+    break-inside:avoid;
+    margin:0 0 1em;
+    border-top:2px solid var(--rule);
+    border-bottom:1px solid var(--hairline);
+    padding-top:10px;
+  }
+  figure.cut .u-photo{
+    display:block;
+    width:100%;
+    height:auto;
+    filter:grayscale(1) contrast(1.06);
+    background:var(--surface);
+  }
+  figure.cut figcaption{
+    font-family:var(--body);
+    font-style:italic;
+    font-size:13px;
+    line-height:1.4;
+    color:var(--ink-muted);
+    padding:8px 0 2px;
+  }
+  figure.cut figcaption b{
+    font-style:normal;
+    font-weight:600;
+    color:var(--accent);
+    text-transform:uppercase;
+    letter-spacing:1px;
+    font-size:11px;
+  }
+  /* typographic fallback when photos OFF */
+  .fig-fallback{
+    background:var(--surface);
+    border:1px solid var(--ink);
+    padding:22px 18px;
+    text-align:center;
+  }
+  .fig-fallback .lbl{
+    font-family:var(--body);
+    font-size:11px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--ink-subtle);
+    display:block;
+    margin-bottom:10px;
+  }
+  .fig-fallback .pull{
+    font-family:var(--serif);
+    font-weight:700;
+    font-style:italic;
+    font-size:21px;
+    line-height:1.2;
+    color:var(--ink);
+  }
+
+  /* ---------- by the numbers (metrics) ---------- */
+  .figures{
+    display:grid;
+    grid-template-columns:1fr;
+    border-top:2px solid var(--rule);
+  }
+  @media(min-width:560px){.figures{grid-template-columns:1fr 1fr}}
+  @media(min-width:900px){.figures{grid-template-columns:repeat(4,1fr)}}
+  .figure-cell{
+    padding:24px 24px 26px 0;
+    border-top:1px solid var(--hairline);
+    border-right:1px solid var(--hairline);
+  }
+  @media(min-width:560px){
+    .figure-cell{border-top:0}
+    .figure-cell:nth-child(2n){border-right:0;padding-right:0}
+    .figure-cell:nth-child(2n){padding-left:24px}
+  }
+  @media(min-width:900px){
+    .figure-cell{border-right:1px solid var(--hairline);padding:24px 26px 26px 0}
+    .figure-cell:nth-child(2n){border-right:1px solid var(--hairline)}
+    .figure-cell:last-child{border-right:0;padding-right:0}
+  }
+  .figure-cell .num{
+    font-family:var(--serif);
+    font-weight:900;
+    font-size:clamp(40px,7vw,58px);
+    line-height:.95;
+    letter-spacing:-1px;
+    color:var(--ink);
+  }
+  .figure-cell .num small{
+    font-size:.42em;
+    color:var(--accent);
+    font-weight:800;
+    vertical-align:.55em;
+    margin-left:2px;
+  }
+  .figure-cell .cap{
+    font-family:var(--body);
+    font-size:13px;
+    line-height:1.45;
+    color:var(--ink-muted);
+    margin-top:12px;
+    padding-top:10px;
+    border-top:1px solid var(--hairline);
+  }
+  .figure-cell .cap b{
+    display:block;
+    font-weight:600;
+    font-size:11px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:3px;
+  }
+
+  /* ---------- the rules (beliefs / numbered) ---------- */
+  .rules{display:grid;gap:0}
+  .rule-item{
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:0 22px;
+    align-items:baseline;
+    padding:22px 0;
+    border-top:1px solid var(--hairline);
+  }
+  .rule-item:first-child{border-top:0}
+  .rule-item .no{
+    font-family:var(--serif);
+    font-weight:900;
+    font-size:clamp(30px,5vw,44px);
+    line-height:.9;
+    color:var(--accent);
+    min-width:1.6em;
+  }
+  .rule-item h3{
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:clamp(19px,3vw,24px);
+    line-height:1.12;
+    letter-spacing:-.2px;
+  }
+  .rule-item p{
+    font-family:var(--body);
+    font-size:16px;
+    line-height:1.55;
+    color:var(--ink-muted);
+    margin-top:7px;
+    max-width:60ch;
+  }
+
+  /* ---------- cited in (logos_press / mentioned_in) ---------- */
+  .cited{
+    display:flex;
+    flex-wrap:wrap;
+    gap:0;
+    border-top:2px solid var(--rule);
+  }
+  .cited li{
+    list-style:none;
+    font-family:var(--serif);
+    font-weight:700;
+    font-style:italic;
+    font-size:clamp(17px,2.4vw,22px);
+    color:var(--ink);
+    padding:18px 26px 18px 0;
+    margin-right:26px;
+    border-bottom:1px solid var(--hairline);
+    border-right:1px solid var(--hairline);
+    line-height:1;
+  }
+  .cited .src{font-style:normal;color:var(--ink-subtle);font-weight:600;font-size:.62em;letter-spacing:1.5px;text-transform:uppercase;display:block;margin-bottom:6px}
+
+  /* ---------- columns list (writing / speaking) ---------- */
+  .index-list{display:grid;gap:0}
+  .index-item{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:4px;
+    padding:20px 0;
+    border-top:1px solid var(--hairline);
+  }
+  .index-item:first-child{border-top:0}
+  @media(min-width:720px){
+    .index-item{grid-template-columns:auto 1fr auto;gap:0 32px;align-items:baseline}
+  }
+  .index-item .when{
+    font-family:var(--body);
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--accent);
+    white-space:nowrap;
+    padding-top:5px;
+  }
+  .index-item h3{
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:clamp(19px,2.8vw,24px);
+    line-height:1.12;
+    letter-spacing:-.2px;
+  }
+  .index-item h3 a{
+    background-image:linear-gradient(var(--accent),var(--accent));
+    background-size:0% 2px;
+    background-repeat:no-repeat;
+    background-position:0 100%;
+    transition:background-size .25s ease;
+    padding-bottom:2px;
+  }
+  .index-item:hover h3 a,
+  .index-item h3 a:focus-visible{background-size:100% 2px;color:var(--accent)}
+  .index-item .idek{
+    font-family:var(--body);
+    font-size:15px;
+    line-height:1.5;
+    color:var(--ink-muted);
+    margin-top:5px;
+    max-width:62ch;
+  }
+  .index-item .where{
+    font-family:var(--body);
+    font-style:italic;
+    font-size:13px;
+    color:var(--ink-subtle);
+    white-space:nowrap;
+    padding-top:6px;
+  }
+
+  /* ---------- questions (faq / two_column) ---------- */
+  .qa{
+    display:grid;
+    gap:0;
+    border-top:2px solid var(--rule);
+  }
+  @media(min-width:760px){
+    .qa{grid-template-columns:1fr 1fr;column-gap:42px}
+  }
+  .qa-item{
+    padding:22px 0;
+    border-top:1px solid var(--hairline);
+  }
+  @media(min-width:760px){
+    .qa-item:nth-child(1),.qa-item:nth-child(2){border-top:0}
+  }
+  .qa-item h3{
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:clamp(17px,2.4vw,21px);
+    line-height:1.16;
+    letter-spacing:-.1px;
+  }
+  .qa-item h3::before{
+    content:"Q. ";
+    color:var(--accent);
+    font-weight:900;
+  }
+  .qa-item p{
+    font-family:var(--body);
+    font-size:15px;
+    line-height:1.55;
+    color:var(--ink-muted);
+    margin-top:8px;
+    max-width:54ch;
+  }
+
+  /* ---------- contact / tip box ---------- */
+  .tip{padding:var(--section) 0 84px}
+  .tipbox{
+    border:2px solid var(--ink);
+    background:var(--surface);
+    padding:clamp(24px,5vw,44px);
+  }
+  .tip-grid{
+    display:grid;
+    gap:28px;
+  }
+  @media(min-width:760px){
+    .tip-grid{grid-template-columns:1.3fr 1fr;gap:48px;align-items:center}
+  }
+  .tip h2{
+    font-family:var(--serif);
+    font-weight:800;
+    font-size:clamp(28px,5vw,44px);
+    line-height:1.02;
+    letter-spacing:-.5px;
+  }
+  .tip .lead-p{
+    font-family:var(--body);
+    font-style:italic;
+    font-size:18px;
+    line-height:1.5;
+    color:var(--ink-muted);
+    margin-top:16px;
+    max-width:46ch;
+  }
+  .tip-mail{
+    display:inline-block;
+    font-family:var(--serif);
+    font-weight:800;
+    font-size:clamp(20px,4vw,26px);
+    color:var(--accent);
+    margin-top:20px;
+    border-bottom:2px solid var(--accent);
+    word-break:break-word;
+    transition:color .2s,border-color .2s;
+  }
+  .tip-mail:hover{color:var(--accent-hover);border-color:var(--accent-hover)}
+  .tip-meta{
+    list-style:none;
+    border-top:2px solid var(--rule);
+  }
+  .tip-meta li{
+    border-top:1px solid var(--hairline);
+    padding:14px 0;
+    font-family:var(--body);
+    font-size:15px;
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+  }
+  .tip-meta li:first-child{border-top:0}
+  .tip-meta li span{color:var(--ink-subtle);text-transform:uppercase;letter-spacing:1.5px;font-size:11px;font-weight:600}
+  .tip-meta li a{
+    color:var(--ink);
+    border-bottom:1px solid var(--accent);
+    transition:color .2s;
+  }
+  .tip-meta li a:hover{color:var(--accent)}
+
+  /* ---------- colophon ---------- */
+  .colophon{
+    padding:26px 0 60px;
+    border-top:1px solid var(--ink);
+    font-family:var(--body);
+    font-size:12px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:var(--ink-subtle);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+
+  /* ---------- motion ---------- */
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none;transition:none}
+    *{scroll-behavior:auto !important}
+  }
+
+  /* ---------- photo toggle contract ---------- */
+  .u-fallback{display:none !important}
+  body.no-photos .u-photo{display:none !important}
+  body.no-photos .u-fallback{display:revert !important}
+
+  .atlas-photo-toggle{position:fixed;right:16px;bottom:16px;z-index:99999;display:flex;align-items:center;gap:8px;background:rgba(20,20,22,.88);color:#fff;border-radius:999px;padding:6px 6px 6px 14px;font:600 12px/1 -apple-system,system-ui,sans-serif;box-shadow:0 8px 28px -10px rgba(0,0,0,.55)}
+  .atlas-photo-toggle button{appearance:none;border:0;cursor:pointer;font:inherit;color:#16161a;background:#fff;border-radius:999px;padding:6px 14px;min-width:46px}
+  .atlas-photo-toggle button[aria-pressed="false"]{background:#3a3a42;color:#fff}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="topline">
+      <span>Vol. XII · No. 207</span>
+      <span class="edition">The Investigations Desk</span>
+      <span>Tuesday, June 3, 2026 · Late Edition</span>
+    </div>
+  </div>
+  <div class="masthead">
+    <div class="wrap">
+      <div class="nameplate">Hannah&nbsp;Cole</div>
+      <div class="subnameplate">Investigative Journalist — “I follow the money until it names a person.”</div>
+    </div>
+  </div>
+  <div class="redrule"></div>
+</header>
+
+<main class="wrap">
+
+  <!-- LEAD / HERO -->
+  <section class="lead reveal" data-module="hero" data-variant="bold_statement">
+    <div>
+      <span class="kicker">The Lead</span>
+      <h1 class="lead-headline">I follow the money <em>until it names a person.</em></h1>
+      <p class="deck">Twelve years on the investigations beat, reporting that starts with a document and ends with someone accountable. For editors who need it nailed down, and for readers who deserve to know.</p>
+      <p class="byline"><b>By Hannah Cole</b> · Investigative Reporter · The Washington Post</p>
+      <a class="refer" href="#stories">Read the latest →</a>
+    </div>
+    <aside class="creds" aria-label="Credentials">
+      <h3>On the Record</h3>
+      <ul>
+        <li><span class="yr">12 yr</span><span>On the investigations beat — FOIA, court filings, corporate registries.</span></li>
+        <li><span class="yr">2023</span><span><b>Pulitzer Prize finalist</b>, National Reporting.</span></li>
+        <li><span class="yr">P.</span><span>Bylines in <b>The Washington Post</b>.</span></li>
+        <li><span class="yr">↗</span><span>Method: follow the money until it names a person.</span></li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- SELECTED INVESTIGATIONS -->
+  <section class="sec" id="stories" aria-labelledby="stories-h" data-module="selected_work" data-variant="list">
+    <div class="sec-head reveal">
+      <h2 id="stories-h">Selected Investigations</h2>
+      <span class="tag">Four Stories</span>
+    </div>
+    <div class="stories">
+
+      <article class="story-item reveal">
+        <div class="meta"><span class="outlet">The Washington Post</span> · 2024</div>
+        <div>
+          <h3><a href="#stories">The Shell Game <span class="arr">↗</span></a></h3>
+          <p class="sdek">How a string of anonymous LLCs quietly moved $40 million out of a county pension fund — and the three signatures that finally connected them to one man.</p>
+        </div>
+      </article>
+
+      <article class="story-item reveal">
+        <div class="meta"><span class="outlet">The Washington Post</span> · 2023</div>
+        <div>
+          <h3><a href="#stories">Permits for Sale <span class="arr">↗</span></a></h3>
+          <p class="sdek">A zoning board, a developer, and the envelopes in between. Eighteen months of meeting minutes, bank records, and one resignation.</p>
+        </div>
+      </article>
+
+      <article class="story-item reveal">
+        <div class="meta"><span class="outlet">The Washington Post</span> · 2022</div>
+        <div>
+          <h3><a href="#stories">The Quiet Vendor <span class="arr">↗</span></a></h3>
+          <p class="sdek">A no-bid contractor billing three agencies for the same work — uncovered by cross-referencing invoices nobody thought to read side by side.</p>
+        </div>
+      </article>
+
+      <article class="story-item reveal">
+        <div class="meta"><span class="outlet">The Washington Post</span> · 2021</div>
+        <div>
+          <h3><a href="#stories">Off the Books <span class="arr">↗</span></a></h3>
+          <p class="sdek">Overtime that never happened, on payrolls that did. A records request, a spreadsheet, and a year of denied timesheets.</p>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ABOUT THE REPORTER — multi-column -->
+  <section class="report reveal" aria-labelledby="report-h" data-module="story" data-variant="columns">
+    <div class="sec-head">
+      <h2 id="report-h">About the Reporter</h2>
+      <span class="tag">How I Report</span>
+    </div>
+    <div class="report-body">
+      <p>The story is almost never in the press release. It is in the appendix, the amended filing, the line item that does not add up. I start with public records — incorporation papers, court dockets, procurement logs, FOIA returns — and I read them the way an auditor reads a ledger: looking for the place where the numbers stop telling the truth.</p>
+
+      <figure class="cut">
+        <img class="u-photo" src="portrait.webp" width="1200" height="800" alt="A documentary street photograph: figures crossing a wide, weathered avenue under flat winter light.">
+        <div class="u-fallback fig-fallback" role="img" aria-label="Pull quote standing in for a documentary photograph">
+          <span class="lbl">Figure — From the file</span>
+          <span class="pull">“The paper trail does not care whose name is on the door.”</span>
+        </div>
+        <figcaption><b>From the file</b> — The work is mostly waiting: for a records office to answer, for a source to call back, for a second document to confirm the first.</figcaption>
+      </figure>
+
+      <p>A single document proves nothing. A name in a registry is a lead, not a finding. So everything gets a second source — a corroborating filing, a check that cleared, a person who was in the room. If it cannot survive a lawyer's read, it does not run. That discipline is slow, and it is the whole job.</p>
+
+      <p class="subhead-p"><span class="subhead">Follow the money</span>Money leaves a trail even when people do not. Shell companies have registered agents. Contracts have signatures. Payrolls have totals that have to reconcile. Trace the dollars long enough and they stop being abstractions — they become a decision, made by someone, on a date, with a paper to prove it.</p>
+
+      <p>I write for editors who need it nailed down, and for readers who are owed the plain version of what happened. No insinuation, no anonymous shrugs — just the records, the names, and what the two of them together can be made to say.</p>
+
+      <p>Tips matter. The best stories of my career started with a stranger who noticed something was wrong and decided not to let it go. If that is you, the door is below.</p>
+    </div>
+  </section>
+
+  <!-- BY THE NUMBERS — metrics -->
+  <section class="sec" id="figures" aria-labelledby="figures-h" data-module="metrics" data-variant="big_numerals">
+    <div class="sec-head reveal">
+      <h2 id="figures-h">By the Numbers</h2>
+      <span class="tag">The Record</span>
+    </div>
+    <div class="figures reveal">
+      <div class="figure-cell">
+        <div class="num">12</div>
+        <p class="cap"><b>Years on the beat</b>FOIA requests, court dockets, and corporate registries, full time.</p>
+      </div>
+      <div class="figure-cell">
+        <div class="num">$210<small>M</small></div>
+        <p class="cap"><b>Traced &amp; reported</b>Public money my reporting followed from a ledger to a name.</p>
+      </div>
+      <div class="figure-cell">
+        <div class="num">9</div>
+        <p class="cap"><b>Officials resigned</b>Or were indicted in the months after a story ran.</p>
+      </div>
+      <div class="figure-cell">
+        <div class="num">600<small>+</small></div>
+        <p class="cap"><b>Records requests filed</b>Sent to county clerks, agencies, and registered agents.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE RULES OF THE DESK — beliefs -->
+  <section class="sec" id="rules" aria-labelledby="rules-h" data-module="beliefs" data-variant="numbered">
+    <div class="sec-head reveal">
+      <h2 id="rules-h">The Rules of the Desk</h2>
+      <span class="tag">Standards</span>
+    </div>
+    <div class="rules">
+      <div class="rule-item reveal">
+        <div class="no" aria-hidden="true">1</div>
+        <div>
+          <h3>One document is a lead, not a finding.</h3>
+          <p>Nothing runs on a single source. Every claim gets a second filing, a cleared check, or a person who was in the room — or it stays in the notebook.</p>
+        </div>
+      </div>
+      <div class="rule-item reveal">
+        <div class="no" aria-hidden="true">2</div>
+        <div>
+          <h3>If a lawyer can't read it, the reader can't either.</h3>
+          <p>Every line has to survive a hostile read before it survives an edit. Insinuation is not reporting; the records have to carry the weight.</p>
+        </div>
+      </div>
+      <div class="rule-item reveal">
+        <div class="no" aria-hidden="true">3</div>
+        <div>
+          <h3>The subject hears the worst of it first.</h3>
+          <p>No one is named in a story before they've had every allegation, in detail, with time to answer. Surprises belong in the lede, not in the right-of-reply.</p>
+        </div>
+      </div>
+      <div class="rule-item reveal">
+        <div class="no" aria-hidden="true">4</div>
+        <div>
+          <h3>Protect the source above the scoop.</h3>
+          <p>A tip is a trust. I'd kill a story before I'd burn the person who brought it. Signal, encrypted mail, and a clear record of what was promised.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CITED IN — logos_press / mentioned_in -->
+  <section class="sec" id="cited" aria-labelledby="cited-h" data-module="logos_press" data-variant="mentioned_in">
+    <div class="sec-head reveal">
+      <h2 id="cited-h">As Cited &amp; Reported</h2>
+      <span class="tag">Picked Up</span>
+    </div>
+    <ul class="cited reveal" aria-label="Where the work has been cited">
+      <li><span class="src">Front page</span>The Washington Post</li>
+      <li><span class="src">Followed up</span>ProPublica</li>
+      <li><span class="src">On air</span>NPR — Morning Edition</li>
+      <li><span class="src">Entered as evidence</span>U.S. Senate Subcommittee</li>
+      <li><span class="src">Reprinted</span>Columbia Journalism Review</li>
+      <li><span class="src">Cited</span>The Marshall Project</li>
+    </ul>
+  </section>
+
+  <!-- FROM THE NEWSLETTER — writing -->
+  <section class="sec" id="writing" aria-labelledby="writing-h" data-module="writing" data-variant="list">
+    <div class="sec-head reveal">
+      <h2 id="writing-h">From the Newsletter</h2>
+      <span class="tag">The Paper Trail</span>
+    </div>
+    <div class="index-list">
+      <article class="index-item reveal">
+        <div class="when">May 2026</div>
+        <div>
+          <h3><a href="#writing">How to Read a Procurement Log</a></h3>
+          <p class="idek">A field guide to no-bid contracts, sole-source justifications, and the line items that always lie first.</p>
+        </div>
+        <div class="where">8 min read</div>
+      </article>
+      <article class="index-item reveal">
+        <div class="when">Apr 2026</div>
+        <div>
+          <h3><a href="#writing">The FOIA Letter I Send Every Time</a></h3>
+          <p class="idek">The exact language that gets records offices to answer — and what to do with the denial when they don't.</p>
+        </div>
+        <div class="where">6 min read</div>
+      </article>
+      <article class="index-item reveal">
+        <div class="when">Mar 2026</div>
+        <div>
+          <h3><a href="#writing">Anatomy of a Shell Company</a></h3>
+          <p class="idek">Registered agents, nominee directors, and the three filings that connect an anonymous LLC to a person.</p>
+        </div>
+        <div class="where">11 min read</div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ON THE RECORD — speaking -->
+  <section class="sec" id="speaking" aria-labelledby="speaking-h" data-module="speaking" data-variant="list">
+    <div class="sec-head reveal">
+      <h2 id="speaking-h">Talks &amp; Panels</h2>
+      <span class="tag">In Person</span>
+    </div>
+    <div class="index-list">
+      <article class="index-item reveal">
+        <div class="when">2026</div>
+        <div>
+          <h3>Following the Money After the Paywall</h3>
+          <p class="idek">Keynote on funding investigative work that doesn't pay for itself.</p>
+        </div>
+        <div class="where">IRE Conference</div>
+      </article>
+      <article class="index-item reveal">
+        <div class="when">2025</div>
+        <div>
+          <h3>Source Protection in the Age of Metadata</h3>
+          <p class="idek">Workshop on secure tip lines, Signal hygiene, and what to promise.</p>
+        </div>
+        <div class="where">Columbia Journalism School</div>
+      </article>
+      <article class="index-item reveal">
+        <div class="when">2024</div>
+        <div>
+          <h3>The Records Nobody Reads Side by Side</h3>
+          <p class="idek">Panel on cross-referencing invoices, payrolls, and meeting minutes.</p>
+        </div>
+        <div class="where">SXSW EDU</div>
+      </article>
+    </div>
+  </section>
+
+  <!-- QUESTIONS FROM THE DESK — faq -->
+  <section class="sec" id="faq" aria-labelledby="faq-h" data-module="faq" data-variant="two_column">
+    <div class="sec-head reveal">
+      <h2 id="faq-h">Questions from the Desk</h2>
+      <span class="tag">Before You Write</span>
+    </div>
+    <div class="qa reveal">
+      <div class="qa-item">
+        <h3>How do you protect a source?</h3>
+        <p>Signal or encrypted mail, no notes that name you, and nothing promised I can't keep. I've gone to the mat to protect tippers before, and I will again.</p>
+      </div>
+      <div class="qa-item">
+        <h3>Do I need proof to send a tip?</h3>
+        <p>No. A hunch, a document, or a number that looks wrong is enough to start. The reporting is my job — your job is to point.</p>
+      </div>
+      <div class="qa-item">
+        <h3>Will my name be in the story?</h3>
+        <p>Only if you want it there, on the record, with your consent. Most sources are never named, and that is by design.</p>
+      </div>
+      <div class="qa-item">
+        <h3>Can editors commission a piece?</h3>
+        <p>Yes — I take select freelance investigations on contract. Reach the desk below and I'll tell you honestly what's reportable.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEND A TIP -->
+  <section class="tip reveal" id="tip" aria-labelledby="tip-h" data-module="contact" data-variant="cta_band">
+    <div class="tipbox">
+      <div class="tip-grid">
+        <div>
+          <span class="kicker">Public Interest</span>
+          <h2 id="tip-h">Send a Tip</h2>
+          <p class="lead-p">Saw something that doesn't add up? A document, a contract, a number that's wrong? I read everything, I protect sources, and I follow it as far as it goes.</p>
+          <a class="tip-mail" href="mailto:tips@hannahcole.press">tips@hannahcole.press</a>
+        </div>
+        <ul class="tip-meta" aria-label="Contact channels">
+          <li><span>Secure</span><a href="mailto:tips@hannahcole.press">Signal on request</a></li>
+          <li><span>Newsletter</span><a href="#tip">The Paper Trail</a></li>
+          <li><span>Social</span><a href="#tip">X / @hannahcole</a></li>
+          <li><span>Desk</span><a href="mailto:tips@hannahcole.press">Editors welcome</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer class="colophon">
+    <span>© 2026 Hannah Cole · Investigative Journalist</span>
+    <span>Set in Playfair Display &amp; Spectral · Printed for the screen</span>
+  </footer>
+
+</main>
+
+<div class="atlas-photo-toggle" role="group" aria-label="示例照片 / Demo photos"><span>照片 Photos</span><button id="atlasPhotoBtn" type="button" aria-pressed="true">On</button></div>
+<script>(function(){var b=document.getElementById('atlasPhotoBtn');if(!b)return;function set(on){document.body.classList.toggle('no-photos',!on);b.setAttribute('aria-pressed',on?'true':'false');b.textContent=on?'On':'Off';}b.addEventListener('click',function(){set(document.body.classList.contains('no-photos'));});set(true);})();</script>
+
+<script>
+(function(){
+  var els=document.querySelectorAll('.reveal');
+  if(!('IntersectionObserver' in window)||window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    els.forEach(function(e){e.classList.add('in')});return;
+  }
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});
+  },{threshold:.12,rootMargin:'0px 0px -8% 0px'});
+  els.forEach(function(e){io.observe(e)});
+})();
+</script>
+
+</body>
+</html>

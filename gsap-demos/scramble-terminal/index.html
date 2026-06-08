@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K1RA // 乱码终端 — 林子默 个人站</title>
+<meta name="description" content="林子默 (K1RA) — 逆向工程师 / 漏洞研究者 / 安全工具作者。一个赛博终端风格的个人站，命令逐行解码、文本乱码闪现。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;0,800;1,400&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#04060a;
+    --bg-2:#070b11;
+    --panel:#0a0f16;
+    --line:#15202d;
+    --line-soft:#0e1620;
+    --green:#39ff8b;
+    --green-dim:#1f7a48;
+    --amber:#ffb23e;
+    --amber-dim:#7a531c;
+    --cyan:#36e0ff;
+    --magenta:#ff4d6d;
+    --fg:#c9d6cf;
+    --fg-dim:#5f7066;
+    --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --disp:"Space Grotesk","JetBrains Mono",monospace;
+    --glow-green:0 0 2px rgba(57,255,139,.6),0 0 14px rgba(57,255,139,.28);
+    --glow-amber:0 0 2px rgba(255,178,62,.55),0 0 14px rgba(255,178,62,.25);
+    --maxw:1120px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1100px 700px at 78% -8%, rgba(57,255,139,.06), transparent 60%),
+      radial-gradient(900px 600px at 5% 110%, rgba(54,224,255,.05), transparent 55%),
+      var(--bg);
+    color:var(--fg);
+    font-family:var(--mono);
+    font-size:15px;
+    line-height:1.65;
+    letter-spacing:.01em;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* scanlines + flicker overlay */
+  .crt{position:fixed;inset:0;pointer-events:none;z-index:90;mix-blend-mode:overlay;}
+  .crt::before{
+    content:"";position:absolute;inset:0;
+    background:repeating-linear-gradient(to bottom,
+      rgba(255,255,255,.04) 0,
+      rgba(255,255,255,.04) 1px,
+      transparent 1px,
+      transparent 3px);
+  }
+  .crt::after{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(120% 120% at 50% 50%, transparent 62%, rgba(0,0,0,.55) 100%);
+  }
+  .vignette-flicker{position:fixed;inset:0;pointer-events:none;z-index:91;background:rgba(57,255,139,.015);opacity:0;}
+
+  a{color:var(--green);text-decoration:none}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:2px}
+  img{max-width:100%;display:block}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px}
+  .mono-dim{color:var(--fg-dim)}
+  .grn{color:var(--green);text-shadow:var(--glow-green)}
+  .amb{color:var(--amber);text-shadow:var(--glow-amber)}
+  .cyn{color:var(--cyan)}
+  .mag{color:var(--magenta)}
+
+  /* ---------- top status bar ---------- */
+  .statusbar{
+    position:sticky;top:0;z-index:50;
+    display:flex;align-items:center;gap:18px;
+    padding:9px 22px;
+    background:linear-gradient(180deg,rgba(7,11,17,.96),rgba(7,11,17,.82));
+    border-bottom:1px solid var(--line);
+    font-size:12px;letter-spacing:.06em;
+    backdrop-filter:blur(6px);
+  }
+  .statusbar .dot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:var(--glow-green)}
+  .statusbar .seg{color:var(--fg-dim)}
+  .statusbar .seg b{color:var(--fg);font-weight:500}
+  .statusbar .clock{margin-left:auto;color:var(--green);font-variant-numeric:tabular-nums}
+
+  /* ---------- hero ---------- */
+  .hero{padding:72px 0 60px;position:relative}
+  .prompt-line{font-size:13px;color:var(--green);margin-bottom:26px;text-shadow:var(--glow-green)}
+  .prompt-line .blink{display:inline-block;width:9px;height:1.05em;background:var(--green);vertical-align:-2px;margin-left:3px;box-shadow:var(--glow-green)}
+  h1.title{
+    font-family:var(--disp);
+    font-weight:700;
+    font-size:clamp(40px,11vw,128px);
+    line-height:.92;
+    letter-spacing:-.02em;
+    margin:0;
+    color:var(--green);
+    text-shadow:var(--glow-green);
+    text-transform:uppercase;
+    position:relative;
+  }
+  h1.title .row2{color:var(--fg);text-shadow:none;-webkit-text-stroke:1px var(--green-dim)}
+  .glitch-host{position:relative;display:inline-block}
+  .glitch-host .gl{position:absolute;inset:0;opacity:0;pointer-events:none}
+  .glitch-host .gl.r{color:var(--magenta);-webkit-text-stroke:0}
+  .glitch-host .gl.c{color:var(--cyan);-webkit-text-stroke:0}
+  .subtitle{
+    margin-top:30px;max-width:640px;font-size:clamp(14px,1.6vw,17px);color:var(--fg);
+  }
+  .subtitle .tag{color:var(--amber);text-shadow:var(--glow-amber)}
+  .hero-meta{
+    margin-top:34px;display:flex;flex-wrap:wrap;gap:10px 14px;font-size:12px;
+  }
+  .chip{
+    border:1px solid var(--line);padding:6px 12px;color:var(--fg-dim);
+    background:var(--panel);letter-spacing:.05em;
+  }
+  .chip b{color:var(--green);font-weight:500}
+
+  /* ---------- section frame ---------- */
+  section{padding:64px 0;border-top:1px solid var(--line-soft)}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:30px;flex-wrap:wrap}
+  .sec-head .idx{color:var(--green-dim);font-size:13px}
+  .sec-head h2{
+    font-family:var(--disp);font-weight:700;font-size:clamp(22px,3.4vw,34px);
+    margin:0;color:var(--fg);letter-spacing:.01em;
+  }
+  .sec-head .cmd{color:var(--amber);font-size:13px;margin-left:auto}
+
+  /* ---------- terminal window ---------- */
+  .term{
+    border:1px solid var(--line);background:rgba(8,12,18,.86);
+    box-shadow:0 0 0 1px rgba(57,255,139,.04), 0 24px 60px -28px rgba(0,0,0,.9);
+    border-radius:8px;overflow:hidden;
+  }
+  .term-bar{
+    display:flex;align-items:center;gap:8px;padding:10px 14px;
+    background:linear-gradient(180deg,#0c1219,#080d13);border-bottom:1px solid var(--line);
+    font-size:12px;color:var(--fg-dim);
+  }
+  .term-bar .b{width:11px;height:11px;border-radius:50%;background:#243140}
+  .term-bar .b.x{background:#3a2330}
+  .term-bar .b.y{background:#3a3322}
+  .term-bar .b.z{background:#1f3a2c}
+  .term-bar .path{margin-left:10px;color:#6f8579}
+  .term-body{padding:22px 22px 26px;font-size:14px;line-height:1.85;min-height:340px}
+  .term-line{white-space:pre-wrap;word-break:break-word}
+  .term-line .p{color:var(--green);text-shadow:var(--glow-green)}
+  .term-line .arg{color:var(--cyan)}
+  .term-line .ok{color:var(--green)}
+  .term-line .warn{color:var(--amber)}
+  .term-line .err{color:var(--magenta)}
+  .term-line .out{color:var(--fg)}
+  .term-line.indent{padding-left:1.4em}
+  .term-caret{display:inline-block;width:9px;height:1.05em;background:var(--green);vertical-align:-2px;margin-left:2px;box-shadow:var(--glow-green)}
+
+  /* ---------- about / id card ---------- */
+  .id-grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:34px;align-items:start}
+  .id-prose p{margin:0 0 18px;color:var(--fg);max-width:60ch}
+  .id-prose .lead{font-size:clamp(16px,2vw,21px);color:#dfeae3;font-family:var(--disp);font-weight:500;line-height:1.4}
+  .id-card{
+    border:1px solid var(--line);background:var(--panel);padding:0;overflow:hidden;border-radius:6px;
+  }
+  .id-card .photo-wrap{position:relative;aspect-ratio:3/3.4;overflow:hidden;background:#070b10}
+  .id-card .photo-wrap img{
+    width:100%;height:100%;object-fit:cover;
+    filter:grayscale(1) contrast(1.12) brightness(.86) sepia(.25) hue-rotate(70deg) saturate(1.3);
+    mix-blend-mode:luminosity;opacity:.92;
+  }
+  .id-card .photo-wrap::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,transparent 50%,rgba(4,6,10,.85)),
+      repeating-linear-gradient(to bottom,transparent 0 2px,rgba(57,255,139,.05) 2px 3px);
+    pointer-events:none;
+  }
+  .id-card .scan{position:absolute;left:0;right:0;height:42px;top:-50px;
+    background:linear-gradient(180deg,transparent,rgba(57,255,139,.18),transparent);pointer-events:none}
+  .id-card .rows{padding:16px 16px 18px;font-size:12.5px}
+  .id-card .rows .r{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px dashed var(--line-soft)}
+  .id-card .rows .r:last-child{border-bottom:0}
+  .id-card .rows .k{color:var(--fg-dim);letter-spacing:.04em}
+  .id-card .rows .v{color:var(--green);text-align:right;text-shadow:var(--glow-green)}
+
+  /* ---------- projects ---------- */
+  .proj-list{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+  .proj{
+    display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:20px;align-items:center;
+    padding:22px 8px;border-bottom:1px solid var(--line);position:relative;cursor:default;
+  }
+  .proj .num{color:var(--green-dim);font-size:13px}
+  .proj .body .name{font-family:var(--disp);font-weight:700;font-size:clamp(18px,2.6vw,26px);color:var(--fg)}
+  .proj .body .name .star{color:var(--green)}
+  .proj .body .desc{color:var(--fg-dim);font-size:13.5px;margin-top:5px;max-width:62ch}
+  .proj .meta{text-align:right;font-size:12px;color:var(--amber);white-space:nowrap}
+  .proj .meta .stars{color:var(--green);display:block;margin-top:4px}
+  .proj .bar{position:absolute;left:0;bottom:-1px;height:2px;width:0;background:var(--green);box-shadow:var(--glow-green)}
+  .proj:hover .bar{width:100%;transition:width .5s cubic-bezier(.22,1,.36,1)}
+  .proj:hover .body .name{color:var(--green);text-shadow:var(--glow-green)}
+
+  /* ---------- log / now ---------- */
+  .logwall{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+  .logcard{border:1px solid var(--line);background:var(--panel);padding:16px 18px;border-radius:6px}
+  .logcard .ts{color:var(--green-dim);font-size:11.5px;letter-spacing:.05em}
+  .logcard .msg{margin-top:8px;color:var(--fg);font-size:13.5px}
+  .logcard .msg b{color:var(--amber);font-weight:500}
+
+  /* ---------- footer cta ---------- */
+  .cta{padding:84px 0 100px;border-top:1px solid var(--line-soft);text-align:left}
+  .cta .big{
+    font-family:var(--disp);font-weight:700;font-size:clamp(30px,7vw,82px);line-height:.98;
+    letter-spacing:-.01em;color:var(--green);text-shadow:var(--glow-green);text-transform:uppercase;margin:0;
+  }
+  .cta .big .o{color:var(--fg);-webkit-text-stroke:1px var(--green-dim)}
+  .cta .links{margin-top:38px;display:flex;flex-wrap:wrap;gap:12px 16px;font-size:14px}
+  .cta .links a{
+    border:1px solid var(--line);padding:11px 18px;color:var(--green);background:var(--panel);
+    display:inline-flex;gap:9px;align-items:center;transition:border-color .25s,box-shadow .25s;
+  }
+  .cta .links a:hover{border-color:var(--green);box-shadow:var(--glow-green)}
+  .cta .links a .k{color:var(--fg-dim)}
+  .foot-meta{margin-top:46px;font-size:11.5px;color:var(--fg-dim);display:flex;flex-wrap:wrap;gap:6px 20px}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:760px){
+    .id-grid{grid-template-columns:1fr;gap:26px}
+    .id-card{max-width:320px}
+    .proj{grid-template-columns:40px 1fr;gap:12px}
+    .proj .meta{grid-column:2;text-align:left}
+    .statusbar{gap:12px;flex-wrap:wrap}
+    .term-body{font-size:12.5px;padding:18px 16px 22px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .crt::before{opacity:.5}
+  }
+</style>
+</head>
+<body>
+<div class="crt" aria-hidden="true"></div>
+<div class="vignette-flicker" id="flicker" aria-hidden="true"></div>
+
+<!-- STATUS BAR -->
+<header class="statusbar" data-anim="status">
+  <span class="dot" aria-hidden="true"></span>
+  <span class="seg">user <b>k1ra</b></span>
+  <span class="seg">host <b>void.lan</b></span>
+  <span class="seg">shell <b>zsh</b></span>
+  <span class="clock" id="clock" aria-label="本地时间">00:00:00</span>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero" aria-labelledby="hero-title" style="border-top:0">
+    <div class="wrap">
+      <div class="prompt-line"><span class="mono-dim">k1ra@void</span>:<span class="cyn">~</span>$ <span id="boot-cmd"></span><span class="blink" id="boot-caret"></span></div>
+
+      <h1 class="title" id="hero-title">
+        <span class="glitch-host">
+          <span class="gl r" aria-hidden="true">林子默</span>
+          <span class="gl c" aria-hidden="true">林子默</span>
+          <span class="scramble" data-final="林子默">林子默</span>
+        </span><br>
+        <span class="row2 scramble" data-final="K1RA">K1RA</span>
+      </h1>
+
+      <p class="subtitle">
+        逆向工程师 · 漏洞研究者 · 开源安全工具作者。<br>
+        我把二进制拆成字节，再把混乱重新解码成<span class="tag"> [可读的真相] </span>。
+      </p>
+
+      <div class="hero-meta">
+        <span class="chip">PGP <b>0xF2A1 9C4D</b></span>
+        <span class="chip">uptime <b>11y 042d</b></span>
+        <span class="chip">commits <b>9,431</b></span>
+        <span class="chip">CVE <b>14 认领</b></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOT TERMINAL -->
+  <section aria-labelledby="boot-h" data-term-section>
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="idx">[ 00 ]</span>
+        <h2 id="boot-h">系统自检 // boot sequence</h2>
+        <span class="cmd">$ ./whoami --verbose</span>
+      </div>
+      <div class="term" id="boot-term">
+        <div class="term-bar" aria-hidden="true">
+          <span class="b z"></span><span class="b y"></span><span class="b x"></span>
+          <span class="path">k1ra@void: ~/identity</span>
+        </div>
+        <div class="term-body" id="boot-body" aria-label="终端自检输出，逐行解码身份信息"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT / ID CARD -->
+  <section aria-labelledby="about-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="idx">[ 01 ]</span>
+        <h2 id="about-h">关于 // ./about.txt</h2>
+        <span class="cmd">$ cat about.txt</span>
+      </div>
+      <div class="id-grid">
+        <div class="id-prose">
+          <p class="lead reveal">「凡是能被编译的，都能被反编译。我做的不是破坏，是把厂商藏起来的那部分文档替他们补完。」</p>
+          <p class="reveal">2014 年从一台报废路由器的固件镜像开始入坑。八年甲方安全、三年独立研究，写过的反混淆器被三家终端厂商悄悄抄进了产品。白天读 IDA 的反汇编，夜里给开源社区提 PR——我相信安全不该是少数人的黑话。</p>
+          <p class="reveal">现专注于内存安全、模糊测试与供应链审计。每一个我公开的漏洞，都附一份能让普通工程师看懂的复现脚本。乱码只是表象，解码才是工作。</p>
+        </div>
+        <aside class="id-card reveal" aria-label="身份卡">
+          <div class="photo-wrap">
+            <span class="scan" id="id-scan" aria-hidden="true"></span>
+            <img src="/assets/portrait-asian-man-bw.webp" alt="林子默（K1RA）黑白肖像，戴眼镜，注视前方" loading="lazy">
+          </div>
+          <div class="rows">
+            <div class="r"><span class="k">handle</span><span class="v">K1RA</span></div>
+            <div class="r"><span class="k">role</span><span class="v">RE / 0day</span></div>
+            <div class="r"><span class="k">base</span><span class="v">SHENZHEN</span></div>
+            <div class="r"><span class="k">trust</span><span class="v">★★★★☆</span></div>
+            <div class="r"><span class="k">status</span><span class="v" id="id-status">ONLINE</span></div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section aria-labelledby="proj-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="idx">[ 02 ]</span>
+        <h2 id="proj-h">精选项目 // ~/repos</h2>
+        <span class="cmd">$ ls -la ~/repos</span>
+      </div>
+      <div class="proj-list">
+        <article class="proj reveal">
+          <span class="num">001</span>
+          <div class="body">
+            <div class="name"><span class="star">$</span> defang<span class="mono-dim">.py</span></div>
+            <div class="desc">通用恶意样本反混淆框架，支持 12 种打包器一键脱壳，已被三家 EDR 厂商集成。</div>
+          </div>
+          <div class="meta">Python · 2021<span class="stars">★ 8.2k</span></div>
+          <span class="bar" aria-hidden="true"></span>
+        </article>
+        <article class="proj reveal">
+          <span class="num">002</span>
+          <div class="body">
+            <div class="name"><span class="star">$</span> heapwalker</div>
+            <div class="desc">面向 glibc 的堆可视化调试器，把 chunk 链表渲染成可交互的内存地图。</div>
+          </div>
+          <div class="meta">Rust · 2022<span class="stars">★ 5.7k</span></div>
+          <span class="bar" aria-hidden="true"></span>
+        </article>
+        <article class="proj reveal">
+          <span class="num">003</span>
+          <div class="body">
+            <div class="name"><span class="star">$</span> fuzz-orchard</div>
+            <div class="desc">分布式覆盖率引导模糊测试集群，单周跑出过两个 Chromium 内存漏洞。</div>
+          </div>
+          <div class="meta">Go · 2023<span class="stars">★ 3.4k</span></div>
+          <span class="bar" aria-hidden="true"></span>
+        </article>
+        <article class="proj reveal">
+          <span class="num">004</span>
+          <div class="body">
+            <div class="name"><span class="star">$</span> sbom-x-ray</div>
+            <div class="desc">供应链 SBOM 审计器，对依赖图做污点传播，标出被投毒的传递依赖。</div>
+          </div>
+          <div class="meta">TypeScript · 2024<span class="stars">★ 1.9k</span></div>
+          <span class="bar" aria-hidden="true"></span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOW / LOG -->
+  <section aria-labelledby="log-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="idx">[ 03 ]</span>
+        <h2 id="log-h">近况 // tail -f now.log</h2>
+        <span class="cmd">$ tail -f now.log</span>
+      </div>
+      <div class="logwall">
+        <div class="logcard reveal"><div class="ts">2026-05-29 03:11 UTC</div><div class="msg">提交 <b>CVE-2026-3140</b> 给某车机供应商，越界写已确认，等待补丁窗口。</div></div>
+        <div class="logcard reveal"><div class="ts">2026-05-21 22:40 UTC</div><div class="msg">在 <b>OffByOne 会议</b> 做了《把固件当文学读》的演讲，幻灯片已开源。</div></div>
+        <div class="logcard reveal"><div class="ts">2026-05-08 14:02 UTC</div><div class="msg">给 <b>defang.py</b> 合并了第 71 位贡献者的 PR，支持新版 VMProtect。</div></div>
+        <div class="logcard reveal"><div class="ts">2026-04-30 09:17 UTC</div><div class="msg">正在重读《The Art of Software Security Assessment》，第三遍仍有新解。</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta" aria-labelledby="cta-h">
+    <div class="wrap">
+      <h2 class="big" id="cta-h">
+        <span class="scramble" data-final="解码">解码</span><span class="o">真相</span><br>
+        <span class="scramble" data-final="DECODE">DECODE</span> <span class="o">THE</span> <span class="scramble" data-final="NOISE">NOISE</span>
+      </h2>
+      <div class="links">
+        <a href="#" rel="noopener"><span class="k">git</span> github.com/k1ra</a>
+        <a href="#" rel="noopener"><span class="k">key</span> keybase.io/k1ra</a>
+        <a href="#" rel="noopener"><span class="k">net</span> @k1ra@infosec.exchange</a>
+        <a href="mailto:k1ra@void.lan"><span class="k">mail</span> k1ra@void.lan</a>
+      </div>
+      <div class="foot-meta">
+        <span>fingerprint F2A1 9C4D 88B0 1E7E 0044</span>
+        <span>built with vim + 太多咖啡</span>
+        <span>no trackers · no js frameworks · 100% self-hosted</span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- GSAP: core first, then plugins, then register -->
+<script src="/vendor/gsap/gsap.min.js"></script>
+<script src="/vendor/gsap/ScrambleTextPlugin.min.js"></script>
+<script src="/vendor/gsap/TextPlugin.min.js"></script>
+<script src="/vendor/gsap/ScrollTrigger.min.js"></script>
+<script>
+gsap.registerPlugin(ScrambleTextPlugin, TextPlugin, ScrollTrigger);
+
+(function(){
+  "use strict";
+  const GLYPHS = "!<>-_\\/[]{}—=+*^?#01ABCDEF░▒▓█01010xX$@%&";
+  const HEX = "0123456789ABCDEF";
+
+  // live clock (cheap, not motion — keep even on reduced)
+  const clockEl = document.getElementById("clock");
+  function tick(){
+    const d = new Date();
+    const p = n => String(n).padStart(2,"0");
+    clockEl.textContent = p(d.getHours())+":"+p(d.getMinutes())+":"+p(d.getSeconds());
+  }
+  tick(); setInterval(tick, 1000);
+
+  // Lines the boot terminal types + scrambles
+  const BOOT_LINES = [
+    {pre:'<span class="p">$</span> <span class="arg">./whoami --verbose</span>', delay:0},
+    {scramble:'<span class="out">解析身份令牌……</span>', cls:'out'},
+    {scramble:'<span class="ok">[ ok ]</span> <span class="out">handle……… K1RA / 林子默</span>'},
+    {scramble:'<span class="ok">[ ok ]</span> <span class="out">role………… 逆向工程师 · 漏洞研究者</span>'},
+    {scramble:'<span class="ok">[ ok ]</span> <span class="out">base………… 深圳 · SHENZHEN</span>'},
+    {scramble:'<span class="warn">[warn]</span> <span class="out">trust ring 未签名，已切换为离线信任</span>'},
+    {scramble:'<span class="ok">[ ok ]</span> <span class="out">载入 14 个 CVE 认领记录</span>'},
+    {scramble:'<span class="ok">[ ok ]</span> <span class="out">mount /dev/curiosity → /mnt/work … 成功</span>'},
+    {scramble:'<span class="out">身份解码完成。欢迎，操作员。</span>'},
+    {pre:'<span class="p">$</span> <span class="term-caret" aria-hidden="true"></span>', plain:true}
+  ];
+
+  // helper: scramble the textContent of a node while preserving its inner HTML target
+  function scrambleNode(node, finalText, dur){
+    return gsap.to(node, {
+      duration: dur,
+      scrambleText: { text: finalText, chars: GLYPHS, revealDelay: dur*0.35, speed: 0.55, tweenLength: false },
+      ease: "none"
+    });
+  }
+
+  const mm = gsap.matchMedia();
+
+  mm.add({
+    motion: "(prefers-reduced-motion: no-preference)",
+    reduced: "(prefers-reduced-motion: reduce)"
+  }, (ctx) => {
+    const reduced = ctx.conditions.reduced;
+
+    /* ---------- REDUCED MOTION: render final states, no loops/scroll-driven ---------- */
+    if (reduced){
+      document.getElementById("boot-cmd").textContent = "./decode --identity";
+      document.getElementById("boot-caret").style.display = "none";
+      // scrambles → final text
+      document.querySelectorAll(".scramble").forEach(el => { el.textContent = el.dataset.final; });
+      // boot terminal → render all lines immediately
+      const body = document.getElementById("boot-body");
+      body.innerHTML = BOOT_LINES.map(l => {
+        const html = l.scramble || l.pre || "";
+        return '<div class="term-line">'+html+'</div>';
+      }).join("");
+      // reveal blocks visible
+      gsap.set(".reveal", { autoAlpha: 1, y: 0 });
+      return;
+    }
+
+    /* ---------- FULL MOTION ---------- */
+
+    // 0) hero boot command — TextPlugin typing
+    gsap.set("#boot-cmd", { text: "" });
+    const heroTl = gsap.timeline({ delay: 0.25 });
+    heroTl.to("#boot-cmd", { duration: 1.0, text: "./decode --identity", ease: "none" });
+
+    // 1) hero headline scramble (the two .scramble spans in h1)
+    document.querySelectorAll("#hero-title .scramble").forEach((el, i) => {
+      el.textContent = el.dataset.final.replace(/./g, "0");
+      heroTl.add(scrambleNode(el, el.dataset.final, 1.4 + i*0.2), i === 0 ? "-=0.2" : "-=1.1");
+    });
+
+    // 1b) periodic glitch flash on the 林子默 host
+    const host = document.querySelector(".glitch-host");
+    const glR = host.querySelector(".gl.r");
+    const glC = host.querySelector(".gl.c");
+    function glitchOnce(){
+      const x = gsap.utils.random(-4, 4, 1);
+      const tl = gsap.timeline();
+      tl.set([glR, glC], { autoAlpha: 1 })
+        .to(glR, { x: x, duration: 0.04, yoyo: true, repeat: 3 }, 0)
+        .to(glC, { x: -x, duration: 0.04, yoyo: true, repeat: 3 }, 0)
+        .to("#flicker", { opacity: 1, duration: 0.05, yoyo: true, repeat: 1 }, 0)
+        .set([glR, glC], { autoAlpha: 0, x: 0 });
+    }
+    const glitchLoop = gsap.delayedCall(gsap.utils.random(2.4, 4.2), function self(){
+      glitchOnce();
+      glitchLoop.delay(gsap.utils.random(2.6, 5.0)).restart(true);
+    });
+
+    // 2) BOOT TERMINAL — type prompt, scramble each output line, triggered on scroll-in
+    const bootBody = document.getElementById("boot-body");
+    let bootStarted = false;
+    function runBoot(){
+      if (bootStarted) return; bootStarted = true;
+      const tl = gsap.timeline();
+      BOOT_LINES.forEach((l) => {
+        const line = document.createElement("div");
+        line.className = "term-line";
+        bootBody.appendChild(line);
+        if (l.plain || l.pre){
+          // typed / instant prompt line
+          tl.set(line, { innerHTML: l.pre }, "+=0.12");
+        } else if (l.scramble){
+          // start as hidden glyph soup, scramble to final HTML
+          const tmp = document.createElement("div"); tmp.innerHTML = l.scramble;
+          const finalText = tmp.textContent;
+          const seed = finalText.replace(/[^\s]/g, () => GLYPHS[Math.floor(Math.random()*GLYPHS.length)]);
+          tl.set(line, { textContent: seed }, "+=0.05");
+          tl.to(line, {
+            duration: Math.max(0.5, finalText.length*0.022),
+            scrambleText: { text: finalText, chars: HEX, revealDelay: 0.15, speed: 0.6 },
+            ease: "none",
+            onComplete: () => { line.innerHTML = l.scramble; } // restore colored HTML
+          });
+        }
+      });
+    }
+    ScrollTrigger.create({
+      trigger: "#boot-term",
+      start: "top 78%",
+      end: "bottom top",
+      onEnter: runBoot
+    });
+
+    // 3) id-card scan-line sweep loop (continuous)
+    gsap.to("#id-scan", {
+      top: "115%", duration: 2.4, repeat: -1, ease: "power1.inOut",
+      repeatDelay: 1.1,
+      scrollTrigger: { trigger: ".id-card", start: "top 85%", end: "bottom top", toggleActions: "play pause resume pause" }
+    });
+    // id status occasionally re-scrambles
+    const idStatus = document.getElementById("id-status");
+    ScrollTrigger.create({
+      trigger: ".id-card", start: "top 80%", once: true,
+      onEnter: () => {
+        gsap.fromTo(idStatus, { textContent: "########" },
+          { duration: 1.1, scrambleText: { text: "ONLINE", chars: HEX, revealDelay: 0.2 }, ease: "none" });
+      }
+    });
+
+    // 4) generic reveal-on-scroll for prose, cards, projects, logs
+    gsap.utils.toArray(".reveal").forEach((el) => {
+      gsap.from(el, {
+        autoAlpha: 0, y: 26, duration: 0.7, ease: "power2.out",
+        scrollTrigger: { trigger: el, start: "top 88%", end: "top 60%", toggleActions: "play none none reverse" }
+      });
+    });
+
+    // 5) project rows — scramble the project name when each scrolls in
+    gsap.utils.toArray(".proj").forEach((row) => {
+      const nameEl = row.querySelector(".name");
+      const full = nameEl.textContent;
+      ScrollTrigger.create({
+        trigger: row, start: "top 82%", once: true,
+        onEnter: () => {
+          gsap.to(nameEl, {
+            duration: 0.9, scrambleText: { text: full, chars: GLYPHS, revealDelay: 0.1, speed: 0.7 }, ease: "none"
+          });
+        }
+      });
+      // hover → quick re-scramble flourish
+      row.addEventListener("mouseenter", () => {
+        gsap.to(nameEl, { duration: 0.5, scrambleText: { text: full, chars: "01", revealDelay: 0, speed: 0.8 }, ease: "none", overwrite: "auto" });
+      });
+    });
+
+    // 6) CTA big headline scrambles on scroll-in
+    ScrollTrigger.create({
+      trigger: ".cta", start: "top 70%", once: true,
+      onEnter: () => {
+        document.querySelectorAll(".cta .scramble").forEach((el, i) => {
+          el.textContent = el.dataset.final.replace(/./g, "#");
+          gsap.to(el, {
+            duration: 1.1, delay: i*0.12,
+            scrambleText: { text: el.dataset.final, chars: GLYPHS, revealDelay: 0.25, speed: 0.6 }, ease: "none"
+          });
+        });
+      }
+    });
+
+    // 7) subtle parallax drift on hero meta chips while scrolling hero out
+    gsap.to(".hero-meta", {
+      yPercent: -30, ease: "none",
+      scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: 0.4 }
+    });
+
+    // cleanup for this matchMedia branch
+    return () => { glitchLoop.kill(); heroTl.kill(); };
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>one_liner · identity · specimen</title>
+<style>
+:root{--bg:#ffffff;--surface:#f6f6f4;--surface-2:#efefea;--ink:#191917;--muted:#6b6b67;--subtle:#9a9a94;--accent:#2f56ff;--accent-soft:#e9eefc;--hairline:#e7e7e2;--ink-line:#191917;--ok:#1f7a44;--radius:12px;--pad:24px}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+html{-webkit-text-size-adjust:100%}
+
+body{
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+.sheet{
+  max-width:920px;
+  margin:0 auto;
+  padding:clamp(20px,4vw,56px) clamp(16px,4vw,40px) 80px;
+}
+
+/* ── header ───────────────────────────────────────── */
+.sheet-head{
+  display:flex;
+  align-items:baseline;
+  flex-wrap:wrap;
+  gap:10px 16px;
+  padding-bottom:18px;
+  border-bottom:1px solid var(--ink-line);
+  margin-bottom:48px;
+}
+.sheet-head h1{
+  font-size:clamp(18px,2.4vw,22px);
+  font-weight:650;
+  letter-spacing:-.01em;
+}
+.sheet-head .dot{color:var(--subtle);font-weight:400}
+.sheet-head .cat{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:12px;
+  color:var(--muted);
+  text-transform:lowercase;
+  letter-spacing:.02em;
+}
+.sheet-head .count{
+  margin-left:auto;
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:11px;
+  color:var(--muted);
+  background:var(--surface);
+  border:1px solid var(--hairline);
+  padding:4px 9px;
+  border-radius:999px;
+}
+
+/* ── variant block ────────────────────────────────── */
+.variant{margin-bottom:52px}
+.variant:last-child{margin-bottom:0}
+
+.variant-label{
+  display:flex;
+  align-items:baseline;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:12px;
+}
+.variant-label .id{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:12.5px;
+  font-weight:600;
+  color:var(--ink);
+  background:var(--accent-soft);
+  border:1px solid #d4dffb;
+  padding:3px 8px;
+  border-radius:6px;
+  letter-spacing:.01em;
+}
+.variant-label .hint{
+  font-size:13.5px;
+  color:var(--muted);
+}
+
+.stage{
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  background:var(--surface);
+  padding:clamp(28px,5vw,52px);
+  display:flex;
+  align-items:center;
+  min-height:180px;
+}
+
+/* ── shared photo slot ────────────────────────────── */
+.photo-slot{
+  background:var(--surface-2);
+  border:1px solid var(--hairline);
+  display:grid;
+  place-items:center;
+  color:var(--subtle);
+  font-weight:600;
+  letter-spacing:.04em;
+  flex:none;
+  position:relative;
+  overflow:hidden;
+}
+.photo-slot::after{
+  content:"PHOTO";
+  position:absolute;
+  bottom:5px;
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:7px;
+  letter-spacing:.12em;
+  color:var(--subtle);
+  opacity:.7;
+}
+
+/* ════════════════════════════════════════════════════
+   VARIANT 1 — inline: 行内强调定位句
+   ═══════════════════════════════════════════════════ */
+.v-inline{width:100%;max-width:640px}
+.v-inline .statement{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(22px,4.2vw,33px);
+  line-height:1.34;
+  letter-spacing:-.012em;
+  color:var(--ink);
+  font-weight:400;
+}
+.v-inline .statement .name{
+  font-style:italic;
+}
+.v-inline .statement .mark{
+  position:relative;
+  font-weight:600;
+  white-space:nowrap;
+  z-index:0;
+}
+.v-inline .statement .mark::before{
+  content:"";
+  position:absolute;
+  left:-.06em;right:-.06em;
+  bottom:.04em;
+  height:.42em;
+  background:var(--accent-soft);
+  z-index:-1;
+  border-radius:2px;
+}
+.v-inline .statement .accent{
+  color:var(--accent);
+  font-weight:600;
+}
+.v-inline .meta{
+  margin-top:20px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:13px;
+  color:var(--muted);
+}
+.v-inline .meta .pulse{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--ok);
+  flex:none;
+  box-shadow:0 0 0 3px rgba(31,122,68,.14);
+}
+.v-inline .meta a{
+  color:var(--muted);
+  text-decoration:none;
+  border-bottom:1px solid var(--hairline);
+  transition:color .15s,border-color .15s;
+}
+.v-inline .meta a:hover{color:var(--accent);border-color:var(--accent)}
+
+/* ════════════════════════════════════════════════════
+   VARIANT 2 — eyebrow: 小标签 eyebrow + 名字
+   ═══════════════════════════════════════════════════ */
+.v-eyebrow{
+  display:flex;
+  align-items:center;
+  gap:clamp(18px,4vw,32px);
+}
+.v-eyebrow .photo-slot{
+  width:84px;height:84px;
+  border-radius:50%;
+  font-size:24px;
+}
+.v-eyebrow .photo-slot::after{display:none}
+.v-eyebrow .body{min-width:0}
+.v-eyebrow .eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--accent);
+  background:var(--accent-soft);
+  border:1px solid #d4dffb;
+  padding:4px 10px;
+  border-radius:999px;
+  margin-bottom:14px;
+}
+.v-eyebrow .eyebrow svg{display:block}
+.v-eyebrow .name{
+  font-size:clamp(28px,5.4vw,40px);
+  font-weight:680;
+  letter-spacing:-.025em;
+  line-height:1.05;
+  color:var(--ink);
+}
+.v-eyebrow .role{
+  margin-top:8px;
+  font-size:clamp(14px,2.4vw,16px);
+  color:var(--muted);
+  font-weight:450;
+}
+.v-eyebrow .role b{color:var(--ink);font-weight:600}
+
+/* ── responsive ───────────────────────────────────── */
+@media (max-width:520px){
+  .stage{padding:26px 20px}
+  .v-eyebrow{flex-direction:column;align-items:flex-start;text-align:left}
+}
+
+/* ── a11y ─────────────────────────────────────────── */
+a:focus-visible,
+.v-inline .statement .accent:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:3px;
+  border-radius:3px;
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header class="sheet-head">
+    <h1>One-liner <span class="dot">/</span> 一句话定位</h1>
+    <span class="cat">identity</span>
+    <span class="count">2 variants</span>
+  </header>
+
+  <!-- ═══ VARIANT 1: inline ═══ -->
+  <section class="variant" aria-labelledby="v1-label">
+    <div class="variant-label" id="v1-label">
+      <span class="id">inline</span>
+      <span class="hint">行内强调定位句</span>
+    </div>
+    <div class="stage">
+      <div class="v-inline">
+        <p class="statement">
+          <span class="name">Maya Chen</span> is a product designer turning
+          <span class="mark">messy zero-to-one ideas</span>
+          into <span class="accent">shippable interfaces</span> — currently building design systems at a fintech startup.
+        </p>
+        <p class="meta">
+          <span class="pulse" aria-hidden="true"></span>
+          <span>Open to staff design roles</span>
+          <span aria-hidden="true">·</span>
+          <a href="#">San Francisco</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ VARIANT 2: eyebrow ═══ -->
+  <section class="variant" aria-labelledby="v2-label">
+    <div class="variant-label" id="v2-label">
+      <span class="id">eyebrow</span>
+      <span class="hint">小标签 eyebrow + 名字</span>
+    </div>
+    <div class="stage">
+      <div class="v-eyebrow">
+        <div class="photo-slot" role="img" aria-label="Photo slot — portrait of Maya Chen">MC</div>
+        <div class="body">
+          <span class="eyebrow">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+              <circle cx="5" cy="5" r="4" stroke="currentColor" stroke-width="1.4"/>
+              <circle cx="5" cy="5" r="1.4" fill="currentColor"/>
+            </svg>
+            Product Designer
+          </span>
+          <h2 class="name">Maya Chen</h2>
+          <p class="role">Designing <b>calm, legible</b> tools for teams that move fast.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>

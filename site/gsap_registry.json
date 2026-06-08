@@ -1,0 +1,296 @@
+{
+  "demos": [
+    {
+      "id": "kinetic-hero",
+      "name_cn": "动态标题",
+      "name_en": "Kinetic Hero",
+      "style": "近黑底配酸性青柠强调色、超大 grotesque 标题填满首屏的动态字体设计师作品集，硬朗瑞士网格 + 单字驱动的运动排版。",
+      "plugins": [
+        "SplitText (chars + lines + mask)",
+        "ScrollTrigger (scrub / 触发 / 视差)",
+        "CustomEase (招牌缓动)",
+        "Timeline (intro 编排)",
+        "matchMedia (响应式 + reduced-motion)",
+        "quickTo / utils (clamp, toArray)"
+      ],
+      "focus": "演示 GSAP 把巨型标题逐字符带遮罩升起、宣言逐行揭示、作品列表 stagger、标题 hover 字符波动，并用一条 CustomEase 招牌缓动贯穿全站。",
+      "prompt": "做一个动态字体设计师的单页作品集落地页。视觉：近黑底 #0b0b0c，单一电光酸性青柠 #c6ff3a 作唯一强调色，超大 grotesque（Archivo Black 类）全大写标题、行高极紧、字距收紧，配等宽字体做标签与序号，硬朗瑞士网格＋细线分隔，原创、避免通用 AI 网站感。分四区：①Hero 巨标题填满首屏，三行词 TYPE / IN / MOTION，一行描边空心、一行实心青柠，下方有简介、scroll 指示与底部无限滚动 ticker；②宣言区一段中英混排短文逐行揭示；③精选作品为列表（序号＋项目名＋副标题＋年份），hover 浮出小幅图片预览并跟随鼠标；④页脚巨型 CTA 'LET'S MAKE NOISE' 加联系网格。动效全部用 GSAP：先有百分比数字预加载器，结束后整块上移揭页；Hero 标题用 SplitText 按字符拆分、每字在遮罩内带轻微旋转交错升起；定义一条 CustomEase 招牌缓动设为全站默认；标题支持鼠标字符波动（越近抬越高、离开弹性回落）；ticker 无限横滚；宣言用 SplitText 按行拆分、ScrollTrigger 触发逐行升起；作品行随滚动 stagger 上移淡入；一条巨型大词随滚动 scrub 视差横移；页脚 CTA 按行遮罩升起、hover 有青柠下划线扫过。只动 transform/opacity，ScrollTrigger 写完整 start/end，响应式 360–1440，语义化可访问。用 matchMedia 处理 reduced-motion：直接渲染终态、关闭循环与滚动驱动。主角为上海动态字体设计师陈未央。",
+      "paths": {
+        "live": "../gsap-demos/kinetic-hero/index.html",
+        "sample": "../gsap-demos/kinetic-hero/sample.png"
+      }
+    },
+    {
+      "id": "pinned-story",
+      "name_cn": "钉住叙事 · 河流以北",
+      "name_en": "Pinned Scroll-Story",
+      "style": "极简瑞士编辑风：米白纸张底、黑墨、单点正红，强 12 栏网格、大留白与编号章节，衬线大标题配无衬线网格标签。",
+      "plugins": [
+        "ScrollTrigger",
+        "ScrollTrigger pin",
+        "ScrollTrigger scrub",
+        "ScrollTrigger onUpdate/onToggle 进度回调",
+        "fake horizontal scroll",
+        "Timeline",
+        "gsap.matchMedia (响应式 + reduced-motion)",
+        "gsap.utils.toArray"
+      ],
+      "focus": "用四个被钉住的章节，把 ScrollTrigger 的 pin + scrub + 滚动进度三件套讲清楚：滚动驱动交叉淡入、横向接触印样、逐字浮现自述、固定底图配滚动年表，外加全局进度条与章节标号。",
+      "prompt": "做一篇极简瑞士编辑风格的长卷纪实摄影专题，主题《河流以北》——一位虚构纪实摄影师久野政人沿北海道一条向北的河流十年三十一次往返的影像故事。配色：米白纸张 #f4f2ec 背景、近黑墨 #14110d 文字、单点正红 #d8362a 强调；衬线大标题（思源宋体类）配无衬线网格标签（Archivo 类），统一 12 栏网格、细发丝分隔线、大留白、编号章节。页面顶部一条固定的红色滚动进度条随全站滚动从左铺满；左下角一个超大编号数字 + 竖排标签随当前章节切换（序章/01渡口/02印样/03自述/04年表），右下角显示百分比。结构：满屏报头（衬线巨标题逐行从下滑入，副标题、网格元数据依次淡入）；第一章把整章钉住，随滚动让四张河岸黑白照交叉淡入缩放，旁边文案逐行揭示、底部进度点跟随；第二章钉住后做假横向滚动——一排接触印样卡片随纵向滚动横向走过视口（横向 tween 必须 ease:none、用 invalidateOnRefresh 重算宽度）；第三章深色反转背景，把一句自述逐字从 16% 透明度 scrub 到全亮、最后两字转红；第四章把一张人物底图钉住并轻微视差，右侧年表条目逐条从右侧位移淡入。所有滚动驱动用完整 start/end 与 pin、scrub:1，动画只走 transform/opacity。用 gsap.matchMedia 处理响应式与 prefers-reduced-motion：减少动效时直接渲染终态、关闭 pin/scrub 与逐字动画。360–1440 响应式、语义化、图片有 alt、可见 focus、文字高对比。不要任何站点导航或返回按钮。",
+      "paths": {
+        "live": "../gsap-demos/pinned-story/index.html",
+        "sample": "../gsap-demos/pinned-story/sample.png"
+      }
+    },
+    {
+      "id": "parallax-landscape",
+      "name_cn": "视差风景",
+      "name_en": "Parallax Landscape",
+      "style": "电影感深色全幅摄影随笔，墨黑渐变压暗叠层、金棕点缀、优雅衬线，营造一层层退去的纵深感。",
+      "plugins": [
+        "ScrollTrigger (scrub parallax)",
+        "ScrollTrigger pin",
+        "多层视差 yPercent/scale 缓慢推拉",
+        "timeline 编排",
+        "gsap.matchMedia 响应式 + reduced-motion"
+      ],
+      "focus": "演示 ScrollTrigger 多层滚动视差——前景/背景以不同速度位移、图片随滚动缓慢放大、文字从图上升起，构建电影感纵深。",
+      "prompt": "做一份电影感的旅行/摄影随笔长页，主题「纵深」——摄影师林霁的寒川远行手记。整体深墨黑底（约 #0a0c10），文字用雾灰色，点缀低饱和的金棕（约 #c9a35c），标题用优雅衬线（中文宋体 + 英文 Cormorant Garamond 斜体），正文细字重、行距宽松，气质安静克制，避免通用 AI 网站感。开篇满屏 100vh 英雄区：两到三层全幅风景图叠放（远山云海层 + 雾中山道层），上面压一层径向 + 线性的深色渐变压暗叠层，左下角放超大中文标题「纵深」、斜体英文副标题、和一行带圆点分隔的元信息（年份、纬度、胶片、路程数），底部居中一个细金线的向下滚动提示。往下是序言区，几行大字逐行从各自的裁切框里升起。主体是三个「画版」章节，每个近乎整屏：一张全幅风景照（独行者 / 消失在雾里的山道 / 旷野孤树），配超大描边数字编号、章节标题、一段随笔文字和坐标行。动效全部由 ScrollTrigger 驱动且要密集高级：英雄区进场时标题逐字上浮、副标题与元信息渐次淡入；滚动时英雄的远景层和中景层以不同速度做 yPercent 视差并轻微放大，内容层上移淡出，形成纵深。每个画版的图片在整段滚动生命周期里做缓慢的 scale 放大 + 垂直视差位移，描边数字比图片移动得更快以拉开层次，章节文字在画版居中时从图上 60px 处升起。中段插入一个被 pin 固定的横向暮色照片条：随竖向滚动整条向左漂移（scrub），每张卡片内的图再做轻微反向视差。然后一段夜行引言：背景夜景图视差推拉，引言文字逐字上浮。结尾城市暮色区：天际线背景上浮，标题与正文从地平线升起。所有动画优先 transform/opacity，ScrollTrigger 用完整 start/end，横向 pin 用 invalidateOnRefresh。用 gsap.matchMedia 处理 prefers-reduced-motion：reduced 时直接渲染终态、不做任何滚动驱动或循环。响应式 360–1440，语义化、对比度达标、图片有 alt、可见 focus。",
+      "paths": {
+        "live": "../gsap-demos/parallax-landscape/index.html",
+        "sample": "../gsap-demos/parallax-landscape/sample.png"
+      }
+    },
+    {
+      "id": "draggable-gallery",
+      "name_cn": "可拖画廊",
+      "name_en": "Draggable Gallery",
+      "style": "white-cube 美术馆典藏集：宽边黑画框、暖白展墙、衬里说明牌、克制的朱红与黄铜点缀、Cormorant + 思源宋体衬线排印",
+      "plugins": [
+        "Draggable",
+        "InertiaPlugin",
+        "Draggable snap (throw-to-snap)",
+        "gsap.matchMedia",
+        "gsap.utils (clamp/interpolate/mapRange/toArray)",
+        "gsap.timeline cross-fade"
+      ],
+      "focus": "一条横向作品长廊可拖动、松手用 InertiaPlugin 惯性抛掷并 snap 停靠到最近的一件；可拖进度滑块与作品双向联动，选中作品在下方说明牌放大并交叉淡入。",
+      "prompt": "做一个 white-cube 美术馆典藏集的整页 GSAP 演示，主题是「八件沉默的影像与版画」。视觉：暖白展墙(#f4f1ea)、近黑衬线墨色、朱红(#7a2418)与黄铜(#a8946b)作克制点缀，标题用 Cormorant Garamond 衬线 + 中文思源宋体，整体安静、博物馆感、宽留白。顶部是细横排展览信息栏(馆名「留白 LIUBAI」、展厅、年份、策展人)，下面一行超大衬线标题「白盒子里的八件沉默」逐行从下方滑入，副标一段克制导言交错淡入，一条向下进入展厅的细线从左画出。主体是一条横向长廊：八件作品各自装在宽边黑色美术馆画框里(框内有内嵌阴影、米白卡纸 mat、灰度微调的照片)，下方有衬线说明小牌(罗马数字编号、作品名、媒材年份)。整条 track 用 GSAP Draggable(type:'x', inertia:true) 可左右拖动，松手由 InertiaPlugin 惯性滑行并 snap 到离视口中心最近的一件；拖动/抛掷过程中每件作品按到中心的距离实时做 scale、opacity 与轻微 rotationY 的景深处理(离中心越远越小越淡)，正中那件高亮放大。长廊下方有一条带刻度的进度滑块：圆形 knob 也是一个 Draggable(沿 rail 的 x)，与长廊双向联动——拖 knob 长廊跟随并停靠，点 rail 任意处或键盘方向键也能跳转，左侧有 01/08 的衬线计数器。选中任何一件(点击作品或拖动停靠)，页面下方的大说明牌区会交叉淡入更新：左侧放大画框、右侧 cartel 文本(作者、媒材、尺寸、版数 + 一段诗意短评，短评首字下沉为朱红大写)，鼠标移动时画框做微妙的 3D 视差。结尾 colophon 是一句斜体宣言加多列展览信息。用 gsap.matchMedia 区分动效：prefers-reduced-motion:reduce 时直接渲染终态、关闭惯性/视差/无限动画，拖动结束用普通 tween 停靠。响应式 360–1440，语义化，img 有 alt，可见 focus，作品可键盘聚焦回车查看。动画一律走 transform/opacity。",
+      "paths": {
+        "live": "../gsap-demos/draggable-gallery/index.html",
+        "sample": "../gsap-demos/draggable-gallery/sample.png"
+      }
+    },
+    {
+      "id": "flip-grid",
+      "name_cn": "布局过渡 · 方格製作所",
+      "name_en": "Flip Grid — Studio Portfolio",
+      "style": "干净卡片网格 + 大胆色块 + Archivo Black 无衬线，米黄纸张底纹与硬阴影边框的现代版画工作室感",
+      "plugins": [
+        "Flip",
+        "Flip.getState",
+        "Flip.from",
+        "Flip absolute/scale layout transition",
+        "Flip shared-element expand",
+        "gsap.matchMedia",
+        "stagger / reveal",
+        "infinite marquee"
+      ],
+      "focus": "演示 GSAP Flip 插件:点分类标签时作品网格用 Flip 平滑筛选重排,点卡片用共享元素 Flip 展开成全屏详情再收回,外加舒展/紧凑两种密度的 Flip 重流。",
+      "prompt": "做一个独立设计工作室「方格製作所 / STUDIO QUADRA」的作品集单页。视觉是现代版画/瑞士网格风:米黄纸张底色加细密圆点底纹,墨黑 2px 描边、硬质偏移阴影(card 用 6px 6px 0 实心黑阴影),配色为墨黑+米黄+荧光黄+番茄红+钴蓝+葡萄紫+陶土橘的高反差色块;标题用 Archivo Black 超粗无衬线大写,正文用思源黑体,标注用 Space Grotesk 等宽数字。顶部 sticky 导航条;Hero 是占满半屏的巨型大写标题(三行,逐行从遮罩里向上滑入),配一个脉动的红点 kick、工作室简介与三个数字统计,下面一条墨黑底的无限横向跑马灯(品牌识别/动态系统/字体定制等关键词)。主体是一个 12 列响应式作品网格,卡片有 4/6/8 列三种宽度,每张含封面图(/assets 里的 editorial/illustration/landscape 图)、彩色类别标签、年份、中英标题与一句简介。顶部第二条 sticky 工具栏放分类标签(全部/品牌识别/动态系统/空间展览/字体排版)与舒展/紧凑密度切换。核心动效全部用 GSAP Flip:点标签时先 Flip.getState 记录所有卡片几何,再对不匹配卡片设 display:none,然后 Flip.from 以 absolute+scale 平滑重排,进场卡片淡入放大、离场卡片淡出缩小并带轻微 stagger;密度切换时用 Flip 让卡片在不同列宽间重流;点任意卡片用共享元素 Flip 把它从网格原位平滑展开成居中的固定详情面板(带毛玻璃遮罩),落位后详情正文、参数表、色卡逐项 stagger 淡入,点关闭/遮罩/Esc 再用 Flip 收回原位。卡片悬停图片轻微放大、阴影加深。全程动画走 transform/opacity。用 gsap.matchMedia 处理 prefers-reduced-motion:reduced 时渲染终态、Flip 时长归零、关闭跑马灯与脉动循环。响应式 360–1440,键盘可展开卡片,焦点可见,图片有 alt。",
+      "paths": {
+        "live": "../gsap-demos/flip-grid/index.html",
+        "sample": "../gsap-demos/flip-grid/sample.png"
+      }
+    },
+    {
+      "id": "svg-journey",
+      "name_cn": "线稿旅程",
+      "name_en": "SVG Line Journey",
+      "style": "蓝图/技术线稿：深藏青底、细青色描边、等宽标签、方格纸网格，像一张会动的工程图纸。",
+      "plugins": [
+        "DrawSVGPlugin",
+        "MotionPathPlugin",
+        "ScrollTrigger (scrub)",
+        "ScrollTrigger.scrub 视差",
+        "gsap.matchMedia()",
+        "Timeline"
+      ],
+      "focus": "演示 DrawSVG 随滚动绘制一条贯穿全页的连接路径,同时 MotionPath 让墨点沿同一条 path 前进,沿途工序节点依次点亮——三者由 ScrollTrigger 联动。",
+      "prompt": "做一个深藏青色(near #061322)、技术蓝图风格的『工作原理/流程』整页,主题是一支墨水钢笔从草图到成品的六道工序(草图→选料→车削→淬火→装配→试写)。视觉:细青色(#46e0d8)描边、等宽字体标签、方格纸网格底纹、每个工序卡片带角标与虚线测量框,图像加扫描线滤镜显得像工程图。固定底栏是一条进度读数 HUD(百分比+当前工序名+进度条)。核心动效:用一条手写的 SVG <path>(贝塞尔左右蛇形)贯穿整页作为『脊柱』,后面叠一条虚线幽灵轨;随着向下滚动,用描边绘制(stroke-dashoffset)效果把这条主路径从 0% 画到 100%(scrub 绑定滚动);同时一个发光墨点(带呼吸光环)沿同一条 path 用路径运动(motion path)前进,与绘制进度同步。每个工序区块进入视口时:卡片从左右滑入淡入、节点编号徽章亮成琥珀色(#f2b35e)、卡片内的小测量线稿被描边画出,并更新底部 HUD 的工序名;图片做轻微视差。中间一条等宽数据带随滚动横向移动。结尾一个圆形印章里把对勾描边画完,标题淡入,给一个『重走线路』按钮。Hero 区背景用描边动画画出一支笔的几何线稿。响应式 360–1440,语义化,img 有 alt,可见 focus 环。用 prefers-reduced-motion 处理:reduced 时直接渲染终态(主路径全部画好、节点全亮、隐藏墨点),关闭所有滚动驱动与无限循环。性能上动画走 transform/opacity 与 stroke-dashoffset,ScrollTrigger 用完整 start/end。原创、避免通用 AI 网站感。",
+      "paths": {
+        "live": "../gsap-demos/svg-journey/index.html",
+        "sample": "../gsap-demos/svg-journey/sample.png"
+      }
+    },
+    {
+      "id": "morph-brand",
+      "name_cn": "形变品牌",
+      "name_en": "Morphing Brand",
+      "style": "明亮、几何、孟菲斯味的俏皮创意机构 hero——大色块、粗描边、硬投影、可变形的标志系统。",
+      "plugins": [
+        "MorphSVGPlugin",
+        "CustomBounce",
+        "CustomWiggle",
+        "CustomEase",
+        "ScrollTrigger",
+        "matchMedia"
+      ],
+      "focus": "演示 MorphSVG 在多组等感图形/字标/图标间循环与可交互变形,配合 CustomBounce 入场落地、CustomWiggle 强调摆动与缓慢流动的背景 blob morph。",
+      "prompt": "做一个名为「BLOOP.」的形变品牌创意工作室单页 hero,整体走明亮的孟菲斯/几何风:奶油纸色背景,主色为粉、橘、柠檬黄、薄荷、天蓝、葡萄紫;标题用圆润的展示字体(类 Fredoka),正文用几何无衬线(类 Space Grotesk);所有卡片与按钮统一粗黑描边 + 硬投影(box-shadow 偏移色块),胶囊圆角。页面顶部一条深色滚动跑马灯无限横向滚动(中英混排品牌口号)。一个固定在视口背后的大色块有机 blob 缓慢地在几个形态间来回 morph,营造流动底纹。Hero 左侧大标题逐词以弹跳落地的方式入场(自定义 bounce 缓动,带轻微竖向挤压),右侧一个紫色大图形作为舞台,持续在圆/心/星/水滴/对话气泡之间循环变形(旋转式 morph),旁边一枚柠檬黄圆形徽章和薄荷色标签先弹入再轻轻摆动(wiggle)。导航里的品牌小图标也在两个形态间缓慢呼吸式 morph。接着是「一个标记六种形态」展示区:一个橘色大图形每约两秒自动变形成下一个形状(圆/心/星/水滴/气泡/闪电),下方一排圆点可点击手动切换,且只在该区进入视口时播放。再下是 2~3 列作品网格(用本地插画图片),滚动时各卡片带随机微旋转地弹入。数据区四个统计数字滚动进入时从 0 递增。流程区三个步骤,图标线条用描边逐笔绘出。底部深色 CTA 大色块,两枚半透明 blob 在角落持续缓慢旋转,主按钮 hover 时整体轻微摆动,所有按钮按下时有回弹缩放反馈。务必密集而高级地使用形变(morph)动效作为视觉主线。响应式 360–1440,可访问(对比、可见 focus、alt),并对 prefers-reduced-motion 渲染终态、关闭所有循环与滚动驱动动画。",
+      "paths": {
+        "live": "../gsap-demos/morph-brand/index.html",
+        "sample": "../gsap-demos/morph-brand/sample.png"
+      }
+    },
+    {
+      "id": "sticky-product",
+      "name_cn": "产品钉住展示",
+      "name_en": "Sticky Product",
+      "style": "Apple 式高级制表页：克制、大量负空间、柔和金色渐变、衬线/无衬线精确混排的克制奢华质感。",
+      "plugins": [
+        "ScrollTrigger",
+        "pin",
+        "scrub",
+        "ScrollTrigger.create",
+        "getVelocity",
+        "matchMedia",
+        "timeline scroll-scrub"
+      ],
+      "focus": "演示用 ScrollTrigger 把产品钉住，随滚动让规格标注线/标注点依次动入并连到产品，切换多帧图模拟旋转，规格卡做深度视差。",
+      "prompt": "做一个 Apple 式的高端机械腕表产品页，品牌 AETHER、型号 Méridien 零一，限量 250 枚。整体克制奢华：乳白底色（#f4f1ea）、香槟金强调色（#a98a4f）、衬线大标题（Cormorant Garamond 斜体）与无衬线小字（Inter）混排，大量负空间。顶栏品牌名用 mix-blend-difference 常驻，右侧一条极简滚动进度刻度。首屏 hero：大号衬线标题 Méridien / 零一逐行从下方滑入揭幕，副标题与三个数据（72h 动力储存、日差、表径）依次淡入上移。核心是一个被 ScrollTrigger 钉住（pin）的全屏展示舞台，时长约 320% 视口，scrub 跟随滚动：腕表主体从下方升起放大入场；随滚动进度，四条规格标注（表壳/珐琅表盘/自产机芯/蓝宝石表镜）的标注点先亮、引线 scaleX 从 0 画出连到产品、文字横移淡入依次出现；同时在关键步切换 2–3 张产品图（正面/侧面/机芯特写）的 opacity 并轻微缩放，模拟腕表转动换面；背景有一个巨大的半透明衬线水印词随滚动横向漂移，底部一条进度细线随 pin 进程铺满，左下角步骤序号与说明文字同步切换。接着是规格卡区：5 张不规则网格卡片（振频/宝石数/防水/动力储存/零件数）进入时上移淡入，并随页面滚动做不同速度的 yPercent 深度视差。然后是一条材质工艺无限横向 marquee（大明火珐琅/904L 精钢/蓝宝石…），用滚动速度 getVelocity 动态调整滚动方向与速度。再下是制表师分栏：人物图做 yPercent 视差缩放，右侧标题与参数列表逐项揭入。结尾预定区：衬线大标题随滚动 scrub 缩放淡入，价格与一颗深色胶囊 CTA。全部动效走 transform/opacity，ScrollTrigger 用完整 start/end；用 gsap.matchMedia 处理 prefers-reduced-motion，reduced 时直接渲染终态、关闭 pin/scrub 与无限循环。响应式 360–1440，语义化标签，图片有中文 alt，可见 focus 环。",
+      "paths": {
+        "live": "../gsap-demos/sticky-product/index.html",
+        "sample": "../gsap-demos/sticky-product/sample.png"
+      }
+    },
+    {
+      "id": "marquee-poster",
+      "name_cn": "跑马灯海报",
+      "name_en": "Marquee Poster",
+      "style": "野兽派 riso 撞色演出海报：超大无衬线字、荧光粉/电光蓝/亮黄叠印、纸张颗粒，吵闹高对比。",
+      "plugins": [
+        "ScrollTrigger",
+        "Observer",
+        "ScrollTrigger.getVelocity",
+        "ScrollTrigger.batch",
+        "Observer velocity skew",
+        "gsap.matchMedia",
+        "gsap.ticker",
+        "gsap.utils.wrap / quickSetter",
+        "scrub parallax"
+      ],
+      "focus": "演示多条无缝无限跑马灯（不同方向/速度）+ 滚动速度驱动的 velocity-skew：滚得越快，字带越快、倾斜越狠。",
+      "prompt": "做一个独立音乐厂牌「裂帛之声 RIPCORD」的整页演出/海报站，野兽派 riso 海报风：暖纸底 (#f2ead4)、近黑墨色，三种荧光叠印色——荧光粉、电光蓝、亮黄；全站铺一层细密的 riso 网点/纸张颗粒纹理 (multiply 混合)。字体用超大号无衬线展示字 (Anton / Archivo Black) 配中文黑体，标题大到顶天立地，高对比、吵闹。顶部细导航条 + 三行叠在一起的巨型跑马灯标题（一行实心、一行荧光粉、一行只描边 outline），三条以不同方向和速度无缝无限滚动。区块顺序：英雄区(三行跑马灯标题+厂牌简介+巡演日期)、深色速度跑马灯条、演出日程列表(日期/乐队名/场地/购票按钮，含售罄态)、第二条荧光粉跑马灯条、海报档案横向画廊(riso 海报卡片，硬黑描边+实心投影)、乐迷/媒体回声引语网格、入会邮箱表单(描边巨标题)、深色页脚。动效全部 GSAP：① 多条无缝无限跑马灯，用 gsap.utils.wrap + quickSetter 在 ticker 里手动推进、克隆内容铺满两屏避免接缝，不同 data-speed/data-dir；② 核心——用 Observer 与 ScrollTrigger.getVelocity() 读滚动速度，映射成跑马灯额外速度（滚得快字带飞）和对所有字带的 skewX 倾斜，停止滚动时缓动回 0；③ 英雄三行做 scrub 视差错位；④ 演出名随滚动速度做 velocity-skew 抖动；⑤ 海报卡片用 ScrollTrigger.batch 带随机旋转 back.out 弹入，整条画廊随竖向滚动横向漂移(scrub)；⑥ 引语和大标题 batch/clip 错峰揭示。响应式 360–1440，语义化、可访问(对比、可见 focus、img alt)，用 gsap.matchMedia 处理 prefers-reduced-motion：reduced 时渲染终态、关闭无限循环与 velocity-skew。",
+      "paths": {
+        "live": "../gsap-demos/marquee-poster/index.html",
+        "sample": "../gsap-demos/marquee-poster/sample.png"
+      }
+    },
+    {
+      "id": "scramble-terminal",
+      "name_cn": "乱码终端",
+      "name_en": "Scramble Terminal",
+      "style": "纯黑底、等宽字体、绿/琥珀荧光配 CRT 扫描线的赛博终端风个人站；伪命令行逐行解码，文本乱码闪现，故障 glitch 跳变。",
+      "plugins": [
+        "ScrambleTextPlugin (标题/输出/项目名解码)",
+        "TextPlugin (命令逐字打字)",
+        "ScrollTrigger (触发 / scrub 视差 / toggleActions)",
+        "Timeline (boot 序列编排)",
+        "matchMedia (响应式 + reduced-motion)",
+        "utils (random / toArray)"
+      ],
+      "focus": "演示 GSAP 用 ScrambleText 把标题与终端输出从乱码解码成可读文本、用 TextPlugin 逐字打出命令，配合 ScrollTrigger 让伪终端在进入视口时逐行打印并 scramble，外加周期性 glitch 闪跳。",
+      "prompt": "做一个黑客/逆向工程师的单页个人站，赛博终端美学。视觉：纯黑底 #04060a，等宽字体（JetBrains Mono）为主、Space Grotesk 做大标题，唯一两种荧光强调色——荧光绿 #39ff8b 与琥珀 #ffb23e，少量青/品红用于故障色差；全屏覆盖一层 CRT 扫描线 + 暗角，原创、避免通用 AI 网站感。顶部是 sticky 状态栏（user/host/shell + 实时时钟）。分六区：①Hero——一行命令提示符逐字打出 './decode --identity'，巨型标题『林子默 / K1RA』从乱码解码而成，下方简介与四个统计 chip；②系统自检——一个带红黄绿圆点标题栏的伪终端窗口，逐行打印 boot 输出，每行先是 16 进制乱码再 scramble 成 [ok]/[warn] 的身份信息；③关于——左侧三段中文自述（逐段揭示），右侧一张荧光绿染色的黑白肖像身份卡，卡上有循环扫描线和会 scramble 的 status 字段；④精选项目——四行命令风列表（序号/项目名/描述/语言年份/star 数），每行进入视口时项目名 scramble 解码，hover 时再快闪重排并有绿色下划线扫过；⑤近况——tail -f 风格的四张日志卡；⑥页脚巨型 CTA『解码真相 / DECODE THE NOISE』，关键词 scramble 入场，下面四个带荧光边框 hover 发光的联系链接。动效全部用 GSAP：ScrambleTextPlugin 负责所有解码（标题、终端输出、项目名、CTA），TextPlugin 负责命令打字，ScrollTrigger 触发逐区动画并给 Hero chips 做 scrub 视差，Timeline 编排 boot 序列，再加一个每隔几秒的随机 glitch：品红/青色副本左右抖动加一帧屏闪。只动 transform/opacity，ScrollTrigger 全部写完整 start/end，响应式 360–1440，语义化、对比度达标、img 有 alt、可见 focus。用 gsap.matchMedia 处理 prefers-reduced-motion：reduced 时直接渲染所有终态、命令与乱码显示最终文本、关闭扫描线循环与滚动驱动。主角为深圳逆向工程师林子默（K1RA）。",
+      "paths": {
+        "live": "../gsap-demos/scramble-terminal/index.html",
+        "sample": "../gsap-demos/scramble-terminal/sample.png"
+      }
+    },
+    {
+      "id": "physics-playground",
+      "name_cn": "物理游乐场",
+      "name_en": "Physics Playground",
+      "style": "玩具/黏土质感的明亮马卡龙互动自我介绍：圆润厚描边、硬投影、橡皮糖配色（樱粉/薄荷/柠檬/天蓝/葡萄），ZCOOL KuaiLe + Baloo 2 圆体排印，整体软弹、可戳可摔",
+      "plugins": [
+        "Physics2DPlugin (velocity+angle+gravity 彩屑/表情爆发)",
+        "Draggable (type:x,y, bounds, edgeResistance)",
+        "InertiaPlugin (松手惯性抛掷落定 onThrowComplete)",
+        "gsap.matchMedia (prefers-reduced-motion)",
+        "gsap.context (cleanup)",
+        "gsap.utils (random/clamp/toArray)",
+        "elastic/bounce/back ease",
+        "keyframes 挤压回弹"
+      ],
+      "focus": "演示 Physics2DPlugin 重力彩屑/表情爆发 + Draggable & InertiaPlugin 的可拖、被甩出后惯性落定与落地挤压，外加一个「摇一摇」按钮触发全屏粒子雨。",
+      "prompt": "做一个玩具/黏土质感、明亮马卡龙配色的互动自我介绍整页，主角是交互设计师「林咚咚」。视觉：奶油暖底加柔和径向光晕，所有卡片/按钮都圆润厚描边并带硬质投影（offset 实心阴影），配色用樱粉、薄荷、柠檬、天蓝、葡萄、珊瑚等橡皮糖色，标题用圆润手写体（如 ZCOOL KuaiLe）正文用圆体（如 Baloo 2），整体软弹、可戳、像一盒玩具。结构与动效：①英雄区，大标题「嗨，我是林咚咚」逐字以 bounce/elastic 从上方掉落弹定，右侧是一个会缓慢 morph 圆角并上下漂浮的有机 blob 头像（点击会挤压回弹并喷出表情彩屑），头像四周有几个黏土小图标沿圆周轨道公转；页面载入后中心喷一阵欢迎彩屑。②物理沙盒区，一个虚线圆角的 arena 里散布 5-6 个可拖的玩具方块/圆形（捏黏土、写动效、猫、饮料、抱石、头像），用 GSAP Draggable(type:'x,y', bounds, inertia:true) 可抓取，按下放大、拖动按方向倾斜，松手由 InertiaPlugin 惯性滑出并在 onThrowComplete 做挤压落地+小彩屑+计数器自增；支持键盘 Enter/空格弹跳。③数字区，几张数字卡进入视口时 bounce 弹入并 count-up 跳数、伴随小彩屑。④时间线区，弹珠路线把经历串成几站，进入视口 back.out 弹入。⑤摇一摇 finale：一个大圆体按钮，点击整屏从底部+两侧炮口用 Physics2DPlugin(velocity+angle+gravity) 喷出全屏重力彩屑雨，按钮自身抖动、emoji 放大。彩屑用 emoji 与实色方/圆混合，受重力下落后淡出移除。全程动画走 transform/opacity，用 gsap.matchMedia 处理 prefers-reduced-motion:reduce 时渲染终态、关闭无限循环与自动彩屑、拖拽去掉惯性。响应式 360–1440、语义化、img 有 alt、可见 focus，玩具可键盘聚焦操作。",
+      "paths": {
+        "live": "../gsap-demos/physics-playground/index.html",
+        "sample": "../gsap-demos/physics-playground/sample.png"
+      }
+    },
+    {
+      "id": "smooth-editorial",
+      "name_cn": "顺滑杂志",
+      "name_en": "Smooth Editorial",
+      "style": "奢华生活方式季刊：Fraunces 衬线大标题、暖奶油底配墨色与赭石红、整版大图与编辑式排版，顺滑滚动如翻阅纸刊。",
+      "plugins": [
+        "ScrollSmoother",
+        "ScrollTrigger",
+        "data-speed 视差",
+        "pinned 区段",
+        "scrub 时间线",
+        "matchMedia 响应式/降级"
+      ],
+      "focus": "演示 ScrollSmoother 包裹整页的顺滑滚动 + data-speed 多层视差，配合 ScrollTrigger 的揭示、钉住引言与进度条。",
+      "prompt": "做一个奢华生活方式季刊《MERIDIAN 子午线》的整页 demo，风格是高级杂志：暖奶油背景(#f4ece0)、墨色正文、赭石红与铁锈红点缀，标题用 Fraunces 衬线、超大字号与斜体强调，正文用 Inter/苹方，留白克制、网格编辑感。顶部固定极小刊头条(用 mix-blend 反色)与一条滚动进度细红条。整页必须用 ScrollSmoother 的 #smooth-wrapper>#smooth-content 结构包裹，开启 effects 顺滑滚动。区段顺序：①满屏刊头 hero——整版人像背景图作慢速 data-speed 视差(<1)、巨型标题作快速视差(>1)、kicker 与封面信息淡入上移、底部细线滚动提示循环呼吸。②卷首语 standfirst——巨大衬线句子逐词从下方擦入(保留斜体强调)。③两块图文专题 spread(左右交替)——大图带 data-speed 视差且随滚动轻微 scale 回正，正文首字下沉(dropcap)、元信息行随滚动揭示。④钉住的整屏引言区(pin+scrub)——暮色城市背景图视差，斜体大引言随滚动逐词由模糊浮现到清晰。⑤三栏目录卡片 triptych——配图视差、卡片错落揭示。⑥无限横向跑马灯(中英混排格言，离屏暂停)。⑦主编结语 desk(人像视差+签名)。⑧大字脚注 footer。所有揭示用 transform/opacity，ScrollTrigger 写完整 start/end。用 gsap.matchMedia() 处理 prefers-reduced-motion：reduced 时不启用 ScrollSmoother、关闭视差/循环/scrub，直接渲染终态。文案真实可信(旅居作家、京都陶艺、慢生活专题)，响应式 360–1440，语义化、可访问。图片全部用本地 webp。",
+      "paths": {
+        "live": "../gsap-demos/smooth-editorial/index.html",
+        "sample": "../gsap-demos/smooth-editorial/sample.png"
+      }
+    },
+    {
+      "id": "motionpath-orbit",
+      "name_cn": "轨道运行",
+      "name_en": "MotionPath Orbit",
+      "style": "深空渐变 + 霓虹辉光的太空天文台，圆形与椭圆轨道为母题的暗色科幻视觉",
+      "plugins": [
+        "MotionPathPlugin",
+        "MotionPath autoRotate",
+        "ScrollTrigger",
+        "ScrollTrigger pin",
+        "ScrollTrigger scrub",
+        "gsap.timeline repeat",
+        "gsap.matchMedia"
+      ],
+      "focus": "用 MotionPathPlugin 让多元素沿圆/椭圆/贝塞尔/图8 轨道永续公转并按切线 autoRotate，演示循环轨道与可滚动驱动的路径运动。",
+      "prompt": "做一个名为 ORBITA「轨道天文台」的暗色太空主题单页，把它当成一座把私人影像送上轨道的品牌站。视觉用深空渐变（近黑紫到深蓝紫），叠加紫/粉/青三色星云辉光与一层缓慢闪烁的星点；主字体几何无衬线，标题用青-紫-粉的渐变描边。圆形与椭圆轨道是贯穿全站的母题。首屏是一个微缩太阳系：中心一颗带辉光会脉动的太阳，四颗用真实插画/人像填充的行星各自沿不同半径的圆/椭圆轨道匀速公转（周期各异、有顺逆方向），其中最外侧行星还带一颗绕它本地公转的小卫星；另有一颗卫星航标沿一条青色虚线的图8路径运行，并随路径切线自动旋转朝向（autoRotate）。首屏文案左对齐：超大标题『让你的影像 沿着轨道 运行』，副文案与两枚胶囊按钮，进场用时间线依次淡入并让行星以回弹缩放登场。向下：一组遥测数据卡片，数字滚动到视口时计数累加。接着一个 pin 住的『货舱传送带』区：5 张记忆胶囊卡片随滚动被 MotionPath 牵引、沿同一条贝塞尔曲线依次滑入并淡入。然后是『轨道胶囊』产品区：中心一张双重曝光人像作为核心，三颗小天体沿两条交叉椭圆轨道公转且切线对齐，右侧三条特性列表逐条滑入。再下是『飞行日志』时间线：一颗信标彗星随滚动沿一条蜿蜒渐变曲线行进、曲线用 stroke-dashoffset 同步绘制，四个年份节点逐一点亮。结尾是居中的发射召唤区，两颗小行星绕双环公转。顶部有一条彗星式滚动进度条。全站动画走 transform/opacity，ScrollTrigger 都带完整 start/end；用 matchMedia 处理 prefers-reduced-motion：reduced 时把行星静态摆到轨道上、数字直接显示终值、关闭所有循环与滚动驱动。响应式 360–1440，语义化、可访问、图片带 alt。",
+      "paths": {
+        "live": "../gsap-demos/motionpath-orbit/index.html",
+        "sample": "../gsap-demos/motionpath-orbit/sample.png"
+      }
+    },
+    {
+      "id": "cursor-studio",
+      "name_cn": "光标工作室",
+      "name_en": "Cursor Studio",
+      "style": "暗底高能量创意 agency 落地页：近黑底(#0a0a0c)配酸性黄绿(#d9ff1e)、荧光玫红(#ff3d6e)与电光蓝(#4d6bff)强调色，巨字描边大标题，Space Grotesk + 思源黑体，自定义光标主导的现代潮流感。",
+      "plugins": [
+        "Observer (pointer/wheel/touch 归一化输入)",
+        "InertiaPlugin (拖尾图片速度抛掷滑停)",
+        "gsap.quickTo / quickSetter (高频光标跟随)",
+        "gsap.timeline (hero 入场编排)",
+        "gsap.utils (clamp/random/toArray)",
+        "gsap.matchMedia (响应式 + prefers-reduced-motion)",
+        "gsap.ticker (跑马灯逐帧)"
+      ],
+      "focus": "用 Observer 归一化指针输入驱动一套自定义光标体验：双层平滑跟随光标、磁吸按钮(靠近被吸附、内文字反向位移)、随指针撒落并被 InertiaPlugin 按速度抛出滑停的图片拖尾、项目列表 hover 时跟随光标的作品揭示预览。",
+      "prompt": "做一个暗底、高能量、巨字风格的数字创意工作室 agency 落地页，工作室叫「游标 CURSOR°」(上海，2017 年成立，做品牌识别·动效设计·交互体验)。视觉：近黑背景(#0a0a0c)，鲜亮浅墨色正文，强调色用酸性黄绿(#d9ff1e)为主、荧光玫红(#ff3d6e)与电光蓝(#4d6bff)为辅；标题用 Space Grotesk 配中文思源黑体，超大全大写、字间距收紧、部分字做描边镂空(text-stroke)。核心是一整套由 GSAP Observer 归一化指针输入驱动的自定义光标系统：①隐藏系统光标，用一个 difference 混合模式的圆环 + 一个实心小点双层跟随，圆环用慢 quickTo、小点用快 quickTo，靠近可点击元素时圆环放大并显示 VIEW 标签；②磁吸按钮——胶囊形 CTA 在指针进入一定半径内被吸附朝指针位移、按钮内文字反向轻移，离开弹回；③图片拖尾——指针快速移动时沿轨迹定时撒落作品缩略图(editorial-*/portrait-*/illustration-* 等)，每张丢下后用 InertiaPlugin 按指针当前速度抛掷出去、自然减速滑停并淡出；④项目揭示——精选作品做成大字列表，hover 某行时名字变强调色并右移、底部强调色下划线展开，同时一张跟随光标的作品预览图淡入(根据所 hover 项切换图源、带随指针倾斜)。其余区块：顶部 difference 混合的固定导航；hero 巨标题「我们让品牌动起来」逐行从遮罩里上滑入场、副标与统计数据交错淡入、背景有两团缓慢漂浮且随指针视差的彩色光斑；一条无限横向跑马灯(品牌识别/BRANDING/动效设计…)用 gsap.ticker 逐帧滚动、滚动方向由 Observer 的 onChangeY 控制；能力三宫格 + 进视口时缓动计数的数字统计(148/11/29/8)；灰度肖像团队网格(hover 转彩色+轻视差)；末尾巨型「来聊聊你的下一步」CTA。所有进场动效用进视口判定触发(自写 scroll 监听，不依赖 ScrollTrigger)。用 gsap.matchMedia 分流：触屏/粗指针关闭自定义光标恢复系统光标；prefers-reduced-motion:reduce 时直接渲染所有终态、关闭惯性/拖尾/无限循环/计数动画。响应式 360–1440，语义化，img 有 alt，可见 focus，项目可键盘聚焦。动画一律走 transform/opacity。",
+      "paths": {
+        "live": "../gsap-demos/cursor-studio/index.html",
+        "sample": "../gsap-demos/cursor-studio/sample.png"
+      }
+    }
+  ],
+  "count": 14
+}

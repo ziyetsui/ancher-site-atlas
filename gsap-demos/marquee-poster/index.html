@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>裂帛之声 RIPCORD — 城市噪音演出厂牌</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Noto+Sans+SC:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0e0d0b;
+    --paper:#f2ead4;
+    --riso-pink:#ff2e74;
+    --riso-blue:#1a37ff;
+    --riso-yellow:#ffd400;
+    --riso-orange:#ff6a1a;
+    --riso-green:#00c46a;
+    --hair:rgba(14,13,11,.16);
+    --pad: clamp(16px, 4vw, 64px);
+    --giant: clamp(64px, 17vw, 280px);
+    --huge: clamp(40px, 9vw, 150px);
+    --mid: clamp(26px, 4.5vw, 64px);
+    --strip: clamp(34px, 6.5vw, 96px);
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Noto Sans SC",system-ui,sans-serif;
+    overflow-x:hidden;
+    line-height:1.32;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* paper grain + riso dot texture */
+  body::before{
+    content:"";
+    position:fixed; inset:0; z-index:9999; pointer-events:none;
+    background:
+      radial-gradient(rgba(0,0,0,.05) 1px, transparent 1.4px) 0 0/4px 4px,
+      radial-gradient(rgba(255,255,255,.04) 1px, transparent 1.4px) 2px 2px/4px 4px;
+    mix-blend-mode:multiply;
+    opacity:.6;
+  }
+  a{color:inherit}
+  img{display:block; max-width:100%}
+  h1,h2,h3,p{margin:0}
+  .anton{font-family:"Anton","Archivo Black",sans-serif; font-weight:400; letter-spacing:.01em}
+  .archivo{font-family:"Archivo Black","Anton",sans-serif}
+  :focus-visible{outline:4px solid var(--riso-blue); outline-offset:3px}
+
+  .skip{position:absolute; left:-9999px; top:0; background:var(--ink); color:var(--paper); padding:10px 16px; z-index:10000}
+  .skip:focus{left:8px; top:8px}
+
+  /* ---------- generic seamless marquee ---------- */
+  .marquee{
+    position:relative;
+    width:100%;
+    overflow:hidden;
+    display:flex;
+    white-space:nowrap;
+  }
+  .marquee__track{
+    display:flex;
+    flex:0 0 auto;
+    align-items:center;
+    will-change:transform;
+  }
+  .mq-item{
+    flex:0 0 auto;
+    display:inline-flex;
+    align-items:center;
+    padding:0 .35em;
+    font-family:"Anton",sans-serif;
+    text-transform:uppercase;
+  }
+  .star{
+    display:inline-block;
+    width:.55em; height:.55em;
+    margin:0 .45em;
+    background:currentColor;
+    clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+  }
+
+  /* ---------- header / hero ---------- */
+  .top-bar{
+    position:relative; z-index:5;
+    display:flex; justify-content:space-between; align-items:center;
+    gap:16px;
+    padding:14px var(--pad);
+    border-bottom:3px solid var(--ink);
+    background:var(--paper);
+  }
+  .brand{font-family:"Archivo Black",sans-serif; font-size:clamp(15px,2.4vw,22px); letter-spacing:.04em}
+  .brand b{color:var(--riso-pink)}
+  .top-nav{display:flex; gap:clamp(10px,2vw,26px); font-weight:700; font-size:clamp(11px,1.4vw,14px); text-transform:uppercase; letter-spacing:.08em}
+  .top-nav a{text-decoration:none; padding:4px 2px; border-bottom:2px solid transparent}
+  .top-nav a:hover{border-color:var(--riso-pink)}
+
+  /* hero marquee strips */
+  .hero{
+    position:relative;
+    padding:clamp(28px,6vw,80px) 0 clamp(20px,4vw,46px);
+    border-bottom:3px solid var(--ink);
+    overflow:hidden;
+  }
+  .hero-kicker{
+    padding:0 var(--pad);
+    display:flex; flex-wrap:wrap; gap:10px 22px; align-items:baseline;
+    font-weight:700; text-transform:uppercase; letter-spacing:.14em;
+    font-size:clamp(11px,1.5vw,15px);
+    margin-bottom:clamp(20px,4vw,44px);
+  }
+  .tag{
+    padding:4px 12px; border:2px solid var(--ink); border-radius:40px;
+    background:var(--riso-yellow);
+  }
+  .tag.blue{background:var(--riso-blue); color:var(--paper)}
+  .tag.pink{background:var(--riso-pink); color:var(--paper)}
+
+  .hero-strip{ position:relative; }
+  .hero-strip .marquee__track{
+    font-size:var(--giant);
+    line-height:.92;
+    font-family:"Anton",sans-serif;
+    text-transform:uppercase;
+  }
+  .hero-strip.s1{ color:var(--ink); }
+  .hero-strip.s2{ color:var(--riso-pink); margin-top:-.06em; }
+  .hero-strip.s3{ color:var(--riso-blue); margin-top:-.06em; }
+  /* outline row */
+  .outline .mq-item{
+    color:transparent;
+    -webkit-text-stroke:2px var(--ink);
+    text-stroke:2px var(--ink);
+  }
+
+  .hero-foot{
+    padding:clamp(22px,4vw,50px) var(--pad) 0;
+    display:grid;
+    grid-template-columns:1fr;
+    gap:18px;
+    align-items:end;
+  }
+  @media(min-width:760px){ .hero-foot{ grid-template-columns:1.4fr .9fr; } }
+  .hero-foot p{ max-width:46ch; font-size:clamp(15px,1.9vw,19px); font-weight:400 }
+  .hero-date{
+    font-family:"Archivo Black",sans-serif;
+    font-size:clamp(20px,3.4vw,40px);
+    line-height:1;
+    text-align:left;
+  }
+  @media(min-width:760px){ .hero-date{ text-align:right } }
+  .hero-date small{ display:block; font-family:"Noto Sans SC"; font-weight:700; font-size:13px; letter-spacing:.1em; margin-top:8px; color:var(--riso-blue) }
+
+  /* ---------- velocity ticker (between sections) ---------- */
+  .ticker{
+    background:var(--ink); color:var(--paper);
+    border-top:3px solid var(--ink); border-bottom:3px solid var(--ink);
+    padding:clamp(10px,1.6vw,18px) 0;
+    overflow:hidden;
+  }
+  .ticker .marquee__track{
+    font-family:"Anton",sans-serif;
+    font-size:var(--strip);
+    text-transform:uppercase;
+    line-height:1;
+  }
+  .ticker .mq-item{ color:var(--paper) }
+  .ticker .star{ background:var(--riso-yellow) }
+  .ticker.alt{ background:var(--riso-pink); }
+  .ticker.alt .mq-item{ color:var(--ink) }
+  .ticker.alt .star{ background:var(--ink) }
+
+  /* ---------- shows / lineup ---------- */
+  .section-head{
+    padding:clamp(40px,7vw,90px) var(--pad) clamp(18px,3vw,40px);
+    display:flex; align-items:baseline; justify-content:space-between; gap:20px; flex-wrap:wrap;
+  }
+  .section-head h2{
+    font-family:"Anton",sans-serif; text-transform:uppercase;
+    font-size:var(--huge); line-height:.9;
+  }
+  .section-head .idx{ font-family:"Archivo Black"; font-size:clamp(14px,2vw,20px); color:var(--riso-pink) }
+
+  .shows{ padding:0 var(--pad) clamp(30px,5vw,60px) }
+  .show-row{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:6px 24px;
+    align-items:center;
+    padding:clamp(16px,2.4vw,28px) 0;
+    border-top:2px solid var(--ink);
+    cursor:default;
+  }
+  .show-row:last-child{ border-bottom:2px solid var(--ink) }
+  @media(min-width:720px){
+    .show-row{ grid-template-columns:auto 1fr auto auto; }
+  }
+  .show-date{ font-family:"Archivo Black"; font-size:clamp(18px,2.4vw,26px); white-space:nowrap }
+  .show-name{ font-family:"Anton",sans-serif; font-size:clamp(26px,4.6vw,54px); text-transform:uppercase; line-height:.95; transform-origin:left center }
+  .show-venue{ font-weight:700; font-size:clamp(12px,1.5vw,15px); letter-spacing:.04em; color:var(--ink); opacity:.8 }
+  .show-tix{
+    justify-self:start;
+    font-family:"Archivo Black"; font-size:13px; letter-spacing:.06em; text-transform:uppercase;
+    padding:8px 16px; border:2px solid var(--ink); border-radius:40px; text-decoration:none;
+    background:var(--riso-yellow); white-space:nowrap;
+    transition:transform .12s ease, background .12s ease;
+  }
+  @media(min-width:720px){ .show-tix{ justify-self:end } }
+  .show-tix:hover{ background:var(--riso-pink); color:var(--paper); transform:translate(-2px,-2px) }
+  .show-row[data-sold] .show-tix{ background:transparent; opacity:.45; pointer-events:none; text-decoration:line-through }
+
+  /* ---------- poster gallery (pinned-ish horizontal feel via marquee of posters) ---------- */
+  .gallery{
+    border-top:3px solid var(--ink); border-bottom:3px solid var(--ink);
+    background:var(--riso-blue); color:var(--paper);
+    padding:clamp(30px,5vw,64px) 0;
+    overflow:hidden;
+  }
+  .gallery h2{
+    font-family:"Anton",sans-serif; text-transform:uppercase;
+    font-size:var(--mid); padding:0 var(--pad) clamp(20px,3vw,40px);
+    line-height:.95;
+  }
+  .poster-track{ display:flex; gap:clamp(16px,2vw,28px); padding:0 var(--pad); will-change:transform }
+  .poster-card{
+    flex:0 0 auto;
+    width:clamp(200px,42vw,330px);
+    background:var(--paper);
+    color:var(--ink);
+    border:3px solid var(--ink);
+    box-shadow:10px 10px 0 var(--ink);
+  }
+  .poster-card img{ width:100%; aspect-ratio:3/4; object-fit:cover; border-bottom:3px solid var(--ink); filter:contrast(1.05) saturate(1.05) }
+  .poster-meta{ padding:12px 14px 16px }
+  .poster-meta h3{ font-family:"Anton",sans-serif; font-size:clamp(20px,2.6vw,30px); text-transform:uppercase; line-height:.95 }
+  .poster-meta span{ display:block; font-weight:700; font-size:12px; letter-spacing:.06em; margin-top:6px; color:var(--riso-pink) }
+
+  /* ---------- voices / press ---------- */
+  .voices{ padding:clamp(40px,7vw,90px) var(--pad) }
+  .voices h2{ font-family:"Anton",sans-serif; text-transform:uppercase; font-size:var(--huge); line-height:.9; margin-bottom:clamp(24px,4vw,50px) }
+  .quotes{ display:grid; gap:clamp(16px,2.4vw,30px); grid-template-columns:1fr }
+  @media(min-width:680px){ .quotes{ grid-template-columns:1fr 1fr } }
+  .quote{
+    border:3px solid var(--ink);
+    padding:clamp(18px,2.6vw,32px);
+    background:var(--paper);
+    position:relative;
+  }
+  .quote:nth-child(2n){ background:var(--riso-yellow) }
+  .quote:nth-child(3n){ background:var(--riso-pink); color:var(--paper) }
+  .quote p{ font-size:clamp(16px,2vw,22px); font-weight:700; line-height:1.35 }
+  .quote cite{ display:block; margin-top:16px; font-style:normal; font-family:"Archivo Black"; font-size:13px; letter-spacing:.05em }
+
+  /* ---------- subscribe / footer ---------- */
+  .signup{
+    border-top:3px solid var(--ink);
+    background:var(--riso-pink); color:var(--ink);
+    padding:clamp(40px,7vw,96px) var(--pad);
+    text-align:center;
+    overflow:hidden;
+  }
+  .signup h2{
+    font-family:"Anton",sans-serif; text-transform:uppercase;
+    font-size:var(--giant); line-height:.86;
+    color:var(--paper);
+    -webkit-text-stroke:2px var(--ink);
+    text-stroke:2px var(--ink);
+  }
+  .signup form{
+    margin:clamp(26px,4vw,46px) auto 0;
+    max-width:560px;
+    display:flex; gap:10px; flex-wrap:wrap; justify-content:center;
+  }
+  .signup input{
+    flex:1 1 240px; min-width:0;
+    border:3px solid var(--ink); background:var(--paper); color:var(--ink);
+    padding:14px 18px; font-size:16px; font-weight:700; border-radius:0;
+    font-family:"Noto Sans SC";
+  }
+  .signup button{
+    flex:0 0 auto; cursor:pointer;
+    border:3px solid var(--ink); background:var(--ink); color:var(--paper);
+    padding:14px 28px; font-family:"Archivo Black"; font-size:15px; text-transform:uppercase; letter-spacing:.06em;
+    transition:transform .12s ease;
+  }
+  .signup button:hover{ transform:translate(-2px,-2px); background:var(--riso-blue) }
+  .signup small{ display:block; margin-top:14px; font-weight:700; opacity:.8 }
+
+  footer{
+    background:var(--ink); color:var(--paper);
+    padding:clamp(30px,5vw,60px) var(--pad);
+    display:grid; gap:24px; grid-template-columns:1fr;
+  }
+  @media(min-width:720px){ footer{ grid-template-columns:1.4fr 1fr 1fr } }
+  footer .brand{ color:var(--paper); font-size:clamp(20px,3vw,30px) }
+  footer .brand b{ color:var(--riso-yellow) }
+  footer h4{ font-family:"Archivo Black"; font-size:13px; letter-spacing:.1em; text-transform:uppercase; margin:0 0 12px; color:var(--riso-pink) }
+  footer ul{ list-style:none; margin:0; padding:0; display:grid; gap:8px; font-weight:700; font-size:14px }
+  footer a{ text-decoration:none }
+  footer a:hover{ color:var(--riso-yellow) }
+  .colophon{ grid-column:1/-1; border-top:1px solid rgba(242,234,212,.2); padding-top:18px; font-size:12px; opacity:.7; font-weight:700; letter-spacing:.04em }
+
+  /* reduced-motion safety: nothing here disables layout, JS handles motion */
+</style>
+</head>
+<body>
+<a class="skip" href="#shows">跳到演出日程</a>
+
+<!-- ===================== TOP BAR ===================== -->
+<header class="top-bar">
+  <div class="brand">裂帛之声 <b>RIPCORD</b></div>
+  <nav class="top-nav" aria-label="主导航">
+    <a href="#shows">日程</a>
+    <a href="#gallery">海报</a>
+    <a href="#voices">回声</a>
+    <a href="#signup">入会</a>
+  </nav>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero" aria-label="厂牌主标题">
+  <div class="hero-kicker">
+    <span class="tag">城市噪音厂牌 · 自 2014</span>
+    <span class="tag blue">Live / Riso / Vinyl</span>
+    <span class="tag pink">本季 14 场</span>
+    <span>上海 · 北京 · 成都 · 柏林</span>
+  </div>
+
+  <div class="hero-strip s1" aria-hidden="true">
+    <div class="marquee">
+      <div class="marquee__track" data-speed="34" data-dir="-1">
+        <span class="mq-item">把音量拧到最大</span><span class="star"></span>
+        <span class="mq-item">TURN IT UP</span><span class="star"></span>
+        <span class="mq-item">把音量拧到最大</span><span class="star"></span>
+        <span class="mq-item">TURN IT UP</span><span class="star"></span>
+      </div>
+    </div>
+  </div>
+
+  <h1 class="hero-strip s2">
+    <span class="visually-hidden" style="position:absolute;left:-9999px">裂帛之声 RIPCORD 城市噪音演出厂牌</span>
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track" data-speed="48" data-dir="1">
+        <span class="mq-item">RIPCORD</span><span class="star"></span>
+        <span class="mq-item">裂帛之声</span><span class="star"></span>
+        <span class="mq-item">RIPCORD</span><span class="star"></span>
+        <span class="mq-item">裂帛之声</span><span class="star"></span>
+      </div>
+    </div>
+  </h1>
+
+  <div class="hero-strip s3 outline" aria-hidden="true">
+    <div class="marquee">
+      <div class="marquee__track" data-speed="40" data-dir="-1">
+        <span class="mq-item">NOISE · DRONE · POST · DUB</span><span class="star"></span>
+        <span class="mq-item">现场即真理</span><span class="star"></span>
+        <span class="mq-item">NOISE · DRONE · POST · DUB</span><span class="star"></span>
+        <span class="mq-item">现场即真理</span><span class="star"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-foot">
+    <p>我们是一个独立演出与丝网印刷厂牌，把噪音、电子与后摇塞进废弃锅炉房和地下室。每张海报由 riso 双色机手印，每场演出都吵到墙皮发抖。<b>滚动页面，看标题随你的手速倾斜。</b></p>
+    <div class="hero-date">
+      2025 秋季巡演
+      <small>SEASON 07 — AUTUMN ROAR</small>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== VELOCITY TICKER ===================== -->
+<div class="ticker" aria-hidden="true">
+  <div class="marquee">
+    <div class="marquee__track" data-speed="60" data-dir="-1">
+      <span class="mq-item">门票发售中</span><span class="star"></span>
+      <span class="mq-item">TICKETS LIVE NOW</span><span class="star"></span>
+      <span class="mq-item">限量 riso 海报随票附赠</span><span class="star"></span>
+      <span class="mq-item">门票发售中</span><span class="star"></span>
+      <span class="mq-item">TICKETS LIVE NOW</span><span class="star"></span>
+      <span class="mq-item">限量 riso 海报随票附赠</span><span class="star"></span>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SHOWS ===================== -->
+<div class="section-head" id="shows">
+  <h2>演出日程</h2>
+  <span class="idx">01 — LINEUP</span>
+</div>
+<section class="shows" aria-label="演出日程">
+  <div class="show-row" data-module="show">
+    <span class="show-date">10/04 周六</span>
+    <span class="show-name">焦土合唱团 SCORCHED CHOIR</span>
+    <span class="show-venue">上海 · 锅炉房 No.7</span>
+    <a class="show-tix" href="#signup">购票</a>
+  </div>
+  <div class="show-row" data-module="show" data-sold>
+    <span class="show-date">10/11 周六</span>
+    <span class="show-name">低频教会 SUB BASS CHURCH</span>
+    <span class="show-venue">北京 · 地下二层</span>
+    <a class="show-tix" href="#signup">售罄</a>
+  </div>
+  <div class="show-row" data-module="show">
+    <span class="show-date">10/18 周六</span>
+    <span class="show-name">钢丝与回声 WIRE &amp; ECHO</span>
+    <span class="show-venue">成都 · 旧棉纺厂</span>
+    <a class="show-tix" href="#signup">购票</a>
+  </div>
+  <div class="show-row" data-module="show">
+    <span class="show-date">10/25 周六</span>
+    <span class="show-name">黑潮 BLACK TIDE 8000</span>
+    <span class="show-venue">柏林 · Kessel</span>
+    <a class="show-tix" href="#signup">购票</a>
+  </div>
+  <div class="show-row" data-module="show" data-sold>
+    <span class="show-date">11/01 周六</span>
+    <span class="show-name">无名鼓机 ANON DRUM MACHINE</span>
+    <span class="show-venue">上海 · 锅炉房 No.7</span>
+    <a class="show-tix" href="#signup">售罄</a>
+  </div>
+  <div class="show-row" data-module="show">
+    <span class="show-date">11/08 周六</span>
+    <span class="show-name">玻璃喉咙 GLASS THROAT</span>
+    <span class="show-venue">北京 · 地下二层</span>
+    <a class="show-tix" href="#signup">购票</a>
+  </div>
+</section>
+
+<!-- ===================== TICKER 2 ===================== -->
+<div class="ticker alt" aria-hidden="true">
+  <div class="marquee">
+    <div class="marquee__track" data-speed="52" data-dir="1">
+      <span class="mq-item">现场即真理</span><span class="star"></span>
+      <span class="mq-item">LOUD IS A LANGUAGE</span><span class="star"></span>
+      <span class="mq-item">每张海报都是孤品</span><span class="star"></span>
+      <span class="mq-item">现场即真理</span><span class="star"></span>
+      <span class="mq-item">LOUD IS A LANGUAGE</span><span class="star"></span>
+      <span class="mq-item">每张海报都是孤品</span><span class="star"></span>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== POSTER GALLERY ===================== -->
+<section class="gallery" id="gallery" aria-label="海报档案">
+  <h2>海报档案 / PRINT ARCHIVE</h2>
+  <div class="poster-track">
+    <article class="poster-card">
+      <img src="/assets/poster-joymonger.webp" alt="焦土合唱团演出 riso 海报">
+      <div class="poster-meta"><h3>焦土合唱团</h3><span>RISO · 双色 · 限 80 张</span></div>
+    </article>
+    <article class="poster-card">
+      <img src="/assets/poster-soviet.webp" alt="低频教会演出 riso 海报">
+      <div class="poster-meta"><h3>低频教会</h3><span>RISO · 三色 · 限 60 张</span></div>
+    </article>
+    <article class="poster-card">
+      <img src="/assets/poster-pipeline.webp" alt="钢丝与回声演出海报">
+      <div class="poster-meta"><h3>钢丝与回声</h3><span>RISO · 荧光粉 · 限 70 张</span></div>
+    </article>
+    <article class="poster-card">
+      <img src="/assets/poster-bowie-king.webp" alt="黑潮 8000 演出海报">
+      <div class="poster-meta"><h3>黑潮 8000</h3><span>RISO · 蓝金 · 限 50 张</span></div>
+    </article>
+    <article class="poster-card">
+      <img src="/assets/poster-we-the-people.webp" alt="无名鼓机演出海报">
+      <div class="poster-meta"><h3>无名鼓机</h3><span>RISO · 黑红 · 限 90 张</span></div>
+    </article>
+    <article class="poster-card">
+      <img src="/assets/poster-deco-red-woman.webp" alt="玻璃喉咙演出海报">
+      <div class="poster-meta"><h3>玻璃喉咙</h3><span>RISO · 朱红 · 限 65 张</span></div>
+    </article>
+    <article class="poster-card">
+      <img src="/assets/poster-deco-red-fan.webp" alt="第七季巡演主视觉海报">
+      <div class="poster-meta"><h3>第七季主视觉</h3><span>RISO · 四叠印 · 限 40 张</span></div>
+    </article>
+  </div>
+</section>
+
+<!-- ===================== VOICES ===================== -->
+<section class="voices" id="voices" aria-label="乐迷与媒体回声">
+  <h2>回声 / VOICES</h2>
+  <div class="quotes">
+    <figure class="quote">
+      <p>“站在第三排，胸腔跟着低频一起共振，散场后耳朵嗡了三天，值。”</p>
+      <cite>— 林夏，第 41 场常客</cite>
+    </figure>
+    <figure class="quote">
+      <p>“RIPCORD 把废弃锅炉房变成了城市里最诚实的声场。”</p>
+      <cite>— 《地下声纳》月刊</cite>
+    </figure>
+    <figure class="quote">
+      <p>“它们的 riso 海报我贴满了整面墙，每一张都像一次现场的余震。”</p>
+      <cite>— 阿May，丝网印刷收藏者</cite>
+    </figure>
+    <figure class="quote">
+      <p>“没有大屏，没有烟雾，只有四个音箱和一群不肯安静的人。”</p>
+      <cite>— 周野，独立乐评人</cite>
+    </figure>
+  </div>
+</section>
+
+<!-- ===================== SIGNUP ===================== -->
+<section class="signup" id="signup" aria-label="加入会员">
+  <h2>别错过下一声炸响</h2>
+  <form onsubmit="return false">
+    <label for="email" style="position:absolute;left:-9999px">邮箱地址</label>
+    <input id="email" type="email" name="email" placeholder="你的邮箱 your@email.com" autocomplete="email" required>
+    <button type="submit">加入裂帛会</button>
+  </form>
+  <small>每场开票前 48 小时，先于公售给你发暗号 · 我们绝不卖你的邮箱</small>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div>
+    <div class="brand">裂帛之声 <b>RIPCORD</b></div>
+    <p style="margin-top:14px; max-width:34ch; font-weight:400; opacity:.85; font-size:14px">城市噪音演出与 riso 丝网印刷厂牌。把音量拧到最大，把墙皮震下来。</p>
+  </div>
+  <div>
+    <h4>去哪</h4>
+    <ul>
+      <li><a href="#shows">演出日程</a></li>
+      <li><a href="#gallery">海报档案</a></li>
+      <li><a href="#voices">乐迷回声</a></li>
+    </ul>
+  </div>
+  <div>
+    <h4>找我们</h4>
+    <ul>
+      <li><a href="#signup">加入裂帛会</a></li>
+      <li><a href="#signup">合作演出</a></li>
+      <li><a href="#signup">海报订购</a></li>
+    </ul>
+  </div>
+  <div class="colophon">© 2025 RIPCORD 裂帛之声 · 锅炉房 No.7 · 本页所有动效由 GSAP + ScrollTrigger + Observer 驱动 · 滚得越快，标题歪得越狠。</div>
+</footer>
+
+<!-- ===================== GSAP ===================== -->
+<script src="/vendor/gsap/gsap.min.js"></script>
+<script src="/vendor/gsap/ScrollTrigger.min.js"></script>
+<script src="/vendor/gsap/Observer.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger, Observer);
+
+gsap.matchMedia().add({
+  motionOK: "(prefers-reduced-motion: no-preference)",
+  motionReduced: "(prefers-reduced-motion: reduce)"
+}, (ctx) => {
+  const { motionReduced } = ctx.conditions;
+
+  /* ============================================================
+     1. SEAMLESS INFINITE MARQUEES (modifiers wrap)
+     Each .marquee__track is duplicated so its content tiles
+     across at least 2x the viewport, then x is wrapped with
+     gsap.utils.wrap via the modifiers plugin -> no seam.
+     ============================================================ */
+  const marquees = [];
+
+  gsap.utils.toArray(".marquee__track").forEach((track) => {
+    const dir = parseFloat(track.dataset.dir) || 1;        // 1 = move right, -1 = move left
+    const baseSpeed = parseFloat(track.dataset.speed) || 40; // px per second baseline
+
+    // Duplicate children until track width >= 2x its container, so the loop has overlap.
+    const container = track.parentNode; // .marquee
+    const originals = Array.from(track.children).map(n => n.cloneNode(true));
+    let safety = 0;
+    while (track.scrollWidth < container.offsetWidth * 2 && safety < 20) {
+      originals.forEach(n => track.appendChild(n.cloneNode(true)));
+      safety++;
+    }
+
+    // The seamless loop distance = width of ONE original block.
+    // Measure it by summing the first `originals.length` children (padding included).
+    let oneSet = 0;
+    for (let i = 0; i < originals.length; i++) {
+      oneSet += track.children[i].getBoundingClientRect().width;
+    }
+    if (oneSet < 1) oneSet = track.scrollWidth; // fallback
+
+    // wrap range: moving left -> wrap [-oneSet, 0]; moving right -> wrap [-oneSet, 0] too,
+    // we just flip velocity sign. Start offset for right-moving so content fills left edge.
+    const wrap = gsap.utils.wrap(-oneSet, 0);
+
+    const state = { x: dir > 0 ? -oneSet : 0 };
+
+    const setX = gsap.quickSetter(track, "x", "px");
+    setX(state.x);
+
+    marquees.push({ track, dir, baseSpeed, oneSet, wrap, state, setX });
+  });
+
+  /* ============================================================
+     2. VELOCITY-DRIVEN SKEW + SPEED BOOST
+     Observer reports scroll velocity; we map it to:
+       - extra marquee speed (faster scroll = faster strips)
+       - skewX on every track (the "drag" look)
+     We keep a running `scrollSkew` proxy and ease it back to 0.
+     ============================================================ */
+  const velo = { current: 0, skew: 0, boost: 0 };
+
+  if (!motionReduced) {
+    Observer.create({
+      target: window,
+      type: "wheel,touch,scroll,pointer",
+      onChangeY: (self) => {
+        const v = gsap.utils.clamp(-3500, 3500, self.velocityY || 0);
+        velo.boost = v;
+        const targetSkew = gsap.utils.clamp(-14, 14, v / 260);
+        gsap.to(velo, { skew: targetSkew, duration: 0.3, ease: "power2.out", overwrite: true });
+      }
+    });
+
+    // also pull velocity from ScrollTrigger as a fallback / smoother source
+    ScrollTrigger.create({
+      onUpdate: (self) => {
+        const v = self.getVelocity();
+        velo.current = v;
+      }
+    });
+
+    // master rAF loop — drives every marquee + applies the eased skew
+    let last = performance.now();
+    const tick = (now) => {
+      const dt = Math.min(0.05, (now - last) / 1000);
+      last = now;
+
+      // boost decays toward 0 each frame
+      velo.boost *= 0.92;
+      const boostPx = gsap.utils.clamp(-900, 900, (velo.boost + velo.current) * 0.05);
+
+      marquees.forEach((m) => {
+        const pxPerSec = (m.baseSpeed + Math.abs(boostPx)) * m.dir;
+        m.state.x += pxPerSec * dt;
+        m.state.x = m.wrap(m.state.x);
+        m.setX(m.state.x);
+        // per-strip skew (hero outline strips lean opposite for richness)
+        gsap.set(m.track, { skewX: velo.skew });
+      });
+    };
+    gsap.ticker.add(tick);
+
+    // ease skew back to neutral continuously when scrolling stops
+    gsap.ticker.add(() => {
+      velo.skew += (0 - velo.skew) * 0.06;
+    });
+  } else {
+    // reduced motion: render final/neutral state, no looping, no skew.
+    marquees.forEach((m) => m.setX(m.state.x));
+  }
+
+  /* ============================================================
+     3. HERO STRIPS — velocity skew on the colored title rows,
+        plus a tiny parallax drift so the three rows separate.
+     ============================================================ */
+  if (!motionReduced) {
+    gsap.utils.toArray(".hero-strip").forEach((strip, i) => {
+      gsap.fromTo(strip,
+        { xPercent: i % 2 ? -4 : 4 },
+        {
+          xPercent: i % 2 ? 4 : -4,
+          ease: "none",
+          scrollTrigger: {
+            trigger: ".hero",
+            start: "top top",
+            end: "bottom top",
+            scrub: 1
+          }
+        }
+      );
+    });
+  }
+
+  /* ============================================================
+     4. SHOW ROWS — reveal + velocity-skewed names on scroll
+     ============================================================ */
+  gsap.utils.toArray(".show-row").forEach((row) => {
+    const name = row.querySelector(".show-name");
+    if (motionReduced) {
+      gsap.set(row, { autoAlpha: 1, x: 0 });
+      return;
+    }
+    gsap.fromTo(row,
+      { autoAlpha: 0, x: -40 },
+      {
+        autoAlpha: 1, x: 0, duration: 0.7, ease: "power3.out",
+        scrollTrigger: { trigger: row, start: "top 88%", toggleActions: "play none none reverse" }
+      }
+    );
+    // velocity skew on the name itself
+    gsap.fromTo(name,
+      { skewX: 0 },
+      {
+        skewX: 0, ease: "none",
+        scrollTrigger: {
+          trigger: row, start: "top bottom", end: "bottom top", scrub: true,
+          onUpdate: (self) => {
+            const sk = gsap.utils.clamp(-10, 10, self.getVelocity() / -320);
+            gsap.to(name, { skewX: sk, x: sk * 1.5, duration: 0.4, ease: "power2.out", overwrite: "auto" });
+          }
+        }
+      }
+    );
+  });
+
+  /* ============================================================
+     5. POSTER GALLERY — horizontal drift tied to vertical scroll,
+        cards pop in with stagger.
+     ============================================================ */
+  const posterTrack = document.querySelector(".poster-track");
+  if (posterTrack) {
+    if (motionReduced) {
+      gsap.set(".poster-card", { autoAlpha: 1, y: 0, rotation: 0 });
+    } else {
+      // cards pop
+      ScrollTrigger.batch(".poster-card", {
+        start: "top 92%",
+        onEnter: (els) => gsap.fromTo(els,
+          { autoAlpha: 0, y: 70, rotation: () => gsap.utils.random(-6, 6) },
+          { autoAlpha: 1, y: 0, rotation: 0, duration: 0.7, ease: "back.out(1.4)", stagger: 0.12, overwrite: true }
+        )
+      });
+      // drift the whole track horizontally as the gallery scrolls through
+      const overflow = () => Math.max(0, posterTrack.scrollWidth - posterTrack.parentNode.offsetWidth);
+      gsap.fromTo(posterTrack,
+        { x: 0 },
+        {
+          x: () => -overflow() * 0.6,
+          ease: "none",
+          scrollTrigger: {
+            trigger: ".gallery",
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1,
+            invalidateOnRefresh: true
+          }
+        }
+      );
+    }
+  }
+
+  /* ============================================================
+     6. QUOTES — staggered batch reveal
+     ============================================================ */
+  if (motionReduced) {
+    gsap.set(".quote", { autoAlpha: 1, y: 0 });
+  } else {
+    ScrollTrigger.batch(".quote", {
+      start: "top 88%",
+      onEnter: (els) => gsap.fromTo(els,
+        { autoAlpha: 0, y: 50, scale: 0.96 },
+        { autoAlpha: 1, y: 0, scale: 1, duration: 0.6, ease: "power3.out", stagger: 0.12, overwrite: true }
+      )
+    });
+  }
+
+  /* ============================================================
+     7. SECTION HEADS + signup giant title — clip-style reveal
+     ============================================================ */
+  gsap.utils.toArray(".section-head h2, .signup h2, .voices h2, .gallery h2").forEach((h) => {
+    if (motionReduced) { gsap.set(h, { autoAlpha: 1, y: 0 }); return; }
+    gsap.fromTo(h,
+      { autoAlpha: 0, y: 60, skewX: -6 },
+      {
+        autoAlpha: 1, y: 0, skewX: 0, duration: 0.8, ease: "power4.out",
+        scrollTrigger: { trigger: h, start: "top 90%", toggleActions: "play none none reverse" }
+      }
+    );
+  });
+
+  // refresh once layout settles (fonts/images)
+  ScrollTrigger.refresh();
+
+  return () => { /* matchMedia auto-reverts tweens & triggers; ticker fns cleaned below */ };
+});
+
+// ensure ticker functions don't pile up across matchMedia reverts is handled because
+// matchMedia reverts created tweens/triggers; gsap.ticker callbacks are added once per match.
+window.addEventListener("load", () => ScrollTrigger.refresh());
+</script>
+</body>
+</html>

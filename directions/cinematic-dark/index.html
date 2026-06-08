@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marcus Holt — Director & Cinematographer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#0a0a0b;
+  --surface:#111113;
+  --letterbox:#000000;
+  --ink:#f4f1ea;
+  --ink-muted:#9a968d;
+  --ink-subtle:#605d57;
+  --accent:#c4b59a;
+  --accent-hover:#d8cab1;
+  --hairline:#26262a;
+  --section:140px;
+  --block:44px;
+  --tight:16px;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+body{
+  background:var(--canvas);
+  color:var(--ink);
+  font-family:'Inter',system-ui,sans-serif;
+  font-size:16px;
+  line-height:1.7;
+  letter-spacing:.2px;
+  font-weight:400;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+::selection{background:var(--accent);color:#000}
+
+a{color:inherit;text-decoration:none}
+
+:focus-visible{
+  outline:1px solid var(--accent);
+  outline-offset:4px;
+}
+
+.wrap{max-width:1200px;margin:0 auto;padding:0 32px}
+
+/* ---- type roles ---- */
+.eyebrow{
+  font-size:11px;font-weight:500;letter-spacing:4px;
+  text-transform:uppercase;color:var(--accent);
+}
+.title-card{
+  font-size:15px;font-weight:300;letter-spacing:4px;
+  text-transform:uppercase;line-height:1.6;color:var(--ink-muted);
+}
+.display-xl{
+  font-size:clamp(34px,7.5vw,64px);font-weight:200;line-height:1.02;
+  letter-spacing:clamp(2px,1vw,6px);text-transform:uppercase;
+}
+.display-md{
+  font-size:clamp(22px,4vw,30px);font-weight:300;line-height:1.1;
+  letter-spacing:3px;text-transform:uppercase;
+}
+
+/* ============ HERO ============ */
+.hero{
+  position:relative;
+  min-height:100svh;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  background:var(--letterbox);
+  overflow:hidden;
+}
+.hero__media{
+  position:absolute;inset:0;
+  z-index:0;
+}
+.hero__media .u-photo{
+  width:100%;height:100%;
+  object-fit:cover;
+  filter:grayscale(1) contrast(1.05) brightness(.82);
+  display:block;
+}
+/* scrim so title is legible over the still */
+.hero__scrim{
+  position:absolute;inset:0;z-index:1;
+  background:
+    linear-gradient(180deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,0) 28%,rgba(0,0,0,0) 50%,rgba(10,10,11,.55) 78%,rgba(10,10,11,.95) 100%);
+}
+/* typographic fallback hero (no-photos) */
+.hero .u-fallback{
+  position:absolute;inset:0;z-index:1;
+  flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;gap:20px;
+  background:
+    radial-gradient(120% 90% at 50% 40%, #1a1a1d 0%, #0a0a0b 70%);
+}
+.hero .u-fallback .fb-mark{
+  font-size:clamp(60px,18vw,160px);font-weight:200;
+  letter-spacing:clamp(6px,2vw,18px);color:var(--ink);
+  text-transform:uppercase;line-height:1;
+}
+.hero .u-fallback .fb-sub{color:var(--ink-subtle)}
+
+/* letterbox bars */
+.bar{
+  position:absolute;left:0;right:0;height:7vh;min-height:34px;
+  background:var(--letterbox);z-index:3;pointer-events:none;
+}
+.bar--top{top:0}
+.bar--bottom{bottom:0}
+
+.hero__inner{
+  position:relative;z-index:2;
+  padding-bottom:calc(7vh + 56px);
+}
+.hero__inner > *{
+  opacity:0;transform:translateY(24px);
+  animation:fadeUp 1.1s cubic-bezier(.22,.61,.36,1) forwards;
+}
+.hero__name{margin-bottom:24px}
+.hero__name{animation-delay:.45s}
+.hero__thesis{
+  max-width:18ch;margin-bottom:28px;color:var(--ink);
+  animation-delay:.65s;
+}
+.hero__meta{
+  display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;
+  margin-bottom:34px;animation-delay:.85s;
+}
+.hero__meta span{color:var(--ink-muted)}
+.dot{color:var(--ink-subtle)}
+.hero__cta{animation-delay:1.05s}
+
+.reel-link{
+  display:inline-flex;align-items:center;gap:14px;
+  font-size:13px;font-weight:400;letter-spacing:3px;text-transform:uppercase;
+  color:var(--ink);padding-bottom:6px;
+  border-bottom:1px solid var(--hairline);
+  transition:border-color .35s ease,color .35s ease,gap .35s ease;
+}
+.reel-link .arrow{color:var(--accent);transition:transform .35s ease}
+.reel-link:hover{color:var(--accent-hover);border-color:var(--accent);gap:20px}
+.reel-link:hover .arrow{transform:translateX(4px)}
+
+/* ============ shared section heading ============ */
+.sec{padding:var(--section) 0}
+.sec__head{
+  display:flex;align-items:baseline;gap:16px;
+  margin-bottom:64px;
+}
+.sec__head .idx{
+  font-size:13px;font-weight:300;letter-spacing:2px;color:var(--accent);
+}
+
+/* ============ SELECTED WORK ============ */
+.films{border-top:1px solid var(--hairline)}
+.film{
+  display:grid;
+  grid-template-columns:54px 1fr auto;
+  gap:24px;
+  align-items:baseline;
+  padding:34px 4px;
+  border-bottom:1px solid var(--hairline);
+  position:relative;
+  transition:background .4s ease,padding-left .4s ease;
+}
+.film:hover{background:var(--surface);padding-left:20px}
+.film__no{
+  font-size:12px;font-weight:300;letter-spacing:2px;color:var(--ink-subtle);
+  transition:color .4s ease;
+}
+.film:hover .film__no{color:var(--accent)}
+.film__body{min-width:0}
+.film__title{
+  font-size:clamp(22px,3.4vw,30px);font-weight:300;
+  letter-spacing:2px;text-transform:uppercase;line-height:1.12;
+  margin-bottom:10px;
+}
+.film__logline{color:var(--ink-muted);max-width:46ch;font-size:15px}
+.film__tag{
+  text-align:right;font-size:11px;font-weight:500;letter-spacing:3px;
+  text-transform:uppercase;color:var(--ink-subtle);white-space:nowrap;
+}
+.film__tag .yr{display:block;color:var(--ink-muted);margin-top:6px}
+
+/* ============ METRICS / credits ============ */
+.metrics{background:var(--surface);border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline)}
+.credits{
+  display:grid;grid-template-columns:repeat(3,1fr);
+}
+.credit{
+  padding:64px 28px;text-align:center;
+  border-left:1px solid var(--hairline);
+}
+.credit:first-child{border-left:0}
+.credit__big{
+  font-size:clamp(40px,6vw,68px);font-weight:200;line-height:1;
+  letter-spacing:2px;margin-bottom:18px;color:var(--ink);
+}
+.credit__big .accent{color:var(--accent)}
+.credit__lbl{
+  font-size:11px;font-weight:500;letter-spacing:4px;text-transform:uppercase;
+  color:var(--ink-muted);
+}
+
+/* ============ EXPERIENCE / timeline ============ */
+.track{border-top:1px solid var(--hairline)}
+.stop{
+  display:grid;grid-template-columns:130px 1fr;gap:24px;
+  padding:34px 4px;border-bottom:1px solid var(--hairline);
+}
+.stop__when{
+  font-size:11px;font-weight:500;letter-spacing:3px;text-transform:uppercase;
+  color:var(--ink-subtle);padding-top:5px;
+}
+.stop__role{
+  font-size:clamp(18px,2.6vw,22px);font-weight:300;letter-spacing:2px;
+  text-transform:uppercase;line-height:1.18;margin-bottom:8px;
+}
+.stop__role .at{color:var(--accent)}
+.stop__note{color:var(--ink-muted);max-width:54ch;font-size:15px}
+
+/* ============ BELIEFS / numbered ============ */
+.creeds{display:grid;grid-template-columns:repeat(2,1fr);gap:0;border-top:1px solid var(--hairline)}
+.creed{
+  padding:44px 32px 44px 0;border-bottom:1px solid var(--hairline);
+}
+.creed:nth-child(odd){border-right:1px solid var(--hairline);padding-right:48px}
+.creed:nth-child(even){padding-left:48px}
+.creed__no{
+  font-size:13px;font-weight:300;letter-spacing:2px;color:var(--accent);
+  display:block;margin-bottom:16px;
+}
+.creed__txt{
+  font-size:clamp(17px,2vw,20px);font-weight:300;line-height:1.45;
+  letter-spacing:.4px;color:var(--ink);
+}
+
+/* ============ SELECTED QUOTE / large_type ============ */
+.bigquote{background:var(--surface);border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline)}
+.bigquote__pad{padding:var(--section) 0;text-align:center}
+.bigquote blockquote{
+  font-size:clamp(26px,4.6vw,46px);font-weight:200;line-height:1.18;
+  letter-spacing:clamp(1px,.6vw,3px);text-transform:uppercase;
+  max-width:20ch;margin:0 auto 28px;color:var(--ink);
+}
+.bigquote blockquote .accent{color:var(--accent)}
+.bigquote figcaption{
+  font-size:11px;font-weight:500;letter-spacing:4px;text-transform:uppercase;
+  color:var(--ink-muted);
+}
+
+/* ============ TOOLS / stack_list ============ */
+.kit{border-top:1px solid var(--hairline)}
+.kit__row{
+  display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:baseline;
+  padding:30px 4px;border-bottom:1px solid var(--hairline);
+}
+.kit__cat{
+  font-size:11px;font-weight:500;letter-spacing:4px;text-transform:uppercase;
+  color:var(--accent);
+}
+.kit__items{
+  display:flex;flex-wrap:wrap;gap:8px 22px;
+}
+.kit__items span{
+  font-size:14px;font-weight:300;letter-spacing:1px;color:var(--ink-muted);
+}
+
+/* ============ CREDENTIALS / list ============ */
+.honors{border-top:1px solid var(--hairline)}
+.honor{
+  display:grid;grid-template-columns:1fr auto;gap:24px;align-items:baseline;
+  padding:26px 4px;border-bottom:1px solid var(--hairline);
+}
+.honor__what{
+  font-size:clamp(15px,1.8vw,17px);font-weight:300;letter-spacing:1px;
+  text-transform:uppercase;color:var(--ink);
+}
+.honor__who{color:var(--ink-muted);font-size:13px;display:block;margin-top:6px;letter-spacing:.4px;text-transform:none}
+.honor__yr{
+  font-size:11px;font-weight:500;letter-spacing:3px;text-transform:uppercase;
+  color:var(--ink-subtle);white-space:nowrap;
+}
+
+/* ============ NOW / currently_building ============ */
+.now__line{display:flex;align-items:center;gap:14px;margin-bottom:36px}
+.now__dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex:none;box-shadow:0 0 0 0 var(--accent);animation:nowPulse 2.6s ease-out infinite}
+.now__loc{font-size:11px;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--ink-muted)}
+.now__list{display:grid;gap:20px;max-width:60ch}
+.now__item{display:grid;grid-template-columns:24px 1fr;gap:16px;color:var(--ink-muted);font-size:16px}
+.now__item .mk{color:var(--accent);font-size:13px;letter-spacing:1px}
+.now__item b{color:var(--ink);font-weight:400}
+@keyframes nowPulse{0%{box-shadow:0 0 0 0 rgba(196,181,154,.5)}70%{box-shadow:0 0 0 10px rgba(196,181,154,0)}100%{box-shadow:0 0 0 0 rgba(196,181,154,0)}}
+
+/* ============ CONTACT ============ */
+.contact{position:relative;background:var(--letterbox);padding:0}
+.contact__pad{padding:var(--section) 0;position:relative;z-index:2}
+.contact .bar{height:5vh;min-height:26px}
+.contact__line{
+  max-width:20ch;margin-bottom:40px;color:var(--ink);
+}
+.contact__links{
+  display:flex;flex-wrap:wrap;gap:14px 40px;
+  padding-top:34px;border-top:1px solid var(--hairline);
+}
+.contact__links a{
+  display:inline-flex;align-items:center;gap:12px;
+  font-size:13px;font-weight:400;letter-spacing:3px;text-transform:uppercase;
+  color:var(--ink-muted);transition:color .35s ease;
+}
+.contact__links a .pre{color:var(--accent);font-size:11px;letter-spacing:3px}
+.contact__links a:hover{color:var(--accent-hover)}
+
+.colophon{
+  border-top:1px solid var(--hairline);
+  padding:40px 0;
+}
+.colophon p{
+  font-size:11px;font-weight:400;letter-spacing:2px;text-transform:uppercase;
+  color:var(--ink-subtle);
+}
+
+/* ---- reveal on scroll ---- */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 1s ease,transform 1s cubic-bezier(.22,.61,.36,1)}
+.reveal.in{opacity:1;transform:none}
+
+@keyframes fadeUp{to{opacity:1;transform:none}}
+
+/* ---------- responsive ---------- */
+@media (max-width:720px){
+  .wrap{padding:0 22px}
+  .sec__head{flex-direction:column;gap:8px;margin-bottom:44px}
+  .film{grid-template-columns:1fr;gap:10px}
+  .film__no{order:-1}
+  .film__tag{text-align:left}
+  .film__tag .yr{display:inline;margin:0 0 0 12px}
+  .credits{grid-template-columns:1fr}
+  .credit{border-left:0;border-top:1px solid var(--hairline);padding:44px 20px}
+  .credit:first-child{border-top:0}
+  .stop{grid-template-columns:1fr;gap:8px}
+  .creeds{grid-template-columns:1fr}
+  .creed{padding:36px 0 !important;border-right:0 !important}
+  .kit__row{grid-template-columns:1fr;gap:12px}
+  .honor{grid-template-columns:1fr;gap:6px}
+  .honor__yr{order:-1}
+}
+
+/* ---------- photo + toggle contract ---------- */
+.u-fallback{display:none !important}
+body.no-photos .u-photo{display:none !important}
+body.no-photos .u-fallback{display:revert !important}
+body.no-photos .hero .u-fallback{display:flex !important}
+
+.atlas-photo-toggle{position:fixed;right:16px;bottom:16px;z-index:99999;display:flex;align-items:center;gap:8px;background:rgba(20,20,22,.88);color:#fff;border-radius:999px;padding:6px 6px 6px 14px;font:600 12px/1 -apple-system,system-ui,sans-serif;box-shadow:0 8px 28px -10px rgba(0,0,0,.55)}
+.atlas-photo-toggle button{appearance:none;border:0;cursor:pointer;font:inherit;color:#16161a;background:#fff;border-radius:999px;padding:6px 14px;min-width:46px}
+.atlas-photo-toggle button[aria-pressed="false"]{background:#3a3a42;color:#fff}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .hero__inner > *{animation:none;opacity:1;transform:none}
+  .reveal{transition:none;opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<header class="hero" data-module="hero" data-variant="full_bleed_still">
+  <div class="hero__media">
+    <img class="u-photo" src="portrait.webp" alt="A lone figure standing in a vast, misty landscape — a still from Marcus Holt's cinematography">
+  </div>
+  <div class="u-fallback" aria-hidden="false">
+    <div class="fb-mark">MH</div>
+    <div class="title-card fb-sub">Marcus Holt — Director of Photography</div>
+  </div>
+  <div class="hero__scrim" aria-hidden="true"></div>
+
+  <div class="bar bar--top" aria-hidden="true"></div>
+  <div class="bar bar--bottom" aria-hidden="true"></div>
+
+  <div class="hero__inner wrap">
+    <p class="eyebrow hero__name">Marcus Holt — Director &amp; Cinematographer</p>
+    <h1 class="display-xl hero__thesis">I make films that feel like a held breath.</h1>
+    <div class="title-card hero__meta">
+      <span>Narrative</span><span class="dot">/</span>
+      <span>Commercial</span><span class="dot">/</span>
+      <span>Director &amp; DP</span>
+    </div>
+    <div class="hero__cta">
+      <a class="reel-link" href="#reel">View reel <span class="arrow" aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ SELECTED WORK ============ -->
+<section class="sec" id="reel" aria-labelledby="work-h" data-module="selected_work" data-variant="grid">
+  <div class="wrap">
+    <div class="sec__head reveal">
+      <span class="idx">01</span>
+      <h2 class="display-md" id="work-h">Selected work</h2>
+    </div>
+
+    <div class="films">
+      <a class="film reveal" href="#contact">
+        <span class="film__no">F01</span>
+        <span class="film__body">
+          <span class="film__title">The Long Quiet</span>
+          <span class="film__logline">A feature about a widow walking the coast at the edge of winter, shot entirely in natural light.</span>
+        </span>
+        <span class="film__tag">Director · DP<span class="yr">Feature · 2024</span></span>
+      </a>
+
+      <a class="film reveal" href="#contact">
+        <span class="film__no">F02</span>
+        <span class="film__body">
+          <span class="film__title">Smoke Season</span>
+          <span class="film__logline">Official Selection, Cannes Film Festival — two brothers, one fire, and the summer that ended them.</span>
+        </span>
+        <span class="film__tag">Director · Writer<span class="yr">Feature · 2022</span></span>
+      </a>
+
+      <a class="film reveal" href="#contact">
+        <span class="film__no">F03</span>
+        <span class="film__body">
+          <span class="film__title">Nike — Run Until Dark</span>
+          <span class="film__logline">A 90-second brand film: a single runner, a city emptying out, the last light of the day chasing her home.</span>
+        </span>
+        <span class="film__tag">Director · DP<span class="yr">Brand · 2023</span></span>
+      </a>
+
+      <a class="film reveal" href="#contact">
+        <span class="film__no">F04</span>
+        <span class="film__body">
+          <span class="film__title">Held Breath</span>
+          <span class="film__logline">A short — three minutes, no dialogue, one room, and the moment before a phone rings.</span>
+        </span>
+        <span class="film__tag">Director · DP<span class="yr">Short · 2021</span></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ METRICS / credits ============ -->
+<section class="metrics" aria-label="Credits" data-module="metrics" data-variant="stat_row">
+  <div class="credits">
+    <div class="credit reveal">
+      <div class="credit__big">02</div>
+      <div class="credit__lbl">Features directed</div>
+    </div>
+    <div class="credit reveal">
+      <div class="credit__big"><span class="accent">Cannes</span></div>
+      <div class="credit__lbl">Official Selection</div>
+    </div>
+    <div class="credit reveal">
+      <div class="credit__big">Nike</div>
+      <div class="credit__lbl">Brand films</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EXPERIENCE / timeline ============ -->
+<section class="sec" id="path" aria-labelledby="path-h" data-module="experience" data-variant="timeline">
+  <div class="wrap">
+    <div class="sec__head reveal">
+      <span class="idx">03</span>
+      <h2 class="display-md" id="path-h">The path</h2>
+    </div>
+    <div class="track">
+      <div class="stop reveal">
+        <div class="stop__when">2020 — Now</div>
+        <div>
+          <h3 class="stop__role">Director &amp; DP <span class="at">/ Independent</span></h3>
+          <p class="stop__note">Two features and a slate of brand films, shot on location and lit by hand. Building a body of work around natural light and patient framing.</p>
+        </div>
+      </div>
+      <div class="stop reveal">
+        <div class="stop__when">2016 — 2020</div>
+        <div>
+          <h3 class="stop__role">Cinematographer <span class="at">/ Stillwater Pictures</span></h3>
+          <p class="stop__note">Lead DP across narrative shorts and documentary work. Shaped the house look that took two films to festival.</p>
+        </div>
+      </div>
+      <div class="stop reveal">
+        <div class="stop__when">2013 — 2016</div>
+        <div>
+          <h3 class="stop__role">Camera &amp; Lighting <span class="at">/ Various</span></h3>
+          <p class="stop__note">Gaffer and second unit on commercial sets — learned the grammar of a frame one twelve-hour day at a time.</p>
+        </div>
+      </div>
+      <div class="stop reveal">
+        <div class="stop__when">2009 — 2013</div>
+        <div>
+          <h3 class="stop__role">BFA, Film Production <span class="at">/ CalArts</span></h3>
+          <p class="stop__note">Thesis short selected for the school's annual showcase; first time a room went quiet for something I shot.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BELIEFS / numbered ============ -->
+<section class="sec" id="craft" aria-labelledby="craft-h" data-module="beliefs" data-variant="numbered">
+  <div class="wrap">
+    <div class="sec__head reveal">
+      <span class="idx">04</span>
+      <h2 class="display-md" id="craft-h">How I work</h2>
+    </div>
+    <div class="creeds">
+      <div class="creed reveal">
+        <span class="creed__no">01</span>
+        <p class="creed__txt">Light first, then everything else. If the light is wrong, no lens or grade will save the frame.</p>
+      </div>
+      <div class="creed reveal">
+        <span class="creed__no">02</span>
+        <p class="creed__txt">Hold the shot a beat longer than is comfortable. The truth tends to arrive late.</p>
+      </div>
+      <div class="creed reveal">
+        <span class="creed__no">03</span>
+        <p class="creed__txt">Find the location's own weather before you fight it. The room already knows the mood.</p>
+      </div>
+      <div class="creed reveal">
+        <span class="creed__no">04</span>
+        <p class="creed__txt">Cut to the breath, not the action. A film is paced by what the body does between lines.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SELECTED QUOTE / large_type ============ -->
+<section class="bigquote" aria-label="Pull quote" data-module="selected_quotes" data-variant="large_type">
+  <figure class="bigquote__pad wrap reveal">
+    <blockquote>Holt shoots the dark like he's <span class="accent">afraid of waking it</span>.</blockquote>
+    <figcaption>Sight &amp; Sound — on Smoke Season</figcaption>
+  </figure>
+</section>
+
+<!-- ============ TOOLS / stack_list ============ -->
+<section class="sec" id="kit" aria-labelledby="kit-h" data-module="tools" data-variant="stack_list">
+  <div class="wrap">
+    <div class="sec__head reveal">
+      <span class="idx">05</span>
+      <h2 class="display-md" id="kit-h">On set</h2>
+    </div>
+    <div class="kit">
+      <div class="kit__row reveal">
+        <div class="kit__cat">Camera</div>
+        <div class="kit__items"><span>ARRI Alexa Mini LF</span><span>Sony VENICE 2</span><span>16mm Bolex</span></div>
+      </div>
+      <div class="kit__row reveal">
+        <div class="kit__cat">Glass</div>
+        <div class="kit__items"><span>Cooke S4 Primes</span><span>Zeiss Super Speeds</span><span>Vintage Canon K35</span></div>
+      </div>
+      <div class="kit__row reveal">
+        <div class="kit__cat">Light</div>
+        <div class="kit__items"><span>Available &amp; practical</span><span>Aputure 600x</span><span>Bounce &amp; negative fill</span></div>
+      </div>
+      <div class="kit__row reveal">
+        <div class="kit__cat">Finish</div>
+        <div class="kit__items"><span>DaVinci Resolve</span><span>Film emulation LUTs</span><span>Hand-graded passes</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CREDENTIALS / list ============ -->
+<section class="sec" id="honors" aria-labelledby="honors-h" data-module="credentials" data-variant="list">
+  <div class="wrap">
+    <div class="sec__head reveal">
+      <span class="idx">06</span>
+      <h2 class="display-md" id="honors-h">Selections &amp; awards</h2>
+    </div>
+    <div class="honors">
+      <div class="honor reveal">
+        <div class="honor__what">Official Selection<span class="honor__who">Smoke Season — Un Certain Regard</span></div>
+        <div class="honor__yr">Cannes · 2022</div>
+      </div>
+      <div class="honor reveal">
+        <div class="honor__what">Best Cinematography<span class="honor__who">The Long Quiet — Jury Prize</span></div>
+        <div class="honor__yr">Camerimage · 2024</div>
+      </div>
+      <div class="honor reveal">
+        <div class="honor__what">Grand Jury Nominee<span class="honor__who">Held Breath — Short Film Competition</span></div>
+        <div class="honor__yr">Sundance · 2021</div>
+      </div>
+      <div class="honor reveal">
+        <div class="honor__what">Member, American Society of Cinematographers<span class="honor__who">Associate member since 2023</span></div>
+        <div class="honor__yr">ASC · 2023</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ NOW / currently_building ============ -->
+<section class="sec" id="now" aria-labelledby="now-h" data-module="currently_building" data-variant="now_block">
+  <div class="wrap">
+    <div class="sec__head reveal">
+      <span class="idx">07</span>
+      <h2 class="display-md" id="now-h">Now</h2>
+    </div>
+    <div class="now__line reveal">
+      <span class="now__dot" aria-hidden="true"></span>
+      <span class="now__loc">Currently — North Coast, off the grid</span>
+    </div>
+    <div class="now__list reveal">
+      <p class="now__item"><span class="mk" aria-hidden="true">→</span><span>In prep on <b>third feature</b> — a winter chamber piece, shooting first light only.</span></p>
+      <p class="now__item"><span class="mk" aria-hidden="true">→</span><span>Color-finishing a <b>two-night brand film</b> shot entirely by firelight.</span></p>
+      <p class="now__item"><span class="mk" aria-hidden="true">→</span><span>Reading the rushes light meter by hand again — testing a <b>16mm stock</b> for the next short.</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="contact" id="contact" aria-labelledby="contact-h" data-module="contact" data-variant="cta_band">
+  <div class="bar bar--top" aria-hidden="true"></div>
+  <div class="bar bar--bottom" aria-hidden="true"></div>
+  <div class="contact__pad wrap">
+    <div class="sec__head reveal">
+      <span class="idx">08</span>
+      <h2 class="display-md" id="contact-h">Let's make something</h2>
+    </div>
+    <p class="display-md contact__line reveal">If you've got a story that needs to feel like a held breath — let's talk.</p>
+    <nav class="contact__links reveal" aria-label="Contact links">
+      <a href="mailto:marcus@marcusholt.film"><span class="pre">Email</span> marcus@marcusholt.film</a>
+      <a href="#reel"><span class="pre">Watch</span> The reel</a>
+      <a href="https://instagram.com/marcusholt" target="_blank" rel="noopener"><span class="pre">Follow</span> @marcusholt</a>
+    </nav>
+  </div>
+  <div class="colophon wrap">
+    <p>Marcus Holt — Director &amp; Cinematographer · Shot on location, lit by hand</p>
+  </div>
+</section>
+
+</main>
+
+<div class="atlas-photo-toggle" role="group" aria-label="示例照片 / Demo photos"><span>照片 Photos</span><button id="atlasPhotoBtn" type="button" aria-pressed="true">On</button></div>
+<script>(function(){var b=document.getElementById('atlasPhotoBtn');if(!b)return;function set(on){document.body.classList.toggle('no-photos',!on);b.setAttribute('aria-pressed',on?'true':'false');b.textContent=on?'On':'Off';}b.addEventListener('click',function(){set(document.body.classList.contains('no-photos'));});set(true);})();</script>
+<script>
+(function(){
+  var els=document.querySelectorAll('.reveal');
+  if(!('IntersectionObserver' in window)||window.matchMedia('(prefers-reduced-motion:reduce)').matches){
+    els.forEach(function(el){el.classList.add('in');});return;
+  }
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+  },{threshold:.16,rootMargin:'0px 0px -8% 0px'});
+  els.forEach(function(el){io.observe(el);});
+})();
+</script>
+</body>
+</html>

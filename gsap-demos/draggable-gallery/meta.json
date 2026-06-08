@@ -1,0 +1,9 @@
+{
+  "id": "draggable-gallery",
+  "name_cn": "可拖画廊",
+  "name_en": "Draggable Gallery",
+  "style": "white-cube 美术馆典藏集：宽边黑画框、暖白展墙、衬里说明牌、克制的朱红与黄铜点缀、Cormorant + 思源宋体衬线排印",
+  "plugins": ["Draggable", "InertiaPlugin", "Draggable snap (throw-to-snap)", "gsap.matchMedia", "gsap.utils (clamp/interpolate/mapRange/toArray)", "gsap.timeline cross-fade"],
+  "focus": "一条横向作品长廊可拖动、松手用 InertiaPlugin 惯性抛掷并 snap 停靠到最近的一件；可拖进度滑块与作品双向联动，选中作品在下方说明牌放大并交叉淡入。",
+  "prompt": "做一个 white-cube 美术馆典藏集的整页 GSAP 演示，主题是「八件沉默的影像与版画」。视觉：暖白展墙(#f4f1ea)、近黑衬线墨色、朱红(#7a2418)与黄铜(#a8946b)作克制点缀，标题用 Cormorant Garamond 衬线 + 中文思源宋体，整体安静、博物馆感、宽留白。顶部是细横排展览信息栏(馆名「留白 LIUBAI」、展厅、年份、策展人)，下面一行超大衬线标题「白盒子里的八件沉默」逐行从下方滑入，副标一段克制导言交错淡入，一条向下进入展厅的细线从左画出。主体是一条横向长廊：八件作品各自装在宽边黑色美术馆画框里(框内有内嵌阴影、米白卡纸 mat、灰度微调的照片)，下方有衬线说明小牌(罗马数字编号、作品名、媒材年份)。整条 track 用 GSAP Draggable(type:'x', inertia:true) 可左右拖动，松手由 InertiaPlugin 惯性滑行并 snap 到离视口中心最近的一件；拖动/抛掷过程中每件作品按到中心的距离实时做 scale、opacity 与轻微 rotationY 的景深处理(离中心越远越小越淡)，正中那件高亮放大。长廊下方有一条带刻度的进度滑块：圆形 knob 也是一个 Draggable(沿 rail 的 x)，与长廊双向联动——拖 knob 长廊跟随并停靠，点 rail 任意处或键盘方向键也能跳转，左侧有 01/08 的衬线计数器。选中任何一件(点击作品或拖动停靠)，页面下方的大说明牌区会交叉淡入更新：左侧放大画框、右侧 cartel 文本(作者、媒材、尺寸、版数 + 一段诗意短评，短评首字下沉为朱红大写)，鼠标移动时画框做微妙的 3D 视差。结尾 colophon 是一句斜体宣言加多列展览信息。用 gsap.matchMedia 区分动效：prefers-reduced-motion:reduce 时直接渲染终态、关闭惯性/视差/无限动画，拖动结束用普通 tween 停靠。响应式 360–1440，语义化，img 有 alt，可见 focus，作品可键盘聚焦回车查看。动画一律走 transform/opacity。"
+}

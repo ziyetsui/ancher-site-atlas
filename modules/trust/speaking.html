@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>speaking · specimen sheet</title>
+<style>
+:root{--bg:#ffffff;--surface:#f6f6f4;--surface-2:#efefea;--ink:#191917;--muted:#6b6b67;--subtle:#9a9a94;--accent:#2f56ff;--accent-soft:#e9eefc;--hairline:#e7e7e2;--ink-line:#191917;--ok:#1f7a44;--radius:12px;--pad:24px}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:15px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+.mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace}
+.serif{font-family:Georgia,"Times New Roman",serif}
+
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+
+:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:2px;
+  border-radius:4px;
+}
+
+/* ---------- page shell ---------- */
+.sheet{max-width:1120px;margin:0 auto;padding:40px 28px 96px}
+
+.sheet-head{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:8px 16px;
+  padding-bottom:18px;
+  border-bottom:1px solid var(--hairline);
+  margin-bottom:44px;
+}
+.sheet-head h1{
+  font-size:20px;
+  font-weight:600;
+  letter-spacing:-.01em;
+  margin:0;
+}
+.sheet-head .dot{color:var(--subtle)}
+.sheet-head .meta{color:var(--muted);font-size:13.5px}
+.sheet-head .count{
+  margin-left:auto;
+  font-size:12px;
+  color:var(--muted);
+  background:var(--surface);
+  border:1px solid var(--hairline);
+  border-radius:999px;
+  padding:4px 12px;
+}
+
+/* ---------- variant block ---------- */
+.variant{margin-bottom:52px}
+.variant-label{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:6px 12px;
+  margin-bottom:14px;
+}
+.variant-label .id{
+  font-size:13px;
+  color:var(--ink);
+  background:var(--accent-soft);
+  border:1px solid #d6e0fb;
+  border-radius:6px;
+  padding:2px 8px;
+  font-weight:500;
+}
+.variant-label .hint{color:var(--muted);font-size:13px}
+
+.stage{
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  padding:var(--pad);
+  background:var(--surface);
+}
+
+/* ---------- shared atoms ---------- */
+.eyebrow{
+  font-size:11px;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  color:var(--subtle);
+  font-weight:600;
+}
+.tag{
+  display:inline-block;
+  font-size:11.5px;
+  color:var(--muted);
+  background:var(--bg);
+  border:1px solid var(--hairline);
+  border-radius:999px;
+  padding:2px 9px;
+  line-height:1.6;
+}
+.year{color:var(--subtle);font-variant-numeric:tabular-nums}
+
+/* photo slot */
+.photo{
+  position:relative;
+  background:var(--surface-2);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--subtle);
+  overflow:hidden;
+}
+.photo img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* =========================================================
+   VARIANT 1 — list
+   ========================================================= */
+.talk-list{list-style:none;margin:0;padding:0}
+.talk-row{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:6px 18px;
+  padding:16px 6px;
+  border-bottom:1px solid var(--hairline);
+}
+.talk-row:first-child{padding-top:4px}
+.talk-row:last-child{border-bottom:0;padding-bottom:4px}
+.talk-main{min-width:0;flex:1 1 280px}
+.talk-main h3{margin:0;font-size:15.5px;font-weight:600;letter-spacing:-.01em}
+.talk-main .event{display:block;font-size:13.5px;color:var(--muted);margin-top:2px}
+.talk-meta{
+  flex:0 0 auto;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  white-space:nowrap;
+}
+.talk-meta .year{font-size:13.5px}
+.fmt{
+  display:inline-block;
+  font-size:11px;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  font-weight:600;
+  color:var(--muted);
+  background:var(--bg);
+  border:1px solid var(--hairline);
+  border-radius:999px;
+  padding:2px 9px;
+}
+.watch{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  font-size:13px;
+  font-weight:500;
+}
+
+/* =========================================================
+   VARIANT 2 — cards
+   ========================================================= */
+.talk-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(248px,1fr));
+  gap:18px;
+}
+.talk-card{
+  display:flex;
+  flex-direction:column;
+  background:var(--bg);
+  border:1px solid var(--hairline);
+  border-radius:10px;
+  overflow:hidden;
+  transition:border-color .18s ease,transform .18s ease,box-shadow .18s ease;
+}
+.talk-card:hover,.talk-card:focus-within{
+  border-color:#cfcfc8;
+  transform:translateY(-2px);
+  box-shadow:0 8px 24px -16px rgba(25,25,23,.4);
+}
+.talk-card .photo{aspect-ratio:16/10}
+.tc-body{padding:16px 16px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
+.tc-body .eyebrow{margin:0}
+.tc-body h3{margin:0;font-size:15.5px;font-weight:600;letter-spacing:-.01em;line-height:1.25}
+.tc-body .venue{margin:0;color:var(--muted);font-size:13.5px;line-height:1.45}
+.tc-body .watch{margin-top:auto;padding-top:6px}
+.watch svg{width:14px;height:14px}
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header class="sheet-head">
+    <h1>speaking</h1>
+    <span class="dot">·</span>
+    <span class="meta mono">category: trust</span>
+    <span class="dot">·</span>
+    <span class="meta">Speaking / talks · 演讲</span>
+    <span class="count">2 variants</span>
+  </header>
+
+  <!-- ============ VARIANT 1: list ============ -->
+  <section class="variant" aria-labelledby="v-list">
+    <div class="variant-label">
+      <span class="id mono" id="v-list">list</span>
+      <span class="hint">极简列表 — talk + event left, year + format right, hairline rows</span>
+    </div>
+    <div class="stage">
+      <ul class="talk-list" role="list">
+
+        <li class="talk-row">
+          <div class="talk-main">
+            <h3>Designing for the first five seconds</h3>
+            <span class="event">Config 2025 · San Francisco</span>
+          </div>
+          <div class="talk-meta">
+            <span class="fmt">Keynote</span>
+            <span class="year">2025</span>
+            <a class="watch" href="#config-2025">watch &rarr;</a>
+          </div>
+        </li>
+
+        <li class="talk-row">
+          <div class="talk-main">
+            <h3>Tokens all the way down</h3>
+            <span class="event">SmashingConf · Antwerp</span>
+          </div>
+          <div class="talk-meta">
+            <span class="fmt">Talk</span>
+            <span class="year">2024</span>
+            <a class="watch" href="#smashing-2024">watch &rarr;</a>
+          </div>
+        </li>
+
+        <li class="talk-row">
+          <div class="talk-main">
+            <h3>The craft behind a good empty state</h3>
+            <span class="event">Design Better Podcast · Ep. 142</span>
+          </div>
+          <div class="talk-meta">
+            <span class="fmt">Podcast</span>
+            <span class="year">2024</span>
+            <a class="watch" href="#designbetter-142">listen &rarr;</a>
+          </div>
+        </li>
+
+        <li class="talk-row">
+          <div class="talk-main">
+            <h3>Building a design system that sticks</h3>
+            <span class="event">Clarity Conf · Online</span>
+          </div>
+          <div class="talk-meta">
+            <span class="fmt">Workshop</span>
+            <span class="year">2023</span>
+          </div>
+        </li>
+
+        <li class="talk-row">
+          <div class="talk-main">
+            <h3>Why prototypes lie</h3>
+            <span class="event">UX Lisbon · Lisbon</span>
+          </div>
+          <div class="talk-meta">
+            <span class="fmt">Talk</span>
+            <span class="year">2022</span>
+            <a class="watch" href="#uxlisbon-2022">watch &rarr;</a>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ VARIANT 2: cards ============ -->
+  <section class="variant" aria-labelledby="v-cards">
+    <div class="variant-label">
+      <span class="id mono" id="v-cards">cards</span>
+      <span class="hint">缩略图卡片 — thumbnail grid, eyebrow + title + venue + watch</span>
+    </div>
+    <div class="stage">
+      <ul class="talk-grid" role="list">
+
+        <li class="talk-card">
+          <div class="photo">
+            <img src="../../assets/poster-pipeline.webp" loading="lazy" alt="Stage view from the Config 2025 keynote">
+          </div>
+          <div class="tc-body">
+            <p class="eyebrow">Config · Jun 2025</p>
+            <h3>Designing for the first five seconds</h3>
+            <p class="venue">Moscone Center, San Francisco · 2,400 attendees</p>
+            <a class="watch" href="#config-2025">
+              watch
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </li>
+
+        <li class="talk-card">
+          <div class="photo">
+            <img src="../../assets/landscape-solitary-bw.webp" loading="lazy" alt="Speaker on stage at SmashingConf Antwerp">
+          </div>
+          <div class="tc-body">
+            <p class="eyebrow">SmashingConf · Oct 2024</p>
+            <h3>Tokens all the way down</h3>
+            <p class="venue">Stadsschouwburg, Antwerp · with live demo</p>
+            <a class="watch" href="#smashing-2024">
+              watch
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </li>
+
+        <li class="talk-card">
+          <div class="photo">
+            <img src="../../assets/editorial-fashion-mono.webp" loading="lazy" alt="Recording session for the Design Better Podcast">
+          </div>
+          <div class="tc-body">
+            <p class="eyebrow">Design Better · Mar 2024</p>
+            <h3>The craft behind a good empty state</h3>
+            <p class="venue">Podcast · Episode 142, 48 min</p>
+            <a class="watch" href="#designbetter-142">
+              listen
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<style>
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+@media (max-width:520px){
+  .sheet{padding:28px 16px 72px}
+  .stage{padding:16px}
+  .sheet-head .count{margin-left:0}
+  .talk-meta{flex-basis:100%}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important;animation:none!important}
+}
+</style>
+</body>
+</html>

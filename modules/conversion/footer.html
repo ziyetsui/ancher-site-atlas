@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>footer · specimen sheet</title>
+<style>
+:root{--bg:#ffffff;--surface:#f6f6f4;--surface-2:#efefea;--ink:#191917;--muted:#6b6b67;--subtle:#9a9a94;--accent:#2f56ff;--accent-soft:#e9eefc;--hairline:#e7e7e2;--ink-line:#191917;--ok:#1f7a44;--radius:12px;--pad:24px}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:15px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+.mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace}
+.serif{font-family:Georgia,"Times New Roman",serif}
+
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+
+:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:2px;
+  border-radius:4px;
+}
+
+/* ---------- page shell ---------- */
+.sheet{max-width:1120px;margin:0 auto;padding:40px 28px 96px}
+
+.sheet-head{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:8px 16px;
+  padding-bottom:18px;
+  border-bottom:1px solid var(--hairline);
+  margin-bottom:44px;
+}
+.sheet-head h1{
+  font-size:20px;
+  font-weight:600;
+  letter-spacing:-.01em;
+  margin:0;
+}
+.sheet-head .dot{color:var(--subtle)}
+.sheet-head .meta{color:var(--muted);font-size:13.5px}
+.sheet-head .count{
+  margin-left:auto;
+  font-size:12px;
+  color:var(--muted);
+  background:var(--surface);
+  border:1px solid var(--hairline);
+  border-radius:999px;
+  padding:4px 12px;
+}
+
+/* ---------- variant block ---------- */
+.variant{margin-bottom:52px}
+.variant-label{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:6px 12px;
+  margin-bottom:14px;
+}
+.variant-label .id{
+  font-size:13px;
+  color:var(--ink);
+  background:var(--accent-soft);
+  border:1px solid #d6e0fb;
+  border-radius:6px;
+  padding:2px 8px;
+  font-weight:500;
+}
+.variant-label .hint{color:var(--muted);font-size:13px}
+
+.stage{
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  padding:var(--pad);
+  background:var(--surface);
+}
+/* full-bleed variant lets its footer fill the stage edge-to-edge */
+.stage.flush{padding:0;overflow:hidden}
+
+/* ---------- shared footer atoms ---------- */
+.f-link{
+  color:var(--muted);
+  font-size:13.5px;
+  text-decoration:none;
+  transition:color .15s ease;
+}
+.f-link:hover{color:var(--ink);text-decoration:none}
+.f-name{font-weight:600;color:var(--ink)}
+.year{color:var(--subtle);font-variant-numeric:tabular-nums}
+
+.social{display:flex;gap:6px;align-items:center}
+.social a{
+  width:32px;height:32px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--muted);
+  background:var(--bg);
+  border:1px solid var(--hairline);
+  border-radius:999px;
+  transition:color .15s ease,border-color .15s ease;
+}
+.social a:hover{color:var(--ink);border-color:var(--subtle);text-decoration:none}
+.social svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+
+/* =========================================================
+   VARIANT 1 — minimal
+   ========================================================= */
+.foot-minimal{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px 20px;
+  background:var(--bg);
+  border:1px solid var(--hairline);
+  border-radius:10px;
+  padding:18px 22px;
+}
+.foot-minimal .copy{font-size:13.5px;color:var(--muted)}
+.foot-minimal nav{display:flex;flex-wrap:wrap;gap:6px 18px}
+
+/* =========================================================
+   VARIANT 2 — columns
+   ========================================================= */
+.foot-columns{
+  background:var(--bg);
+  border:1px solid var(--hairline);
+  border-radius:10px;
+  overflow:hidden;
+}
+.fc-grid{
+  display:grid;
+  grid-template-columns:1.6fr repeat(3,1fr);
+  gap:32px;
+  padding:36px 30px 30px;
+}
+.fc-brand .fc-name{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:18px;
+  font-weight:600;
+  letter-spacing:-.01em;
+  margin:0 0 8px;
+}
+.fc-brand .fc-tag{
+  font-size:13.5px;
+  color:var(--muted);
+  margin:0 0 18px;
+  max-width:30ch;
+  line-height:1.5;
+}
+.fc-col h3{
+  font-size:11px;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  color:var(--subtle);
+  font-weight:600;
+  margin:0 0 12px;
+}
+.fc-col ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.fc-bar{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px 16px;
+  padding:14px 30px;
+  border-top:1px solid var(--hairline);
+  background:var(--surface-2);
+  font-size:12.5px;
+  color:var(--muted);
+}
+.fc-bar .built{display:inline-flex;align-items:center;gap:6px}
+.fc-bar .built svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.6}
+
+/* =========================================================
+   VARIANT 3 — cta_band
+   ========================================================= */
+.foot-cta{display:flex;flex-direction:column}
+.cta-band{
+  background:var(--ink);
+  color:var(--bg);
+  padding:56px 40px 60px;
+  text-align:center;
+}
+.cta-band h2{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(28px,5vw,44px);
+  line-height:1.08;
+  letter-spacing:-.02em;
+  font-weight:600;
+  margin:0 0 10px;
+  color:#fff;
+}
+.cta-band p{
+  font-size:15px;
+  color:rgba(255,255,255,.66);
+  margin:0 auto 26px;
+  max-width:42ch;
+}
+.cta-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  font-size:15px;
+  font-weight:600;
+  color:var(--ink);
+  background:#fff;
+  border:1px solid #fff;
+  border-radius:999px;
+  padding:13px 24px;
+  transition:transform .05s ease,filter .15s ease;
+}
+.cta-btn:hover{filter:brightness(.93);text-decoration:none}
+.cta-btn:active{transform:translateY(1px)}
+.cta-btn:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.cta-btn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.cta-strip{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px 16px;
+  padding:14px 30px;
+  background:var(--bg);
+  border:1px solid var(--hairline);
+  border-top:0;
+  font-size:12.5px;
+  color:var(--muted);
+}
+.cta-strip nav{display:flex;flex-wrap:wrap;gap:6px 16px}
+
+@media (max-width:760px){
+  .fc-grid{grid-template-columns:1fr 1fr;gap:28px 24px}
+  .fc-brand{grid-column:1 / -1}
+}
+@media (max-width:520px){
+  .sheet{padding:28px 16px 72px}
+  .stage{padding:16px}
+  .stage.flush{padding:0}
+  .sheet-head .count{margin-left:0}
+  .fc-grid{grid-template-columns:1fr}
+  .cta-band{padding:44px 22px 48px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header class="sheet-head">
+    <h1>footer</h1>
+    <span class="dot">·</span>
+    <span class="meta mono">category: conversion</span>
+    <span class="dot">·</span>
+    <span class="meta">Site footer / 页脚</span>
+    <span class="count">3 variants</span>
+  </header>
+
+  <!-- ============ VARIANT 1: minimal ============ -->
+  <section class="variant" aria-labelledby="v-minimal">
+    <div class="variant-label">
+      <span class="id mono" id="v-minimal">minimal</span>
+      <span class="hint">单行页脚 — one quiet line: copyright + a few links</span>
+    </div>
+    <div class="stage">
+      <footer class="foot-minimal" role="contentinfo" aria-label="Site footer">
+        <span class="copy">© <span class="year">2025</span> <span class="f-name">Maya Chen</span></span>
+        <nav aria-label="Footer links">
+          <a class="f-link" href="#email">Email</a>
+          <a class="f-link" href="#github">GitHub</a>
+          <a class="f-link" href="#mastodon">Mastodon</a>
+          <a class="f-link" href="#cv">CV</a>
+        </nav>
+      </footer>
+    </div>
+  </section>
+
+  <!-- ============ VARIANT 2: columns ============ -->
+  <section class="variant" aria-labelledby="v-columns">
+    <div class="variant-label">
+      <span class="id mono" id="v-columns">columns</span>
+      <span class="hint">多列页脚 — brand + link columns + bottom bar</span>
+    </div>
+    <div class="stage">
+      <footer class="foot-columns" role="contentinfo" aria-label="Site footer">
+        <div class="fc-grid">
+
+          <div class="fc-brand">
+            <p class="fc-name">Maya Chen</p>
+            <p class="fc-tag">Product designer in Lisbon, working on interfaces that get out of the way.</p>
+            <div class="social" aria-label="Social links">
+              <a href="#github" aria-label="GitHub">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.5a3 3 0 0 0-.8-2.4c2.6-.3 5.3-1.3 5.3-5.8a4.5 4.5 0 0 0-1.2-3.1 4.2 4.2 0 0 0-.1-3.2s-1-.3-3.4 1.3a11.6 11.6 0 0 0-6 0C6.8 1.4 5.8 1.7 5.8 1.7a4.2 4.2 0 0 0-.1 3.2A4.5 4.5 0 0 0 4.5 8c0 4.5 2.7 5.5 5.3 5.8a3 3 0 0 0-.8 2.3V22"/></svg>
+              </a>
+              <a href="#mastodon" aria-label="Mastodon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.5c0 4-2.7 5-2.7 5-2 .7-4.4.8-6.4.6m-3.4-.6S6 17.4 4.5 16m13.5-3.5V8a3.5 3.5 0 0 0-7 0v4M11 12V8a3.5 3.5 0 0 0-7 0v4.5M8 11v3"/></svg>
+              </a>
+              <a href="#dribbble" aria-label="Dribbble">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M5 7c4 4 9 5 14 4M8.5 3.5C12 8 14 14 14.5 20.5M19 9c-7-1-11 1.5-14 6"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <nav class="fc-col" aria-label="Work">
+            <h3>Work</h3>
+            <ul>
+              <li><a class="f-link" href="#projects">Projects</a></li>
+              <li><a class="f-link" href="#case-studies">Case studies</a></li>
+              <li><a class="f-link" href="#cv">CV / Résumé</a></li>
+            </ul>
+          </nav>
+
+          <nav class="fc-col" aria-label="Writing">
+            <h3>Writing</h3>
+            <ul>
+              <li><a class="f-link" href="#notes">Notes</a></li>
+              <li><a class="f-link" href="#newsletter">Newsletter</a></li>
+              <li><a class="f-link" href="#talks">Talks</a></li>
+            </ul>
+          </nav>
+
+          <nav class="fc-col" aria-label="Elsewhere">
+            <h3>Elsewhere</h3>
+            <ul>
+              <li><a class="f-link" href="#github">GitHub</a></li>
+              <li><a class="f-link" href="#mastodon">Mastodon</a></li>
+              <li><a class="f-link" href="#email">Email</a></li>
+            </ul>
+          </nav>
+
+        </div>
+
+        <div class="fc-bar">
+          <span>© <span class="year">2025</span> Maya Chen. All rights reserved.</span>
+          <span class="built">
+            Built with care
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-4.5-9.5-9A4.5 4.5 0 0 1 12 6a4.5 4.5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z" stroke-linejoin="round"/></svg>
+          </span>
+        </div>
+      </footer>
+    </div>
+  </section>
+
+  <!-- ============ VARIANT 3: cta_band ============ -->
+  <section class="variant" aria-labelledby="v-cta">
+    <div class="variant-label">
+      <span class="id mono" id="v-cta">cta_band</span>
+      <span class="hint">行动号召条 — bold final CTA band + slim copyright strip</span>
+    </div>
+    <div class="stage flush">
+      <footer class="foot-cta" role="contentinfo" aria-label="Site footer">
+        <div class="cta-band">
+          <h2 class="serif">Let's build something.</h2>
+          <p>Got a project, a role, or a half-formed idea? I'm open to new work and good conversations.</p>
+          <a class="cta-btn" href="mailto:hello@mayachen.studio">
+            hello@mayachen.studio
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+        <div class="cta-strip">
+          <span>© <span class="year">2025</span> Maya Chen</span>
+          <nav aria-label="Footer links">
+            <a class="f-link" href="#github">GitHub</a>
+            <a class="f-link" href="#mastodon">Mastodon</a>
+            <a class="f-link" href="#cv">CV</a>
+          </nav>
+        </div>
+      </footer>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>

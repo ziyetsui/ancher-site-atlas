@@ -1,0 +1,9 @@
+{
+  "id": "cursor-studio",
+  "name_cn": "光标工作室",
+  "name_en": "Cursor Studio",
+  "style": "暗底高能量创意 agency 落地页：近黑底(#0a0a0c)配酸性黄绿(#d9ff1e)、荧光玫红(#ff3d6e)与电光蓝(#4d6bff)强调色，巨字描边大标题，Space Grotesk + 思源黑体，自定义光标主导的现代潮流感。",
+  "plugins": ["Observer (pointer/wheel/touch 归一化输入)", "InertiaPlugin (拖尾图片速度抛掷滑停)", "gsap.quickTo / quickSetter (高频光标跟随)", "gsap.timeline (hero 入场编排)", "gsap.utils (clamp/random/toArray)", "gsap.matchMedia (响应式 + prefers-reduced-motion)", "gsap.ticker (跑马灯逐帧)"],
+  "focus": "用 Observer 归一化指针输入驱动一套自定义光标体验：双层平滑跟随光标、磁吸按钮(靠近被吸附、内文字反向位移)、随指针撒落并被 InertiaPlugin 按速度抛出滑停的图片拖尾、项目列表 hover 时跟随光标的作品揭示预览。",
+  "prompt": "做一个暗底、高能量、巨字风格的数字创意工作室 agency 落地页，工作室叫「游标 CURSOR°」(上海，2017 年成立，做品牌识别·动效设计·交互体验)。视觉：近黑背景(#0a0a0c)，鲜亮浅墨色正文，强调色用酸性黄绿(#d9ff1e)为主、荧光玫红(#ff3d6e)与电光蓝(#4d6bff)为辅；标题用 Space Grotesk 配中文思源黑体，超大全大写、字间距收紧、部分字做描边镂空(text-stroke)。核心是一整套由 GSAP Observer 归一化指针输入驱动的自定义光标系统：①隐藏系统光标，用一个 difference 混合模式的圆环 + 一个实心小点双层跟随，圆环用慢 quickTo、小点用快 quickTo，靠近可点击元素时圆环放大并显示 VIEW 标签；②磁吸按钮——胶囊形 CTA 在指针进入一定半径内被吸附朝指针位移、按钮内文字反向轻移，离开弹回；③图片拖尾——指针快速移动时沿轨迹定时撒落作品缩略图(editorial-*/portrait-*/illustration-* 等)，每张丢下后用 InertiaPlugin 按指针当前速度抛掷出去、自然减速滑停并淡出；④项目揭示——精选作品做成大字列表，hover 某行时名字变强调色并右移、底部强调色下划线展开，同时一张跟随光标的作品预览图淡入(根据所 hover 项切换图源、带随指针倾斜)。其余区块：顶部 difference 混合的固定导航；hero 巨标题「我们让品牌动起来」逐行从遮罩里上滑入场、副标与统计数据交错淡入、背景有两团缓慢漂浮且随指针视差的彩色光斑；一条无限横向跑马灯(品牌识别/BRANDING/动效设计…)用 gsap.ticker 逐帧滚动、滚动方向由 Observer 的 onChangeY 控制；能力三宫格 + 进视口时缓动计数的数字统计(148/11/29/8)；灰度肖像团队网格(hover 转彩色+轻视差)；末尾巨型「来聊聊你的下一步」CTA。所有进场动效用进视口判定触发(自写 scroll 监听，不依赖 ScrollTrigger)。用 gsap.matchMedia 分流：触屏/粗指针关闭自定义光标恢复系统光标；prefers-reduced-motion:reduce 时直接渲染所有终态、关闭惯性/拖尾/无限循环/计数动画。响应式 360–1440，语义化，img 有 alt，可见 focus，项目可键盘聚焦。动画一律走 transform/opacity。"
+}

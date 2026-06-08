@@ -1,0 +1,9 @@
+{
+  "id": "svg-journey",
+  "name_cn": "线稿旅程",
+  "name_en": "SVG Line Journey",
+  "style": "蓝图/技术线稿：深藏青底、细青色描边、等宽标签、方格纸网格，像一张会动的工程图纸。",
+  "plugins": ["DrawSVGPlugin", "MotionPathPlugin", "ScrollTrigger (scrub)", "ScrollTrigger.scrub 视差", "gsap.matchMedia()", "Timeline"],
+  "focus": "演示 DrawSVG 随滚动绘制一条贯穿全页的连接路径,同时 MotionPath 让墨点沿同一条 path 前进,沿途工序节点依次点亮——三者由 ScrollTrigger 联动。",
+  "prompt": "做一个深藏青色(near #061322)、技术蓝图风格的『工作原理/流程』整页,主题是一支墨水钢笔从草图到成品的六道工序(草图→选料→车削→淬火→装配→试写)。视觉:细青色(#46e0d8)描边、等宽字体标签、方格纸网格底纹、每个工序卡片带角标与虚线测量框,图像加扫描线滤镜显得像工程图。固定底栏是一条进度读数 HUD(百分比+当前工序名+进度条)。核心动效:用一条手写的 SVG <path>(贝塞尔左右蛇形)贯穿整页作为『脊柱』,后面叠一条虚线幽灵轨;随着向下滚动,用描边绘制(stroke-dashoffset)效果把这条主路径从 0% 画到 100%(scrub 绑定滚动);同时一个发光墨点(带呼吸光环)沿同一条 path 用路径运动(motion path)前进,与绘制进度同步。每个工序区块进入视口时:卡片从左右滑入淡入、节点编号徽章亮成琥珀色(#f2b35e)、卡片内的小测量线稿被描边画出,并更新底部 HUD 的工序名;图片做轻微视差。中间一条等宽数据带随滚动横向移动。结尾一个圆形印章里把对勾描边画完,标题淡入,给一个『重走线路』按钮。Hero 区背景用描边动画画出一支笔的几何线稿。响应式 360–1440,语义化,img 有 alt,可见 focus 环。用 prefers-reduced-motion 处理:reduced 时直接渲染终态(主路径全部画好、节点全亮、隐藏墨点),关闭所有滚动驱动与无限循环。性能上动画走 transform/opacity 与 stroke-dashoffset,ScrollTrigger 用完整 start/end。原创、避免通用 AI 网站感。"
+}

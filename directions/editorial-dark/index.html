@@ -1,0 +1,642 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Theodore Vance — Film &amp; Culture Critic</title>
+<meta name="description" content="Theodore Vance writes about what films are really doing when we think we are just watching. Criticism, festival dispatches, and essays — available for commission.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --canvas:#0c0c0e;
+    --surface:#141417;
+    --ink:#ededec;
+    --ink-muted:#a3a29c;
+    --ink-subtle:#6c6b66;
+    --accent:#e0a64d;
+    --accent-hover:#f0bd6a;
+    --hairline:#26262b;
+
+    --serif:'Newsreader',Georgia,'Times New Roman',serif;
+    --sans:'Inter',system-ui,-apple-system,sans-serif;
+
+    --section:128px;
+    --block:40px;
+    --tight:16px;
+    --rounded-sm:2px;
+
+    --measure:62ch;
+    --pad:clamp(20px,5vw,72px);
+  }
+
+  *,*::before,*::after{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--canvas);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:17px;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+
+  /* selection + focus */
+  ::selection{background:var(--accent);color:#16130b}
+  a{color:inherit}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:var(--rounded-sm)}
+
+  /* layout shell — single asymmetric column, generous right margin */
+  .wrap{max-width:1180px;margin:0 auto;padding:0 var(--pad)}
+  .col{max-width:920px}
+
+  .eyebrow{
+    font-family:var(--sans);
+    font-size:12px;font-weight:600;
+    letter-spacing:2px;text-transform:uppercase;
+    color:var(--ink-subtle);
+    margin:0;
+  }
+  .eyebrow .mark{color:var(--accent)}
+
+  /* ---------- header ---------- */
+  header.site{
+    position:sticky;top:0;z-index:50;
+    background:color-mix(in srgb,var(--canvas) 88%,transparent);
+    backdrop-filter:saturate(120%) blur(8px);
+    border-bottom:1px solid var(--hairline);
+  }
+  .site-inner{display:flex;align-items:baseline;justify-content:space-between;gap:24px;padding:18px var(--pad)}
+  .site-inner .name{font-family:var(--serif);font-weight:500;font-size:18px;letter-spacing:-.3px}
+  .site-inner .name .dot{color:var(--accent)}
+  nav.site-nav{display:flex;gap:26px}
+  nav.site-nav a{
+    font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
+    color:var(--ink-muted);text-decoration:none;transition:color .2s ease;
+  }
+  nav.site-nav a:hover{color:var(--ink)}
+  @media (max-width:620px){nav.site-nav{display:none}}
+
+  /* ---------- hero ---------- */
+  .hero{padding:clamp(56px,11vw,116px) 0 var(--section)}
+  .hero-grid{
+    display:grid;grid-template-columns:minmax(0,1fr) clamp(220px,30vw,360px);
+    gap:clamp(32px,6vw,72px);align-items:end;
+  }
+  .hero h1{
+    font-family:var(--serif);font-weight:500;
+    font-size:clamp(40px,8vw,80px);
+    line-height:1.02;letter-spacing:-1.8px;
+    margin:18px 0 0;color:var(--ink);
+    text-wrap:balance;
+  }
+  .hero h1 em{font-style:italic;color:var(--ink)}
+  .hero .who{
+    font-family:var(--serif);font-style:italic;font-weight:400;
+    font-size:clamp(19px,2.6vw,23px);line-height:1.5;letter-spacing:-.1px;
+    color:var(--ink-muted);max-width:46ch;margin:28px 0 0;
+  }
+  .cta{
+    display:inline-flex;align-items:center;gap:.5em;
+    margin-top:34px;
+    font-family:var(--sans);font-weight:600;font-size:15px;letter-spacing:.2px;
+    color:var(--accent);text-decoration:none;
+    border-bottom:1px solid color-mix(in srgb,var(--accent) 45%,transparent);
+    padding-bottom:3px;transition:color .2s ease,border-color .2s ease,gap .2s ease;
+  }
+  .cta:hover{color:var(--accent-hover);border-color:var(--accent-hover);gap:.75em}
+  .cta .arr{transition:transform .2s ease}
+  .cta:hover .arr{transform:translateX(3px)}
+
+  /* portrait — frontispiece in the dark */
+  .portrait{position:relative;align-self:end}
+  .portrait .frame{
+    position:relative;
+    border:1px solid var(--hairline);
+    padding:8px;background:var(--surface);
+    border-radius:var(--rounded-sm);
+  }
+  .portrait img.u-photo{
+    display:block;width:100%;height:auto;
+    filter:grayscale(100%) contrast(1.04);
+    border-radius:1px;
+    aspect-ratio:4/5;object-fit:cover;object-position:50% 30%;
+  }
+  .portrait .cap{
+    margin-top:12px;
+    font-size:11px;letter-spacing:1.5px;text-transform:uppercase;
+    color:var(--ink-subtle);
+  }
+  .portrait .cap .mark{color:var(--accent)}
+
+  /* typographic fallback (photos OFF) */
+  .portrait .u-fallback{
+    border:1px solid var(--hairline);background:var(--surface);
+    border-radius:var(--rounded-sm);
+    aspect-ratio:4/5;
+    padding:24px;
+    grid-template-rows:1fr auto;align-content:space-between;
+    text-align:left;
+  }
+  body.no-photos .portrait .u-fallback{display:grid !important}
+  .portrait .u-fallback .mono{
+    font-family:var(--serif);font-weight:500;font-style:italic;
+    font-size:clamp(52px,8vw,88px);line-height:.9;letter-spacing:-3px;
+    color:var(--ink);align-self:start;
+  }
+  .portrait .u-fallback .mono .amp{color:var(--accent)}
+  .portrait .u-fallback .foot{
+    font-family:var(--sans);font-size:11px;font-weight:600;
+    letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-subtle);
+  }
+
+  @media (max-width:760px){
+    .hero-grid{grid-template-columns:1fr;align-items:start}
+    .portrait{order:-1;max-width:280px}
+  }
+
+  /* ---------- section frame ---------- */
+  section.block{padding:var(--section) 0;border-top:1px solid var(--hairline)}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:var(--block)}
+  .sec-head .num{
+    font-family:var(--serif);font-style:italic;color:var(--accent);
+    font-size:18px;
+  }
+  .sec-head h2{
+    font-family:var(--sans);font-size:12px;font-weight:600;
+    letter-spacing:2px;text-transform:uppercase;color:var(--ink-subtle);
+    margin:0;
+  }
+
+  /* ---------- selected work ---------- */
+  .featured{margin-bottom:56px;max-width:var(--measure)}
+  .featured .meta{
+    font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
+    color:var(--ink-subtle);margin:0 0 14px;
+  }
+  .featured .meta .mark{color:var(--accent)}
+  .featured h3{
+    font-family:var(--serif);font-weight:500;
+    font-size:clamp(28px,4.6vw,38px);line-height:1.14;letter-spacing:-.6px;
+    margin:0;
+  }
+  .featured h3 a{color:var(--ink);text-decoration:none;background-image:linear-gradient(var(--accent),var(--accent));background-size:0% 1px;background-position:0 100%;background-repeat:no-repeat;transition:background-size .3s ease,color .2s ease;padding-bottom:2px}
+  .featured h3 a:hover{color:var(--accent);background-size:100% 1px}
+  .featured .pull{
+    font-family:var(--serif);font-style:italic;font-weight:400;
+    font-size:clamp(19px,2.6vw,23px);line-height:1.5;color:var(--ink-muted);
+    margin:20px 0 0;max-width:54ch;
+    padding-left:20px;border-left:2px solid var(--accent);
+  }
+
+  ul.worklist{list-style:none;margin:0;padding:0;max-width:var(--measure)}
+  ul.worklist li{border-top:1px solid var(--hairline)}
+  ul.worklist li:last-child{border-bottom:1px solid var(--hairline)}
+  ul.worklist a{
+    display:flex;align-items:baseline;justify-content:space-between;gap:20px;
+    padding:18px 2px;text-decoration:none;color:var(--ink);
+    transition:background .2s ease,padding-left .2s ease;
+  }
+  ul.worklist a:hover{padding-left:10px;background:linear-gradient(90deg,color-mix(in srgb,var(--accent) 9%,transparent),transparent)}
+  ul.worklist .t{font-family:var(--serif);font-size:clamp(18px,2.4vw,21px);line-height:1.3;letter-spacing:-.3px}
+  ul.worklist a:hover .t{color:var(--accent-hover)}
+  ul.worklist .src{flex:0 0 auto;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ink-subtle);white-space:nowrap;text-align:right}
+  @media (max-width:520px){
+    ul.worklist a{flex-direction:column;gap:6px}
+    ul.worklist .src{text-align:left}
+  }
+
+  /* ---------- story / quote-led ---------- */
+  .story{max-width:var(--measure)}
+  .story .lede{
+    font-family:var(--serif);font-style:italic;font-weight:400;
+    font-size:clamp(24px,3.6vw,32px);line-height:1.4;letter-spacing:-.4px;
+    color:var(--ink);margin:0 0 var(--block);
+    text-wrap:balance;
+  }
+  .story .lede .mark{color:var(--accent)}
+  .story p{color:var(--ink-muted);margin:0 0 var(--tight);max-width:62ch}
+  .story p strong{color:var(--ink);font-weight:600}
+  .story p + p{margin-top:var(--tight)}
+
+  /* ---------- now block (currently_building) ---------- */
+  .now{max-width:var(--measure)}
+  .now .lede{
+    font-family:var(--serif);font-style:italic;font-weight:400;
+    font-size:clamp(22px,3.2vw,30px);line-height:1.4;letter-spacing:-.3px;
+    color:var(--ink);margin:0 0 var(--block);text-wrap:balance;
+  }
+  .now .lede .mark{color:var(--accent)}
+  ul.nowlist{list-style:none;margin:0;padding:0}
+  ul.nowlist li{
+    display:grid;grid-template-columns:auto 1fr;gap:14px 20px;align-items:baseline;
+    border-top:1px solid var(--hairline);padding:18px 2px;
+  }
+  ul.nowlist li:last-child{border-bottom:1px solid var(--hairline)}
+  ul.nowlist .when{
+    font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
+    color:var(--accent);white-space:nowrap;
+  }
+  ul.nowlist .what{color:var(--ink-muted)}
+  ul.nowlist .what strong{color:var(--ink);font-weight:600;font-family:var(--serif);font-size:18px;letter-spacing:-.2px}
+  @media (max-width:520px){ul.nowlist li{grid-template-columns:1fr;gap:6px}}
+
+  /* ---------- beliefs (numbered) ---------- */
+  .beliefs{max-width:var(--measure)}
+  ol.tenets{list-style:none;margin:0;padding:0;counter-reset:tenet}
+  ol.tenets li{
+    counter-increment:tenet;
+    display:grid;grid-template-columns:auto 1fr;gap:18px 24px;align-items:start;
+    border-top:1px solid var(--hairline);padding:26px 2px;
+  }
+  ol.tenets li:last-child{border-bottom:1px solid var(--hairline)}
+  ol.tenets li::before{
+    content:counter(tenet,decimal-leading-zero);
+    font-family:var(--serif);font-style:italic;font-weight:500;
+    font-size:clamp(22px,3vw,30px);line-height:1;color:var(--accent);letter-spacing:-1px;
+  }
+  ol.tenets h3{
+    font-family:var(--serif);font-weight:500;font-size:clamp(20px,2.8vw,26px);
+    line-height:1.2;letter-spacing:-.4px;color:var(--ink);margin:0 0 8px;
+  }
+  ol.tenets p{color:var(--ink-muted);margin:0;max-width:54ch}
+
+  /* ---------- metrics (stat_row) ---------- */
+  .stats{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:var(--block);
+    max-width:var(--measure);
+  }
+  .stats .stat{border-top:1px solid var(--hairline);padding-top:18px}
+  .stats .stat .fig{
+    font-family:var(--serif);font-weight:500;
+    font-size:clamp(40px,6vw,60px);line-height:1;letter-spacing:-2px;color:var(--ink);
+  }
+  .stats .stat .fig .mark{color:var(--accent)}
+  .stats .stat .lab{
+    margin:14px 0 0;font-size:12px;font-weight:600;letter-spacing:1.2px;
+    text-transform:uppercase;color:var(--ink-subtle);
+  }
+  @media (max-width:620px){.stats{grid-template-columns:1fr;gap:var(--tight)}.stats .stat{padding-top:var(--tight)}}
+
+  /* ---------- selected quotes (large_type) ---------- */
+  .quotes{max-width:var(--measure)}
+  .quotes blockquote{
+    margin:0;padding:0 0 0 24px;border-left:2px solid var(--accent);
+  }
+  .quotes blockquote + blockquote{margin-top:56px}
+  .quotes blockquote p{
+    font-family:var(--serif);font-style:italic;font-weight:400;
+    font-size:clamp(22px,3.4vw,30px);line-height:1.45;letter-spacing:-.4px;
+    color:var(--ink);margin:0;text-wrap:balance;
+  }
+  .quotes blockquote cite{
+    display:block;margin-top:18px;font-style:normal;
+    font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
+    color:var(--ink-subtle);
+  }
+  .quotes blockquote cite .mark{color:var(--accent)}
+
+  /* ---------- credentials (list) + speaking (list) ---------- */
+  ul.deflist{list-style:none;margin:0;padding:0;max-width:var(--measure)}
+  ul.deflist li{
+    display:grid;grid-template-columns:clamp(72px,12vw,128px) 1fr;gap:16px 24px;align-items:baseline;
+    border-top:1px solid var(--hairline);padding:18px 2px;
+  }
+  ul.deflist li:last-child{border-bottom:1px solid var(--hairline)}
+  ul.deflist .yr{
+    font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+    color:var(--ink-subtle);white-space:nowrap;
+  }
+  ul.deflist .body .t{
+    font-family:var(--serif);font-size:clamp(18px,2.4vw,21px);line-height:1.3;
+    letter-spacing:-.3px;color:var(--ink);display:block;
+  }
+  ul.deflist .body .sub{color:var(--ink-muted);font-size:15px}
+  ul.deflist .body .sub .mark{color:var(--accent)}
+  @media (max-width:520px){ul.deflist li{grid-template-columns:1fr;gap:6px}}
+
+  /* ---------- contact ---------- */
+  .contact{max-width:var(--measure)}
+  .contact .line{
+    font-family:var(--serif);font-weight:500;
+    font-size:clamp(28px,5vw,44px);line-height:1.1;letter-spacing:-1px;
+    margin:0 0 36px;color:var(--ink);text-wrap:balance;
+  }
+  .contact .line .mark{color:var(--accent)}
+  .links{display:flex;flex-wrap:wrap;gap:14px 34px;margin:0;padding:0;list-style:none}
+  .links a{
+    font-family:var(--sans);font-size:15px;font-weight:600;letter-spacing:.2px;
+    text-decoration:none;color:var(--ink);
+    display:inline-flex;align-items:baseline;gap:.5em;
+    border-bottom:1px solid var(--hairline);padding-bottom:3px;
+    transition:color .2s ease,border-color .2s ease;
+  }
+  .links a .lab{color:var(--ink-subtle);font-weight:600;font-size:11px;letter-spacing:1.5px;text-transform:uppercase}
+  .links a:hover{color:var(--accent);border-color:var(--accent)}
+  .links a:hover .lab{color:var(--accent)}
+
+  footer.site{border-top:1px solid var(--hairline);padding:40px 0 64px}
+  footer.site .row{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;justify-content:space-between}
+  footer.site small{color:var(--ink-subtle);font-size:12px;letter-spacing:.3px}
+  footer.site small .mark{color:var(--accent)}
+
+  /* ---------- motion ---------- */
+  .reveal{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none;transition:none}
+    .cta,.cta .arr,ul.worklist a,.featured h3 a{transition:none}
+    html{scroll-behavior:auto}
+  }
+  html{scroll-behavior:smooth}
+
+  /* ---------- photo toggle contract ---------- */
+  .u-fallback{display:none !important}
+  body.no-photos .u-photo{display:none !important}
+  body.no-photos .u-fallback{display:revert !important}
+  .atlas-photo-toggle{position:fixed;right:16px;bottom:16px;z-index:99999;display:flex;align-items:center;gap:8px;background:rgba(20,20,22,.88);color:#fff;border-radius:999px;padding:6px 6px 6px 14px;font:600 12px/1 -apple-system,system-ui,sans-serif;box-shadow:0 8px 28px -10px rgba(0,0,0,.55)}
+  .atlas-photo-toggle button{appearance:none;border:0;cursor:pointer;font:inherit;color:#16161a;background:#fff;border-radius:999px;padding:6px 14px;min-width:46px}
+  .atlas-photo-toggle button[aria-pressed="false"]{background:#3a3a42;color:#fff}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="site-inner">
+    <span class="name">Theodore Vance<span class="dot">.</span></span>
+    <nav class="site-nav" aria-label="Sections">
+      <a href="#work">Selected Work</a>
+      <a href="#story">On Writing</a>
+      <a href="#tenets">Tenets</a>
+      <a href="#now">Now</a>
+      <a href="#contact">Commission</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero" data-module="hero" data-variant="bold_statement">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div class="col reveal">
+          <p class="eyebrow">Theodore Vance <span class="mark">/</span> Film &amp; Culture Critic</p>
+          <h1>I write about what films are <em>really</em> doing when we think we are just watching.</h1>
+          <p class="who">Criticism, festival dispatches, and long-form essays for editors who commission and readers who stay for the second paragraph.</p>
+          <a class="cta" href="#contact">Commission a piece <span class="arr" aria-hidden="true">&rarr;</span></a>
+        </div>
+
+        <figure class="portrait reveal">
+          <div class="frame">
+            <img class="u-photo" src="portrait.webp" width="640" height="800"
+                 alt="Black-and-white close-up portrait of Theodore Vance, film and culture critic.">
+            <div class="u-fallback" role="img" aria-label="Theodore Vance — monogram">
+              <span class="mono">T<span class="amp">&amp;</span>V</span>
+              <span class="foot">Theodore Vance · Critic</span>
+            </div>
+          </div>
+          <figcaption class="cap"><span class="mark">—</span> Theodore Vance, by the window light</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- SELECTED WORK -->
+  <section class="block" id="work" data-module="selected_work" data-variant="featured_case">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="num">i.</span>
+        <h2>Selected Work</h2>
+      </div>
+
+      <article class="featured reveal">
+        <p class="meta">Featured Essay <span class="mark">·</span> The New York Times <span class="mark">·</span> 2024</p>
+        <h3><a href="#contact">The Long Take Is a Promise We Stopped Keeping</a></h3>
+        <p class="pull">&ldquo;A cut is a mercy. To hold the shot is to ask the audience to keep looking after the point has supposedly been made — which is exactly when a film starts telling the truth.&rdquo;</p>
+      </article>
+
+      <ul class="worklist reveal">
+        <li><a href="#contact"><span class="t">What the Camera Knows Before We Do</span><span class="src">The Criterion Collection · 2024</span></a></li>
+        <li><a href="#contact"><span class="t">On Faces: The Close-Up as an Argument</span><span class="src">The New York Times · 2023</span></a></li>
+        <li><a href="#contact"><span class="t">The Festival as a Machine for Forgetting</span><span class="src">The Criterion Collection · 2022</span></a></li>
+        <li><a href="#contact"><span class="t">Slowness, and the Films That Refuse to Hurry</span><span class="src">The New York Times · 2021</span></a></li>
+        <li><a href="#contact"><span class="t">Attention, the Last Special Effect</span><span class="src">From <em>The Attention We Pay</em> · 2020</span></a></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- STORY -->
+  <section class="block" id="story" data-module="story" data-variant="quote_led">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="num">ii.</span>
+        <h2>On Writing</h2>
+      </div>
+      <div class="story col">
+        <p class="lede reveal">A film tells you what it wants you to feel. <span class="mark">My job is to notice what it is doing to get there</span> — and to say it plainly enough that you can&rsquo;t un-see it.</p>
+        <p class="reveal">I read a film the way you&rsquo;d read a paragraph that&rsquo;s trying to convince you of something. Where does it slow down? What does it cut away from? <strong>Which face does it trust you to remember?</strong> Fifteen years in, I&rsquo;ve become less interested in whether a movie is good and more interested in what it&rsquo;s training us to want.</p>
+        <p class="reveal">That became a book — <strong><em>The Attention We Pay</em></strong> — about how the movies we watch quietly rehearse the way we look at everything else. The criticism is the same project at a smaller scale: one film, one moment, held up to the light of the week it arrived in. If that&rsquo;s the kind of writing your pages need, I&rsquo;d like to hear what you&rsquo;re thinking about.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BELIEFS -->
+  <section class="block" id="tenets" data-module="beliefs" data-variant="numbered">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="num">iii.</span>
+        <h2>How I Read a Film</h2>
+      </div>
+      <ol class="tenets col">
+        <li class="reveal">
+          <h3>The cut is the argument.</h3>
+          <p>Where a film chooses to look away tells you more than what it shows. I follow the edit before I follow the plot.</p>
+        </li>
+        <li class="reveal">
+          <h3>Describe before you judge.</h3>
+          <p>Good or bad is the least interesting thing a sentence can say. First make the reader see the shot; the verdict can take care of itself.</p>
+        </li>
+        <li class="reveal">
+          <h3>Take the audience seriously.</h3>
+          <p>People notice more than they can name. Criticism is the work of naming it — plainly, without flattering the writer or the reader.</p>
+        </li>
+        <li class="reveal">
+          <h3>The film arrived in a week.</h3>
+          <p>No movie exists in a vacuum. I hold each one up to the light of the moment it was released into, and ask what it was for.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- METRICS -->
+  <section class="block" data-module="metrics" data-variant="stat_row">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="num">iv.</span>
+        <h2>The Ledger</h2>
+      </div>
+      <div class="stats reveal">
+        <div class="stat">
+          <div class="fig">15<span class="mark">+</span></div>
+          <p class="lab">Years writing criticism</p>
+        </div>
+        <div class="stat">
+          <div class="fig">400<span class="mark">+</span></div>
+          <p class="lab">Essays &amp; dispatches in print</p>
+        </div>
+        <div class="stat">
+          <div class="fig">1</div>
+          <p class="lab">Book, and a second underway</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CREDENTIALS -->
+  <section class="block" data-module="credentials" data-variant="list">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="num">v.</span>
+        <h2>Recognition</h2>
+      </div>
+      <ul class="deflist reveal">
+        <li>
+          <span class="yr">2024</span>
+          <span class="body"><span class="t">National Magazine Award — Finalist, Reviews &amp; Criticism</span>
+          <span class="sub">for <em>The Long Take Is a Promise We Stopped Keeping</em> <span class="mark">·</span> The New York Times</span></span>
+        </li>
+        <li>
+          <span class="yr">2022</span>
+          <span class="body"><span class="t">Critic-in-Residence</span>
+          <span class="sub">Telluride Film Festival</span></span>
+        </li>
+        <li>
+          <span class="yr">2020</span>
+          <span class="body"><span class="t"><em>The Attention We Pay</em> — published by Graywolf Press</span>
+          <span class="sub">A New York Times Notable Book of the Year</span></span>
+        </li>
+        <li>
+          <span class="yr">2009</span>
+          <span class="body"><span class="t">M.A., Cinema Studies</span>
+          <span class="sub">New York University, Tisch School of the Arts</span></span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SPEAKING -->
+  <section class="block" data-module="speaking" data-variant="list">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="num">vi.</span>
+        <h2>Lecterns &amp; Microphones</h2>
+      </div>
+      <ul class="deflist reveal">
+        <li>
+          <span class="yr">2025</span>
+          <span class="body"><span class="t">On Slowness — keynote</span>
+          <span class="sub">Berlinale Talents <span class="mark">·</span> Berlin</span></span>
+        </li>
+        <li>
+          <span class="yr">2024</span>
+          <span class="body"><span class="t">The Close-Up as an Argument — Criterion lecture series</span>
+          <span class="sub">Metrograph <span class="mark">·</span> New York</span></span>
+        </li>
+        <li>
+          <span class="yr">Ongoing</span>
+          <span class="body"><span class="t">The Second Paragraph — monthly podcast</span>
+          <span class="sub">Conversations with directors and editors about looking</span></span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SELECTED QUOTES -->
+  <section class="block" data-module="selected_quotes" data-variant="large_type">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="num">vii.</span>
+        <h2>What Editors Say</h2>
+      </div>
+      <div class="quotes col">
+        <blockquote class="reveal">
+          <p>&ldquo;Theo files the piece you didn&rsquo;t know the film was asking for. He sees the cut you missed and makes you grateful he caught it.&rdquo;</p>
+          <cite><span class="mark">—</span> Maren Holloway, Culture Editor, The New York Times</cite>
+        </blockquote>
+        <blockquote class="reveal">
+          <p>&ldquo;The rare critic readers actually finish. He writes about attention because he has it, and he hands it to you for the length of the essay.&rdquo;</p>
+          <cite><span class="mark">—</span> David Quan, Editorial Director, The Criterion Collection</cite>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOW -->
+  <section class="block" id="now" data-module="currently_building" data-variant="now_block">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="num">viii.</span>
+        <h2>Now</h2>
+      </div>
+      <div class="now col">
+        <p class="lede reveal">A standing note of what has my attention this season <span class="mark">—</span> updated when the work shifts, not when the calendar turns.</p>
+        <ul class="nowlist reveal">
+          <li><span class="when">Writing</span><span class="what"><strong>A second book</strong> on the films that taught a generation how to wait — early chapters, slow going, the good kind.</span></li>
+          <li><span class="when">Watching</span><span class="what">A retrospective of long-take cinema for a Criterion essay due in the autumn.</span></li>
+          <li><span class="when">Reading</span><span class="what">Berger&rsquo;s <em>Ways of Seeing</em> again, and a stack of festival programmes for next year&rsquo;s dispatches.</span></li>
+          <li><span class="when">Open to</span><span class="what">Commissions on a single film, a director, or a season worth a few thousand words.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="block" id="contact" data-module="contact" data-variant="cta_band">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="num">ix.</span>
+        <h2>Commission</h2>
+      </div>
+      <div class="contact col">
+        <p class="line reveal">Have a film, a season, or a question worth a few thousand words? <span class="mark">Tell me what you&rsquo;re after.</span></p>
+        <ul class="links reveal">
+          <li><a href="mailto:theo@theodorevance.com"><span class="lab">Email</span> theo@theodorevance.com</a></li>
+          <li><a href="#"><span class="lab">Newsletter</span> Marginalia</a></li>
+          <li><a href="#"><span class="lab">Letterboxd</span> @theodorevance</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="row">
+      <small>&copy; 2026 Theodore Vance <span class="mark">·</span> Film &amp; Culture Criticism</small>
+      <small>Set in Newsreader <span class="mark">&amp;</span> Inter</small>
+    </div>
+  </div>
+</footer>
+
+<div class="atlas-photo-toggle" role="group" aria-label="示例照片 / Demo photos"><span>照片 Photos</span><button id="atlasPhotoBtn" type="button" aria-pressed="true">On</button></div>
+<script>(function(){var b=document.getElementById('atlasPhotoBtn');if(!b)return;function set(on){document.body.classList.toggle('no-photos',!on);b.setAttribute('aria-pressed',on?'true':'false');b.textContent=on?'On':'Off';}b.addEventListener('click',function(){set(document.body.classList.contains('no-photos'));});set(true);})();</script>
+
+<script>
+(function(){
+  var els=document.querySelectorAll('.reveal');
+  if(!('IntersectionObserver' in window)||window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    els.forEach(function(el){el.classList.add('in');});return;
+  }
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}
+    });
+  },{rootMargin:'0px 0px -8% 0px',threshold:0.08});
+  els.forEach(function(el){io.observe(el);});
+})();
+</script>
+</body>
+</html>

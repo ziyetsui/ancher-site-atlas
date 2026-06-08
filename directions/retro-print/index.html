@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Margot Hale — Illustrator</title>
+<meta name="description" content="Hand-made pictures for a screen-tired world. Illustration & prints by Margot Hale." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Spectral:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --canvas:#f3e9d2;
+    --surface:#ece0c2;
+    --ink:#2a1f16;
+    --ink-muted:#5c4a35;
+    --ink-subtle:#8a7456;
+    --mustard:#d99a2b;
+    --rust:#b5532a;
+    --teal:#2f7d77;
+    --brown:#6b4226;
+    --accent:#b5532a;
+    --accent-hover:#8f3f1f;
+    --hairline:#cbb88e;
+    --section:112px;
+    --block:40px;
+    --tight:16px;
+    --display:'Anton',Impact,sans-serif;
+    --serif:'Spectral',Georgia,serif;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+  body{
+    background-color:var(--canvas);
+    /* paper grain: layered low-opacity SVG turbulence */
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+    color:var(--ink);
+    font-family:var(--serif);
+    font-size:18px;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+
+  a{color:var(--accent);text-decoration:none}
+  a:hover{color:var(--accent-hover)}
+  a:focus-visible,button:focus-visible{outline:3px solid var(--teal);outline-offset:3px}
+
+  .eyebrow{
+    font-family:var(--display);
+    font-size:13px;letter-spacing:3px;text-transform:uppercase;
+    color:var(--rust);line-height:1.3;
+  }
+
+  /* ---------- top rule / nameplate ---------- */
+  .masthead{border-bottom:2px solid var(--ink);}
+  .masthead .wrap{display:flex;justify-content:space-between;align-items:baseline;padding-top:18px;padding-bottom:14px;flex-wrap:wrap;gap:8px}
+  .masthead .name{font-family:var(--display);text-transform:uppercase;letter-spacing:1px;font-size:20px}
+  .masthead nav{display:flex;gap:22px}
+  .masthead nav a{font-family:var(--display);text-transform:uppercase;letter-spacing:2px;font-size:12px;color:var(--ink)}
+  .masthead nav a:hover{color:var(--accent)}
+
+  /* ---------- hero ---------- */
+  .hero{padding-top:64px;padding-bottom:var(--section)}
+  .hero-grid{display:grid;grid-template-columns:1fr;gap:44px;align-items:center}
+  @media(min-width:900px){.hero-grid{grid-template-columns:1.05fr 0.95fr;gap:56px}}
+
+  .hero h1{
+    font-family:var(--display);text-transform:uppercase;
+    font-size:clamp(52px,11vw,104px);line-height:0.92;letter-spacing:0.5px;
+    color:var(--ink);margin:18px 0 0;
+  }
+  .hero h1 .ln2{color:var(--rust)}
+  .hero h1 .ln3{color:var(--teal)}
+  .hero .lede{
+    font-family:var(--serif);font-style:italic;font-size:clamp(19px,2.4vw,22px);
+    line-height:1.5;color:var(--ink-muted);max-width:34ch;margin-top:26px;
+  }
+  .cta-row{display:flex;flex-wrap:wrap;gap:16px;margin-top:34px}
+  .btn{
+    font-family:var(--display);text-transform:uppercase;letter-spacing:2px;font-size:14px;
+    padding:14px 22px;border:2px solid var(--ink);display:inline-block;
+    transition:transform .15s ease, background .15s ease, color .15s ease;
+  }
+  .btn-solid{background:var(--rust);color:var(--canvas);border-color:var(--rust)}
+  .btn-solid:hover{background:var(--accent-hover);color:var(--canvas);transform:translateY(-2px)}
+  .btn-ghost{background:transparent;color:var(--ink)}
+  .btn-ghost:hover{background:var(--ink);color:var(--canvas);transform:translateY(-2px)}
+  @media(prefers-reduced-motion:reduce){.btn:hover{transform:none}}
+
+  /* framed illustration */
+  .frame{
+    position:relative;background:var(--surface);
+    border:2px solid var(--ink);padding:14px;
+    box-shadow:10px 10px 0 var(--mustard);
+  }
+  .frame::after{ /* inner ink hairline */
+    content:"";position:absolute;inset:7px;border:1px solid var(--ink);pointer-events:none;
+  }
+  .frame img{display:block;width:100%;height:auto;filter:saturate(.92) contrast(1.02)}
+  .frame .cap{
+    font-family:var(--display);text-transform:uppercase;letter-spacing:2px;font-size:11px;
+    color:var(--ink-muted);margin-top:12px;display:flex;justify-content:space-between;
+  }
+
+  /* typographic fallback poster */
+  .u-fallback.poster{
+    background:var(--rust);color:var(--canvas);
+    aspect-ratio:4/5;display:grid;grid-template-rows:auto 1fr auto;
+    padding:26px;text-align:left;
+  }
+  .poster .pf-top{font-family:var(--display);text-transform:uppercase;letter-spacing:3px;font-size:12px;color:var(--mustard)}
+  .poster .pf-mono{
+    font-family:var(--display);text-transform:uppercase;line-height:0.8;
+    font-size:clamp(90px,20vw,200px);align-self:center;color:var(--canvas);
+  }
+  .poster .pf-bot{font-family:var(--serif);font-style:italic;font-size:18px;line-height:1.4;color:var(--canvas)}
+  body.no-photos .frame{box-shadow:10px 10px 0 var(--teal);background:transparent}
+  body.no-photos .hero .frame{border-color:var(--rust)}
+  body.no-photos .hero .frame::after{border-color:var(--mustard)}
+
+  /* ---------- section heads ---------- */
+  section{padding-bottom:var(--section)}
+  .sec-head{display:flex;align-items:flex-end;gap:18px;border-bottom:2px solid var(--ink);padding-bottom:14px;margin-bottom:var(--block)}
+  .sec-head h2{
+    font-family:var(--display);text-transform:uppercase;letter-spacing:0.5px;
+    font-size:clamp(30px,5vw,44px);line-height:1;color:var(--ink);
+  }
+  .sec-head .num{font-family:var(--display);font-size:14px;letter-spacing:2px;color:var(--rust);margin-bottom:6px}
+
+  /* ---------- work grid ---------- */
+  .work-grid{display:grid;grid-template-columns:1fr;gap:0}
+  @media(min-width:680px){.work-grid{grid-template-columns:1fr 1fr}}
+  @media(min-width:980px){.work-grid{grid-template-columns:1fr 1fr 1fr}}
+  .work{
+    background:var(--surface);border:1.5px solid var(--ink);
+    margin:-0.75px;padding:24px;min-height:240px;
+    display:flex;flex-direction:column;justify-content:space-between;
+    transition:background .18s ease;
+  }
+  .work:hover{background:var(--canvas)}
+  .work .wk-tag{font-family:var(--display);text-transform:uppercase;letter-spacing:2px;font-size:11px;color:var(--rust)}
+  .work .wk-title{font-family:var(--display);text-transform:uppercase;font-size:26px;line-height:0.95;margin-top:14px;color:var(--ink)}
+  .work .wk-meta{font-family:var(--serif);font-style:italic;color:var(--ink-muted);font-size:15px;margin-top:10px}
+  .work.tint-mustard{background:var(--mustard);color:var(--ink)}
+  .work.tint-mustard .wk-tag{color:var(--brown)}
+  .work.tint-teal{background:var(--teal);color:var(--canvas)}
+  .work.tint-teal .wk-title,.work.tint-teal .wk-meta{color:var(--canvas)}
+  .work.tint-teal .wk-tag{color:var(--mustard)}
+
+  /* the illustration cell */
+  .work.illo{padding:0;align-items:stretch;background:var(--brown)}
+  .work.illo .frame{box-shadow:none;border:0;padding:12px;height:100%;display:flex;flex-direction:column}
+  .work.illo .frame::after{inset:6px;border-color:var(--canvas)}
+  .work.illo .frame img{flex:1;object-fit:cover;min-height:200px}
+  .work.illo .cap{color:var(--canvas)}
+  .work.illo .u-fallback.mini{
+    background:var(--brown);color:var(--canvas);display:none;
+    flex-direction:column;justify-content:center;align-items:center;padding:24px;height:100%;text-align:center;
+  }
+  body.no-photos .work.illo .u-fallback.mini{display:flex !important}
+  .mini .mn-init{font-family:var(--display);text-transform:uppercase;font-size:64px;line-height:0.9;color:var(--mustard)}
+  .mini .mn-sub{font-family:var(--serif);font-style:italic;font-size:14px;margin-top:8px}
+
+  /* ---------- story / longform ---------- */
+  .story{position:relative}
+  .story-body{columns:1;column-gap:48px}
+  @media(min-width:860px){.story-body{columns:2}}
+  .story-body p{margin-bottom:20px;max-width:62ch;break-inside:avoid;color:var(--ink-muted)}
+  .pull{
+    font-family:var(--serif);font-style:italic;font-size:clamp(22px,3.4vw,32px);
+    line-height:1.35;color:var(--ink);max-width:24ch;margin-bottom:34px;
+    border-left:4px solid var(--rust);padding-left:20px;
+    column-span:all;
+  }
+  .dropcap::first-letter{
+    font-family:var(--display);float:left;font-size:74px;line-height:0.7;
+    padding:6px 12px 0 0;color:var(--rust);
+  }
+  .halftone{
+    height:22px;margin:38px 0;
+    background-image:radial-gradient(var(--ink) 1.4px, transparent 1.5px);
+    background-size:10px 10px;opacity:.5;column-span:all;
+  }
+
+  /* ---------- contact ---------- */
+  .contact{padding-bottom:0}
+  .contact-block{border-top:2px solid var(--ink);padding-top:var(--block);padding-bottom:72px}
+  .contact h2{font-family:var(--display);text-transform:uppercase;font-size:clamp(34px,7vw,68px);line-height:0.95;letter-spacing:0.5px}
+  .contact h2 em{font-style:normal;color:var(--rust)}
+  .contact .sub{font-family:var(--serif);font-style:italic;color:var(--ink-muted);font-size:20px;margin-top:18px;max-width:46ch}
+  .contact-links{display:flex;flex-wrap:wrap;gap:14px 30px;margin-top:30px}
+  .contact-links a{font-family:var(--display);text-transform:uppercase;letter-spacing:2px;font-size:15px;border-bottom:2px solid var(--rust);padding-bottom:2px;color:var(--ink)}
+  .contact-links a:hover{color:var(--rust)}
+  .colophon{font-family:var(--display);text-transform:uppercase;letter-spacing:2px;font-size:11px;color:var(--ink-subtle);margin-top:44px}
+
+  /* ---------- metrics (big numerals) ---------- */
+  .metrics-grid{display:grid;grid-template-columns:1fr;gap:0}
+  @media(min-width:560px){.metrics-grid{grid-template-columns:1fr 1fr}}
+  @media(min-width:900px){.metrics-grid{grid-template-columns:1fr 1fr 1fr 1fr}}
+  .metric{
+    border:1.5px solid var(--ink);margin:-0.75px;padding:26px 24px 22px;
+    display:flex;flex-direction:column;gap:6px;background:var(--surface);
+  }
+  .metric .mt-num{
+    font-family:var(--display);text-transform:uppercase;line-height:0.85;
+    font-size:clamp(54px,9vw,84px);color:var(--rust);
+  }
+  .metric:nth-child(2) .mt-num{color:var(--teal)}
+  .metric:nth-child(3) .mt-num{color:var(--brown)}
+  .metric:nth-child(4) .mt-num{color:var(--mustard)}
+  .metric .mt-label{font-family:var(--display);text-transform:uppercase;letter-spacing:2px;font-size:12px;color:var(--ink)}
+  .metric .mt-note{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--ink-muted)}
+
+  /* ---------- credentials (pills) ---------- */
+  .pill-set{display:flex;flex-wrap:wrap;gap:12px 14px}
+  .pill{
+    font-family:var(--display);text-transform:uppercase;letter-spacing:1.5px;font-size:13px;
+    padding:9px 16px;border:2px solid var(--ink);color:var(--ink);
+    background:var(--surface);
+  }
+  .pill.is-rust{background:var(--rust);color:var(--canvas);border-color:var(--rust)}
+  .pill.is-teal{background:var(--teal);color:var(--canvas);border-color:var(--teal)}
+  .pill.is-mustard{background:var(--mustard);color:var(--ink);border-color:var(--mustard)}
+
+  /* ---------- selected quotes (large type) ---------- */
+  .bigquote{
+    font-family:var(--display);text-transform:uppercase;
+    font-size:clamp(34px,6.5vw,72px);line-height:0.95;letter-spacing:0.5px;
+    color:var(--ink);max-width:18ch;
+  }
+  .bigquote em{font-style:normal;color:var(--rust)}
+  .bigquote .qt-mark{color:var(--teal)}
+  .bigquote-cite{
+    font-family:var(--display);text-transform:uppercase;letter-spacing:2px;font-size:13px;
+    color:var(--ink-subtle);margin-top:26px;
+  }
+
+  /* ---------- services (list) ---------- */
+  .svc-list{border-top:2px solid var(--ink)}
+  .svc{
+    border-bottom:1.5px solid var(--ink);padding:24px 0;
+    display:grid;grid-template-columns:1fr;gap:8px;align-items:baseline;
+  }
+  @media(min-width:760px){.svc{grid-template-columns:auto 1fr auto;gap:28px}}
+  .svc .sv-no{font-family:var(--display);font-size:14px;letter-spacing:2px;color:var(--rust)}
+  .svc .sv-name{font-family:var(--display);text-transform:uppercase;font-size:clamp(22px,3vw,30px);line-height:0.95;color:var(--ink)}
+  .svc .sv-desc{font-family:var(--serif);color:var(--ink-muted);font-size:16px;margin-top:6px;max-width:52ch}
+  .svc .sv-price{font-family:var(--display);text-transform:uppercase;letter-spacing:1.5px;font-size:14px;color:var(--teal);white-space:nowrap}
+
+  /* ---------- beliefs (numbered) ---------- */
+  .creed{display:grid;grid-template-columns:1fr;gap:0}
+  @media(min-width:760px){.creed{grid-template-columns:1fr 1fr}}
+  .creed-item{
+    border:1.5px solid var(--ink);margin:-0.75px;padding:26px 26px 28px;
+    display:flex;gap:18px;background:var(--canvas);
+  }
+  .creed-item .cr-no{font-family:var(--display);font-size:38px;line-height:0.8;color:var(--rust);flex:none}
+  .creed-item:nth-child(2) .cr-no,.creed-item:nth-child(3) .cr-no{color:var(--teal)}
+  .creed-item .cr-head{font-family:var(--display);text-transform:uppercase;font-size:19px;letter-spacing:0.5px;line-height:1;color:var(--ink)}
+  .creed-item .cr-body{font-family:var(--serif);color:var(--ink-muted);font-size:16px;margin-top:10px}
+
+  /* ---------- currently building (now block) ---------- */
+  .now-block{
+    border:2px solid var(--ink);background:var(--surface);
+    box-shadow:10px 10px 0 var(--mustard);padding:30px 28px;
+  }
+  body.no-photos .now-block{box-shadow:10px 10px 0 var(--teal)}
+  .now-head{font-family:var(--display);text-transform:uppercase;letter-spacing:2px;font-size:13px;color:var(--rust);margin-bottom:18px;display:flex;align-items:center;gap:12px}
+  .now-head::after{content:"";flex:1;height:2px;background:var(--ink)}
+  .now-list{list-style:none;display:grid;grid-template-columns:1fr;gap:16px}
+  @media(min-width:680px){.now-list{grid-template-columns:1fr 1fr}}
+  .now-list li{display:flex;gap:12px;align-items:baseline}
+  .now-list .nw-dot{font-family:var(--display);color:var(--teal);font-size:18px;flex:none;line-height:1}
+  .now-list .nw-txt{font-family:var(--serif);color:var(--ink-muted);font-size:16px}
+  .now-list .nw-txt strong{font-weight:500;color:var(--ink);font-style:normal}
+
+  /* ---------- motion ---------- */
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease, transform .6s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.reveal{opacity:1 !important;transform:none !important;transition:none}}
+
+  /* ---------- photo toggle contract ---------- */
+  .u-fallback{display:none !important}
+  body.no-photos .u-photo{display:none !important}
+  body.no-photos .u-fallback{display:revert !important}
+  body.no-photos .u-fallback.poster{display:grid !important}
+  body.no-photos .u-fallback.mini{display:flex !important}
+
+  .atlas-photo-toggle{position:fixed;right:16px;bottom:16px;z-index:99999;display:flex;align-items:center;gap:8px;background:rgba(20,20,22,.88);color:#fff;border-radius:999px;padding:6px 6px 6px 14px;font:600 12px/1 -apple-system,system-ui,sans-serif;box-shadow:0 8px 28px -10px rgba(0,0,0,.55)}
+  .atlas-photo-toggle button{appearance:none;border:0;cursor:pointer;font:inherit;color:#16161a;background:#fff;border-radius:999px;padding:6px 14px;min-width:46px}
+  .atlas-photo-toggle button[aria-pressed="false"]{background:#3a3a42;color:#fff}
+</style>
+</head>
+<body>
+
+  <header class="masthead">
+    <div class="wrap">
+      <span class="name">Margot Hale</span>
+      <nav aria-label="Primary">
+        <a href="#work">Work</a>
+        <a href="#story">Studio</a>
+        <a href="#services">Services</a>
+        <a href="#now">Now</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero" data-module="hero" data-variant="split_portrait">
+      <div class="wrap">
+        <div class="hero-grid">
+          <div class="reveal">
+            <p class="eyebrow">Margot Hale — Illustrator · Est. 2015</p>
+            <h1>
+              <span class="ln1">Hand-made</span><br>
+              <span class="ln2">pictures</span> for a<br>
+              <span class="ln3">screen-tired</span> world.
+            </h1>
+            <p class="lede">Editorial illustration &amp; screen-prints for art directors and publishers — drawn by hand in gouache, ink, and print.</p>
+            <div class="cta-row">
+              <a class="btn btn-solid" href="#contact">Commission work →</a>
+              <a class="btn btn-ghost" href="#work">Shop prints</a>
+            </div>
+          </div>
+
+          <div class="reveal">
+            <figure class="frame">
+              <img class="u-photo" src="portrait.webp" alt="Pop-art style illustration of a woman, hand-drawn in Margot Hale's gouache-and-ink palette." />
+              <div class="u-fallback poster" aria-hidden="true">
+                <div class="pf-top">Margot Hale · Studio Print №1</div>
+                <div class="pf-mono">MH</div>
+                <div class="pf-bot">Hand-made pictures for a screen-tired world.</div>
+              </div>
+              <figcaption class="cap"><span>Gouache &amp; Ink</span><span>Studio Print</span></figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SELECTED WORK -->
+    <section id="work" data-module="selected_work" data-variant="grid">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <span class="num">01</span>
+          <h2>Selected Work</h2>
+        </div>
+        <div class="work-grid reveal">
+
+          <article class="work tint-mustard">
+            <span class="wk-tag">Book Cover</span>
+            <div>
+              <h3 class="wk-title">The Long Field</h3>
+              <p class="wk-meta">Penguin · Gouache · 2024</p>
+            </div>
+          </article>
+
+          <article class="work illo">
+            <figure class="frame">
+              <img class="u-photo" src="portrait.webp" alt="Framed pop-art illustration re-used as a print edition piece." />
+              <div class="u-fallback mini" aria-hidden="true">
+                <span class="mn-init">MH</span>
+                <span class="mn-sub">Edition of 50 · Sold out</span>
+              </div>
+              <figcaption class="cap"><span>Screen-print</span><span>Ed. 50</span></figcaption>
+            </figure>
+          </article>
+
+          <article class="work tint-teal">
+            <span class="wk-tag">Editorial</span>
+            <div>
+              <h3 class="wk-title">Quiet Hours</h3>
+              <p class="wk-meta">Series of 6 · Ink · 2023</p>
+            </div>
+          </article>
+
+          <article class="work">
+            <span class="wk-tag">Print Shop</span>
+            <div>
+              <h3 class="wk-title">Marigold</h3>
+              <p class="wk-meta">Screen-print · Ed. 75 · Sold out</p>
+            </div>
+          </article>
+
+          <article class="work">
+            <span class="wk-tag">Book Cover</span>
+            <div>
+              <h3 class="wk-title">Salt &amp; Static</h3>
+              <p class="wk-meta">Penguin · Mixed media · 2022</p>
+            </div>
+          </article>
+
+          <article class="work tint-mustard">
+            <span class="wk-tag">Commission</span>
+            <div>
+              <h3 class="wk-title">Almanac '25</h3>
+              <p class="wk-meta">12 plates · Gouache · 2025</p>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- STORY -->
+    <section id="story" class="story" data-module="story" data-variant="magazine_longform">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <span class="num">02</span>
+          <h2>From the Studio</h2>
+        </div>
+        <div class="story-body reveal">
+          <p class="pull">"I want a picture to feel like it was made by a hand, not a feed."</p>
+          <p class="dropcap">Ten years in, I still start every job the same way: paper on the board, gouache mixed by eye, a pencil before anything goes digital. Most of the work that reaches me — book covers for Penguin, editorial commissions, the odd record sleeve — arrives because an art director wants something that looks touched, not generated.</p>
+          <div class="halftone" aria-hidden="true"></div>
+          <p>So I lean into the marks. Ink that pools. Halftone that's slightly off-register. Colour pulled from a 1970s paperback rather than a screen's idea of "vibrant." It reads warm because it <em>is</em> warm — printed editions, sold in small runs, several of them now sold out.</p>
+          <p>If you're commissioning, I work best with a brief and a deadline and the freedom to draw badly first. Prints are released a few times a year through the shop; covers and editorial I take on by the project. Either way, it ends up on paper.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- METRICS -->
+    <section id="numbers" data-module="metrics" data-variant="big_numerals">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <span class="num">03</span>
+          <h2>By the Numbers</h2>
+        </div>
+        <div class="metrics-grid reveal">
+          <div class="metric">
+            <span class="mt-num">11</span>
+            <span class="mt-label">Years at the board</span>
+            <span class="mt-note">Drawing for hire since 2015.</span>
+          </div>
+          <div class="metric">
+            <span class="mt-num">58</span>
+            <span class="mt-label">Book covers</span>
+            <span class="mt-note">Penguin, Faber, Granta &amp; more.</span>
+          </div>
+          <div class="metric">
+            <span class="mt-num">1.4k</span>
+            <span class="mt-label">Prints pulled</span>
+            <span class="mt-note">Across 19 limited editions.</span>
+          </div>
+          <div class="metric">
+            <span class="mt-num">12</span>
+            <span class="mt-label">Sold-out runs</span>
+            <span class="mt-note">Most under 80 copies each.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CREDENTIALS -->
+    <section id="credits" data-module="credentials" data-variant="pills">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <span class="num">04</span>
+          <h2>Awards &amp; Stockists</h2>
+        </div>
+        <div class="pill-set reveal">
+          <span class="pill is-rust">D&amp;AD Wood Pencil ’23</span>
+          <span class="pill">AOI Illustration Award</span>
+          <span class="pill is-teal">3×3 Annual Merit</span>
+          <span class="pill">RCA · MA Illustration</span>
+          <span class="pill is-mustard">V&amp;A Shop Editions</span>
+          <span class="pill">Magma Books, London</span>
+          <span class="pill">Printed Matter, NYC</span>
+          <span class="pill">It’s Nice That · Feature</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SELECTED QUOTES -->
+    <section id="word" data-module="selected_quotes" data-variant="large_type">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <span class="num">05</span>
+          <h2>Said of the Work</h2>
+        </div>
+        <blockquote class="reveal">
+          <p class="bigquote"><span class="qt-mark">“</span>Margot draws like the <em>ink remembers</em> being a hand.<span class="qt-mark">”</span></p>
+          <p class="bigquote-cite">— Eleanor Voss · Art Director, Penguin Press</p>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services" data-module="services" data-variant="list">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <span class="num">06</span>
+          <h2>What I Take On</h2>
+        </div>
+        <div class="svc-list reveal">
+          <div class="svc">
+            <span class="sv-no">a.</span>
+            <div>
+              <h3 class="sv-name">Book Covers</h3>
+              <p class="sv-desc">Concept to final art for jackets &amp; paperbacks. Sketch rounds, hand-painted finals, print-ready files.</p>
+            </div>
+            <span class="sv-price">From £2,400</span>
+          </div>
+          <div class="svc">
+            <span class="sv-no">b.</span>
+            <div>
+              <h3 class="sv-name">Editorial Illustration</h3>
+              <p class="sv-desc">Single images or short series for magazines and supplements. Fast turnarounds welcome.</p>
+            </div>
+            <span class="sv-price">From £650</span>
+          </div>
+          <div class="svc">
+            <span class="sv-no">c.</span>
+            <div>
+              <h3 class="sv-name">Screen-print Editions</h3>
+              <p class="sv-desc">Commissioned limited runs, hand-pulled on cotton stock, signed and numbered.</p>
+            </div>
+            <span class="sv-price">By project</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BELIEFS -->
+    <section id="creed" data-module="beliefs" data-variant="numbered">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <span class="num">07</span>
+          <h2>How I Work</h2>
+        </div>
+        <div class="creed reveal">
+          <div class="creed-item">
+            <span class="cr-no">1</span>
+            <div>
+              <h3 class="cr-head">Paper before pixels</h3>
+              <p class="cr-body">Every job starts on the board. Digital is for assembly, never for the first idea.</p>
+            </div>
+          </div>
+          <div class="creed-item">
+            <span class="cr-no">2</span>
+            <div>
+              <h3 class="cr-head">Draw badly first</h3>
+              <p class="cr-body">The freedom to make ugly sketches is where the good ones come from.</p>
+            </div>
+          </div>
+          <div class="creed-item">
+            <span class="cr-no">3</span>
+            <div>
+              <h3 class="cr-head">Keep the marks</h3>
+              <p class="cr-body">Pooled ink, off-register halftone — the hand should stay visible in the print.</p>
+            </div>
+          </div>
+          <div class="creed-item">
+            <span class="cr-no">4</span>
+            <div>
+              <h3 class="cr-head">Small runs, made well</h3>
+              <p class="cr-body">I’d rather pull fifty good prints than a thousand careless ones.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NOW -->
+    <section id="now" data-module="currently_building" data-variant="now_block">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <span class="num">08</span>
+          <h2>What I’m On Now</h2>
+        </div>
+        <div class="now-block reveal">
+          <p class="now-head">Spring 2026 · From the studio</p>
+          <ul class="now-list">
+            <li><span class="nw-dot">●</span><span class="nw-txt">Painting a <strong>12-plate almanac</strong> for a 2026 release.</span></li>
+            <li><span class="nw-dot">●</span><span class="nw-txt">Two <strong>Penguin covers</strong> in sketch rounds.</span></li>
+            <li><span class="nw-dot">●</span><span class="nw-txt">Cutting screens for a <strong>new print edition</strong> (out April).</span></li>
+            <li><span class="nw-dot">●</span><span class="nw-txt">Reading <strong>Penguin by Design</strong> for the hundredth time.</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="contact" data-module="contact" data-variant="cta_band">
+      <div class="wrap">
+        <div class="contact-block reveal">
+          <p class="eyebrow">09 — Get in touch</p>
+          <h2>Let's make<br>something <em>printed.</em></h2>
+          <p class="sub">Commissions are open for late 2026. Tell me about the project, or browse the prints currently in the shop.</p>
+          <div class="contact-links">
+            <a href="mailto:hello@margothale.com">hello@margothale.com</a>
+            <a href="#work">Print Shop →</a>
+            <a href="https://instagram.com/margot.draws" rel="noopener">Instagram @margot.draws</a>
+          </div>
+          <p class="colophon">Margot Hale · Illustration &amp; Prints · Set in Anton &amp; Spectral · Printed warm.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="atlas-photo-toggle" role="group" aria-label="示例照片 / Demo photos"><span>照片 Photos</span><button id="atlasPhotoBtn" type="button" aria-pressed="true">On</button></div>
+  <script>(function(){var b=document.getElementById('atlasPhotoBtn');if(!b)return;function set(on){document.body.classList.toggle('no-photos',!on);b.setAttribute('aria-pressed',on?'true':'false');b.textContent=on?'On':'Off';}b.addEventListener('click',function(){set(document.body.classList.contains('no-photos'));});set(true);})();</script>
+
+  <script>
+    (function(){
+      var els=document.querySelectorAll('.reveal');
+      if(!('IntersectionObserver'in window)||window.matchMedia('(prefers-reduced-motion:reduce)').matches){
+        els.forEach(function(e){e.classList.add('in');});return;
+      }
+      var io=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target);}});},{threshold:0.12});
+      els.forEach(function(e){io.observe(e);});
+    })();
+  </script>
+</body>
+</html>

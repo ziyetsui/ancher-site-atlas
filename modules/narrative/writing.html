@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>writing · specimen sheet</title>
+<style>
+:root{--bg:#ffffff;--surface:#f6f6f4;--surface-2:#efefea;--ink:#191917;--muted:#6b6b67;--subtle:#9a9a94;--accent:#2f56ff;--accent-soft:#e9eefc;--hairline:#e7e7e2;--ink-line:#191917;--ok:#1f7a44;--radius:12px;--pad:24px}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:15px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+.mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace}
+.serif{font-family:Georgia,"Times New Roman",serif}
+
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+
+:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:2px;
+  border-radius:4px;
+}
+
+/* ---------- page shell ---------- */
+.sheet{max-width:1120px;margin:0 auto;padding:40px 28px 96px}
+
+.sheet-head{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:8px 16px;
+  padding-bottom:18px;
+  border-bottom:1px solid var(--hairline);
+  margin-bottom:44px;
+}
+.sheet-head h1{
+  font-size:20px;
+  font-weight:600;
+  letter-spacing:-.01em;
+  margin:0;
+}
+.sheet-head .dot{color:var(--subtle)}
+.sheet-head .meta{color:var(--muted);font-size:13.5px}
+.sheet-head .count{
+  margin-left:auto;
+  font-size:12px;
+  color:var(--muted);
+  background:var(--surface);
+  border:1px solid var(--hairline);
+  border-radius:999px;
+  padding:4px 12px;
+}
+
+/* ---------- variant block ---------- */
+.variant{margin-bottom:52px}
+.variant-label{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:6px 12px;
+  margin-bottom:14px;
+}
+.variant-label .id{
+  font-size:13px;
+  color:var(--ink);
+  background:var(--accent-soft);
+  border:1px solid #d6e0fb;
+  border-radius:6px;
+  padding:2px 8px;
+  font-weight:500;
+}
+.variant-label .hint{color:var(--muted);font-size:13px}
+
+.stage{
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  padding:var(--pad);
+  background:var(--surface);
+}
+
+/* ---------- shared atoms ---------- */
+.eyebrow{
+  font-size:11px;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  color:var(--subtle);
+  font-weight:600;
+}
+.tag{
+  display:inline-block;
+  font-size:11.5px;
+  color:var(--muted);
+  background:var(--bg);
+  border:1px solid var(--hairline);
+  border-radius:999px;
+  padding:2px 9px;
+  line-height:1.6;
+}
+.date{color:var(--subtle);font-variant-numeric:tabular-nums}
+
+/* image slot — real images, cover-cropped */
+.photo{
+  position:relative;
+  background:var(--surface-2);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+.photo img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+/* =========================================================
+   VARIANT 1 — list
+   ========================================================= */
+.post-list{list-style:none;margin:0;padding:0}
+.post-list li{border-bottom:1px solid var(--hairline)}
+.post-list li:last-child{border-bottom:0}
+.post-row{
+  display:flex;
+  gap:16px 24px;
+  align-items:baseline;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  padding:16px 8px;
+  border-radius:8px;
+  text-decoration:none;
+  color:inherit;
+  transition:background .15s ease;
+}
+.post-row:hover{background:var(--surface-2);text-decoration:none}
+.post-main{min-width:0;flex:1 1 320px}
+.post-main h3{
+  margin:0 0 3px;
+  font-size:15.5px;
+  font-weight:600;
+  letter-spacing:-.01em;
+  color:var(--ink);
+}
+.post-main p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.45}
+.post-aside{
+  flex:0 0 auto;
+  display:flex;
+  align-items:baseline;
+  gap:12px;
+  text-align:right;
+}
+.post-aside .read{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+
+/* =========================================================
+   VARIANT 2 — cards
+   ========================================================= */
+.post-grid{
+  list-style:none;margin:0;padding:0;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  gap:20px;
+}
+.post-card{
+  display:flex;
+  flex-direction:column;
+  background:var(--bg);
+  border:1px solid var(--hairline);
+  border-radius:10px;
+  overflow:hidden;
+  transition:border-color .18s ease,transform .18s ease,box-shadow .18s ease;
+}
+.post-card:hover,.post-card:focus-within{
+  border-color:#cfcfc8;
+  transform:translateY(-2px);
+  box-shadow:0 8px 24px -16px rgba(25,25,23,.4);
+}
+.post-card .photo{aspect-ratio:16/10}
+.post-card-body{padding:16px 16px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
+.post-card-body h3{position:relative;margin:0;font-size:15.5px;font-weight:600;letter-spacing:-.01em}
+.post-card-body h3 a{color:var(--ink)}
+.post-card-body h3 a::after{content:"";position:absolute;inset:0}
+.post-card-body p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.45}
+.post-card-meta{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  margin-top:auto;padding-top:6px;
+}
+.post-card-meta .date{font-size:12.5px}
+
+/* =========================================================
+   VARIANT 3 — featured_plus_list
+   ========================================================= */
+.feat-wrap{display:grid;grid-template-columns:1.3fr 1fr;gap:28px;align-items:start}
+.feat-post{
+  display:flex;flex-direction:column;
+  background:var(--bg);
+  border:1px solid var(--hairline);
+  border-radius:12px;
+  overflow:hidden;
+}
+.feat-post .photo{aspect-ratio:16/9}
+.feat-post-body{padding:20px 20px 22px;display:flex;flex-direction:column;gap:10px}
+.feat-post-body .eyebrow{display:block}
+.feat-post-body h3{
+  font-family:Georgia,serif;
+  font-size:clamp(20px,3vw,26px);
+  line-height:1.2;
+  margin:0;
+  letter-spacing:-.01em;
+  font-weight:600;
+}
+.feat-post-body h3 a{color:var(--ink)}
+.feat-post-body .lede{color:var(--muted);font-size:14.5px;margin:0;line-height:1.5}
+.feat-post-meta{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--subtle)}
+.feat-read{display:inline-flex;align-items:center;gap:6px;font-weight:500;font-size:14px;margin-top:4px}
+.feat-read svg{width:14px;height:14px}
+
+.feat-more{display:flex;flex-direction:column;gap:0}
+.feat-more .eyebrow{display:block;margin-bottom:6px}
+.feat-more-list{list-style:none;margin:0;padding:0}
+.feat-more-list li{border-bottom:1px solid var(--hairline)}
+.feat-more-list li:last-child{border-bottom:0}
+.feat-more-item{
+  display:block;
+  padding:13px 6px;
+  border-radius:8px;
+  text-decoration:none;
+  color:inherit;
+  transition:background .15s ease;
+}
+.feat-more-item:hover{background:var(--surface-2);text-decoration:none}
+.feat-more-item h4{margin:0 0 3px;font-size:14.5px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
+.feat-more-item .sub{display:block;font-size:12.5px;color:var(--muted);line-height:1.4;margin-bottom:5px}
+.feat-more-item .row-meta{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--subtle)}
+
+@media (max-width:760px){
+  .feat-wrap{grid-template-columns:1fr}
+}
+@media (max-width:520px){
+  .sheet{padding:28px 16px 72px}
+  .stage{padding:16px}
+  .sheet-head .count{margin-left:0}
+  .post-aside{text-align:left}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header class="sheet-head">
+    <h1>writing</h1>
+    <span class="dot">·</span>
+    <span class="meta mono">category: narrative</span>
+    <span class="dot">·</span>
+    <span class="meta">Writing / blog index — 文章</span>
+    <span class="count">3 variants</span>
+  </header>
+
+  <!-- ============ VARIANT 1: list ============ -->
+  <section class="variant" aria-labelledby="v-list">
+    <div class="variant-label">
+      <span class="id mono" id="v-list">list</span>
+      <span class="hint">密集索引 — dense, scannable index, hairline dividers</span>
+    </div>
+    <div class="stage">
+      <ul class="post-list" role="list">
+
+        <li>
+          <a class="post-row" href="#p1">
+            <span class="post-main">
+              <h3>The cost of a clean slate</h3>
+              <p>Why rewriting from scratch almost never pays off — and the three times it did.</p>
+            </span>
+            <span class="post-aside">
+              <span class="date">May 2025</span>
+              <span class="read">9 min · Engineering</span>
+            </span>
+          </a>
+        </li>
+
+        <li>
+          <a class="post-row" href="#p2">
+            <span class="post-main">
+              <h3>Writing for people who won't read it</h3>
+              <p>Documentation as a courtesy to your future, more tired self.</p>
+            </span>
+            <span class="post-aside">
+              <span class="date">Apr 2025</span>
+              <span class="read">6 min · Craft</span>
+            </span>
+          </a>
+        </li>
+
+        <li>
+          <a class="post-row" href="#p3">
+            <span class="post-main">
+              <h3>A small theory of taste</h3>
+              <p>Taste isn't preference. It's the speed at which you notice something is off.</p>
+            </span>
+            <span class="post-aside">
+              <span class="date">Mar 2025</span>
+              <span class="read">7 min · Essays</span>
+            </span>
+          </a>
+        </li>
+
+        <li>
+          <a class="post-row" href="#p4">
+            <span class="post-main">
+              <h3>What I learned shipping daily for a year</h3>
+              <p>365 deploys, one outage I caused, and the habit that survived all of it.</p>
+            </span>
+            <span class="post-aside">
+              <span class="date">Feb 2025</span>
+              <span class="read">11 min · Process</span>
+            </span>
+          </a>
+        </li>
+
+        <li>
+          <a class="post-row" href="#p5">
+            <span class="post-main">
+              <h3>The interface is the apology</h3>
+              <p>Every confirmation dialog is a note from a designer who didn't trust the default.</p>
+            </span>
+            <span class="post-aside">
+              <span class="date">Jan 2025</span>
+              <span class="read">5 min · Design</span>
+            </span>
+          </a>
+        </li>
+
+        <li>
+          <a class="post-row" href="#p6">
+            <span class="post-main">
+              <h3>Notes on leaving a company you built</h3>
+              <p>Handing off the thing that used to be your whole personality.</p>
+            </span>
+            <span class="post-aside">
+              <span class="date">Dec 2024</span>
+              <span class="read">8 min · Personal</span>
+            </span>
+          </a>
+        </li>
+
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ VARIANT 2: cards ============ -->
+  <section class="variant" aria-labelledby="v-cards">
+    <div class="variant-label">
+      <span class="id mono" id="v-cards">cards</span>
+      <span class="hint">封面卡片网格 — 3-up cards with cover images</span>
+    </div>
+    <div class="stage">
+      <ul class="post-grid" role="list">
+
+        <li class="post-card">
+          <div class="photo">
+            <img loading="lazy" src="../../assets/editorial-fashion-mono.webp" alt="Black-and-white editorial fashion portrait accompanying the essay">
+          </div>
+          <div class="post-card-body">
+            <h3><a href="#c1">Dressing the part you haven't been cast in yet</a></h3>
+            <p>On style as rehearsal — choosing how to look like the person you're becoming.</p>
+            <div class="post-card-meta">
+              <span class="date">May 2025</span>
+              <span class="tag">Culture</span>
+            </div>
+          </div>
+        </li>
+
+        <li class="post-card">
+          <div class="photo">
+            <img loading="lazy" src="../../assets/illustration-couple-reading.webp" alt="Illustration of two people reading together, illustrating the essay">
+          </div>
+          <div class="post-card-body">
+            <h3><a href="#c2">Reading together, slowly</a></h3>
+            <p>What a shared book club of two taught me about attention and patience.</p>
+            <div class="post-card-meta">
+              <span class="date">Apr 2025</span>
+              <span class="tag">Essays</span>
+            </div>
+          </div>
+        </li>
+
+        <li class="post-card">
+          <div class="photo">
+            <img loading="lazy" src="../../assets/landscape-lone-figure.webp" alt="Lone figure in a wide landscape, illustrating the essay">
+          </div>
+          <div class="post-card-body">
+            <h3><a href="#c3">Going far enough to lose the signal</a></h3>
+            <p>A week off-grid, and the surprising things that came back when the notifications stopped.</p>
+            <div class="post-card-meta">
+              <span class="date">Mar 2025</span>
+              <span class="tag">Travel</span>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ VARIANT 3: featured_plus_list ============ -->
+  <section class="variant" aria-labelledby="v-featured">
+    <div class="variant-label">
+      <span class="id mono" id="v-featured">featured_plus_list</span>
+      <span class="hint">头条 + 精简列表 — one featured post + a compact list</span>
+    </div>
+    <div class="stage">
+      <div class="feat-wrap">
+
+        <article class="feat-post">
+          <div class="photo">
+            <img loading="lazy" src="../../assets/editorial-street-running.webp" alt="Runner moving through a city street, cover image for the featured essay">
+          </div>
+          <div class="feat-post-body">
+            <span class="eyebrow">Featured · Essay</span>
+            <h3 class="serif"><a href="#f1">Pace is a decision you make once a day</a></h3>
+            <p class="lede">I spent a year chasing faster splits and slower mornings at the same time. Here's what running taught me about the difference between effort and urgency — and why most of us confuse the two at work.</p>
+            <div class="feat-post-meta">
+              <span class="date">May 2025</span>
+              <span aria-hidden="true">·</span>
+              <span>12 min read</span>
+              <span aria-hidden="true">·</span>
+              <span class="tag">Health</span>
+            </div>
+            <a class="feat-read" href="#f1">
+              Read
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <div class="feat-more">
+          <span class="eyebrow">More recent</span>
+          <ul class="feat-more-list" role="list">
+
+            <li>
+              <a class="feat-more-item" href="#f2">
+                <h4>The two-minute rule, audited</h4>
+                <span class="sub">I tracked every "quick task" for a month. Almost none were quick.</span>
+                <span class="row-meta"><span class="date">Apr 2025</span><span aria-hidden="true">·</span><span>5 min</span><span class="tag">Process</span></span>
+              </a>
+            </li>
+
+            <li>
+              <a class="feat-more-item" href="#f3">
+                <h4>Quitting the productivity hobby</h4>
+                <span class="sub">When optimizing your system becomes the thing you do instead of the work.</span>
+                <span class="row-meta"><span class="date">Mar 2025</span><span aria-hidden="true">·</span><span>7 min</span><span class="tag">Essays</span></span>
+              </a>
+            </li>
+
+            <li>
+              <a class="feat-more-item" href="#f4">
+                <h4>On keeping a boring journal</h4>
+                <span class="sub">The entries that say nothing are the ones I reread the most.</span>
+                <span class="row-meta"><span class="date">Feb 2025</span><span aria-hidden="true">·</span><span>4 min</span><span class="tag">Personal</span></span>
+              </a>
+            </li>
+
+            <li>
+              <a class="feat-more-item" href="#f5">
+                <h4>Walking as a debugging tool</h4>
+                <span class="sub">Why the answer always shows up somewhere between block three and block five.</span>
+                <span class="row-meta"><span class="date">Jan 2025</span><span aria-hidden="true">·</span><span>6 min</span><span class="tag">Craft</span></span>
+              </a>
+            </li>
+
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>

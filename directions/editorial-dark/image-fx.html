@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>editorial-dark — framed photo specimen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  body{
+    margin:0;
+    background:#0c0c0e;            /* --canvas */
+    min-height:100vh;
+    display:grid;
+    place-items:center;
+    padding:28px;
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+  }
+
+  /* portrait — frontispiece in the dark (copied from index.html) */
+  .portrait{position:relative;width:100%;max-width:268px;margin:0}
+  .portrait .frame{
+    position:relative;
+    border:1px solid #26262b;       /* --hairline */
+    padding:8px;
+    background:#141417;             /* --surface */
+    border-radius:2px;             /* --rounded-sm */
+  }
+  .portrait img.u-photo{
+    display:block;width:100%;height:auto;
+    filter:grayscale(100%) contrast(1.04);
+    border-radius:1px;
+    aspect-ratio:4/5;object-fit:cover;object-position:50% 30%;
+  }
+  .portrait .cap{
+    margin-top:12px;
+    font-size:11px;letter-spacing:1.5px;text-transform:uppercase;
+    color:#6c6b66;                  /* --ink-subtle */
+  }
+  .portrait .cap .mark{color:#e0a64d} /* --accent */
+</style>
+</head>
+<body>
+  <figure class="portrait">
+    <div class="frame">
+      <img class="u-photo" src="portrait.webp" width="640" height="800"
+           alt="Black-and-white close-up portrait, film and culture critic.">
+    </div>
+    <figcaption class="cap"><span class="mark">&mdash;</span> Theodore Vance, by the window light</figcaption>
+  </figure>
+</body>
+</html>

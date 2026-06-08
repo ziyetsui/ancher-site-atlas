@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>河流以北 · 一位纪实摄影师的十年 — 久野政人</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&family=Noto+Serif+SC:wght@400;600;900&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --paper: #f4f2ec;
+    --ink: #14110d;
+    --ink-soft: #4a463e;
+    --hair: #cbc6b9;
+    --accent: #d8362a;
+    --grid-unit: clamp(16px, 3vw, 28px);
+    --serif: "Noto Serif SC", Georgia, serif;
+    --sans: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: auto; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    line-height: 1.5;
+  }
+
+  img { display: block; max-width: 100%; }
+
+  a { color: inherit; }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .wrap {
+    width: min(1280px, 92vw);
+    margin-inline: auto;
+  }
+
+  .eyebrow {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 0.72rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  /* ---------- fixed scroll progress UI ---------- */
+  .progress-rail {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    z-index: 60;
+    background: transparent;
+    pointer-events: none;
+  }
+  .progress-rail__fill {
+    height: 100%;
+    width: 100%;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+  }
+
+  .progress-meta {
+    position: fixed;
+    bottom: clamp(18px, 4vw, 40px);
+    left: clamp(18px, 4vw, 40px);
+    z-index: 60;
+    display: flex;
+    align-items: baseline;
+    gap: 0.6ch;
+    font-family: var(--sans);
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+  .progress-meta__num {
+    font-weight: 800;
+    font-size: clamp(2.6rem, 8vw, 4.2rem);
+    line-height: 0.8;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+  }
+  .progress-meta__label {
+    writing-mode: vertical-rl;
+    font-size: 0.62rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .progress-meta__pct {
+    position: fixed;
+    bottom: clamp(18px, 4vw, 40px);
+    right: clamp(18px, 4vw, 40px);
+    z-index: 60;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+
+  /* ---------- masthead ---------- */
+  .masthead {
+    min-height: 100svh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    padding-block: clamp(20px, 4vw, 40px);
+    border-bottom: 1px solid var(--hair);
+  }
+  .masthead__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    border-bottom: 1px solid var(--hair);
+    padding-bottom: 0.8rem;
+  }
+  .masthead__center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-block: clamp(28px, 6vw, 70px);
+  }
+  .masthead h1 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: clamp(3rem, 13vw, 11rem);
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+    margin: 0;
+    overflow: hidden;
+  }
+  .masthead h1 .ln { display: block; overflow: hidden; }
+  .masthead h1 .ln > span { display: inline-block; }
+  .masthead h1 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+  .masthead__sub {
+    margin-top: clamp(18px, 3vw, 34px);
+    max-width: 46ch;
+    font-family: var(--serif);
+    font-size: clamp(1rem, 2.1vw, 1.3rem);
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+  .masthead__bottom {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--grid-unit);
+    border-top: 1px solid var(--hair);
+    padding-top: 1rem;
+    font-size: 0.74rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+  }
+  .masthead__bottom > div { grid-column: span 3; }
+  .masthead__bottom dt {
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.62rem;
+    color: var(--accent);
+    margin-bottom: 0.35rem;
+  }
+  .masthead__bottom dd { margin: 0; }
+  .scroll-hint {
+    grid-column: span 3 / -1;
+    text-align: right;
+    align-self: end;
+  }
+
+  /* ---------- generic chapter scaffolding ---------- */
+  .chapter {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+  .chapter__inner {
+    width: min(1280px, 92vw);
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--grid-unit);
+    align-items: center;
+    width: 100%;
+  }
+
+  .chap-no {
+    position: absolute;
+    top: clamp(20px, 5vw, 56px);
+    left: 0;
+    width: 100%;
+  }
+  .chap-no .wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px solid var(--hair);
+    padding-bottom: 0.5rem;
+  }
+  .chap-no__idx {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: clamp(1rem, 2vw, 1.3rem);
+  }
+  .chap-no__idx span { color: var(--accent); }
+  .chap-no__title {
+    font-size: 0.68rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- CH1: pinned cross-fade gallery ---------- */
+  #ch1 .stage {
+    grid-column: 1 / 8;
+    position: relative;
+    aspect-ratio: 4 / 5;
+    background: #ded8c8;
+    border: 1px solid var(--hair);
+  }
+  #ch1 .stage figure {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+  }
+  #ch1 .stage img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: grayscale(0.1) contrast(1.04);
+  }
+  #ch1 .stage figcaption {
+    position: absolute;
+    left: 0; bottom: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 0.66rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.45rem 0.8rem;
+    border-top: 1px solid var(--hair);
+    border-right: 1px solid var(--hair);
+  }
+  #ch1 .copy {
+    grid-column: 8 / 13;
+  }
+  #ch1 .copy h2 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: clamp(1.8rem, 4.4vw, 3.4rem);
+    line-height: 1.04;
+    margin: 0.6rem 0 1.2rem;
+  }
+  .reveal-line { overflow: hidden; }
+  .reveal-line > * { display: block; }
+  #ch1 .copy p {
+    font-family: var(--serif);
+    font-size: clamp(1rem, 1.5vw, 1.18rem);
+    color: var(--ink-soft);
+    max-width: 38ch;
+    margin: 0 0 1rem;
+  }
+  .progress-dots {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1.6rem;
+  }
+  .progress-dots span {
+    width: 26px; height: 3px;
+    background: var(--hair);
+  }
+  .progress-dots span.on { background: var(--accent); }
+
+  /* ---------- CH2: pinned horizontal contact-sheet ---------- */
+  #ch2 .track {
+    display: flex;
+    gap: var(--grid-unit);
+    padding-left: 4vw;
+    will-change: transform;
+  }
+  #ch2 .frame {
+    flex: 0 0 auto;
+    width: min(38vw, 440px);
+  }
+  #ch2 .frame figure { margin: 0; }
+  #ch2 .frame .ph {
+    aspect-ratio: 5 / 4;
+    border: 1px solid var(--hair);
+    background: #ded8c8;
+    overflow: hidden;
+  }
+  #ch2 .frame img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: grayscale(0.15) contrast(1.05);
+  }
+  #ch2 .frame figcaption {
+    margin-top: 0.6rem;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    border-top: 1px solid var(--hair);
+    padding-top: 0.45rem;
+  }
+  #ch2 .frame figcaption b { color: var(--accent); font-weight: 600; }
+  #ch2 .lead {
+    flex: 0 0 auto;
+    width: min(60vw, 520px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-right: 2vw;
+  }
+  #ch2 .lead h2 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: clamp(2rem, 6vw, 4.6rem);
+    line-height: 0.98;
+    margin: 0.4rem 0 1rem;
+  }
+  #ch2 .lead p {
+    font-family: var(--serif);
+    color: var(--ink-soft);
+    font-size: clamp(1rem, 1.6vw, 1.2rem);
+    max-width: 34ch;
+    margin: 0;
+  }
+  #ch2 .horiz-hint {
+    margin-top: 1.4rem;
+    font-size: 0.66rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  /* ---------- CH3: pinned typographic statement, scrubbed words ---------- */
+  #ch3 { background: var(--ink); color: var(--paper); }
+  #ch3 .chap-no .wrap { border-color: rgba(244,242,236,0.2); }
+  #ch3 .chap-no__title { color: rgba(244,242,236,0.6); }
+  #ch3 .statement {
+    grid-column: 1 / 13;
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: clamp(1.8rem, 6.2vw, 5.4rem);
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    max-width: 18ch;
+  }
+  #ch3 .statement .w {
+    display: inline-block;
+    opacity: 0.16;
+  }
+  #ch3 .statement em { font-style: normal; color: var(--accent); }
+  #ch3 .credit {
+    grid-column: 9 / 13;
+    margin-top: clamp(28px, 5vw, 60px);
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(244,242,236,0.55);
+    align-self: end;
+  }
+
+  /* ---------- CH4: pinned split — text columns scroll past a held image ---------- */
+  #ch4 .pin-fig {
+    grid-column: 1 / 6;
+    position: relative;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    border: 1px solid var(--hair);
+    background: #ded8c8;
+  }
+  #ch4 .pin-fig img {
+    width: 100%; height: 110%;
+    object-fit: cover;
+    filter: grayscale(0.2) contrast(1.06);
+  }
+  #ch4 .pin-fig .tag {
+    position: absolute;
+    top: 0; right: 0;
+    background: var(--accent);
+    color: var(--paper);
+    font-size: 0.6rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.7rem;
+  }
+  #ch4 .feed {
+    grid-column: 7 / 13;
+  }
+  #ch4 .feed h2 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: clamp(1.8rem, 4vw, 3.2rem);
+    line-height: 1.05;
+    margin: 0 0 1.4rem;
+  }
+  #ch4 .note {
+    border-top: 1px solid var(--hair);
+    padding: 1.1rem 0;
+    display: grid;
+    grid-template-columns: 4ch 1fr;
+    gap: var(--grid-unit);
+  }
+  #ch4 .note .yr {
+    font-family: var(--sans);
+    font-weight: 800;
+    color: var(--accent);
+    font-size: 0.9rem;
+    font-variant-numeric: tabular-nums;
+  }
+  #ch4 .note p {
+    margin: 0;
+    font-family: var(--serif);
+    color: var(--ink-soft);
+    font-size: clamp(0.96rem, 1.4vw, 1.12rem);
+  }
+  #ch4 .note p b { color: var(--ink); font-weight: 600; }
+
+  /* ---------- colophon ---------- */
+  .colophon {
+    border-top: 2px solid var(--ink);
+    padding-block: clamp(40px, 8vw, 120px);
+  }
+  .colophon__grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--grid-unit);
+    align-items: end;
+  }
+  .colophon h2 {
+    grid-column: 1 / 9;
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: clamp(2.2rem, 7vw, 6rem);
+    line-height: 0.96;
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+  .colophon h2 em { font-style: normal; color: var(--accent); }
+  .colophon__meta {
+    grid-column: 9 / 13;
+    font-size: 0.74rem;
+    color: var(--ink-soft);
+  }
+  .colophon__meta dt {
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.6rem;
+    color: var(--accent);
+    margin-top: 1rem;
+  }
+  .colophon__meta dd { margin: 0.2rem 0 0; }
+
+  /* responsive */
+  @media (max-width: 880px) {
+    .masthead__bottom > div { grid-column: span 6; }
+    .scroll-hint { grid-column: span 12; text-align: left; }
+    #ch1 .stage { grid-column: 1 / 13; }
+    #ch1 .copy { grid-column: 1 / 13; margin-top: 1.4rem; }
+    #ch4 .pin-fig { grid-column: 1 / 13; aspect-ratio: 16/10; }
+    #ch4 .feed { grid-column: 1 / 13; margin-top: 1.4rem; }
+    #ch3 .statement { font-size: clamp(1.6rem, 8vw, 3rem); }
+    #ch3 .credit { grid-column: 1 / 13; }
+    .colophon h2, .colophon__meta { grid-column: 1 / 13; }
+    .colophon__meta { margin-top: 1.4rem; }
+    #ch2 .frame { width: 72vw; }
+    #ch2 .lead { width: 86vw; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- fixed scroll progress UI -->
+  <div class="progress-rail" aria-hidden="true"><div class="progress-rail__fill" id="railFill"></div></div>
+  <div class="progress-meta" aria-hidden="true">
+    <span class="progress-meta__num" id="chapNum">00</span>
+    <span class="progress-meta__label" id="chapLabel">序章 / Prologue</span>
+  </div>
+  <div class="progress-meta__pct" id="pctReadout">0%</div>
+
+  <!-- ===== MASTHEAD ===== -->
+  <header class="masthead">
+    <div class="wrap masthead__top">
+      <span>久野政人 · KUNO MASATO</span>
+      <span>纪实摄影 / 长卷专题</span>
+      <span>2014 — 2024</span>
+    </div>
+
+    <div class="wrap masthead__center">
+      <p class="eyebrow" id="mastEyebrow">十年长卷 · A Decade Along The River</p>
+      <h1>
+        <span class="ln"><span>河流</span></span>
+        <span class="ln"><span>以<em>北</em></span></span>
+      </h1>
+      <p class="masthead__sub" id="mastSub">
+        十年里，我沿着同一条向北的河流往返三十一次。这是一份关于退潮的村庄、
+        被雪覆盖的渡口，以及那些仍未离开的人的影像记录。
+      </p>
+    </div>
+
+    <dl class="wrap masthead__bottom">
+      <div><dt>媒介</dt><dd>120 中画幅 · 黑白银盐</dd></div>
+      <div><dt>地点</dt><dd>北海道 · 石狩平原</dd></div>
+      <div><dt>底片</dt><dd>1,184 卷 / 已编选 96 帧</dd></div>
+      <div class="scroll-hint"><dt>导览</dt><dd>向下滚动开始 ↓</dd></div>
+    </dl>
+  </header>
+
+  <!-- ===== CHAPTER 1 : pinned cross-fade ===== -->
+  <section class="chapter" id="ch1" aria-label="第一章 渡口">
+    <div class="chap-no"><div class="wrap">
+      <span class="chap-no__idx"><span>01</span> / 04</span>
+      <span class="chap-no__title">渡口 · The Crossing</span>
+    </div></div>
+
+    <div class="chapter__inner">
+      <div class="stage" id="ch1stage" aria-label="渡口系列影像，随滚动交叉淡入">
+        <figure class="slide" data-i="0">
+          <img src="/assets/bw-man-river-blur.webp" alt="清晨薄雾中一名男子站在河岸，身影模糊" />
+          <figcaption>清晨 05:40 · 等渡的人</figcaption>
+        </figure>
+        <figure class="slide" data-i="1">
+          <img src="/assets/bw-man-river-bokeh.webp" alt="河面散景中的男子背影" />
+          <figcaption>河面散景 · 第十九次往返</figcaption>
+        </figure>
+        <figure class="slide" data-i="2">
+          <img src="/assets/bw-man-river-faded.webp" alt="褪色的河岸影像，男子远去" />
+          <figcaption>褪色的下午 · 渡船停摆那年</figcaption>
+        </figure>
+        <figure class="slide" data-i="3">
+          <img src="/assets/bw-corridor-prayer.webp" alt="昏暗走廊里一个祈祷的身影" />
+          <figcaption>渡口神社 · 无人的祈愿</figcaption>
+        </figure>
+      </div>
+
+      <div class="copy">
+        <p class="eyebrow">第一章 · 01</p>
+        <h2 class="reveal-line"><span>河没有变窄，<br />是渡船先消失了。</span></h2>
+        <p class="reveal-p">2014 年我第一次到这里时，渡口每天往返十二班。到第十九次往返，剩下四班；
+          到那个停摆的冬天，只剩岸边一块褪色的时刻表。</p>
+        <p class="reveal-p">我把同一个等渡的人拍了整整十年。他从不问我为什么留下，
+          我也从不问他为什么不走。</p>
+        <div class="progress-dots" id="ch1dots" aria-hidden="true">
+          <span class="on"></span><span></span><span></span><span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CHAPTER 2 : pinned fake-horizontal contact sheet ===== -->
+  <section class="chapter" id="ch2" aria-label="第二章 接触印样">
+    <div class="chap-no"><div class="wrap">
+      <span class="chap-no__idx"><span>02</span> / 04</span>
+      <span class="chap-no__title">接触印样 · Contact Sheet</span>
+    </div></div>
+
+    <div class="track" id="ch2track">
+      <div class="lead">
+        <p class="eyebrow">第二章 · 02</p>
+        <h2>九十六帧<br />里的<em style="font-style:normal;color:var(--accent)">十年</em></h2>
+        <p>这是从一千一百多卷底片里编选出的横向接触印样。继续向下滚动，让它们横向走过你眼前。</p>
+        <p class="horiz-hint">向下滚动 → 横向移动</p>
+      </div>
+
+      <figure class="frame">
+        <div class="ph"><img src="/assets/bw-portrait-closeup.webp" alt="渡口老人的特写肖像" /></div>
+        <figcaption><span>佐藤一郎 · 78岁</span><b>2015</b></figcaption>
+      </figure>
+      <figure class="frame">
+        <div class="ph"><img src="/assets/doc-soviet-street.webp" alt="冬日街道上的行人剪影" /></div>
+        <figcaption><span>雪后的商店街</span><b>2017</b></figcaption>
+      </figure>
+      <figure class="frame">
+        <div class="ph"><img src="/assets/landscape-lone-figure.webp" alt="开阔雪原中孤独的一个身影" /></div>
+        <figcaption><span>平原上的一个人</span><b>2019</b></figcaption>
+      </figure>
+      <figure class="frame">
+        <div class="ph"><img src="/assets/landscape-solitary-bw.webp" alt="黑白旷野中孤立的剪影" /></div>
+        <figcaption><span>最后一班渡船</span><b>2021</b></figcaption>
+      </figure>
+      <figure class="frame">
+        <div class="ph"><img src="/assets/bw-face-mosaic.webp" alt="由许多面孔拼成的肖像马赛克" /></div>
+        <figcaption><span>留下来的人们</span><b>2024</b></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ===== CHAPTER 3 : pinned word-by-word statement (scrubbed) ===== -->
+  <section class="chapter" id="ch3" aria-label="第三章 自述">
+    <div class="chap-no"><div class="wrap">
+      <span class="chap-no__idx"><span>03</span> / 04</span>
+      <span class="chap-no__title">自述 · Statement</span>
+    </div></div>
+
+    <div class="chapter__inner">
+      <p class="statement" id="ch3stmt" data-text="拍照不是为了留住，而是为了证明——某个早晨，这里确实有人在等。">拍照不是为了留住，而是为了证明——某个早晨，这里确实有人在等。</p>
+      <p class="credit">— 久野政人，写于第三十一次往返的归途</p>
+    </div>
+  </section>
+
+  <!-- ===== CHAPTER 4 : pinned image, scrolling annotation feed ===== -->
+  <section class="chapter" id="ch4" aria-label="第四章 年表">
+    <div class="chap-no"><div class="wrap">
+      <span class="chap-no__idx"><span>04</span> / 04</span>
+      <span class="chap-no__title">年表 · Fieldnotes</span>
+    </div></div>
+
+    <div class="chapter__inner">
+      <figure class="pin-fig" id="ch4fig">
+        <img src="/assets/bw-man-river-faded.webp" alt="褪色河岸边的男子，作为年表的固定底图" />
+        <span class="tag">主线人物 · 等渡的人</span>
+      </figure>
+
+      <div class="feed">
+        <h2 class="reveal-line"><span>十年里发生过的事</span></h2>
+        <div class="note"><span class="yr">2014</span><p><b>第一次往返。</b>渡口每天十二班。我在岸边支起三脚架，被当成测水位的工人。</p></div>
+        <div class="note"><span class="yr">2016</span><p>河上结了少见的整片薄冰。<b>那天没有一艘船开。</b>我第一次拍到他独自坐了一整个上午。</p></div>
+        <div class="note"><span class="yr">2019</span><p>渡口公司贴出停运公告。<b>剩下四班。</b>商店街的灯一盏盏熄掉，他还在原来的位置。</p></div>
+        <div class="note"><span class="yr">2021</span><p><b>最后一班渡船。</b>船家鞠了三次躬。我没有按快门——那一刻不该属于相机。</p></div>
+        <div class="note"><span class="yr">2024</span><p>第三十一次往返。渡口成了观光牌子。<b>他仍然每天清晨五点四十到岸边，</b>看一条没有船的河。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== COLOPHON ===== -->
+  <footer class="colophon">
+    <div class="wrap colophon__grid">
+      <h2>河流仍然<br /><em>向北</em>。</h2>
+      <dl class="colophon__meta">
+        <dt>专题</dt><dd>《河流以北》长卷摄影集</dd>
+        <dt>出版</dt><dd>石狩独立出版 · 2025 春</dd>
+        <dt>联系</dt><dd>studio@kuno-masato.jp</dd>
+        <dt>署名</dt><dd>© 久野政人 / KUNO MASATO</dd>
+      </dl>
+    </div>
+  </footer>
+
+  <!-- ===== GSAP (gsap core first, then plugins, then register) ===== -->
+  <script src="/vendor/gsap/gsap.min.js"></script>
+  <script src="/vendor/gsap/ScrollTrigger.min.js"></script>
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    // ----- global scroll progress UI (always on, transform/width only) -----
+    const railFill = document.getElementById("railFill");
+    const pctReadout = document.getElementById("pctReadout");
+    const chapNum = document.getElementById("chapNum");
+    const chapLabel = document.getElementById("chapLabel");
+
+    const CHAPTERS = [
+      { sel: "#ch1", num: "01", label: "渡口 / Crossing" },
+      { sel: "#ch2", num: "02", label: "印样 / Contact" },
+      { sel: "#ch3", num: "03", label: "自述 / Statement" },
+      { sel: "#ch4", num: "04", label: "年表 / Fieldnotes" },
+    ];
+
+    ScrollTrigger.create({
+      trigger: document.body,
+      start: "top top",
+      end: "bottom bottom",
+      onUpdate: (self) => {
+        railFill.style.transform = "scaleX(" + self.progress + ")";
+        pctReadout.textContent = Math.round(self.progress * 100) + "%";
+      },
+    });
+
+    // chapter index readout — flips the big number/label as each chapter enters
+    CHAPTERS.forEach((c, i) => {
+      ScrollTrigger.create({
+        trigger: c.sel,
+        start: "top 60%",
+        end: "bottom 40%",
+        onToggle: (self) => {
+          if (self.isActive) {
+            chapNum.textContent = c.num;
+            chapLabel.textContent = c.label;
+          }
+        },
+      });
+    });
+    // reset to prologue when scrolled back to top
+    ScrollTrigger.create({
+      trigger: ".masthead",
+      start: "top 60%",
+      end: "bottom 50%",
+      onToggle: (self) => {
+        if (self.isActive) {
+          chapNum.textContent = "00";
+          chapLabel.textContent = "序章 / Prologue";
+        }
+      },
+    });
+
+    // ----- responsive + reduced-motion via matchMedia -----
+    const mm = gsap.matchMedia();
+
+    // FULL MOTION (motion allowed) ---------------------------------------
+    mm.add("(prefers-reduced-motion: no-preference)", () => {
+
+      // masthead intro
+      const introTl = gsap.timeline({ defaults: { ease: "power3.out" } });
+      introTl
+        .from(".masthead h1 .ln > span", { yPercent: 115, duration: 1.1, stagger: 0.12 })
+        .from("#mastEyebrow", { y: 14, opacity: 0, duration: 0.6 }, "-=0.7")
+        .from("#mastSub", { y: 18, opacity: 0, duration: 0.7 }, "-=0.5")
+        .from(".masthead__bottom > div", { y: 16, opacity: 0, duration: 0.5, stagger: 0.08 }, "-=0.4")
+        .from(".masthead__top > span", { opacity: 0, duration: 0.5, stagger: 0.06 }, 0.1);
+
+      // == CHAPTER 1 : PIN + SCRUB cross-fade gallery ==
+      const slides = gsap.utils.toArray("#ch1 .slide");
+      const dots = gsap.utils.toArray("#ch1dots span");
+      gsap.set(slides, { autoAlpha: 0, scale: 1.06 });
+      gsap.set(slides[0], { autoAlpha: 1, scale: 1 });
+
+      const ch1tl = gsap.timeline({
+        defaults: { ease: "none" },
+        scrollTrigger: {
+          trigger: "#ch1",
+          start: "top top",
+          end: "+=320%",
+          pin: true,
+          scrub: 1,
+          onUpdate: (self) => {
+            const active = Math.min(slides.length - 1, Math.floor(self.progress * slides.length));
+            dots.forEach((d, i) => d.classList.toggle("on", i === active));
+          },
+        },
+      });
+      for (let i = 1; i < slides.length; i++) {
+        ch1tl
+          .to(slides[i - 1], { autoAlpha: 0, scale: 1.04, duration: 0.5 }, i)
+          .fromTo(slides[i], { autoAlpha: 0, scale: 1.08 }, { autoAlpha: 1, scale: 1, duration: 0.6 }, i);
+      }
+
+      // ch1 copy reveal (discrete, not scrubbed)
+      gsap.from("#ch1 .reveal-line > *", {
+        yPercent: 110, duration: 0.9, ease: "power3.out",
+        scrollTrigger: { trigger: "#ch1 .copy", start: "top 75%" },
+      });
+      gsap.from("#ch1 .reveal-p", {
+        y: 22, opacity: 0, duration: 0.7, stagger: 0.15, ease: "power2.out",
+        scrollTrigger: { trigger: "#ch1 .copy", start: "top 70%" },
+      });
+
+      // == CHAPTER 2 : PIN + fake-horizontal contact sheet (scrub) ==
+      const track = document.getElementById("ch2track");
+      gsap.to(track, {
+        x: () => -(track.scrollWidth - window.innerWidth),
+        ease: "none",
+        scrollTrigger: {
+          trigger: "#ch2",
+          start: "top top",
+          end: () => "+=" + (track.scrollWidth - window.innerWidth + window.innerHeight * 0.4),
+          pin: true,
+          scrub: 1,
+          invalidateOnRefresh: true,
+        },
+      });
+
+      // == CHAPTER 3 : PIN + word-by-word reveal (scrubbed) ==
+      const stmt = document.getElementById("ch3stmt");
+      const text = stmt.getAttribute("data-text");
+      stmt.innerHTML = text.split("").map((ch) =>
+        ch.trim() === "" ? ch : '<span class="w">' + ch + "</span>"
+      ).join("");
+      // accent the word 等 (waiting)
+      const words = gsap.utils.toArray("#ch3 .w");
+      gsap.timeline({
+        scrollTrigger: {
+          trigger: "#ch3",
+          start: "top top",
+          end: "+=180%",
+          pin: true,
+          scrub: 0.6,
+        },
+      }).to(words, { opacity: 1, color: (i) => (i >= words.length - 2 ? "var(--accent)" : "var(--paper)"), stagger: 0.5, ease: "none", duration: words.length * 0.5 });
+
+      gsap.from("#ch3 .credit", {
+        opacity: 0, y: 20, duration: 0.6, ease: "power2.out",
+        scrollTrigger: { trigger: "#ch3", start: "top 30%" },
+      });
+
+      // == CHAPTER 4 : PIN image, scrub parallax, annotation feed reveals ==
+      ScrollTrigger.create({
+        trigger: "#ch4 .pin-fig",
+        start: "top 12%",
+        endTrigger: "#ch4 .feed",
+        end: "bottom 80%",
+        pin: true,
+        pinSpacing: false,
+      });
+      gsap.fromTo("#ch4 .pin-fig img", { yPercent: 0 }, {
+        yPercent: -9, ease: "none",
+        scrollTrigger: { trigger: "#ch4", start: "top top", end: "bottom bottom", scrub: true },
+      });
+      gsap.from("#ch4 .reveal-line > *", {
+        yPercent: 110, duration: 0.8, ease: "power3.out",
+        scrollTrigger: { trigger: "#ch4 .feed", start: "top 75%" },
+      });
+      gsap.utils.toArray("#ch4 .note").forEach((note) => {
+        gsap.from(note, {
+          opacity: 0, x: 40, duration: 0.7, ease: "power2.out",
+          scrollTrigger: { trigger: note, start: "top 82%", toggleActions: "play none none reverse" },
+        });
+      });
+
+      // colophon
+      gsap.from(".colophon h2", {
+        yPercent: 40, opacity: 0, duration: 1, ease: "power3.out",
+        scrollTrigger: { trigger: ".colophon", start: "top 80%" },
+      });
+      gsap.from(".colophon__meta dd", {
+        opacity: 0, y: 16, duration: 0.5, stagger: 0.08, ease: "power2.out",
+        scrollTrigger: { trigger: ".colophon", start: "top 70%" },
+      });
+
+      return () => {
+        // matchMedia auto-reverts tweens & ScrollTriggers created in here
+      };
+    });
+
+    // REDUCED MOTION : render final states, no scrub / pin / loops ---------
+    mm.add("(prefers-reduced-motion: reduce)", () => {
+      gsap.set("#ch1 .slide", { autoAlpha: 0 });
+      gsap.set("#ch1 .slide[data-i='0']", { autoAlpha: 1 });
+      // build statement spans at full opacity
+      const stmt = document.getElementById("ch3stmt");
+      const text = stmt.getAttribute("data-text");
+      stmt.innerHTML = text.split("").map((ch) =>
+        ch.trim() === "" ? ch : '<span class="w" style="opacity:1">' + ch + "</span>"
+      ).join("");
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "id": "smooth-editorial",
+  "name_cn": "顺滑杂志",
+  "name_en": "Smooth Editorial",
+  "style": "奢华生活方式季刊：Fraunces 衬线大标题、暖奶油底配墨色与赭石红、整版大图与编辑式排版，顺滑滚动如翻阅纸刊。",
+  "plugins": ["ScrollSmoother", "ScrollTrigger", "data-speed 视差", "pinned 区段", "scrub 时间线", "matchMedia 响应式/降级"],
+  "focus": "演示 ScrollSmoother 包裹整页的顺滑滚动 + data-speed 多层视差，配合 ScrollTrigger 的揭示、钉住引言与进度条。",
+  "prompt": "做一个奢华生活方式季刊《MERIDIAN 子午线》的整页 demo，风格是高级杂志：暖奶油背景(#f4ece0)、墨色正文、赭石红与铁锈红点缀，标题用 Fraunces 衬线、超大字号与斜体强调，正文用 Inter/苹方，留白克制、网格编辑感。顶部固定极小刊头条(用 mix-blend 反色)与一条滚动进度细红条。整页必须用 ScrollSmoother 的 #smooth-wrapper>#smooth-content 结构包裹，开启 effects 顺滑滚动。区段顺序：①满屏刊头 hero——整版人像背景图作慢速 data-speed 视差(<1)、巨型标题作快速视差(>1)、kicker 与封面信息淡入上移、底部细线滚动提示循环呼吸。②卷首语 standfirst——巨大衬线句子逐词从下方擦入(保留斜体强调)。③两块图文专题 spread(左右交替)——大图带 data-speed 视差且随滚动轻微 scale 回正，正文首字下沉(dropcap)、元信息行随滚动揭示。④钉住的整屏引言区(pin+scrub)——暮色城市背景图视差，斜体大引言随滚动逐词由模糊浮现到清晰。⑤三栏目录卡片 triptych——配图视差、卡片错落揭示。⑥无限横向跑马灯(中英混排格言，离屏暂停)。⑦主编结语 desk(人像视差+签名)。⑧大字脚注 footer。所有揭示用 transform/opacity，ScrollTrigger 写完整 start/end。用 gsap.matchMedia() 处理 prefers-reduced-motion：reduced 时不启用 ScrollSmoother、关闭视差/循环/scrub，直接渲染终态。文案真实可信(旅居作家、京都陶艺、慢生活专题)，响应式 360–1440，语义化、可访问。图片全部用本地 webp。"
+}

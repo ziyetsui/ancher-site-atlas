@@ -1,0 +1,713 @@
+{
+  "directions": [
+    {
+      "id": "editorial",
+      "name_cn": "编辑排版 · 杂志感",
+      "name_en": "Editorial",
+      "lineage": "typographic",
+      "accent": "#9a3412",
+      "best_for": [
+        "writer",
+        "founder",
+        "researcher"
+      ],
+      "description": "A typography-led canvas that reads like a printed essay. Oversized serif headlines with tight negative tracking, a single asymmetric column that breathes, generous margins, and one restrained rust accent used only on links and the lede. Confident, literary, unhurried — the page feels edited, not assembled. Hierarchy comes from type scale and whitespace, never from boxes or cards.",
+      "swatches": {
+        "canvas": "#faf8f4",
+        "surface": "#f3efe7",
+        "ink": "#1a1815",
+        "ink-muted": "#5c574e",
+        "accent": "#9a3412",
+        "hairline": "#e3ddd0"
+      },
+      "paths": {
+        "live": "../directions/editorial/index.html",
+        "prompt": "../directions/editorial/prompt.md",
+        "design": "../directions/editorial/DESIGN.md",
+        "sample": "../directions/editorial/sample.png"
+      }
+    },
+    {
+      "id": "editorial-dark",
+      "name_cn": "暗色编辑 · Editorial Dark",
+      "name_en": "Editorial Dark",
+      "lineage": "typographic",
+      "accent": "#e0a64d",
+      "best_for": [
+        "writer",
+        "critic",
+        "founder"
+      ],
+      "description": "A near-black magazine spread that reads like a midnight essay. Light serif display set large with tight tracking carries the whole page; a single warm amber accent flickers on links, the lede, and rule-marks — nowhere else. Restrained to the point of austerity: no cards, no boxes, no gradients. Ink on charcoal, a hairline grid implied by margins, and one portrait that sits in the dark like a frontispiece. Hierarchy is type scale and silence, not surface.",
+      "swatches": {
+        "canvas": "#0c0c0e",
+        "surface": "#141417",
+        "ink": "#ededec",
+        "ink-muted": "#a3a29c",
+        "accent": "#e0a64d",
+        "hairline": "#26262b"
+      },
+      "paths": {
+        "live": "../directions/editorial-dark/index.html",
+        "prompt": "../directions/editorial-dark/prompt.md",
+        "design": "../directions/editorial-dark/DESIGN.md",
+        "sample": "../directions/editorial-dark/sample.png"
+      }
+    },
+    {
+      "id": "newsprint",
+      "name_cn": "报纸版式 · Newsprint",
+      "name_en": "Newsprint",
+      "lineage": "typographic",
+      "accent": "#c0241f",
+      "best_for": [
+        "journalist",
+        "writer",
+        "researcher"
+      ],
+      "description": "A broadsheet newspaper rendered for the screen. Newsprint off-white stock, jet-black ink, and a single arterial red used only for kickers and the masthead rule. Old-style serif headlines sit above a true multi-column grid divided by hairline rules; the lead story opens with a drop cap and runs in justified columns like a printed front page. Hierarchy comes from rules, column width, and type scale — never boxes, cards, or shadows. The page reads like Saturday's paper: dense, authoritative, built to be skimmed then read.",
+      "swatches": {
+        "canvas": "#f5f2ea",
+        "surface": "#efe9dd",
+        "ink": "#1a1714",
+        "ink-muted": "#4d4740",
+        "accent": "#c0241f",
+        "hairline": "#cdc4b3"
+      },
+      "paths": {
+        "live": "../directions/newsprint/index.html",
+        "prompt": "../directions/newsprint/prompt.md",
+        "design": "../directions/newsprint/DESIGN.md",
+        "sample": "../directions/newsprint/sample.png"
+      }
+    },
+    {
+      "id": "swiss-minimal",
+      "name_cn": "瑞士极简 · 网格",
+      "name_en": "Swiss Minimal",
+      "lineage": "minimal",
+      "accent": "#1452ff",
+      "best_for": [
+        "consultant",
+        "executive",
+        "pm"
+      ],
+      "description": "A precise, grid-driven canvas in the International Typographic tradition. White space is the material; hairline rules and a strict columnar grid do the structural work. Neutral grotesque sans throughout, set tight and small, with one electric-blue accent reserved for links and a single CTA. Numbers, labels, and dates are aligned to the grid. Reads as calm, exact, credible — the visual language of someone who reduces complexity for a living.",
+      "swatches": {
+        "canvas": "#ffffff",
+        "surface": "#f6f6f4",
+        "ink": "#0d0d0d",
+        "ink-muted": "#525252",
+        "accent": "#1452ff",
+        "hairline": "#e2e2dd"
+      },
+      "paths": {
+        "live": "../directions/swiss-minimal/index.html",
+        "prompt": "../directions/swiss-minimal/prompt.md",
+        "design": "../directions/swiss-minimal/DESIGN.md",
+        "sample": "../directions/swiss-minimal/sample.png"
+      }
+    },
+    {
+      "id": "neo-saas",
+      "name_cn": "现代产品 · Modern SaaS",
+      "name_en": "Neo SaaS",
+      "lineage": "minimal",
+      "accent": "#5b5bd6",
+      "best_for": [
+        "founder",
+        "pm",
+        "engineer"
+      ],
+      "description": "Modern product-marketing energy applied to a personal site. A clean grotesk on a white-and-soft-gray field, lifted by whisper-thin indigo gradients and bordered feature cards with gentle rounding. Confident but friendly — closer to a well-funded SaaS landing page than an austere Swiss grid. Hierarchy comes from badges, stat rows, and crisp card edges, not from oversized type; mono labels tag sections like a product changelog. Everything says \"this ships.\"",
+      "swatches": {
+        "canvas": "#ffffff",
+        "surface": "#f5f6f8",
+        "ink": "#16161a",
+        "ink-muted": "#52525e",
+        "accent": "#5b5bd6",
+        "hairline": "#e3e5ea"
+      },
+      "paths": {
+        "live": "../directions/neo-saas/index.html",
+        "prompt": "../directions/neo-saas/prompt.md",
+        "design": "../directions/neo-saas/DESIGN.md",
+        "sample": "../directions/neo-saas/sample.png"
+      }
+    },
+    {
+      "id": "mono-zine",
+      "name_cn": "单色杂志 · Mono Zine",
+      "name_en": "Mono Zine",
+      "lineage": "technical",
+      "accent": "#d83a2a",
+      "best_for": [
+        "writer",
+        "indie-hacker",
+        "researcher"
+      ],
+      "description": "A light paper zine rendered entirely in monospace — the page reads like a printed README run off a risograph. Ruled hairlines divide every section the way a self-published booklet rules its pages; everything aligns to a fixed character grid. Ink-black mono type on warm paper, one hot red accent for the pull-words, the now-block, and the form. Numbered margins, bracketed labels, and a small framed graphic give it a raw, hand-assembled, indie feel — NOT a glowing dark terminal. Confident, plain, made-by-a-human.",
+      "swatches": {
+        "ink": "#1a1a1a",
+        "ink-muted": "#56544e",
+        "accent": "#d83a2a"
+      },
+      "paths": {
+        "live": "../directions/mono-zine/index.html",
+        "prompt": "../directions/mono-zine/prompt.md",
+        "design": "../directions/mono-zine/DESIGN.md",
+        "sample": "../directions/mono-zine/sample.png"
+      }
+    },
+    {
+      "id": "technical-mono",
+      "name_cn": "技术等宽 · 终端",
+      "name_en": "Technical Mono",
+      "lineage": "technical",
+      "accent": "#5eead4",
+      "best_for": [
+        "engineer",
+        "researcher",
+        "founder"
+      ],
+      "description": "A dark, engineered canvas with a terminal sensibility. Monospaced display type, hard edges, hairline borders on near-black surfaces, and a single teal accent that glows like a cursor. Content is laid out like a well-kept README: section markers, monospaced labels, aligned metadata. Restrained and exact, with a faint dotted grid or scanline texture. Reads as the site of someone who builds systems — precise, low-ornament, quietly confident.",
+      "swatches": {
+        "canvas": "#0b0d10",
+        "surface": "#14171c",
+        "ink": "#e8eaed",
+        "ink-muted": "#9aa3ad",
+        "accent": "#5eead4",
+        "hairline": "#272d36"
+      },
+      "paths": {
+        "live": "../directions/technical-mono/index.html",
+        "prompt": "../directions/technical-mono/prompt.md",
+        "design": "../directions/technical-mono/DESIGN.md",
+        "sample": "../directions/technical-mono/sample.png"
+      }
+    },
+    {
+      "id": "warm-personal",
+      "name_cn": "暖意亲和 · 圆润",
+      "name_en": "Warm Personal",
+      "lineage": "warm",
+      "accent": "#c2683f",
+      "best_for": [
+        "coach",
+        "creator",
+        "founder"
+      ],
+      "description": "A warm, human canvas built on cream and clay. Soft rounded shapes, a gentle humanist serif for headlines paired with a friendly sans body, and generous rounded surfaces that feel like paper, not glass. The terracotta accent is used warmly and often — on pills, underlines, and a soft CTA — but never loud. Imagery is round-cornered and intimate. The whole page should feel like being personally welcomed: approachable, trustworthy, calm.",
+      "swatches": {
+        "canvas": "#fbf6ee",
+        "surface": "#f4ebdd",
+        "ink": "#2b2520",
+        "ink-muted": "#6b6155",
+        "accent": "#c2683f",
+        "hairline": "#e8dccb"
+      },
+      "paths": {
+        "live": "../directions/warm-personal/index.html",
+        "prompt": "../directions/warm-personal/prompt.md",
+        "design": "../directions/warm-personal/DESIGN.md",
+        "sample": "../directions/warm-personal/sample.png"
+      }
+    },
+    {
+      "id": "organic-natural",
+      "name_cn": "自然有机 · Organic Natural",
+      "name_en": "Organic Natural",
+      "lineage": "warm",
+      "accent": "#6b7a5e",
+      "best_for": [
+        "coach",
+        "writer",
+        "founder"
+      ],
+      "description": "An earthy, grounded canvas that feels grown rather than built. Cream and sand fields hold a soft humanist serif; sage green and warm clay carry the accents. Organic blob shapes sit behind a split portrait, hand-drawn botanical line accents thread the margins, and corners are generously rounded. The mood is calm, slow, and rooted — the page breathes like a retreat. Hierarchy comes from warmth, soft shapes, and air, never from hard edges or bright UI chrome.",
+      "swatches": {
+        "canvas": "#f3ede0",
+        "surface": "#ece3d2",
+        "ink": "#33312a",
+        "ink-muted": "#5f5a4d",
+        "hairline": "#ddd2bd"
+      },
+      "paths": {
+        "live": "../directions/organic-natural/index.html",
+        "prompt": "../directions/organic-natural/prompt.md",
+        "design": "../directions/organic-natural/DESIGN.md",
+        "sample": "../directions/organic-natural/sample.png"
+      }
+    },
+    {
+      "id": "playful-rounded",
+      "name_cn": "圆趣俏皮 · Playful Rounded",
+      "name_en": "Playful Rounded",
+      "lineage": "warm",
+      "accent": "#b8a6ff",
+      "best_for": [
+        "creator",
+        "educator",
+        "community"
+      ],
+      "description": "A candy-bright, bouncy canvas built for people who make learning feel like hanging out. Chunky rounded cards float on warm white, edges softened to the point of being pillowy. Sticker-style badges peel off the page, metrics live in fat color pills, and a friendly 3D character anchors a split hero. Lavender, peach and mint do the talking; nothing is sharp, nothing is shouty — just warm, confident, and a little playful. Joy comes from rounded geometry, oversized soft type, and motion that gently springs rather than slides.",
+      "swatches": {
+        "canvas": "#fffaf5",
+        "surface": "#ffffff",
+        "ink": "#2b2440",
+        "ink-muted": "#6b6480",
+        "hairline": "#f0e7df"
+      },
+      "paths": {
+        "live": "../directions/playful-rounded/index.html",
+        "prompt": "../directions/playful-rounded/prompt.md",
+        "design": "../directions/playful-rounded/DESIGN.md",
+        "sample": "../directions/playful-rounded/sample.png"
+      }
+    },
+    {
+      "id": "vibrant-gradient",
+      "name_cn": "活力渐变 · Vibrant Gradient",
+      "name_en": "Vibrant Gradient",
+      "lineage": "expressive",
+      "accent": "#d633ff",
+      "best_for": [
+        "creator",
+        "marketer",
+        "founder"
+      ],
+      "description": "An energetic, optimistic canvas built on a white field punctuated by soft aurora/mesh gradient blobs — indigo bleeding into magenta into coral. Bold rounded sans does the talking: big confident statements, oversized numerals, lots of air. Content sits inside glassy frosted cards that float over the gradient haze, with generous corner radii and gentle drop shadows. The mood is lively and human — a creator's page that feels like growth itself, never corporate, never flat. Color is the personality; restraint lives in the white space around it.",
+      "swatches": {
+        "canvas": "#ffffff",
+        "surface": "#fbfaff",
+        "ink": "#16121f",
+        "ink-muted": "#5a5470",
+        "accent": "#d633ff",
+        "hairline": "rgba(91,91,255,0.12)"
+      },
+      "paths": {
+        "live": "../directions/vibrant-gradient/index.html",
+        "prompt": "../directions/vibrant-gradient/prompt.md",
+        "design": "../directions/vibrant-gradient/DESIGN.md",
+        "sample": "../directions/vibrant-gradient/sample.png"
+      }
+    },
+    {
+      "id": "retro-print",
+      "name_cn": "复古印刷 · Retro Print",
+      "name_en": "Retro Print",
+      "lineage": "expressive",
+      "accent": "#b5532a",
+      "best_for": [
+        "illustrator",
+        "designer",
+        "writer"
+      ],
+      "description": "A 1970s printed-poster canvas: warm cream stock with a faint paper grain, condensed display headlines stacked like a vintage book jacket, and a muted earth palette of mustard, rust, teal and brown. Thin ink rules divide the page like a letterpress layout; halftone dot textures and a framed retro illustration give it the warmth of something run on a real press. Confident and hand-made — the opposite of a clean SaaS template — yet quietly composed, with the illustration doing the talking and type holding the grid.",
+      "swatches": {
+        "canvas": "#f3e9d2",
+        "surface": "#ece0c2",
+        "ink": "#2a1f16",
+        "ink-muted": "#5c4a35",
+        "accent": "#b5532a",
+        "hairline": "#cbb88e"
+      },
+      "paths": {
+        "live": "../directions/retro-print/index.html",
+        "prompt": "../directions/retro-print/prompt.md",
+        "design": "../directions/retro-print/DESIGN.md",
+        "sample": "../directions/retro-print/sample.png"
+      }
+    },
+    {
+      "id": "fashion-luxe",
+      "name_cn": "时尚大片 · Fashion Luxe",
+      "name_en": "Fashion Luxe",
+      "lineage": "editorial-image",
+      "accent": "#e0218a",
+      "best_for": [
+        "stylist",
+        "creative-director",
+        "model"
+      ],
+      "description": "A glossy fashion-magazine cover brought to the screen. Full-bleed editorial photography carries the page; an oversized Playfair masthead sits on top of the image like a Vogue logotype, kerned wide and confident. The palette is cream and ink black with a single hot magenta that detonates on one word, one rule, one CTA — never more. Work reads as a featured spread plus a tight grid of editorials; press logos and counts whisper the credentials. Mostly B&W and monochrome restraint so the one color and the one photo do all the talking. It should feel looked-at — and remembered.",
+      "swatches": {
+        "canvas": "#f7f3ee",
+        "surface": "#efe9e1",
+        "ink": "#0d0d0f",
+        "ink-muted": "#4a4a52",
+        "accent": "#e0218a",
+        "hairline": "#ddd5c9"
+      },
+      "paths": {
+        "live": "../directions/fashion-luxe/index.html",
+        "prompt": "../directions/fashion-luxe/prompt.md",
+        "design": "../directions/fashion-luxe/DESIGN.md",
+        "sample": "../directions/fashion-luxe/sample.png"
+      }
+    },
+    {
+      "id": "art-gallery",
+      "name_cn": "美术馆 · Art Gallery",
+      "name_en": "Art Gallery",
+      "lineage": "minimal",
+      "accent": "#1a1a18",
+      "best_for": [
+        "photographer",
+        "artist",
+        "designer"
+      ],
+      "description": "A page that behaves like a gallery wall, not a website. Near-white room tone, ink type, and an almost reverent amount of whitespace let full-bleed images do all the talking. Work is hung — never boxed, never carded — and labelled with tiny serif captions set the way a museum prints a wall plate. No color, no decoration, no UI chrome: hierarchy comes from scale, silence, and the rhythm of image against void. The site should feel curated, quiet, and expensive — the kind of restraint that signals the work can hold a room.",
+      "swatches": {
+        "canvas": "#fbfbf9",
+        "surface": "#f4f3ef",
+        "ink": "#1a1a18",
+        "ink-muted": "#6b6a64",
+        "accent": "#1a1a18",
+        "hairline": "#e6e4dd"
+      },
+      "paths": {
+        "live": "../directions/art-gallery/index.html",
+        "prompt": "../directions/art-gallery/prompt.md",
+        "design": "../directions/art-gallery/DESIGN.md",
+        "sample": "../directions/art-gallery/sample.png"
+      }
+    },
+    {
+      "id": "dark-luxe",
+      "name_cn": "暗夜质感 · Dark Luxe",
+      "name_en": "Dark Luxe",
+      "lineage": "expressive",
+      "accent": "#c8a24a",
+      "best_for": [
+        "executive",
+        "advisor",
+        "consultant"
+      ],
+      "description": "A black-and-gold editorial stage built for someone who closes rooms. Deep ink ground, warm gold used like brass detailing — never fill — and ivory type for the body. An oversized high-contrast serif carries the voice; a split portrait hero gives presence without shouting. Hairline gold rules separate thought from thought. Spacing is unhurried and expensive; the page feels less like a résumé and more like the cover of a private memorandum. Authority comes from restraint, contrast, and air — not from gradients or ornament.",
+      "swatches": {
+        "canvas": "#0a0a0a",
+        "surface": "#121110",
+        "ink": "#efe9dd",
+        "ink-muted": "#b6ae9e",
+        "accent": "#c8a24a",
+        "hairline": "#2a2620"
+      },
+      "paths": {
+        "live": "../directions/dark-luxe/index.html",
+        "prompt": "../directions/dark-luxe/prompt.md",
+        "design": "../directions/dark-luxe/DESIGN.md",
+        "sample": "../directions/dark-luxe/sample.png"
+      }
+    },
+    {
+      "id": "cinematic-dark",
+      "name_cn": "电影感 · Cinematic",
+      "name_en": "Cinematic Dark",
+      "lineage": "expressive",
+      "accent": "#c4b59a",
+      "best_for": [
+        "director",
+        "filmmaker",
+        "photographer"
+      ],
+      "description": "A theater goes dark and the screen takes over. Full-bleed film stills bleed edge to edge behind letterbox bars; type is thin, uppercase, and tracked wide like a title card holding for a beat. Everything is black and restrained, lit by a single warm sand accent that behaves like the one practical light left on set. No cards, no boxes, no chrome — the image is the interface, and the words arrive slow and deliberate, as if printed in the credits. Moody, expensive, held-breath quiet.",
+      "swatches": {
+        "canvas": "#0a0a0b",
+        "surface": "#111113",
+        "ink": "#f4f1ea",
+        "ink-muted": "#9a968d",
+        "accent": "#c4b59a",
+        "hairline": "#26262a"
+      },
+      "paths": {
+        "live": "../directions/cinematic-dark/index.html",
+        "prompt": "../directions/cinematic-dark/prompt.md",
+        "design": "../directions/cinematic-dark/DESIGN.md",
+        "sample": "../directions/cinematic-dark/sample.png"
+      }
+    },
+    {
+      "id": "bold-brutalist",
+      "name_cn": "张扬野性 · 粗野",
+      "name_en": "Bold Brutalist",
+      "lineage": "expressive",
+      "accent": "#1a1a1a",
+      "best_for": [
+        "designer",
+        "artist",
+        "creator"
+      ],
+      "description": "A loud, confident neo-brutalist canvas. Massive grotesque type that nearly bleeds off the edges, flat blocks of saturated color, hard black borders and offset hard shadows, and zero gradients. Layout is intentionally a little off-grid — overlapping blocks, big numerals, a marquee. High contrast and unafraid of empty acid-colored fields. Reads as the portfolio of a designer with a point of view: playful, graphic, memorable, never timid.",
+      "swatches": {
+        "canvas": "#f4f1e8",
+        "surface": "#ffffff",
+        "ink": "#0a0a0a",
+        "ink-muted": "#3d3d3d",
+        "accent": "#0a0a0a",
+        "block-acid": "#e9ff3d",
+        "block-blue": "#2b4cff",
+        "block-pink": "#ff5da2",
+        "border": "#0a0a0a"
+      },
+      "paths": {
+        "live": "../directions/bold-brutalist/index.html",
+        "prompt": "../directions/bold-brutalist/prompt.md",
+        "design": "../directions/bold-brutalist/DESIGN.md",
+        "sample": "../directions/bold-brutalist/sample.png"
+      }
+    },
+    {
+      "id": "illustration-brand",
+      "name_cn": "插画品牌 · Illustration Brand",
+      "name_en": "Illustration Brand",
+      "lineage": "illustrated",
+      "accent": "#ff5a5f",
+      "best_for": [
+        "creator",
+        "educator",
+        "founder"
+      ],
+      "description": "An illustration-rich brand-marketing canvas in the lineage of Notion, Miro, and Clay. Warm off-white ground, one confident coral brand color, and soft pastel illustration fills everywhere — spot illustrations sprinkled through every section, rounded friendly cards, pill-shaped metrics, and chunky rounded buttons. The page feels like a beloved product's marketing site: approachable, optimistic, hand-crafted but systematic. Hierarchy comes from big friendly geometric-sans headlines, generous rounding, and pools of pastel color — not from hard edges or austerity.",
+      "swatches": {
+        "canvas": "#fffdf9",
+        "surface": "#ffffff",
+        "ink": "#1f1b24",
+        "ink-muted": "#5b5660",
+        "accent": "#ff5a5f",
+        "hairline": "#efe9e2"
+      },
+      "paths": {
+        "live": "../directions/illustration-brand/index.html",
+        "prompt": "../directions/illustration-brand/prompt.md",
+        "design": "../directions/illustration-brand/DESIGN.md",
+        "sample": "../directions/illustration-brand/sample.png"
+      }
+    },
+    {
+      "id": "soft-3d-clay",
+      "name_cn": "软陶 3D · Soft 3D Clay",
+      "name_en": "Soft 3D Clay",
+      "lineage": "experimental",
+      "accent": "#ff7eb3",
+      "best_for": [
+        "creator",
+        "toy",
+        "streetwear"
+      ],
+      "description": "A claymation playground rendered entirely in CSS. Everything looks pressed from soft pastel clay — fat rounded corners, doughy extruded shapes, and layered soft-light/soft-shadow that fakes real depth without a single line of WebGL. Inset highlights make surfaces look squeezable; outset drop shadows lift cards off a milky pastel floor. Chunky rounded type sits like molded plastic. The whole page reads like a vinyl-toy shelf you want to poke: tactile, friendly, a little bouncy. Color does the heavy lifting — bubblegum pink, sky, butter, mint — never flat, always a gentle gradient so each surface catches a soft top-light. Motion is squish-and-settle, never slick.",
+      "swatches": {
+        "canvas": "#f4ecff",
+        "surface": "#fef6ff",
+        "ink": "#4a3b63",
+        "ink-muted": "#8a7aa8",
+        "accent": "#ff7eb3"
+      },
+      "paths": {
+        "live": "../directions/soft-3d-clay/index.html",
+        "prompt": "../directions/soft-3d-clay/prompt.md",
+        "design": "../directions/soft-3d-clay/DESIGN.md",
+        "sample": "../directions/soft-3d-clay/sample.png"
+      }
+    },
+    {
+      "id": "memphis-postmodern",
+      "name_cn": "孟菲斯 · Memphis",
+      "name_en": "Memphis Postmodern",
+      "lineage": "experimental",
+      "accent": "#ff4fa3",
+      "best_for": [
+        "designer",
+        "educator",
+        "creator"
+      ],
+      "description": "A page that refuses to be boring. Cream paper scattered with 80s-Memphis confetti — squiggles, dots, zigzags, and hard-edged geometric blocks in cyan, magenta, and yellow, all set against fat black outlines. Layout is gleefully asymmetric: blocks tilt, overlap, and break the grid on purpose, every panel framed like a sticker. Bold geometric sans does the talking, numerals run enormous, and a quirky framed illustration sits among the shapes like the punchline. Loud, playful, committed — postmodern joy with a teacher's clarity.",
+      "swatches": {
+        "canvas": "#fbf7ee",
+        "surface": "#ffffff",
+        "ink": "#15130f",
+        "ink-muted": "#4a463d",
+        "accent": "#ff4fa3"
+      },
+      "paths": {
+        "live": "../directions/memphis-postmodern/index.html",
+        "prompt": "../directions/memphis-postmodern/prompt.md",
+        "design": "../directions/memphis-postmodern/DESIGN.md",
+        "sample": "../directions/memphis-postmodern/sample.png"
+      }
+    },
+    {
+      "id": "y2k-vapor",
+      "name_cn": "千禧赛博 · Y2K Vapor",
+      "name_en": "Y2K Vapor",
+      "lineage": "experimental",
+      "accent": "#00e5ff",
+      "best_for": [
+        "musician",
+        "creator",
+        "artist"
+      ],
+      "description": "A dark, chrome-and-neon stage that feels like an early-2000s media player left running until 3am. Liquid-metal headlines bleed cyan and magenta; a receding perspective grid pulls the eye toward a glowing horizon; soft liquid blobs drift behind glass panels. Subtle glitch on the hero title, scanline shimmer, and chrome bevels do the heavy lifting — pure CSS, no WebGL. Vaporwave nostalgia weaponized for a DJ press kit: loud, lacquered, and unmistakably nocturnal. Hierarchy comes from glow, contrast and depth, not from boxes.",
+      "swatches": {
+        "ink": "#e8ecff",
+        "ink-muted": "#9aa0c7",
+        "hairline": "rgba(120,130,200,0.18)"
+      },
+      "paths": {
+        "live": "../directions/y2k-vapor/index.html",
+        "prompt": "../directions/y2k-vapor/prompt.md",
+        "design": "../directions/y2k-vapor/DESIGN.md",
+        "sample": "../directions/y2k-vapor/sample.png"
+      }
+    },
+    {
+      "id": "glassmorphism",
+      "name_cn": "玻璃拟态 · Glassmorphism",
+      "name_en": "Glassmorphism",
+      "lineage": "experimental",
+      "accent": "#a78bfa",
+      "best_for": [
+        "founder",
+        "designer",
+        "ai"
+      ],
+      "description": "Frosted translucent glass floating over a vivid, blurred photographic backdrop. Depth comes from layered backdrop-filter blur, hairline white borders, and soft inner glow — not from solid fills. Cards feel like sheets of foggy acrylic catching light: 1px translucent rims, a faint top highlight, diffuse drop shadow underneath. Light text on color, generous air, gentle float-on-hover. Modern, calm, slightly dreamlike — the opposite of flat SaaS.",
+      "swatches": {
+        "ink": "#ffffff",
+        "ink-muted": "rgba(255,255,255,0.74)",
+        "accent": "#a78bfa"
+      },
+      "paths": {
+        "live": "../directions/glassmorphism/index.html",
+        "prompt": "../directions/glassmorphism/prompt.md",
+        "design": "../directions/glassmorphism/DESIGN.md",
+        "sample": "../directions/glassmorphism/sample.png"
+      }
+    },
+    {
+      "id": "handcrafted-sketch",
+      "name_cn": "手作速写 · Handcrafted Sketch",
+      "name_en": "Handcrafted Sketch",
+      "lineage": "handcrafted",
+      "accent": "#d2542f",
+      "best_for": [
+        "writer",
+        "illustrator",
+        "maker"
+      ],
+      "description": "An open sketchbook left on a warm wooden table. Cream paper with a faint grain, hand-drawn ink borders that wobble like they were inked by a brush, washi-tape corners holding a taped-in illustration, sticky notes scrawled in the margins, and doodled arrows pointing the eye where to go. The handwriting display font carries the warmth; a readable serif does the reading. Nothing is perfectly straight — pieces sit at gentle 1–2° tilts so the page feels placed by hand, not laid out by a machine. Personal, tactile, unmistakably analog.",
+      "swatches": {
+        "ink": "#2b2620",
+        "accent": "#d2542f",
+        "hairline": "#e0d4ba"
+      },
+      "paths": {
+        "live": "../directions/handcrafted-sketch/index.html",
+        "prompt": "../directions/handcrafted-sketch/prompt.md",
+        "design": "../directions/handcrafted-sketch/DESIGN.md",
+        "sample": "../directions/handcrafted-sketch/sample.png"
+      }
+    },
+    {
+      "id": "risograph",
+      "name_cn": "油印拼色 · Risograph",
+      "name_en": "Risograph",
+      "lineage": "handcrafted",
+      "accent": "#ff48b0",
+      "best_for": [
+        "illustrator",
+        "publisher",
+        "designer"
+      ],
+      "description": "A printed-page direction that behaves like a riso machine: two or three spot colors laid down one pass at a time, never quite landing on top of each other. Fluoro pink, process blue and a punch of yellow sit on warm off-white stock, each block nudged a few pixels out of register so edges show a coloured ghost. Halftone dots and paper grain wash over everything; overlapping inks multiply into muddy greens and purples the way real overprint does. Bold Archivo headlines, mono labels stamped like registration marks. The charm is the imperfection — it should feel hand-pulled, slightly crooked, and proud of it.",
+      "swatches": {
+        "ink": "#1b1a17",
+        "hairline": "#d8cfb6"
+      },
+      "paths": {
+        "live": "../directions/risograph/index.html",
+        "prompt": "../directions/risograph/prompt.md",
+        "design": "../directions/risograph/DESIGN.md",
+        "sample": "../directions/risograph/sample.png"
+      }
+    },
+    {
+      "id": "maximalist-collage",
+      "name_cn": "极繁拼贴 · Maximalist Collage",
+      "name_en": "Maximalist Collage",
+      "lineage": "experimental",
+      "accent": "#ff2e63",
+      "best_for": [
+        "artist",
+        "creator",
+        "musician"
+      ],
+      "description": "A loud, hand-built scrapbook that refuses white space. Torn-paper scraps in clashing brights overlap at crooked angles, fixed down with strips of masking tape and crusty stickers; headlines are pasted in two fighting display faces — a brutal grotesque next to a high-contrast serif — rotated, layered, sometimes half off the edge. The portrait is the collage centerpiece, ripped and taped over a busy patterned ground. Energy comes from density, collision, and intentional mess: more is more, nothing is centered, every layer casts a shadow on the one below.",
+      "swatches": {
+        "ink": "#16140f",
+        "accent": "#ff2e63"
+      },
+      "paths": {
+        "live": "../directions/maximalist-collage/index.html",
+        "prompt": "../directions/maximalist-collage/prompt.md",
+        "design": "../directions/maximalist-collage/DESIGN.md",
+        "sample": "../directions/maximalist-collage/sample.png"
+      }
+    },
+    {
+      "id": "art-deco",
+      "name_cn": "装饰艺术 · Art Deco",
+      "name_en": "Art Deco",
+      "lineage": "expressive",
+      "accent": "#c8a253",
+      "best_for": [
+        "speaker",
+        "author",
+        "consultant"
+      ],
+      "description": "A theatrical 1920s stage rendered in deep emerald and gold. Strict bilateral symmetry, hairline gold linework, sunburst and stepped-fan motifs framing a portrait like a proscenium. Tall, airy Deco capitals announce; an elegant serif speaks in measured sentences. Ivory and brass on near-black emerald — luxe, ceremonial, confident. Everything is centered and framed; ornament is geometric, never floral; gold is line and inlay, never a flat fill. The page feels like the cover of a programme for an evening you don't want to miss.",
+      "swatches": {
+        "canvas": "#0c1c17",
+        "surface": "#102a22",
+        "ink": "#f4ecd8",
+        "ink-muted": "#c4bfa8",
+        "accent": "#c8a253",
+        "hairline": "rgba(200,162,83,0.28)"
+      },
+      "paths": {
+        "live": "../directions/art-deco/index.html",
+        "prompt": "../directions/art-deco/prompt.md",
+        "design": "../directions/art-deco/DESIGN.md",
+        "sample": "../directions/art-deco/sample.png"
+      }
+    },
+    {
+      "id": "athletic-sport",
+      "name_cn": "运动竞技 · Athletic",
+      "name_en": "Athletic",
+      "lineage": "expressive",
+      "accent": "#c6ff00",
+      "best_for": [
+        "coach",
+        "athlete",
+        "trainer"
+      ],
+      "description": "Nike-grade kinetic energy. The page hits like a launch film: a full-bleed action photo behind a wall of huge uppercase condensed type, one electric volt accent slicing through black and white, and diagonal motion that makes the layout feel like it's mid-sprint. Numbers are stadium-scoreboard big. Edges are clipped on the diagonal. Everything shouts, nothing apologizes — hierarchy comes from sheer scale, contrast, and the volt streak, never from soft cards or gentle gradients. Built to make an athlete want to train.",
+      "swatches": {
+        "canvas": "#0a0a0a",
+        "surface": "#141416",
+        "ink": "#ffffff",
+        "ink-muted": "#a3a3a8",
+        "accent": "#c6ff00",
+        "hairline": "#2a2a2e"
+      },
+      "paths": {
+        "live": "../directions/athletic-sport/index.html",
+        "prompt": "../directions/athletic-sport/prompt.md",
+        "design": "../directions/athletic-sport/DESIGN.md",
+        "sample": "../directions/athletic-sport/sample.png"
+      }
+    }
+  ],
+  "count": 27
+}

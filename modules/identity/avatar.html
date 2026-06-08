@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Avatar / 头像 — Module Specimen</title>
+<style>
+  :root{--bg:#ffffff;--surface:#f6f6f4;--surface-2:#efefea;--ink:#191917;--muted:#6b6b67;--subtle:#9a9a94;--accent:#2f56ff;--accent-soft:#e9eefc;--hairline:#e7e7e2;--ink-line:#191917;--ok:#1f7a44;--radius:12px;--pad:24px}
+
+  *,*::before,*::after{box-sizing:border-box}
+
+  html{-webkit-text-size-adjust:100%}
+
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    font-size:15px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .mono{
+    font-family:ui-monospace,"SF Mono","SFMono-Regular",Menlo,Consolas,monospace;
+  }
+
+  .sheet{
+    max-width:880px;
+    margin:0 auto;
+    padding:clamp(20px,5vw,56px) clamp(16px,4vw,40px);
+  }
+
+  /* ---------- Header ---------- */
+  .sheet-head{
+    border-bottom:1px solid var(--hairline);
+    padding-bottom:20px;
+    margin-bottom:8px;
+  }
+  .sheet-head h1{
+    font-family:Georgia,"Times New Roman",serif;
+    font-weight:600;
+    font-size:clamp(26px,5vw,38px);
+    line-height:1.1;
+    letter-spacing:-0.01em;
+    margin:0 0 12px;
+  }
+  .meta{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:8px 10px;
+    font-size:13px;
+    color:var(--muted);
+  }
+  .meta .dot{color:var(--subtle)}
+  .pill{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:var(--accent-soft);
+    color:var(--accent);
+    border-radius:999px;
+    padding:3px 11px;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:0.01em;
+  }
+  .cat{
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    font-size:11px;
+    font-weight:600;
+    color:var(--subtle);
+  }
+
+  /* ---------- Variant block ---------- */
+  .variant{
+    padding-top:40px;
+  }
+  .variant + .variant{
+    margin-top:8px;
+  }
+  .label-row{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:baseline;
+    gap:8px 14px;
+    margin-bottom:14px;
+  }
+  .vid{
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink);
+    background:var(--surface-2);
+    border:1px solid var(--hairline);
+    border-radius:6px;
+    padding:2px 8px;
+  }
+  .hint{
+    font-size:13px;
+    color:var(--muted);
+  }
+
+  .stage{
+    border:1px solid var(--hairline);
+    border-radius:var(--radius);
+    background:var(--surface);
+    padding:var(--pad);
+    display:flex;
+    flex-wrap:wrap;
+    align-items:flex-end;
+    gap:32px;
+  }
+
+  /* ---------- Avatar specimen scaffolding ---------- */
+  .specimen{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+  }
+  .specimen .size-tag{
+    font-size:11px;
+    color:var(--subtle);
+  }
+
+  /* shared photo-slot treatment */
+  .avatar{
+    --d:64px;
+    width:var(--d);
+    height:var(--d);
+    flex:0 0 auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    background:var(--surface-2);
+    color:var(--muted);
+    font-weight:600;
+    line-height:1;
+    user-select:none;
+  }
+  .avatar svg{display:block;width:58%;height:58%}
+  .avatar img{width:100%;height:100%;object-fit:cover;display:block}
+  .avatar .ph-initials{
+    font-size:calc(var(--d) * 0.38);
+    letter-spacing:0.01em;
+  }
+  .avatar.s-sm{--d:36px}
+  .avatar.s-md{--d:56px}
+  .avatar.s-lg{--d:88px}
+
+  /* round variant */
+  .avatar.round{border-radius:50%}
+  .avatar.round.bordered{
+    box-shadow:0 0 0 1px var(--hairline), 0 1px 2px rgba(25,25,23,0.06);
+  }
+
+  /* square / hard-edge variant */
+  .avatar.square{
+    border-radius:0;
+    box-shadow:0 0 0 1px var(--hairline);
+  }
+
+  /* initials color-block variant */
+  .avatar.initials{
+    border-radius:10px;
+    color:#fff;
+    font-weight:600;
+  }
+  .avatar.initials .ph-initials{font-size:calc(var(--d) * 0.36)}
+  .tone-indigo{background:#3b3f8f}
+  .tone-teal{background:#1f7a6e}
+  .tone-clay{background:#b2542f}
+  .tone-plum{background:#7a3b6e}
+
+  /* identity caption that often pairs with an avatar */
+  .ident{
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .ident .name{
+    font-size:14px;
+    font-weight:600;
+    line-height:1.25;
+    margin:0;
+  }
+  .ident .role{
+    font-size:12.5px;
+    color:var(--muted);
+    margin:1px 0 0;
+  }
+
+  .slot-note{
+    margin-top:18px;
+    font-size:12px;
+    color:var(--subtle);
+    display:flex;
+    align-items:center;
+    gap:7px;
+  }
+  .slot-note::before{
+    content:"";
+    width:9px;height:9px;border-radius:2px;
+    background:var(--surface-2);
+    box-shadow:0 0 0 1px var(--hairline);
+    flex:0 0 auto;
+  }
+
+  /* divider between stage and pairing demo */
+  .stage-foot{
+    flex-basis:100%;
+    margin-top:6px;
+    padding-top:20px;
+    border-top:1px dashed var(--hairline);
+    display:flex;
+    flex-wrap:wrap;
+    gap:24px;
+    align-items:center;
+  }
+
+  a:focus-visible,
+  [tabindex]:focus-visible,
+  .avatar:focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:3px;
+    border-radius:4px;
+  }
+
+  .sheet-foot{
+    margin-top:48px;
+    padding-top:18px;
+    border-top:1px solid var(--hairline);
+    font-size:12px;
+    color:var(--subtle);
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 12px;
+    align-items:center;
+  }
+
+  @media (max-width:480px){
+    .stage{gap:24px;padding:18px}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+  <main class="sheet">
+
+    <header class="sheet-head">
+      <h1>Avatar / 头像</h1>
+      <div class="meta">
+        <span class="cat">Identity</span>
+        <span class="dot" aria-hidden="true">·</span>
+        <span class="pill">3 variants</span>
+        <span class="dot" aria-hidden="true">·</span>
+        <span>Structure specimen — neutral style</span>
+      </div>
+    </header>
+
+    <!-- ============ VARIANT 1: round ============ -->
+    <section class="variant" aria-labelledby="v-round">
+      <div class="label-row">
+        <code class="mono vid" id="v-round">round</code>
+        <span class="hint">圆形头像（灰块或首字母）</span>
+      </div>
+
+      <div class="stage">
+        <div class="specimen">
+          <span class="size-tag mono">36 · sm</span>
+          <span class="avatar round bordered s-sm" tabindex="0"
+                role="img" aria-label="Maya Chen, photo unavailable, initials shown">
+            <span class="ph-initials" aria-hidden="true">MC</span>
+          </span>
+        </div>
+
+        <div class="specimen">
+          <span class="size-tag mono">56 · md</span>
+          <span class="avatar round bordered s-md" tabindex="0"
+                role="img" aria-label="Maya Chen, photo unavailable, initials shown">
+            <span class="ph-initials" aria-hidden="true">MC</span>
+          </span>
+        </div>
+
+        <div class="specimen">
+          <span class="size-tag mono">88 · lg (photo slot)</span>
+          <span class="avatar round bordered s-lg" tabindex="0">
+            <img src="../../assets/portrait-woman-editorial.webp" alt="Profile photo of Maya Chen" loading="lazy">
+          </span>
+        </div>
+
+        <div class="stage-foot">
+          <span class="avatar round bordered s-md"
+                role="img" aria-label="Maya Chen, initials shown">
+            <span class="ph-initials" aria-hidden="true">MC</span>
+          </span>
+          <div class="ident">
+            <div>
+              <p class="name">Maya Chen</p>
+              <p class="role">Product Designer · 产品设计师</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="slot-note">Photo slot rendered as a neutral <span class="mono">--surface-2</span> block; falls back to initials when no image is set.</p>
+    </section>
+
+    <!-- ============ VARIANT 2: square ============ -->
+    <section class="variant" aria-labelledby="v-square">
+      <div class="label-row">
+        <code class="mono vid" id="v-square">square</code>
+        <span class="hint">方形硬边头像</span>
+      </div>
+
+      <div class="stage">
+        <div class="specimen">
+          <span class="size-tag mono">36 · sm</span>
+          <span class="avatar square s-sm" tabindex="0"
+                role="img" aria-label="Maya Chen, initials shown">
+            <span class="ph-initials" aria-hidden="true">MC</span>
+          </span>
+        </div>
+
+        <div class="specimen">
+          <span class="size-tag mono">56 · md</span>
+          <span class="avatar square s-md" tabindex="0"
+                role="img" aria-label="Maya Chen, initials shown">
+            <span class="ph-initials" aria-hidden="true">MC</span>
+          </span>
+        </div>
+
+        <div class="specimen">
+          <span class="size-tag mono">88 · lg (photo slot)</span>
+          <span class="avatar square s-lg" tabindex="0">
+            <img src="../../assets/portrait-woman-editorial.webp" alt="Profile photo of Maya Chen" loading="lazy">
+          </span>
+        </div>
+
+        <div class="stage-foot">
+          <span class="avatar square s-md"
+                role="img" aria-label="Maya Chen, initials shown">
+            <span class="ph-initials" aria-hidden="true">MC</span>
+          </span>
+          <div class="ident">
+            <div>
+              <p class="name">Maya Chen</p>
+              <p class="role">Product Designer · 产品设计师</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="slot-note">Hard 0px corners with a 1px hairline ring — reads as a crisp, editorial frame.</p>
+    </section>
+
+    <!-- ============ VARIANT 3: initials_block ============ -->
+    <section class="variant" aria-labelledby="v-initials">
+      <div class="label-row">
+        <code class="mono vid" id="v-initials">initials_block</code>
+        <span class="hint">字母色块头像</span>
+      </div>
+
+      <div class="stage">
+        <div class="specimen">
+          <span class="size-tag mono">36 · sm</span>
+          <span class="avatar initials tone-indigo s-sm" tabindex="0"
+                role="img" aria-label="Maya Chen, initials avatar">
+            <span class="ph-initials" aria-hidden="true">MC</span>
+          </span>
+        </div>
+
+        <div class="specimen">
+          <span class="size-tag mono">56 · md</span>
+          <span class="avatar initials tone-indigo s-md" tabindex="0"
+                role="img" aria-label="Maya Chen, initials avatar">
+            <span class="ph-initials" aria-hidden="true">MC</span>
+          </span>
+        </div>
+
+        <div class="specimen">
+          <span class="size-tag mono">88 · lg</span>
+          <span class="avatar initials tone-indigo s-lg" tabindex="0"
+                role="img" aria-label="Maya Chen, initials avatar">
+            <span class="ph-initials" aria-hidden="true">MC</span>
+          </span>
+        </div>
+
+        <div class="stage-foot">
+          <span class="avatar initials tone-teal s-md"
+                role="img" aria-label="Leo Okafor, initials avatar">
+            <span class="ph-initials" aria-hidden="true">LO</span>
+          </span>
+          <span class="avatar initials tone-clay s-md"
+                role="img" aria-label="Priya Raman, initials avatar">
+            <span class="ph-initials" aria-hidden="true">PR</span>
+          </span>
+          <span class="avatar initials tone-plum s-md"
+                role="img" aria-label="Sven Aalto, initials avatar">
+            <span class="ph-initials" aria-hidden="true">SA</span>
+          </span>
+          <div class="ident">
+            <div>
+              <p class="name">Deterministic tone per name</p>
+              <p class="role">同名固定配色 · 4-tone palette</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="slot-note">Tone is derived from the name (here: indigo / teal / clay / plum), so a person always keeps the same color.</p>
+    </section>
+
+    <footer class="sheet-foot">
+      <span class="mono">module/identity/avatar</span>
+      <span class="dot" aria-hidden="true">·</span>
+      <span>Self-contained — system fonts only, no external resources.</span>
+    </footer>
+
+  </main>
+</body>
+</html>

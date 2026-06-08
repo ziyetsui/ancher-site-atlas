@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hero / 首屏 — specimen sheet</title>
+<style>
+:root{--bg:#ffffff;--surface:#f6f6f4;--surface-2:#efefea;--ink:#191917;--muted:#6b6b67;--subtle:#9a9a94;--accent:#2f56ff;--accent-soft:#e9eefc;--hairline:#e7e7e2;--ink-line:#191917;--ok:#1f7a44;--radius:12px;--pad:24px}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+.serif{font-family:Georgia,"Times New Roman",serif}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+
+/* ---------- specimen scaffolding ---------- */
+.sheet{max-width:1200px;margin:0 auto;padding:32px 20px 80px}
+
+.sheet-head{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px;
+  padding-bottom:18px;margin-bottom:36px;
+  border-bottom:1px solid var(--hairline);
+}
+.sheet-head h1{
+  font-size:20px;font-weight:650;margin:0;letter-spacing:-0.01em;
+}
+.sheet-head .sep{color:var(--subtle)}
+.sheet-head .cat{color:var(--muted);font-size:14px}
+.sheet-head .count{
+  margin-left:auto;
+  font-size:12px;color:var(--muted);
+  background:var(--surface);border:1px solid var(--hairline);
+  padding:4px 10px;border-radius:999px;
+}
+
+.variant{margin-bottom:40px}
+.variant:last-child{margin-bottom:0}
+
+.label-row{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;
+  margin-bottom:12px;
+}
+.label-row .vid{
+  font-size:13px;color:var(--ink);
+  background:var(--surface-2);
+  padding:3px 8px;border-radius:6px;
+  border:1px solid var(--hairline);
+}
+.label-row .hint{font-size:13px;color:var(--muted)}
+
+.stage{
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  background:var(--surface);
+  padding:var(--pad);
+}
+/* let heroes sit in a card-on-card; inner component gets a white plate */
+.plate{
+  background:var(--bg);
+  border:1px solid var(--hairline);
+  border-radius:calc(var(--radius) - 2px);
+  overflow:hidden;
+}
+
+/* ---------- shared hero primitives ---------- */
+.eyebrow{
+  font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent);font-weight:600;
+}
+.cta{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:15px;font-weight:550;
+  color:#fff;background:var(--accent);
+  padding:12px 22px;border-radius:999px;
+  text-decoration:none;border:1px solid var(--accent);
+  transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.cta:hover{background:#244ae6;box-shadow:0 6px 20px -8px rgba(47,86,255,.6);transform:translateY(-1px)}
+.cta .arr{transition:transform .15s ease}
+.cta:hover .arr{transform:translateX(3px)}
+
+.cta-ghost{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:15px;font-weight:550;color:var(--ink);
+  text-decoration:none;padding:12px 4px;
+}
+.cta-ghost:hover{color:var(--accent)}
+
+/* photo slot helper */
+.photo-slot{
+  position:relative;
+  background:var(--surface-2);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--subtle);
+  overflow:hidden;
+}
+.photo-slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.v-min .avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.photo-slot .initials{
+  font-family:Georgia,serif;
+  font-size:clamp(48px,9vw,104px);
+  color:#cfcfc8;font-weight:600;letter-spacing:.02em;line-height:1;
+}
+.photo-slot .slot-tag{
+  position:absolute;left:10px;bottom:10px;
+  font-size:11px;color:var(--muted);
+  background:rgba(255,255,255,.82);
+  border:1px solid var(--hairline);
+  padding:3px 7px;border-radius:6px;
+  backdrop-filter:saturate(1.2);
+}
+
+/* ================= V1 — bold_statement ================= */
+.v-bold{padding:clamp(40px,8vw,88px) clamp(24px,6vw,72px)}
+.v-bold .eyebrow{margin-bottom:22px}
+.v-bold h2{
+  margin:0;
+  font-size:clamp(34px,7vw,76px);
+  line-height:1.02;
+  letter-spacing:-0.03em;
+  font-weight:680;
+  max-width:14ch;
+}
+.v-bold h2 em{font-style:normal;color:var(--accent)}
+.v-bold .sub{
+  margin:24px 0 0;
+  font-size:clamp(16px,2.2vw,20px);
+  color:var(--muted);
+  max-width:46ch;
+  line-height:1.55;
+}
+.v-bold .actions{margin-top:36px}
+
+/* ================= V2 — split_portrait ================= */
+.v-split{
+  display:grid;
+  grid-template-columns:1.15fr .85fr;
+}
+.v-split .col-text{
+  padding:clamp(32px,5vw,64px);
+  display:flex;flex-direction:column;justify-content:center;
+}
+.v-split .eyebrow{margin-bottom:18px}
+.v-split h2{
+  margin:0;
+  font-size:clamp(30px,4.6vw,52px);
+  line-height:1.06;letter-spacing:-0.025em;font-weight:660;
+  max-width:16ch;
+}
+.v-split .lead{
+  margin:20px 0 0;font-size:17px;color:var(--muted);
+  max-width:42ch;line-height:1.6;
+}
+.v-split .meta{
+  margin-top:28px;display:flex;flex-wrap:wrap;gap:10px;
+}
+.v-split .chip{
+  font-size:13px;color:var(--ink);
+  background:var(--surface);border:1px solid var(--hairline);
+  padding:6px 12px;border-radius:999px;
+}
+.v-split .actions{margin-top:32px;display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px}
+.v-split .col-photo{
+  position:relative;
+  border-left:1px solid var(--hairline);
+  min-height:340px;
+}
+.v-split .col-photo .photo-slot{position:absolute;inset:0}
+
+/* ================= V3 — minimal_centered ================= */
+.v-min{
+  padding:clamp(56px,10vw,104px) 24px;
+  text-align:center;
+  display:flex;flex-direction:column;align-items:center;
+}
+.v-min .avatar{
+  width:72px;height:72px;border-radius:50%;
+  background:var(--surface-2);
+  display:flex;align-items:center;justify-content:center;
+  font-family:Georgia,serif;font-size:26px;color:#cfcfc8;font-weight:600;
+  border:1px solid var(--hairline);
+  margin-bottom:28px;
+  position:relative;
+  overflow:hidden;
+}
+.v-min .avatar .slot-tag{
+  position:absolute;left:50%;transform:translateX(-50%);bottom:-22px;white-space:nowrap;
+  font-size:10px;color:var(--subtle);
+}
+.v-min h2{
+  margin:0;
+  font-family:Georgia,serif;
+  font-size:clamp(30px,5vw,46px);
+  font-weight:600;letter-spacing:-0.01em;line-height:1.1;
+}
+.v-min .one-line{
+  margin:14px 0 0;font-size:17px;color:var(--muted);
+  max-width:34ch;line-height:1.55;
+}
+.v-min .socials{
+  margin-top:30px;display:flex;align-items:center;gap:6px;
+}
+.v-min .socials a{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:40px;height:40px;border-radius:50%;
+  color:var(--muted);text-decoration:none;
+  border:1px solid transparent;
+  transition:color .15s ease,background .15s ease,border-color .15s ease;
+}
+.v-min .socials a:hover{color:var(--ink);background:var(--surface);border-color:var(--hairline)}
+.v-min .socials svg{width:19px;height:19px;display:block}
+.v-min .socials .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ---------- responsive ---------- */
+@media (max-width:720px){
+  .v-split{grid-template-columns:1fr}
+  .v-split .col-photo{
+    order:-1;border-left:0;border-bottom:1px solid var(--hairline);
+    min-height:240px;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .cta:hover{transform:none}
+  .cta:hover .arr{transform:none}
+}
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header class="sheet-head">
+    <h1>Hero / 首屏</h1>
+    <span class="sep" aria-hidden="true">·</span>
+    <span class="cat">identity</span>
+    <span class="count">3 variants</span>
+  </header>
+
+  <!-- ============ VARIANT 1 ============ -->
+  <section class="variant" aria-labelledby="v1-label">
+    <div class="label-row">
+      <code class="vid mono" id="v1-label">bold_statement</code>
+      <span class="hint">满屏定位句 + 一行副标 + 单个 CTA，无图</span>
+    </div>
+    <div class="stage">
+      <div class="plate">
+        <div class="v-bold">
+          <p class="eyebrow">Maya Chen — Product Designer</p>
+          <h2>I design <em>calm</em> interfaces for software that does anxious work.</h2>
+          <p class="sub">Twelve years shaping fintech and health products at scale. Currently leading design systems at Northbeam, Seattle.</p>
+          <div class="actions">
+            <a class="cta" href="#work">See selected work <span class="arr" aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VARIANT 2 ============ -->
+  <section class="variant" aria-labelledby="v2-label">
+    <div class="label-row">
+      <code class="vid mono" id="v2-label">split_portrait</code>
+      <span class="hint">左文右像（灰块占位），非对称</span>
+    </div>
+    <div class="stage">
+      <div class="plate">
+        <div class="v-split">
+          <div class="col-text">
+            <p class="eyebrow">Maya Chen</p>
+            <h2>Product designer, systems thinker, occasional ceramicist.</h2>
+            <p class="lead">I help teams turn messy product ideas into interfaces people trust — from first sketch to shipped design system.</p>
+            <div class="meta">
+              <span class="chip">Design systems</span>
+              <span class="chip">0→1 product</span>
+              <span class="chip">Fintech &amp; health</span>
+            </div>
+            <div class="actions">
+              <a class="cta" href="#work">View work <span class="arr" aria-hidden="true">→</span></a>
+              <a class="cta-ghost" href="mailto:maya@example.com">Get in touch</a>
+            </div>
+          </div>
+          <div class="col-photo">
+            <div class="photo-slot">
+              <img src="../../assets/portrait-woman-studio.webp" alt="Portrait photo of Maya Chen" loading="lazy">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VARIANT 3 ============ -->
+  <section class="variant" aria-labelledby="v3-label">
+    <div class="label-row">
+      <code class="vid mono" id="v3-label">minimal_centered</code>
+      <span class="hint">居中：名字 + 一句话 + 社交链接，极简</span>
+    </div>
+    <div class="stage">
+      <div class="plate">
+        <div class="v-min">
+          <div class="avatar">
+            <img src="../../assets/portrait-woman-studio.webp" alt="Profile photo of Maya Chen" loading="lazy">
+          </div>
+          <h2>Maya Chen</h2>
+          <p class="one-line">Product designer in Seattle, quietly obsessed with the details no one notices.</p>
+          <nav class="socials" aria-label="Social links">
+            <a href="https://twitter.com/" rel="me noopener">
+              <span class="sr">Twitter / X</span>
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.66l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.45-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z"/></svg>
+            </a>
+            <a href="https://github.com/" rel="me noopener">
+              <span class="sr">GitHub</span>
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.73.5.5 5.73.5 12a11.5 11.5 0 0 0 7.86 10.92c.575.106.785-.25.785-.555 0-.274-.01-1.0-.015-1.96-3.196.695-3.87-1.54-3.87-1.54-.523-1.33-1.276-1.683-1.276-1.683-1.043-.713.08-.699.08-.699 1.153.082 1.76 1.184 1.76 1.184 1.026 1.758 2.692 1.25 3.348.956.104-.743.402-1.25.73-1.538-2.552-.29-5.236-1.276-5.236-5.677 0-1.254.448-2.28 1.183-3.084-.119-.29-.513-1.46.112-3.042 0 0 .965-.309 3.163 1.178a11.0 11.0 0 0 1 2.88-.387c.977.004 1.96.132 2.88.387 2.196-1.487 3.16-1.178 3.16-1.178.626 1.582.232 2.752.114 3.042.737.804 1.182 1.83 1.182 3.084 0 4.412-2.688 5.384-5.248 5.668.413.355.78 1.057.78 2.13 0 1.538-.014 2.778-.014 3.156 0 .308.207.667.79.554A11.5 11.5 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5Z"/></svg>
+            </a>
+            <a href="https://linkedin.com/" rel="me noopener">
+              <span class="sr">LinkedIn</span>
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg>
+            </a>
+            <a href="mailto:maya@example.com" rel="me">
+              <span class="sr">Email</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            </a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>book_a_call · conversion — specimen sheet</title>
+<style>
+:root{--bg:#ffffff;--surface:#f6f6f4;--surface-2:#efefea;--ink:#191917;--muted:#6b6b67;--subtle:#9a9a94;--accent:#2f56ff;--accent-soft:#e9eefc;--hairline:#e7e7e2;--ink-line:#191917;--ok:#1f7a44;--radius:12px;--pad:24px}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:16px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace}
+
+/* ---------- specimen sheet shell ---------- */
+.sheet{
+  max-width:920px;
+  margin:0 auto;
+  padding:40px 20px 96px;
+}
+.sheet__header{
+  border-bottom:1px solid var(--hairline);
+  padding-bottom:18px;
+  margin-bottom:40px;
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:6px 14px;
+}
+.sheet__title{
+  font-size:1.05rem;
+  font-weight:650;
+  letter-spacing:-0.01em;
+  margin:0;
+}
+.sheet__title .name{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-weight:600}
+.sheet__sep{color:var(--subtle)}
+.sheet__cat{color:var(--muted);font-size:.9rem}
+.sheet__count{
+  margin-left:auto;
+  font-size:.78rem;
+  color:var(--muted);
+  border:1px solid var(--hairline);
+  border-radius:999px;
+  padding:3px 12px;
+  white-space:nowrap;
+}
+.sheet__display{
+  width:100%;
+  margin-top:10px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-style:italic;
+  font-size:1.4rem;
+  color:var(--ink);
+  letter-spacing:-0.01em;
+}
+
+/* ---------- variant block ---------- */
+.variant{margin-bottom:48px}
+.variant__label{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:10px;
+  margin-bottom:12px;
+}
+.variant__id{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.8rem;
+  color:var(--ink);
+  background:var(--surface-2);
+  border:1px solid var(--hairline);
+  border-radius:6px;
+  padding:2px 9px;
+}
+.variant__hint{font-size:.86rem;color:var(--muted)}
+.stage{
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  background:var(--surface);
+  padding:40px var(--pad);
+  display:flex;
+  justify-content:center;
+}
+
+/* ---------- shared component bits ---------- */
+.avatar{
+  flex:none;
+  display:grid;
+  place-items:center;
+  background:var(--surface-2);
+  color:var(--muted);
+  font-weight:600;
+  letter-spacing:.02em;
+  border:1px solid var(--hairline);
+  position:relative;
+  overflow:hidden;
+}
+.avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.avatar[data-slot]::after{
+  content:"photo slot";
+  position:absolute;
+  bottom:-17px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:.58rem;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  color:var(--subtle);
+  white-space:nowrap;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-weight:400;
+}
+
+/* focus visibility */
+a:focus-visible,button:focus-visible,.btn:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:2px;
+}
+
+/* primary / ghost buttons */
+.btn{
+  font:inherit;
+  font-weight:600;
+  font-size:.95rem;
+  line-height:1;
+  border-radius:8px;
+  padding:13px 22px;
+  border:1px solid transparent;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  text-decoration:none;
+  transition:background .15s ease,border-color .15s ease,transform .15s ease,box-shadow .15s ease;
+  white-space:nowrap;
+}
+.btn--primary{background:var(--accent);color:#fff}
+.btn--primary:hover{background:#2344d8}
+.btn--primary:active{transform:translateY(1px)}
+.btn--ghost{background:transparent;color:var(--ink);border-color:var(--hairline)}
+.btn--ghost:hover{border-color:var(--ink-line);background:#fff}
+.btn .ico{width:16px;height:16px;flex:none}
+
+/* ---------- VARIANT 1 · inline ---------- */
+.inline-cta{
+  width:100%;
+  max-width:560px;
+  display:flex;
+  align-items:center;
+  gap:20px;
+  flex-wrap:wrap;
+}
+.inline-cta .avatar{width:48px;height:48px;border-radius:50%;font-size:.9rem}
+.inline-cta__body{flex:1;min-width:200px}
+.inline-cta__lead{
+  font-size:1.02rem;
+  font-weight:600;
+  letter-spacing:-0.01em;
+  margin:0 0 3px;
+}
+.inline-cta__sub{margin:0;font-size:.9rem;color:var(--muted)}
+.inline-cta__action{flex:none}
+
+/* ---------- VARIANT 2 · card ---------- */
+.call-card{
+  width:100%;
+  max-width:400px;
+  background:#fff;
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  padding:26px 26px 22px;
+  box-shadow:0 1px 2px rgba(25,25,23,.04),0 8px 24px -16px rgba(25,25,23,.18);
+}
+.call-card__head{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-bottom:20px;
+}
+.call-card__head .avatar{width:52px;height:52px;border-radius:50%;font-size:.95rem}
+.call-card__who{min-width:0}
+.call-card__name{font-weight:650;letter-spacing:-0.01em;font-size:1rem;line-height:1.2}
+.call-card__role{font-size:.85rem;color:var(--muted);margin-top:2px}
+.call-card__pitch{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:1.08rem;
+  line-height:1.45;
+  color:var(--ink);
+  margin:0 0 18px;
+}
+.call-card__meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px 16px;
+  margin-bottom:20px;
+}
+.meta-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  font-size:.83rem;
+  color:var(--muted);
+}
+.meta-pill .ico{width:15px;height:15px;flex:none;color:var(--subtle)}
+.call-card__cta .btn{width:100%;justify-content:center}
+.reassurance{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  margin-top:12px;
+  font-size:.8rem;
+  color:var(--muted);
+}
+.reassurance .ico{width:14px;height:14px;flex:none;color:var(--ok)}
+
+@media (max-width:460px){
+  .inline-cta{flex-direction:column;align-items:flex-start}
+  .inline-cta__action{width:100%}
+  .inline-cta__action .btn{width:100%;justify-content:center}
+  .stage{padding:32px 16px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms !important;transition-duration:.001ms !important}
+}
+</style>
+</head>
+<body>
+<main class="sheet">
+  <header class="sheet__header">
+    <h1 class="sheet__title"><span class="name">book_a_call</span></h1>
+    <span class="sheet__sep" aria-hidden="true">·</span>
+    <span class="sheet__cat">conversion</span>
+    <span class="sheet__count">2 variants</span>
+    <p class="sheet__display">Book a call / 预约</p>
+  </header>
+
+  <!-- VARIANT 1 -->
+  <section class="variant" aria-labelledby="v-inline">
+    <div class="variant__label">
+      <span class="variant__id" id="v-inline">inline</span>
+      <span class="variant__hint">行内 CTA + 说明</span>
+    </div>
+    <div class="stage">
+      <div class="inline-cta">
+        <span class="avatar" role="img" aria-label="Photo of Maya Chen">
+          <img src="../../assets/portrait-woman-editorial.webp" alt="Photo of Maya Chen" loading="lazy">
+        </span>
+        <div class="inline-cta__body">
+          <p class="inline-cta__lead">想聊聊你的项目？</p>
+          <p class="inline-cta__sub">和 Maya 来一次 20 分钟的免费通话，看看是否合适。</p>
+        </div>
+        <div class="inline-cta__action">
+          <a class="btn btn--primary" href="#book">
+            预约时间
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VARIANT 2 -->
+  <section class="variant" aria-labelledby="v-card">
+    <div class="variant__label">
+      <span class="variant__id" id="v-card">card</span>
+      <span class="variant__hint">卡片式（含 reassurance 一行）</span>
+    </div>
+    <div class="stage">
+      <article class="call-card">
+        <div class="call-card__head">
+          <span class="avatar" role="img" aria-label="Photo of Maya Chen">
+            <img src="../../assets/portrait-woman-editorial.webp" alt="Photo of Maya Chen" loading="lazy">
+          </span>
+          <div class="call-card__who">
+            <div class="call-card__name">Maya Chen</div>
+            <div class="call-card__role">产品设计师 · 自由接案</div>
+          </div>
+        </div>
+        <p class="call-card__pitch">花 20 分钟，把你脑子里的想法理清楚——再决定要不要一起做下去。</p>
+        <div class="call-card__meta">
+          <span class="meta-pill">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            20 分钟
+          </span>
+          <span class="meta-pill">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10l4.5-2.5v9L15 14"/><rect x="3" y="6" width="12" height="12" rx="2"/></svg>
+            视频通话
+          </span>
+          <span class="meta-pill">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l2.4 6.9H21l-5.3 4 2 6.9L12 16.6 6.3 19.8l2-6.9L3 8.9h6.6z"/></svg>
+            本周有档期
+          </span>
+        </div>
+        <div class="call-card__cta">
+          <a class="btn btn--primary" href="#book">预约通话</a>
+        </div>
+        <p class="reassurance">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+          免费 · 无需信用卡 · 随时可改期
+        </p>
+      </article>
+    </div>
+  </section>
+</main>
+</body>
+</html>

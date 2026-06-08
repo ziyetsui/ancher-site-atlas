@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>technical-mono · photo specimen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* tokens resolved from index.html :root */
+  :root{
+    --canvas:#0b0d10;
+    --surface:#14171c;
+    --surface-2:#1b1f26;
+    --ink:#e8eaed;
+    --ink-muted:#9aa3ad;
+    --accent:#5eead4;
+    --hairline:#272d36;
+    --mono:'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  *,*::before,*::after{box-sizing:border-box;}
+
+  body{
+    margin:0;
+    background-color:#0b0d10; /* direction page background (--canvas) */
+    /* same faint dotted-grid texture the real page uses */
+    background-image:
+      radial-gradient(circle at 18% 0%, rgba(94,234,212,.06), transparent 42%),
+      radial-gradient(#272d36 1px, transparent 1px);
+    background-size:auto, 24px 24px;
+    color:var(--ink);
+    font-family:var(--mono);
+    min-height:100vh;
+    display:grid;
+    place-items:center;
+    padding:28px;
+  }
+
+  /* hero-id lockup, scaled up so the 54px avatar frame reads clearly */
+  .hero-id{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    max-width:300px;
+  }
+
+  /* base .avatar frame (hard-edged square, teal hairline, inset glow) */
+  .avatar{
+    flex:none;
+    width:96px;height:96px;            /* enlarged from 54px so the frame is legible */
+    border:1px solid var(--hairline);
+    border-radius:6px;                  /* --r-md */
+    background:linear-gradient(135deg, var(--surface-2), var(--surface));
+    display:grid;
+    place-items:center;
+    font-family:var(--mono);
+    font-weight:700;
+    font-size:32px;
+    color:var(--accent);
+    box-shadow:inset 0 0 0 1px rgba(94,234,212,.08);
+  }
+
+  /* the user photo treatment: teal border, desaturated, teal inset + outer ring */
+  img.avatar.u-photo{
+    object-fit:cover;
+    border-color:var(--accent);
+    background:var(--surface-2);
+    filter:grayscale(.55) contrast(1.02);
+    box-shadow:inset 0 0 0 1px rgba(94,234,212,.08), 0 0 0 1px rgba(94,234,212,.12);
+  }
+
+  .hero-name{
+    font-family:var(--mono);
+    font-weight:600;
+    font-size:18px;
+    line-height:1.25;
+    color:var(--ink);
+  }
+  .hero-role{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--ink-muted);
+    line-height:1.4;
+  }
+</style>
+</head>
+<body>
+  <div class="hero-id">
+    <img class="avatar u-photo" src="portrait.jpg" width="96" height="96" alt="portrait specimen" />
+    <span>
+      <span class="hero-name">Kenji Watanabe</span><br>
+      <span class="hero-role">Distributed-systems engineer · 11 yrs backend/infra</span>
+    </span>
+  </div>
+</body>
+</html>

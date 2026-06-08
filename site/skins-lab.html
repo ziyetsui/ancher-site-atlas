@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>组件实验室 · Skin Lab</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link id="skinfont" rel="stylesheet" href="" />
+  <style>
+    :root{ --ui-bg:#16161a; --ui-line:#2c2c30; --ui-ink:#f4f4f2; --ui-muted:#9a9aa4;
+      --ui-font:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+      --ui-mono:ui-monospace,"SF Mono",Menlo,monospace; }
+    *{box-sizing:border-box}
+    body{margin:0;background:#0e0e11;color:var(--ui-ink);font-family:var(--ui-font)}
+    /* ---- lab chrome (neutral, does NOT inherit skin) ---- */
+    .toolbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+      padding:12px 18px;background:var(--ui-bg);border-bottom:1px solid var(--ui-line)}
+    .toolbar a.home{color:var(--ui-ink);text-decoration:none;font-weight:600;font-size:13px;border:1px solid var(--ui-line);border-radius:8px;padding:7px 11px}
+    .toolbar a.home:hover{background:#23232a}
+    .toolbar .title{font-weight:700;font-size:15px}
+    .toolbar .title small{color:var(--ui-muted);font-family:var(--ui-mono);font-weight:400;font-size:11px}
+    .skinpick{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ui-muted)}
+    .skinpick select{appearance:none;background:#23232a;color:var(--ui-ink);border:1px solid var(--ui-line);
+      border-radius:8px;padding:8px 30px 8px 12px;font:inherit;font-weight:600;cursor:pointer;
+      background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M1 1l4 4 4-4' stroke='%239a9aa4' fill='none' stroke-width='1.5'/></svg>");
+      background-repeat:no-repeat;background-position:right 12px center}
+    .hint{padding:10px 18px;color:var(--ui-muted);font-size:12px;border-bottom:1px solid var(--ui-line);background:#121215}
+    .hint b{color:var(--ui-ink)}
+    .notice{display:none;padding:10px 18px;color:#ffd7a8;font-size:12px;border-bottom:1px solid #3b2f21;background:#1b1510}
+    .notice.is-visible{display:block}
+    /* ---- rows ---- */
+    main{max-width:1180px;margin:0 auto;padding:18px}
+    .row{margin-bottom:26px}
+    .row-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+    .row-head .id{font-family:var(--ui-mono);font-size:13px;font-weight:600}
+    .row-head .variant{font-family:var(--ui-mono);font-size:11px;color:var(--ui-muted)}
+    .row-head .used{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:11px;color:var(--ui-muted)}
+    .row-head .used a{font-family:var(--ui-mono);font-size:11px;color:#cfcfe0;text-decoration:none;
+      background:#1b1b20;border:1px solid var(--ui-line);border-radius:6px;padding:2px 7px}
+    .row-head .used a:hover{background:#26262e;color:#fff}
+    .frame{border:1px solid var(--ui-line);border-radius:12px;overflow:hidden}
+
+    /* ============================================================= */
+    /*  SKINNABLE MODULES — pure token contract, zero hardcoded color */
+    /*  #lab carries the skin's CSS vars; everything below reads them. */
+    /* ============================================================= */
+    #lab .frame{background:var(--bg);color:var(--ink);font-family:var(--font-body);
+      transition:background .25s ease,color .25s ease}
+    #lab .pad{padding:clamp(22px,4vw,40px)}
+    #lab h1,#lab h2,#lab h3{font-family:var(--font-display);margin:0}
+    #lab .eyebrow{font-family:var(--font-body);font-size:11px;letter-spacing:1.4px;text-transform:uppercase;
+      color:var(--ink-subtle);font-weight:600;margin:0 0 12px}
+    #lab .btn{display:inline-block;background:var(--accent);color:var(--on-accent);text-decoration:none;
+      font-family:var(--font-body);font-weight:700;font-size:14px;padding:11px 18px;border-radius:var(--radius-md);
+      border:2px solid var(--border-strong);box-shadow:var(--shadow-hard)}
+    #lab .link{color:var(--accent);text-decoration:none;font-weight:600;border-bottom:1px solid var(--accent)}
+
+    /* hero */
+    #lab .m-hero h1{font-size:clamp(30px,5vw,56px);line-height:1.04;letter-spacing:-.01em;margin:0 0 16px}
+    #lab .m-hero .sub{color:var(--ink-muted);font-size:18px;line-height:1.55;max-width:46ch;margin:0 0 24px}
+    #lab .m-hero .accent{color:var(--accent)}
+    #lab .m-hero .hero-grid{display:grid;grid-template-columns:1.5fr .85fr;gap:clamp(20px,4vw,40px);align-items:center}
+    #lab .m-hero .hero-media img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;
+      border-radius:var(--radius-lg);border:2px solid var(--border-strong);box-shadow:var(--shadow)}
+    @media(max-width:680px){#lab .m-hero .hero-grid{grid-template-columns:1fr}
+      #lab .m-hero .hero-media img{aspect-ratio:16/10}}
+    /* metrics */
+    #lab .m-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--hairline);
+      border:1px solid var(--hairline)}
+    #lab .m-metrics .cell{background:var(--bg);padding:22px}
+    #lab .m-metrics .n{font-family:var(--font-display);font-size:clamp(26px,4vw,40px);color:var(--accent);line-height:1}
+    #lab .m-metrics .l{font-size:12px;color:var(--ink-muted);margin-top:8px}
+    @media(max-width:640px){#lab .m-metrics{grid-template-columns:repeat(2,1fr)}}
+    /* selected_work grid */
+    #lab .m-work{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    #lab .m-work .card{background:var(--surface);border:1.5px solid var(--border-strong);border-radius:var(--radius-lg);
+      padding:18px;box-shadow:var(--shadow)}
+    #lab .m-work .thumb{height:104px;border-radius:var(--radius-sm);overflow:hidden;background:var(--surface-2);margin-bottom:14px}
+    #lab .m-work .thumb img{display:block;width:100%;height:100%;object-fit:cover}
+    #lab .m-work h3{font-size:17px;margin:0 0 4px}
+    #lab .m-work .meta{font-size:12px;color:var(--ink-subtle);margin-bottom:10px}
+    @media(max-width:640px){#lab .m-work{grid-template-columns:1fr}}
+    /* testimonials */
+    #lab .m-test{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    #lab .m-test .q{background:var(--surface);border:1px solid var(--hairline);border-radius:var(--radius-lg);
+      padding:22px;box-shadow:var(--shadow)}
+    #lab .m-test .q p{font-family:var(--font-display);font-size:18px;line-height:1.4;margin:0 0 14px}
+    #lab .m-test .who{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--ink-subtle)}
+    #lab .m-test .who img{width:38px;height:38px;border-radius:50%;object-fit:cover;flex:none;border:1px solid var(--hairline)}
+    @media(max-width:640px){#lab .m-test{grid-template-columns:1fr}}
+    /* contact band */
+    #lab .m-contact{background:var(--surface-2);border:2px solid var(--border-strong);border-radius:var(--radius-lg);
+      padding:clamp(24px,4vw,40px);text-align:center;box-shadow:var(--shadow-hard)}
+    #lab .m-contact h2{font-size:clamp(22px,3.5vw,34px);margin:0 0 16px}
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <a class="home" href="index.html">← 图鉴</a>
+    <div class="title">组件实验室 <small>Skin Lab · 27 skins × 5 modules</small></div>
+    <label class="skinpick">皮肤 Skin
+      <select id="skin"></select>
+    </label>
+  </div>
+  <div class="hint">原型:同一批组件,选不同<b>皮肤</b>(=设计方向 token)实时换色换字 —— 这就是 <b>模块 × 方向</b> 的活矩阵。每个组件右侧「用在」可跳到<b>真实方向页</b>看完全入戏的版本(招牌结构都在那)。</div>
+  <div class="notice" id="notice"></div>
+
+  <main id="lab">
+    <section class="row">
+      <div class="row-head"><span class="id">hero</span><span class="variant">bold_statement</span>
+        <span class="used">用在 <a href="../directions/editorial/index.html#hero">editorial</a><a href="../directions/bold-brutalist/index.html#hero">brutalist</a><a href="../directions/y2k-vapor/index.html#top">y2k</a></span></div>
+      <div class="frame"><div class="pad m-hero"><div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Maya Chen · Product Designer</p>
+          <h1>I design calm interfaces for software that does <span class="accent">anxious work</span>.</h1>
+          <p class="sub">Twelve years turning dense, high-stakes tools into things people actually trust under pressure.</p>
+          <a class="btn" href="#">Start a project →</a>
+        </div>
+        <div class="hero-media"><img src="../assets/portrait-woman-editorial.webp" alt="Maya Chen, product designer" loading="lazy"></div>
+      </div></div></div>
+    </section>
+
+    <section class="row">
+      <div class="row-head"><span class="id">metrics</span><span class="variant">stat_row</span>
+        <span class="used">用在 <a href="../directions/bold-brutalist/index.html#proof">brutalist</a><a href="../directions/y2k-vapor/index.html#metrics">y2k</a></span></div>
+      <div class="frame"><div class="m-metrics">
+        <div class="cell"><div class="n">12</div><div class="l">Years designing</div></div>
+        <div class="cell"><div class="n">40+</div><div class="l">Products shipped</div></div>
+        <div class="cell"><div class="n">3</div><div class="l">Patents</div></div>
+        <div class="cell"><div class="n">1.2M</div><div class="l">Users reached</div></div>
+      </div></div>
+    </section>
+
+    <section class="row">
+      <div class="row-head"><span class="id">selected_work</span><span class="variant">grid</span>
+        <span class="used">用在 <a href="../directions/editorial/index.html#work">editorial</a><a href="../directions/bold-brutalist/index.html#work">brutalist</a></span></div>
+      <div class="frame"><div class="pad"><div class="m-work">
+        <div class="card"><div class="thumb"><img src="../assets/editorial-fashion-mono.webp" alt="Ledger — fintech case study" loading="lazy"></div><h3>Ledger</h3><div class="meta">Fintech · 2024</div><a class="link" href="#">Case study →</a></div>
+        <div class="card"><div class="thumb"><img src="../assets/poster-pipeline.webp" alt="Atlas — design system case study" loading="lazy"></div><h3>Atlas</h3><div class="meta">Design system · 2023</div><a class="link" href="#">Case study →</a></div>
+        <div class="card"><div class="thumb"><img src="../assets/landscape-lone-figure.webp" alt="Northwind — logistics case study" loading="lazy"></div><h3>Northwind</h3><div class="meta">Logistics · 2022</div><a class="link" href="#">Case study →</a></div>
+      </div></div></div>
+    </section>
+
+    <section class="row">
+      <div class="row-head"><span class="id">testimonials</span><span class="variant">cards</span>
+        <span class="used">用在 <a href="../directions/dark-luxe/index.html">dark-luxe</a><a href="../directions/art-deco/index.html">art-deco</a></span></div>
+      <div class="frame"><div class="pad"><div class="m-test">
+        <div class="q"><p>“She made our roadmap obvious. Everyone just knew what to build next.”</p><div class="who"><img src="../assets/portrait-asian-man-editorial.webp" alt="" loading="lazy"><span>Head of Product · Series-B SaaS</span></div></div>
+        <div class="q"><p>“The rare designer who makes the hard call and is usually right.”</p><div class="who"><img src="../assets/portrait-woman-studio.webp" alt="" loading="lazy"><span>Founder · fintech</span></div></div>
+      </div></div></div>
+    </section>
+
+    <section class="row">
+      <div class="row-head"><span class="id">contact</span><span class="variant">cta_band</span>
+        <span class="used">用在 <a href="../directions/editorial/index.html#contact">editorial</a><a href="../directions/bold-brutalist/index.html#contact">brutalist</a></span></div>
+      <div class="frame"><div class="m-contact">
+        <h2>Have something complex to make simple?</h2>
+        <a class="btn" href="#">hello@mayachen.design</a>
+      </div></div>
+    </section>
+  </main>
+
+  <script>
+  (async function(){
+    const $ = s => document.querySelector(s);
+    let data;
+    try { data = await (await fetch('skins.json',{cache:'no-store'})).json(); }
+    catch(e){ document.body.insertAdjacentHTML('beforeend','<p style="color:#ff8;padding:20px">无法加载 skins.json — 从仓库根目录起服务后访问 /site/skins-lab.html</p>'); return; }
+    const skins = data.skins || [];
+    const sel = $('#skin'), lab = $('#lab'), font = $('#skinfont'), notice = $('#notice');
+    for (const s of skins) {
+      const option = document.createElement('option');
+      option.value = s.id;
+      option.textContent = `${s.name_cn} · ${s.id}`;
+      sel.appendChild(option);
+    }
+    function apply(skin){
+      for (const [k,v] of Object.entries(skin.vars)) lab.style.setProperty(k,v);
+      if (font.getAttribute('href') !== skin.fonts) font.setAttribute('href', skin.fonts);
+    }
+    function showNotice(message) {
+      notice.textContent = message || '';
+      notice.classList.toggle('is-visible', Boolean(message));
+    }
+    function pick(id){
+      const s = skins.find(x=>x.id===id);
+      if (!s) {
+        const fallback = skins[0];
+        sel.value = fallback.id;
+        apply(fallback);
+        showNotice(`当前方向 "${id}" 还没有映射到 Skin Lab token，暂时显示 ${fallback.name_cn}。`);
+        return;
+      }
+      sel.value = s.id;
+      apply(s);
+      showNotice('');
+    }
+    sel.addEventListener('change', ()=>pick(sel.value));
+    const q = new URLSearchParams(location.search).get('skin');
+    pick(q || skins[0].id);
+  })();
+  </script>
+</body>
+</html>

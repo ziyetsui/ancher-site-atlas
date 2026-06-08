@@ -1,0 +1,9 @@
+{
+  "id": "scramble-terminal",
+  "name_cn": "乱码终端",
+  "name_en": "Scramble Terminal",
+  "style": "纯黑底、等宽字体、绿/琥珀荧光配 CRT 扫描线的赛博终端风个人站；伪命令行逐行解码，文本乱码闪现，故障 glitch 跳变。",
+  "plugins": ["ScrambleTextPlugin (标题/输出/项目名解码)", "TextPlugin (命令逐字打字)", "ScrollTrigger (触发 / scrub 视差 / toggleActions)", "Timeline (boot 序列编排)", "matchMedia (响应式 + reduced-motion)", "utils (random / toArray)"],
+  "focus": "演示 GSAP 用 ScrambleText 把标题与终端输出从乱码解码成可读文本、用 TextPlugin 逐字打出命令，配合 ScrollTrigger 让伪终端在进入视口时逐行打印并 scramble，外加周期性 glitch 闪跳。",
+  "prompt": "做一个黑客/逆向工程师的单页个人站，赛博终端美学。视觉：纯黑底 #04060a，等宽字体（JetBrains Mono）为主、Space Grotesk 做大标题，唯一两种荧光强调色——荧光绿 #39ff8b 与琥珀 #ffb23e，少量青/品红用于故障色差；全屏覆盖一层 CRT 扫描线 + 暗角，原创、避免通用 AI 网站感。顶部是 sticky 状态栏（user/host/shell + 实时时钟）。分六区：①Hero——一行命令提示符逐字打出 './decode --identity'，巨型标题『林子默 / K1RA』从乱码解码而成，下方简介与四个统计 chip；②系统自检——一个带红黄绿圆点标题栏的伪终端窗口，逐行打印 boot 输出，每行先是 16 进制乱码再 scramble 成 [ok]/[warn] 的身份信息；③关于——左侧三段中文自述（逐段揭示），右侧一张荧光绿染色的黑白肖像身份卡，卡上有循环扫描线和会 scramble 的 status 字段；④精选项目——四行命令风列表（序号/项目名/描述/语言年份/star 数），每行进入视口时项目名 scramble 解码，hover 时再快闪重排并有绿色下划线扫过；⑤近况——tail -f 风格的四张日志卡；⑥页脚巨型 CTA『解码真相 / DECODE THE NOISE』，关键词 scramble 入场，下面四个带荧光边框 hover 发光的联系链接。动效全部用 GSAP：ScrambleTextPlugin 负责所有解码（标题、终端输出、项目名、CTA），TextPlugin 负责命令打字，ScrollTrigger 触发逐区动画并给 Hero chips 做 scrub 视差，Timeline 编排 boot 序列，再加一个每隔几秒的随机 glitch：品红/青色副本左右抖动加一帧屏闪。只动 transform/opacity，ScrollTrigger 全部写完整 start/end，响应式 360–1440，语义化、对比度达标、img 有 alt、可见 focus。用 gsap.matchMedia 处理 prefers-reduced-motion：reduced 时直接渲染所有终态、命令与乱码显示最终文本、关闭扫描线循环与滚动驱动。主角为深圳逆向工程师林子默（K1RA）。"
+}
