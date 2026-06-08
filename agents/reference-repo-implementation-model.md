@@ -199,6 +199,26 @@ no generated dependency folders committed
 
 如果目标项目是私有知识库，不要直接部署整个 wiki。要像这个 repo 一样，把可公开/可内部浏览的静态站单独成 repo。
 
+`@research` 可以自己创建远程仓库。默认流程：
+
+```bash
+gh auth status
+gh api user --jq '.login'
+gh repo view <owner>/<repo> --json nameWithOwner,url,isPrivate,defaultBranchRef 2>/dev/null || true
+git init -b main
+git add .
+git commit -m "Initial import"
+gh repo create <owner>/<repo> --private --source=. --remote=origin --push
+```
+
+创建前检查：
+
+- 当前有效 GitHub 账号是不是用户要用的个人账号。
+- 目标 repo 是否已存在。
+- 是否默认 private；只有用户明确要求 public 才公开。
+- 是否有超过 GitHub 100MB 限制的单文件。
+- `.gitignore` 是否排除了 `node_modules/`、`.vercel/`、`.claude/`、本地缓存等。
+
 ## 6. 部署模型
 
 `vercel.json` 的复制核心：
@@ -307,7 +327,8 @@ vercel.json
 7. **写 tokens**：global shell tokens、entry tokens、skin contract。
 8. **写 docs**：CONTEXT、DECISIONS、COVERAGE 说明为什么这样做。
 9. **写 deploy config**：`vercel.json` + local run + deploy command。
-10. **验证**：跑 build script，启动本地 server，打开 `/site/` 检查页面。
+10. **建远程仓库并推送**：用当前 `gh` 登录账号新建 private GitHub repo，推送 `main`。
+11. **验证**：跑 build script，启动本地 server，打开 `/site/` 检查页面。
 
 ## 9. 质量线
 
@@ -320,4 +341,5 @@ vercel.json
 - 有 proof：截图、render check 或等价证据。
 - Tokens 清晰，不散落成不可控 CSS。
 - 远程仓库和部署方式写在 README/CONTEXT 里。
+- Agent 可以自己创建 GitHub repo 并推送；最终必须回报 URL、visibility、branch 和 commit。
 - 用户下一次只需要 `@research` 就能继续扩展或重建。
