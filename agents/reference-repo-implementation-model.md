@@ -1,6 +1,6 @@
 # Reference Repo Implementation Model
 
-这份把 `ancher-site-atlas` 这个 ref repo 抽象成可复制的建站模型。以后 `@research`
+这份把 `ancher-site-atlas` 这个 ref repo 抽象成可复制的建站模型。以后 `@webpage`
 需要“直接实现整个代码和网页”时，用这份作为默认实现蓝图。
 
 ## 1. 技术栈模型
@@ -199,7 +199,7 @@ no generated dependency folders committed
 
 如果目标项目是私有知识库，不要直接部署整个 wiki。要像这个 repo 一样，把可公开/可内部浏览的静态站单独成 repo。
 
-`@research` 可以自己命名并创建远程仓库。默认命名规则：
+`@webpage` 可以自己命名并创建远程仓库。默认命名规则：
 
 ```text
 <domain>-atlas
@@ -331,7 +331,7 @@ vercel.json
 按目标领域可以改名，例如 `directions/` 变成 `patterns/`、`styles/`、`templates/`，
 但 contract 要保持稳定。
 
-## 8. @research 实现步骤
+## 8. @webpage 实现步骤
 
 当用户要求“直接实现整个代码和网页”时：
 
@@ -359,4 +359,4 @@ vercel.json
 - Tokens 清晰，不散落成不可控 CSS。
 - 远程仓库和部署方式写在 README/CONTEXT 里。
 - Agent 可以自己命名、创建 GitHub repo 并推送；最终必须回报 URL、visibility、branch 和 commit。
-- 用户下一次只需要 `@research` 就能继续扩展或重建。
+- 用户下一次只需要 `@webpage` 就能继续扩展或重建网页实现。

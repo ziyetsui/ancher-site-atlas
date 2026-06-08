@@ -24,8 +24,10 @@ Content/data + static-site project — no framework, no build step required to v
 - [`docs/COVERAGE.md`](docs/COVERAGE.md) — design-language coverage vs awesome-design-md.
 - [`docs/MODULE_DIRECTION_CROSS_ATLAS_PLAN.md`](docs/MODULE_DIRECTION_CROSS_ATLAS_PLAN.md) —
   the module×direction cross-atlas plan (Skin Lab is its first cut).
-- [`agents/research.md`](agents/research.md) — reusable `@research` protocol for turning
-  project docs into a system model, decisions, gaps, and an execution plan.
+- [`agents/research.md`](agents/research.md) — `@research`: read sources and output `.md`
+  research docs (system model, decisions, gaps, implementation brief).
+- [`agents/webpage.md`](agents/webpage.md) — `@webpage`: turn research docs + the ref
+  implementation model into runnable static web code, repo, and deploy config.
 
 Deeper rationale in the wiki (`~/wiki/ancher/engineering/`):
 `personal_site_atlas_collection_v1.md` (exec doc), `personal_site_generation_strategy_v1.md`,
@@ -60,7 +62,7 @@ scripts/build_registry.py   # scans directions/*/DESIGN.md -> registry.json (val
 assets/                 # AI placeholder images (webp) + MANIFEST.md + _manifest.json
 vercel.json             # static hosting: / -> /site/ redirect + .md/.json charset=utf-8
 docs/                   # CONTEXT / DECISIONS / COVERAGE / cross-atlas plan
-agents/                 # reusable agent protocols; @research abstracts docs into systems
+agents/                 # reusable agent protocols; @research documents, @webpage implements
 ```
 
 ## Core conventions

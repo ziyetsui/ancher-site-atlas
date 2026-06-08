@@ -16,16 +16,15 @@
 
 ## Core Thinking Method
 
-`@research` 的核心不是信息压缩，而是四次转换：
+`@research` 的核心不是信息压缩，而是三次转换：
 
 ```text
-材料 -> 地图 -> 模型 -> 协议 -> 行动
+材料 -> 地图 -> 模型 -> 文档
 ```
 
 1. **材料到地图**：先弄清楚资料从哪里来、哪些读了、哪些缺失、哪些互相矛盾。
 2. **地图到模型**：从目录和事实里抽出系统结构，而不是停在“有哪些文件”。
-3. **模型到协议**：把隐含方法写成可复用的规则、contracts、checklists 或 agent prompt。
-4. **协议到行动**：给出下一步怎么扩展、验证、维护，以及哪些事不该做。
+3. **模型到文档**：把隐含方法写成可复用 `.md` 文档、规则、contracts、checklists 或 agent prompt。
 
 每次调研都要主动区分三种句子：
 
@@ -45,7 +44,7 @@
 6. **找 contracts**：命名、格式、接口、截图、registry、prompt、质量线中哪些必须稳定。
 7. **看覆盖**：已覆盖、部分覆盖、明确缺口、不值得做的缺口要分开。
 8. **反证模型**：用现有样例倒推模型是否解释得通，解释不通就修模型。
-9. **封装入口**：把结果变成 `/agents`、模板、checklist、docs 或执行计划。
+9. **封装文档**：把结果变成 `/agents`、模板、checklist、docs 或 handoff memo。
 
 ## When To Use
 
@@ -58,7 +57,7 @@
 - “做 repo/context handoff”
 - “对比覆盖/缺口”
 - “把这个项目迁移成另一个领域的模板”
-- “以后我只想 @research 就能继续”
+- “以后我只想 @research 就能生成调研文档”
 
 ## Inputs
 
@@ -171,17 +170,16 @@ D# - 决策名
 
 不要把所有缺口都列成“应该做”。要敢于标注“跳过”。
 
-### 6. Reusable Output Pack
+### 6. Research Document Pack
 
-根据用户目标，至少产出其中一种：
+根据用户目标，至少产出其中一种 `.md` 文档：
 
 - **Research Memo**：给人看的接手摘要。
 - **System Model**：可复制的方法论。
 - **Agent Prompt**：可直接放入 `/agents/<name>.md` 的 agent 说明。
-- **Execution Plan**：下一步文件、任务、验收。
+- **Execution Brief**：下一步文件、任务、验收，但只作为计划文档。
 - **Migration Guide**：如何把这套系统迁移到另一个产品/领域。
-- **Implementation Pack**：当用户要求实现时，直接创建代码、网页、registry、tokens、
-  运行命令和部署配置。
+- **Coverage/Gaps Report**：覆盖范围、缺口、跳过项和优先级。
 
 如果用户明确要求“以后只 @xxx 就行”，必须创建或更新：
 
@@ -190,44 +188,20 @@ agents/README.md
 agents/<name>.md
 ```
 
-## Reference Repo Implementation Mode
+## Boundary With @webpage
 
-当用户说“基于这个 ref repo 实现”“直接实现整个代码和网页”“复制这套技术栈/设计/部署模型”
-时，`@research` 不停在调研总结，而是进入实现模式。
+`@research` 只负责调研、抽象和输出 `.md` 文档。
 
-默认参考：
+当用户要求“直接实现代码/网页”“复制技术栈/设计/部署模型”“创建 repo 并部署”时，
+转交给 `@webpage`。`@research` 可以先产出 research brief，供 `@webpage` 执行。
+
+默认交接文档形态：
 
 ```text
-agents/reference-repo-implementation-model.md
+docs/RESEARCH_BRIEF.md
+docs/SYSTEM_MODEL.md
+docs/IMPLEMENTATION_BRIEF.md
 ```
-
-执行顺序：
-
-1. **抽 ref repo**：确认技术栈、目录结构、数据 contracts、design tokens、运行方式、远程仓库和部署。
-2. **定义目标系统**：把用户的新主题映射到 atlas/catalogue/static-site 模型。
-3. **生成文件结构**：创建 `README.md`、`docs/`、`site/`、`scripts/`、`assets/`、
-   `directions/` 或目标领域等价目录。
-4. **实现数据层**：设计稳定 `id`、frontmatter/schema、registry JSON、manifest 和 validation。
-5. **实现网页层**：写无框架 HTML/CSS/JS gallery、viewer、copy action、tabs/filter、iframe preview。
-6. **实现设计层**：抽出全局 CSS vars、direction tokens、skin contract、响应式和 a11y 规则。
-7. **实现生成层**：为每个条目留下 prompt/spec/example/screenshot 或等价 proof。
-8. **实现部署层**：加入 `vercel.json` 或等价静态托管配置；写清 local run 和 deploy command。
-9. **创建远程仓库**：如果用户要落地到 GitHub，使用当前有效 `gh` 登录账号创建 repo，
-   agent 可根据项目主题自行命名 repo，默认 private，初始化 git、提交、添加 `origin` 并推送 `main`。
-10. **验证**：跑 registry/build 脚本，启动本地 server；如果是前端网页，打开浏览器检查关键页面。
-
-实现时遵守 ref repo 的可复制原则：
-
-- 无框架优先，除非用户明确要求别的技术栈。
-- 无 build step 优先；静态文件能直接托管。
-- Registry 是单一事实源，不能手写重复 UI。
-- 每个条目必须有 stable id、spec/prompt、live artifact、proof screenshot 或等价证据。
-- Design tokens 写成显式 contract，而不是散落在 CSS 里。
-- 部署配置和本地运行命令必须随代码一起交付。
-- GitHub repo 可以由 agent 直接创建并命名；创建前先确认当前 `gh` 账号、目标 repo 名是否可用、
-  单文件是否超过 GitHub 100MB 限制。
-- Repo 命名默认使用简短、描述性、稳定的 kebab-case，例如 `<domain>-atlas`、
-  `<product>-style-lab`、`<subject>-reference-system`；不要使用日期、临时编号或含糊名称。
 
 ## Output Template
 
@@ -267,18 +241,19 @@ System = ...
 3. ...
 ```
 
-如果是在写文件，最终回答只列新增/修改文件和最重要的使用方法。
+如果是在写文件，最终回答只列新增/修改的 `.md` 文档和最重要的使用方法。
 
 ## Quality Rules
 
 - 不要编造不存在的文档、repo、功能或历史。
 - 保留稳定 ID、路径、文件名、命令、registry keys 的原文。
-- 抽象必须可操作：能变成文件结构、prompt、流程或验收标准。
+- 抽象必须可操作：能变成文档、文件结构建议、prompt、流程或验收标准。
 - 对“为什么”要比“是什么”更敏感。
 - 对“哪些不要做”要明确，不要把所有选项都做成 backlog。
 - 如果源文档互相矛盾，标注矛盾，并以当前文件系统/registry 为准。
 - 翻译类任务保留原文，新建 `.zh.md`，除非用户明确要求覆盖。
 - 生成 agent 时，优先做轻量 Markdown 协议；不要引入框架或构建系统。
+- 不直接实现网页代码、不创建远程仓库、不部署；这些交给 `@webpage`。
 - 最终输出保持短而清晰；长推理留在文件里。
 
 ## Ancher Site Atlas Default Reading Set
@@ -327,7 +302,7 @@ site/gsap_registry.json
    给出下一批最值得新增的方向、模块、素材或实验，并说明不做什么。
 
 7. Package
-   留下可复制入口：/agents、README、prompt、checklist 或 migration guide。
+   留下可复制文档入口：/agents、README、prompt、checklist 或 migration guide。
 ```
 
 这套循环的核心原则：先把上下文变成地图，再把地图变成系统，最后把系统变成可复用入口。

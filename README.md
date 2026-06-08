@@ -58,7 +58,7 @@ assets/         # AI 占位图(webp)+ MANIFEST.md + _manifest.json
 scripts/build_registry.py     # 扫 directions/*/DESIGN.md frontmatter → registry.json(并校验 modules/skins 注册表 + 由 gsap-demos/*/meta.json 生成 gsap_registry.json)
 vercel.json     # 静态托管:/ → /site/ 跳转 + 给 .md/.json 发 charset=utf-8
 docs/           # CONTEXT / DECISIONS / COVERAGE / MODULE_DIRECTION_CROSS_ATLAS_PLAN
-agents/         # 可复用 agent 协议;@research 把项目资料抽象成模型/系统
+agents/         # 可复用 agent 协议;@research 做调研文档,@webpage 做网页实现
 ```
 
 ## 浏览面(6 个 tab)
@@ -90,8 +90,9 @@ python3 -m http.server 8799     # 打开 http://localhost:8799/site/
 # 复刻一个方向
 cat directions/editorial/prompt.md   # 复制,发给任意能写前端的 agent → 效果与 index.html 基本一致
 
-# 研究/抽象这个系统
+# 研究/抽象这个系统;实现网页
 cat agents/research.md               # 或在对话里 @research
+cat agents/webpage.md                # 或在对话里 @webpage
 ```
 
 > 本地 `http.server` 不给 `.md` 发 charset,直接在浏览器看 `.md` 会花屏(mojibake);**线上 Vercel 已加 charset 头,正常显示**。
