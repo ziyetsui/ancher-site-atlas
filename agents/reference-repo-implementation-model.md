@@ -199,7 +199,24 @@ no generated dependency folders committed
 
 如果目标项目是私有知识库，不要直接部署整个 wiki。要像这个 repo 一样，把可公开/可内部浏览的静态站单独成 repo。
 
-`@research` 可以自己创建远程仓库。默认流程：
+`@research` 可以自己命名并创建远程仓库。默认命名规则：
+
+```text
+<domain>-atlas
+<product>-style-lab
+<subject>-reference-system
+<thing>-catalogue
+```
+
+命名要求：
+
+- 使用 kebab-case。
+- 简短、描述性、稳定。
+- 优先表达长期主题，不表达临时阶段。
+- 不使用日期、连续编号、`test`、`demo-final`、`new-repo` 这类含糊名称。
+- 如果用户指定 repo 名，以用户指定为准；否则 agent 自行选择最合适的名字。
+
+默认创建流程：
 
 ```bash
 gh auth status
@@ -214,7 +231,7 @@ gh repo create <owner>/<repo> --private --source=. --remote=origin --push
 创建前检查：
 
 - 当前有效 GitHub 账号是不是用户要用的个人账号。
-- 目标 repo 是否已存在。
+- 目标 repo 名是否清晰、稳定、未被占用。
 - 是否默认 private；只有用户明确要求 public 才公开。
 - 是否有超过 GitHub 100MB 限制的单文件。
 - `.gitignore` 是否排除了 `node_modules/`、`.vercel/`、`.claude/`、本地缓存等。
@@ -327,7 +344,7 @@ vercel.json
 7. **写 tokens**：global shell tokens、entry tokens、skin contract。
 8. **写 docs**：CONTEXT、DECISIONS、COVERAGE 说明为什么这样做。
 9. **写 deploy config**：`vercel.json` + local run + deploy command。
-10. **建远程仓库并推送**：用当前 `gh` 登录账号新建 private GitHub repo，推送 `main`。
+10. **建远程仓库并推送**：自行选择清晰 repo 名，用当前 `gh` 登录账号新建 private GitHub repo，推送 `main`。
 11. **验证**：跑 build script，启动本地 server，打开 `/site/` 检查页面。
 
 ## 9. 质量线
@@ -341,5 +358,5 @@ vercel.json
 - 有 proof：截图、render check 或等价证据。
 - Tokens 清晰，不散落成不可控 CSS。
 - 远程仓库和部署方式写在 README/CONTEXT 里。
-- Agent 可以自己创建 GitHub repo 并推送；最终必须回报 URL、visibility、branch 和 commit。
+- Agent 可以自己命名、创建 GitHub repo 并推送；最终必须回报 URL、visibility、branch 和 commit。
 - 用户下一次只需要 `@research` 就能继续扩展或重建。

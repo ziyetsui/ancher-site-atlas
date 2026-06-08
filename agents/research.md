@@ -213,7 +213,7 @@ agents/reference-repo-implementation-model.md
 7. **实现生成层**：为每个条目留下 prompt/spec/example/screenshot 或等价 proof。
 8. **实现部署层**：加入 `vercel.json` 或等价静态托管配置；写清 local run 和 deploy command。
 9. **创建远程仓库**：如果用户要落地到 GitHub，使用当前有效 `gh` 登录账号创建 repo，
-   默认 private，初始化 git、提交、添加 `origin` 并推送 `main`。
+   agent 可根据项目主题自行命名 repo，默认 private，初始化 git、提交、添加 `origin` 并推送 `main`。
 10. **验证**：跑 registry/build 脚本，启动本地 server；如果是前端网页，打开浏览器检查关键页面。
 
 实现时遵守 ref repo 的可复制原则：
@@ -224,8 +224,10 @@ agents/reference-repo-implementation-model.md
 - 每个条目必须有 stable id、spec/prompt、live artifact、proof screenshot 或等价证据。
 - Design tokens 写成显式 contract，而不是散落在 CSS 里。
 - 部署配置和本地运行命令必须随代码一起交付。
-- GitHub repo 可以由 agent 直接创建；创建前先确认当前 `gh` 账号、目标 repo 名是否可用、
+- GitHub repo 可以由 agent 直接创建并命名；创建前先确认当前 `gh` 账号、目标 repo 名是否可用、
   单文件是否超过 GitHub 100MB 限制。
+- Repo 命名默认使用简短、描述性、稳定的 kebab-case，例如 `<domain>-atlas`、
+  `<product>-style-lab`、`<subject>-reference-system`；不要使用日期、临时编号或含糊名称。
 
 ## Output Template
 
